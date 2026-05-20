@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>মাস্টারমাইন্ড অ্যাকাডেমি | সম্পূর্ণ পোর্টাল ও সোশ্যাল ফিড</title>
+    <title>মাস্টারমাইন্ড অ্যাকাডেমি</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
@@ -174,7 +173,7 @@
             right: 0;
             top: 48px;
             background: #0f1442;
-            min-width: 240px;
+            min-width: 260px;
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 18px 32px rgba(0,0,0,0.3);
@@ -493,13 +492,21 @@
             .panel { padding: 18px; }
             .navbar { padding: 12px 18px; }
         }
+        .feedback-notice {
+            background: #eef2ff;
+            border-radius: 28px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #f5b042;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
 <div id="loginScreen" class="login-screen">
     <div class="login-card">
-        <img src="mastermined.jpg" alt="Logo">
+        <img src="https://ui-avatars.com/api/?background=ffffff&color=0a3b2e&name=MA&bold=true" alt="Logo">
         <h3><i class="fas fa-brain"></i> Mastermind Academy</h3>
         <form id="loginForm">
             <select id="loginRole">
@@ -511,7 +518,7 @@
             <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
             <button type="submit"><i class="fas fa-arrow-right-to-bracket"></i> প্রবেশ করুন</button>
         </form>
-        <p style="margin-top: 15px; font-size: 12px; color:#6c757d;"></p>
+        <p style="margin-top: 15px; font-size: 12px; color:#e0e0e0;"></p>
     </div>
 </div>
 
@@ -539,7 +546,9 @@
                     <a id="menuTeachers"><i class="fas fa-chalkboard"></i> শিক্ষক ব্যবস্থাপনা</a>
                     <a id="menuFeedback"><i class="fas fa-comment-dots"></i> ফিডব্যাক আর্কাইভ</a>
                     <a id="menuSocialFeed"><i class="fas fa-users-viewfinder"></i> সোশ্যাল ফিড</a>
-                    <a id="menuLogout" style="background:#05381b;"><i class="fas fa-sign-out-alt"></i> লগআউট</a>
+                    <!-- নতুন মেনু আইটেম: শিক্ষকদের মতামত দিন (শুধু ছাত্র রোলের জন্য) -->
+                    <a id="menuStudentFeedback" style="display: none;"><i class="fas fa-star-of-life"></i> শিক্ষকদের মতামত দিন</a>
+                    <a id="menuLogout" style="background:#4d910e;"><i class="fas fa-sign-out-alt"></i> লগআউট</a>
                 </div>
             </div>
         </div>
@@ -550,13 +559,17 @@
         <div id="dashboardPanel" class="panel">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2>
-                <button class="btn btn-orange" id="viewResultBtn"><a href="about.html" target="_blank"><i class="fas fa-file-alt"></i>Academic Results</a></button>
+                <button class="btn btn-orange" id="viewResultBtn"><i class="fas fa-file-alt"></i> ফলাফল দেখুন</button>
             </div>
             <div id="teachersGrid" class="teacher-grid">লোড হচ্ছে...</div>
         </div>
 
+        <!-- ছাত্র প্যানেল: শিক্ষকদের মতামত দিন (পূর্ণাঙ্গ ফর্ম) -->
         <div id="studentPanel" class="panel">
-            <h2><i class="fas fa-comment-dots"></i> শিক্ষকদের মতামত দিন</h2>
+            <div class="feedback-notice">
+                <i class="fas fa-info-circle"></i> প্রতিটি শিক্ষকের জন্য আপনার মূল্যবান মতামত দিন। এটি গোপন রাখা হবে এবং শিক্ষকদের উন্নতিতে সাহায্য করবে।
+            </div>
+            <h2><i class="fas fa-comment-dots"></i> শিক্ষকদের মতামত দিন (গোপন প্রতিক্রিয়া)</h2>
             <div id="studentFeedbackArea"></div>
         </div>
 
@@ -649,6 +662,7 @@
         const teachersRef = await get(ref(db, 'registered_teachers'));
         if (!teachersRef.exists()) {
             await set(ref(db, 'registered_teachers/amit'), { teacher_name: "Amit Saha", teacher_id: "amit", password: "123", classes: ["Class 9", "Class 10"] });
+            await set(ref(db, 'registered_teachers/sraboni'), { teacher_name: "Sraboni Das", teacher_id: "sraboni", password: "123", classes: ["Class 6", "Class 7"] });
             }
         for (let cls of classes) {
             const clsKey = cls.replace(/\s+/g, '_');
@@ -681,7 +695,7 @@
             const r = snap.val();
             let subsHtml = ''; r.subjects.forEach(s => { subsHtml += `<div class="result-subject"><strong>${s.name}</strong><span>নম্বর: ${s.marks} | গ্রেড: ${s.grade}</span></div>`; });
             resultContent.innerHTML = `<div class="result-card"><h3>${r.name}</h3><p>${r.class} | রোল: ${r.roll}</p></div><div class="gpa-circle"><div class="gpa-number">GPA: ${r.gpa}</div><div>${r.gpa>=5?'অসাধারণ!':r.gpa>=4?'চমৎকার!':'উন্নতির সুযোগ'}</div></div><div class="result-card">${subsHtml}</div>`;
-        } else resultContent.innerHTML = `<div class="result-card"><i class="fas fa-info-circle"></i> এখনো ফলাফল প্রকাশিত হয়নি। শিক্ষকের সাথে যোগাযোগ করুন।</div>`;
+        } else resultContent.innerHTML = `<div class="result-card"><i class="fas fa-info-circle"></i>ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন। এতে আপনার সহযোগিতা কামনা করি।</div>`;
     };
     window.closeResultModal = () => { document.getElementById('resultModal').style.display = 'none'; };
     window.onclick = (e) => { if(e.target === document.getElementById('resultModal')) closeResultModal(); };
@@ -703,11 +717,11 @@
         for(let t of teachers) {
             const existing = await get(ref(db, `secret_evaluations/${classKey}/${currentUser.id}/${t.teacher_id}`));
             const comment = existing.exists() ? existing.val().comment : '';
-            const div = document.createElement('div'); div.style.cssText = "background:#fff7e8; border-radius:28px; padding:18px; margin-bottom:18px;";
-            div.innerHTML = `<strong><i class="fas fa-chalkboard-user"></i> ${escapeHtml(t.teacher_name)} স্যার</strong><textarea id="fb_${t.teacher_id}" rows="3" style="margin-top:10px;">${escapeHtml(comment)}</textarea><span id="saved_${t.teacher_id}" style="color:green; display:none;"> সংরক্ষিত</span>`;
+            const div = document.createElement('div'); div.style.cssText = "background:#fff7e8; border-radius:28px; padding:18px; margin-bottom:18px; border:1px solid #f5b04230";
+            div.innerHTML = `<strong><i class="fas fa-chalkboard-user"></i> ${escapeHtml(t.teacher_name)} Sir</strong><textarea id="fb_${t.teacher_id}" rows="3" style="margin-top:10px; border-radius:24px;">${escapeHtml(comment)}</textarea><div style="text-align:right; margin-top:6px;"><span id="saved_${t.teacher_id}" style="color:green; font-size:12px; display:none;"><i class="fas fa-check-circle"></i> সংরক্ষিত</span></div>`;
             area.appendChild(div);
             const ta = document.getElementById(`fb_${t.teacher_id}`);
-            let to; ta.addEventListener('input', ()=> { clearTimeout(to); to = setTimeout(async()=>{ await set(ref(db,`secret_evaluations/${classKey}/${currentUser.id}/${t.teacher_id}`),{studentName:currentUser.name, teacherName:t.teacher_name, comment:ta.value, timestamp:new Date().toISOString()}); let sp=document.getElementById(`saved_${t.teacher_id}`); if(sp){sp.style.display='inline'; setTimeout(()=>sp.style.display='none',1500);} },800); });
+            let to; ta.addEventListener('input', ()=> { clearTimeout(to); to = setTimeout(async()=>{ await set(ref(db,`secret_evaluations/${classKey}/${currentUser.id}/${t.teacher_id}`),{studentName:currentUser.name, teacherName:t.teacher_name, comment:ta.value, timestamp:new Date().toISOString()}); let sp=document.getElementById(`saved_${t.teacher_id}`); if(sp){sp.style.display='inline-block'; setTimeout(()=>sp.style.display='none',1500);} },800); });
         }
     }
 
@@ -726,7 +740,7 @@
         if(!className) return;
         const snap = await get(ref(db, `class_sheets/${className.replace(/\s+/g, '_')}/students`));
         const students = snap.exists() ? snap.val() : [];
-        document.getElementById('teacherClassData').innerHTML = `<table><thead><tr><th>ID</th><th>নাম</th><th>স্ট্যাটাস</th></tr></thead><tbody>${students.map(s=>`<tr><td>${escapeHtml(s.id)}</td><td>${escapeHtml(s.name)}</td><td>✅ সক্রিয়</td></tr>`).join('')}${students.length===0?'<tr><td colspan="3">কোনো ছাত্র নেই</td></tr>':''}</tbody></table>`;
+        document.getElementById('teacherClassData').innerHTML = `<table class="styled-table"><thead><tr><th>ID</th><th>নাম</th><th>স্ট্যাটাস</th></tr></thead><tbody>${students.map(s=>`<tr><td>${escapeHtml(s.id)}</td><td>${escapeHtml(s.name)}</td><td>✅ সক্রিয়</td></tr>`).join('')}${students.length===0?'<tr><td colspan="3">কোনো ছাত্র নেই</td></tr>':''}</tbody></table>`;
     }
     async function loadTeachersList() {
         const snap = await get(ref(db, 'registered_teachers'));
@@ -766,10 +780,47 @@
     window.deletePost=async(postId)=>{ if(confirm('পোস্ট মুছবেন?')) await remove(ref(db,`social_feed/${postId}`)); };
     window.deleteReply=async(postId,replyId)=>{ if(confirm('রিপ্লাই মুছবেন?')) await remove(ref(db,`social_feed/${postId}/replies/${replyId}`)); };
     window.addReply=async(postId)=>{ let inp=document.getElementById(`reply_inp_${postId}`); let txt=inp?.value.trim(); if(!txt) return; let replyer=currentUser.role==='admin'?'🎓 প্রশাসক':(currentUser.role==='teacher'?`👨‍🏫 ${currentUser.name}`:`🧑‍🎓 ${currentUser.name}`); await push(ref(db,`social_feed/${postId}/replies`),{text:txt, user:replyer, timestamp:Date.now(), userId:currentUser.id}); if(inp) inp.value=''; };
-    function loadSocialFeed(){ onValue(ref(db,'social_feed'),(snap)=>{ let container=document.getElementById('socialFeedContainer'); container.innerHTML=''; let data=snap.val(); if(!data){ container.innerHTML='<div class="social-card">কোনো পোস্ট নেই। প্রথম পোস্ট করুন!</div>'; return; } let sorted=Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0)); let canDel=(currentUser.role==='admin'||currentUser.role==='teacher'); for(let [pid,post] of sorted){ let card=document.createElement('div'); card.className='social-card'; let delBtn=''; if(canDel||post.userId===currentUser.id) delBtn=`<button class="delete-post-btn" onclick="window.deletePost('${pid}')"><i class="fas fa-trash-alt"></i> মুছুন</button>`; card.innerHTML=`<div class="post-header"><div class="post-author"><i class="fas fa-user-circle"></i> ${escapeHtml(post.author)} <span style="font-size:12px;">${post.timestamp?new Date(post.timestamp).toLocaleString():'সদ্য'}</span></div><div>${delBtn}</div></div><p>${escapeHtml(post.caption)}</p>${post.imgUrl?`<img src="${escapeHtml(post.imgUrl)}" class="feed-img" onerror="this.style.display='none'">`:''}<div id="replies_${pid}" class="reply-section"></div><div class="reply-input-area"><input type="text" id="reply_inp_${pid}" placeholder="উত্তর দিন..."><button class="btn btn-blue btn-sm" onclick="window.addReply('${pid}')">পাঠান</button></div>`; container.appendChild(card); let repDiv=document.getElementById(`replies_${pid}`); if(post.replies){ Object.entries(post.replies).forEach(([rid,r])=>{ let box=document.createElement('div'); box.className='reply-box'; let delR=''; if(canDel||r.userId===currentUser.id) delR=`<button class="delete-reply-btn" onclick="window.deleteReply('${pid}','${rid}')"><i class="fas fa-trash-alt"></i></button>`; box.innerHTML=`<b>${escapeHtml(r.user)}:</b> ${escapeHtml(r.text)} ${delR}`; repDiv.appendChild(box); }); } } }); }
-    function setupMenu(){ document.getElementById('menuDashboard').onclick=()=>{showPanel('dashboardPanel');loadDashboard();}; document.getElementById('menuClassManager').onclick=()=>{showPanel('adminClassPanel');loadClassButtons();loadClassData(currentClass);}; document.getElementById('menuTeachers').onclick=()=>{showPanel('adminTeachersPanel');loadClassCheckboxes();loadTeachersList();}; document.getElementById('menuFeedback').onclick=()=>{showPanel('adminFeedbackPanel');loadClassFilter();}; document.getElementById('menuSocialFeed').onclick=()=>{showPanel('socialFeedPanel');}; document.getElementById('menuLogout').onclick=()=>location.reload(); document.getElementById('menuToggle').onclick=(e)=>{e.stopPropagation();document.getElementById('dropdownMenu').classList.toggle('show');}; document.addEventListener('click',()=>document.getElementById('dropdownMenu').classList.remove('show')); }
+    function loadSocialFeed(){ onValue(ref(db,'social_feed'),(snap)=>{ let container=document.getElementById('socialFeedContainer'); container.innerHTML=''; let data=snap.val(); if(!data){ container.innerHTML='<div class="social-card">কোনো পোস্ট নেই। প্রথম পোস্ট করুন!</div>'; return; } let sorted=Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0)); let canDel=(currentUser.role==='admin'||currentUser.role==='teacher'); for(let [pid,post] of sorted){ let card=document.createElement('div'); card.className='social-card'; let delBtn=''; if(canDel||post.userId===currentUser.id) delBtn=`<button class="delete-post-btn" onclick="window.deletePost('${pid}')"><i class="fas fa-trash-alt"></i> মুছুন</button>`; card.innerHTML=`<div class="post-header"><div class="post-author"><i class="fas fa-user-circle"></i> ${escapeHtml(post.author)} <span style="font-size:12px;">${post.timestamp?new Date(post.timestamp).toLocaleString():'সদ্য'}</span></div><div>${delBtn}</div></div><p>${escapeHtml(post.caption)}</p>${post.imgUrl?`<img src="${escapeHtml(post.imgUrl)}" class="feed-img" onerror="this.style.display='none'">`:''}<div id="replies_${pid}" class="reply-section"></div><div class="reply-input-area"><input type="text" id="reply_inp_${pid}" placeholder="উত্তর দিন..."><button class="btn btn-blue btn-sm" onclick="window.addReply('${pid}')">পাঠান</button></div>`; container.appendChild(card); let repDiv=document.getElementById(`replies_${pid}`); if(post.replies){ Object.entries(post.replies).forEach(([rid,r])=>{ let box=document.createElement('div'); box.className='reply-box'; let delR=''; if(canDel||r.userId===currentUser.id) delR=`<button class="delete-reply-btn" style="background:none; border:none; color:#c52828; margin-left:12px;" onclick="window.deleteReply('${pid}','${rid}')"><i class="fas fa-trash-alt"></i></button>`; box.innerHTML=`<b>${escapeHtml(r.user)}:</b> ${escapeHtml(r.text)} ${delR}`; repDiv.appendChild(box); }); } } }); }
+    function setupMenu(){
+        document.getElementById('menuDashboard').onclick=()=>{showPanel('dashboardPanel');loadDashboard();};
+        document.getElementById('menuClassManager').onclick=()=>{showPanel('adminClassPanel');loadClassButtons();loadClassData(currentClass);};
+        document.getElementById('menuTeachers').onclick=()=>{showPanel('adminTeachersPanel');loadClassCheckboxes();loadTeachersList();};
+        document.getElementById('menuFeedback').onclick=()=>{showPanel('adminFeedbackPanel');loadClassFilter();};
+        document.getElementById('menuSocialFeed').onclick=()=>{showPanel('socialFeedPanel');};
+        // ছাত্রদের জন্য শিক্ষক মতামত মেনু
+        const studentFeedbackMenuItem = document.getElementById('menuStudentFeedback');
+        if(currentUser.role === 'student') {
+            studentFeedbackMenuItem.style.display = 'block';
+            studentFeedbackMenuItem.onclick = () => { showPanel('studentPanel'); loadStudentFeedback(); };
+        } else {
+            studentFeedbackMenuItem.style.display = 'none';
+        }
+        document.getElementById('menuLogout').onclick=()=>location.reload();
+        document.getElementById('menuToggle').onclick=(e)=>{e.stopPropagation();document.getElementById('dropdownMenu').classList.toggle('show');};
+        document.addEventListener('click',()=>document.getElementById('dropdownMenu').classList.remove('show'));
+    }
     document.getElementById('loginForm').onsubmit=async(e)=>{ e.preventDefault(); let role=document.getElementById('loginRole').value, id=document.getElementById('loginId').value.trim().toLowerCase(), pwd=document.getElementById('loginPassword').value.trim(); await createDemoData(); if(role==='admin'){ if(id==='admin' && pwd==='#$t'){ currentUser={id,role:'admin',name:'প্রশাসক'}; startApp();} else alert('ভুল প্রশাসক ক্রেডেনশিয়াল');} else if(role==='teacher'){ let snap=await get(ref(db,`registered_teachers/${id}`)); if(snap.exists() && snap.val().password===pwd){ currentUser={id,role:'teacher',name:snap.val().teacher_name}; startApp();} else alert('শিক্ষকের তথ্য ভুল');} else{ let found=false; for(let cls of classes){ let snap=await get(ref(db,`class_sheets/${cls.replace(/\s+/g,'_')}/students`)); if(snap.exists()){ let match=snap.val().find(s=>s.id===id && s.password===pwd); if(match){ currentUser={id,role:'student',name:match.name}; currentClass=cls; found=true; break; }}} if(found) startApp(); else alert('ছাত্র আইডি/পাসওয়ার্ড ভুল'); } };
-    async function startApp(){ document.getElementById('loginScreen').style.display='none'; document.getElementById('appContainer').style.display='block'; document.getElementById('userNameDisplay').innerText=currentUser.name; document.getElementById('roleDisplay').innerText=currentUser.role; let isAdmin=currentUser.role==='admin'; document.getElementById('menuClassManager').style.display=isAdmin?'block':'none'; document.getElementById('menuTeachers').style.display=isAdmin?'block':'none'; document.getElementById('menuFeedback').style.display=isAdmin?'block':'none'; await loadDashboard(); loadSocialFeed(); if(currentUser.role==='student'){ await loadStudentFeedback(); showPanel('studentPanel');} else if(currentUser.role==='teacher'){ await loadTeacherPanel(); showPanel('teacherPanel');} else showPanel('dashboardPanel'); setupMenu(); document.getElementById('viewResultBtn').onclick=()=>window.showAcademicResult(); }
+    async function startApp(){ 
+        document.getElementById('loginScreen').style.display='none'; 
+        document.getElementById('appContainer').style.display='block'; 
+        document.getElementById('userNameDisplay').innerText=currentUser.name; 
+        document.getElementById('roleDisplay').innerText=currentUser.role; 
+        let isAdmin=currentUser.role==='admin'; 
+        document.getElementById('menuClassManager').style.display=isAdmin?'block':'none'; 
+        document.getElementById('menuTeachers').style.display=isAdmin?'block':'none'; 
+        document.getElementById('menuFeedback').style.display=isAdmin?'block':'none'; 
+        await loadDashboard(); 
+        loadSocialFeed(); 
+        if(currentUser.role==='student'){ 
+            await loadStudentFeedback(); 
+            showPanel('studentPanel'); 
+        } else if(currentUser.role==='teacher'){ 
+            await loadTeacherPanel(); 
+            showPanel('teacherPanel'); 
+        } else showPanel('dashboardPanel'); 
+        setupMenu(); 
+        document.getElementById('viewResultBtn').onclick=()=>window.showAcademicResult(); 
+    }
     function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
 </script>
 </body>
