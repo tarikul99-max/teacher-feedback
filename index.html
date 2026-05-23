@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -58,29 +59,13 @@
         .image-preview { width: 80px; height: 80px; object-fit: cover; border-radius: 50%; margin: 8px auto; display: block; border: 2px solid #f5b042; }
         .file-input-label { background: #eef2f5; padding: 8px 12px; border-radius: 30px; cursor: pointer; font-size: 12px; display: inline-block; margin: 5px 0; }
         .social-card { background: #ffffff; padding: 16px; border-radius: 24px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative; }
-        .social-card .post-menu { position: absolute; top: 12px; right: 12px; }
-        .social-card .post-menu-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #666; padding: 4px 8px; border-radius: 50%; }
-        .social-card .post-menu-btn:hover { background: #f0f0f0; }
-        .social-card .post-menu-dropdown { display: none; position: absolute; right: 0; top: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10; min-width: 120px; }
-        .social-card .post-menu-dropdown a { display: block; padding: 8px 16px; color: #333; text-decoration: none; font-size: 13px; cursor: pointer; }
-        .social-card .post-menu-dropdown a:hover { background: #f5f5f5; }
-        .social-card .like-section { margin-top: 12px; display: flex; align-items: center; gap: 8px; }
-        .like-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #666; }
-        .like-btn.liked { color: #e74c3c; }
-        .like-count { font-size: 13px; color: #666; }
-        .features-grid { background: linear-gradient(135deg, #ffffff 0%, #fef9f0 100%); border-radius: 28px; padding: 20px 24px; margin-top: 24px; border: 1px solid rgba(245,176,66,0.3); }
-        .features-list { display: flex; flex-wrap: wrap; gap: 14px; }
-        .feature-badge { background: #f5f7ff; padding: 12px 18px; border-radius: 100px; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 12px; color: #0a1f4a; border: 1px solid #e2e8f0; flex: 1 1 auto; min-width: 200px; }
-        .feature-badge i { color: #f5b042; font-size: 1.2rem; width: 28px; }
         .attendance-card { background: white; border-radius: 24px; padding: 20px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 16px; }
         .cal-day-header { background: #0f2c4e; color: white; padding: 10px; text-align: center; border-radius: 12px; font-weight: bold; font-size: 14px; }
-        .cal-day { background: #f8fafc; border-radius: 12px; padding: 10px 4px; text-align: center; border: 1px solid #e2e8f0; min-height: 70px; cursor: pointer; transition: all 0.2s; }
-        .cal-day:hover { transform: scale(1.02); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .cal-day { background: #f8fafc; border-radius: 12px; padding: 10px 4px; text-align: center; border: 1px solid #e2e8f0; min-height: 70px; cursor: default; transition: all 0.2s; }
         .cal-day.present { background: #dcfce7; color: #15803d; border-color: #86efac; }
         .cal-day.absent { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
         .cal-day.today { border: 2px solid #f5b042; background: #fef3c7; }
-        .cal-day.empty { background: #f1f5f9; color: #94a3b8; cursor: default; }
         .cal-day .date-num { font-size: 18px; font-weight: bold; }
         .cal-day .status-icon { font-size: 12px; margin-top: 5px; }
         .month-selector { display: flex; gap: 12px; align-items: center; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
@@ -88,7 +73,6 @@
         .attendance-summary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 20px; margin-bottom: 20px; display: flex; justify-content: space-around; flex-wrap: wrap; }
         .summary-item { text-align: center; }
         .summary-item .number { font-size: 28px; font-weight: bold; }
-        .summary-item .label { font-size: 12px; opacity: 0.9; }
         .toggle-switch { position: relative; display: inline-block; width: 50px; height: 24px; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #e74c3c; transition: 0.3s; border-radius: 34px; }
@@ -106,8 +90,8 @@
         .routine-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .routine-table th, .routine-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
         .routine-table th { background: #f5b042; color: white; }
-        .empty-state { text-align: center; padding: 40px; color: #666; font-size: 14px; }
         .feedback-item { background: #f9f5ed; border-radius: 16px; padding: 12px; margin-bottom: 10px; border-left: 4px solid #f5b042; }
+        .attendance-permission-badge { background: #fef3c7; border-radius: 24px; padding: 6px 12px; font-size: 12px; color: #b45309; display: inline-block; margin-left: 10px; }
         @media (max-width: 700px) { .calendar-grid { gap: 4px; } .cal-day { padding: 6px 2px; font-size: 11px; min-height: 55px; } .cal-day .date-num { font-size: 14px; } }
     </style>
 </head>
@@ -122,9 +106,9 @@
 
 <div id="loginScreen" class="login-screen">
     <div class="login-card">
-                <div align="center">
+        <div align="center">
                     <img src="mastermined.jpg" alt="Logo" style="width: 70px; height: 70px; object-fit: cover;border-radius: 50%; padding: 2px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff7e8;">
-                </div>
+        </div>
         <h3><i class="fas fa-brain"></i> Mastermind Academy</h3>
         <form id="loginForm">
             <select id="loginRole">
@@ -161,103 +145,70 @@
     </div>
 
     <div class="content">
+
         <div id="dashboardPanel" class="panel">
-            <div class="dashboard-header">
-                <h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2>
+            <div class="dashboard-header"><h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2>
                 <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
                     <button class="btn btn-orange" id="viewResultBtn"><i class="fas fa-file-alt"></i> ফলাফল দেখুন</button>
                     <button class="btn btn-blue" id="aboutUsBtn"><i class="fas fa-info-circle"></i> About Us</button>
                     <button class="btn btn-green" id="viewRoutineBtn"><i class="fas fa-calendar-week"></i> রুটিন দেখুন</button>
                 </div>
             </div>
-            <div id="todayTomorrowRoutine"></div>
-            <div id="teachersGrid" class="teacher-grid"></div>
-            <div class="features-grid">
-                <h3><i class="fas fa-graduation-cap"></i> শিক্ষার্থীদের ধারাবাহিক উন্নতির জন্য থাকছে...</h3>
-                <div class="features-list">
-                        <div class="feature-badge"><i class="fas fa-calendar-week"></i> দৈনিক উপস্থিতি ট্র্যাকিং</div><br>
-                        <div class="feature-badge"><i class="fas fa-chart-line"></i> মাসিক উপস্থিতির সারাংশ</div><br>
-                        <div class="feature-badge"><i class="fas fa-chart-line"></i> নিয়মিত পর্যবেক্ষণ ও ব্যক্তিগত ফলোআপ।</div><br>
-                        <div class="feature-badge"><i class="fas fa-chart-line"></i> সাপ্তাহিক, মাসিক মূল্যায়ন ও চূডান্ত মডেল টেস্ট।</div><br>
-                        <div class="feature-badge"><i class="fas fa-chart-line"></i> মূল্যায়নে ১ম, ২য়, ৩য় সহ ভালো ফলাফল অর্জনকারীদের জন্য আকর্ষণীয় পুরস্কার।</div><br>
-                        <div class="feature-badge"><i class="fas fa-chart-line"></i> নিয়মিত শিক্ষার্থীদের এটেন্ডেসশীট সংরক্ষণ এবং এবসেন্ট থাকলে অভিভাবকদের ইনফর্ম করার ব্যবস্থা।</div><br>
-                        <div class="feature-badge"><i class="fas fa-calendar-alt"></i> ব্যক্তিগত উপস্থিতি ইতিহাস</div>
-            
-                </div>
-            </div>
-        </div>
-
+            <div id="todayTomorrowRoutine"></div><div id="teachersGrid" class="teacher-grid"></div>
+            <br><br>
+            <div class="features-grid"><h3><i class="fas fa-graduation-cap"></i> শিক্ষার্থীদের ধারাবাহিক উন্নতির জন্য থাকছে...</h3>
+                <div class="features-list"><div class="feature-badge"><i class="fas fa-calendar-week"></i> দৈনিক উপস্থিতি ট্র্যাকিং</div>
+                <div class="feature-badge"><i class="fas fa-chart-line"></i> মাসিক উপস্থিতির সারাংশ</div>
+                <div class="feature-badge"><i class="fas fa-chart-line"></i> নিয়মিত পর্যবেক্ষণ ও ব্যক্তিগত ফলোআপ।</div>
+                <div class="feature-badge"><i class="fas fa-chart-line"></i> সাপ্তাহিক, মাসিক মূল্যায়ন ও চূড়ান্ত মডেল টেস্ট।</div>
+                <div class="feature-badge"><i class="fas fa-chart-line"></i> মূল্যায়নে ১ম, ২য়, ৩য় সহ ভালো ফলাফল অর্জনকারীদের জন্য আকর্ষণীয় পুরস্কার।</div>
+                <div class="feature-badge"><i class="fas fa-chart-line"></i> নিয়মিত শিক্ষার্থীদের এটেন্ডেন্সশীট সংরক্ষণ এবং এবসেন্ট থাকলে অভিভাবকদের ইনফর্ম করার ব্যবস্থা।</div>
+                
+            </div></div></div>
         <div id="studentPanel" class="panel"><h2><i class="fas fa-comment-dots"></i> শিক্ষকদের মতামত দিন</h2><div id="studentFeedbackArea"></div></div>
-        
-        <div id="teacherPanel" class="panel">
-            <h2><i class="fas fa-chalkboard"></i> শিক্ষক ড্যাশবোর্ড</h2>
-            <div id="teacherProfileArea" style="text-align:center; margin-bottom:20px;"></div>
-            <div id="teacherAssignedClasses"></div>
-            <div id="teacherClassStudents"></div>
-        </div>
-        
+        <div id="teacherPanel" class="panel"><h2><i class="fas fa-chalkboard"></i> শিক্ষক ড্যাশবোর্ড</h2><div id="teacherProfileArea"></div><div id="teacherAssignedClasses"></div><div id="teacherClassStudents"></div></div>
         <div id="adminTeachersPanel" class="panel"><h2><i class="fas fa-user-plus"></i> শিক্ষক তৈরি করুন</h2><div style="background:#f7fafc; padding:16px; border-radius:28px;"><div style="text-align:center;"><img id="teacherImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=+"><label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="teacherImageInput" accept="image/*" style="display:none;"></label></div><input type="text" id="newTeacherName" placeholder="পূর্ণ নাম"><input type="text" id="newTeacherId" placeholder="শিক্ষক আইডি"><input type="text" id="newTeacherPass" placeholder="পাসওয়ার্ড"><div id="classCheckboxes"></div><button class="btn btn-green" id="createTeacherBtn">শিক্ষক তৈরি করুন</button></div><h3>📋 বিদ্যমান শিক্ষকবৃন্দ</h3><div id="teachersList"></div></div>
-
-        <div id="adminClassPanel" class="panel">
-            <h2>ক্লাস ম্যানেজার</h2>
-            <div id="classButtons" class="class-buttons-container"></div>
-            <div style="background:#f9f5ed; padding:16px; border-radius:28px; margin-top:20px;">
-                <h3>➕ ছাত্র/ছাত্রী যোগ করুন - <span id="selectedClassName">ক্লাস সিলেক্ট করুন</span></h3>
-                <div style="text-align:center;"><img id="studentImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=+"><label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="studentImageInput" accept="image/*" style="display:none;"></label></div>
-                <input type="text" id="cousinName" placeholder=" নাম *">
-                <input type="text" id="cousinId" placeholder=" আইডি *">
-                <input type="text" id="cousinPass" placeholder=" পাসওয়ার্ড *">
-                <button class="btn btn-blue" id="addCousinBtn">যোগ করুন</button>
-            </div>
-            <button class="btn btn-green" id="saveClassBtn">সব সংরক্ষণ করুন</button>
-            <div class="table-responsive"><div id="classStudentsTable"></div></div>
-        </div>
-
+        <div id="adminClassPanel" class="panel"><h2>ক্লাস ম্যানেজার</h2><div id="classButtons" class="class-buttons-container"></div><div style="background:#f9f5ed; padding:16px; border-radius:28px; margin-top:20px;"><h3>➕ ছাত্র/ছাত্রী যোগ করুন - <span id="selectedClassName">ক্লাস সিলেক্ট করুন</span></h3><div style="text-align:center;"><img id="studentImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=+"><label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="studentImageInput" accept="image/*" style="display:none;"></label></div><input type="text" id="cousinName" placeholder="নাম *"><input type="text" id="cousinId" placeholder="আইডি *"><input type="text" id="cousinPass" placeholder="পাসওয়ার্ড *"><button class="btn btn-blue" id="addCousinBtn">যোগ করুন</button></div><button class="btn btn-green" id="saveClassBtn">সব সংরক্ষণ করুন</button><div class="table-responsive"><div id="classStudentsTable"></div></div></div>
+        
         <div id="attendancePanel" class="panel">
-            <h2><i class="fas fa-calendar-alt"></i> অ্যাটেন্ডেন্স</h2>
-            <div class="attendance-card">
-                <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
-                    <select id="attendanceClassSelect" style="flex:2; margin-bottom: 0;"></select>
-                    <input type="date" id="attendanceDate" style="flex:1; margin-bottom: 0;">
-                    <button class="btn btn-blue" id="loadStudentsBtn"><i class="fas fa-users"></i> ছাত্র/ছাত্রী তালিকা দেখুন</button>
-                </div>
-            </div>
-            <div id="studentAttendanceSection" class="attendance-card" style="display: none;">
-                <h3><i class="fas fa-user-check"></i> উপস্থিতি দিন - <span id="selectedDateDisplay"></span></h3>
-                <div id="studentAttendanceList" style="max-height: 400px; overflow-y: auto;"></div>
-                <div style="margin-top: 16px; text-align: right;"><button class="btn btn-green" id="saveAttendanceBtn"><i class="fas fa-save"></i> উপস্থিতি সংরক্ষণ করুন</button></div>
-            </div>
-            <div class="attendance-card">
-                <h3><i class="fas fa-chart-line"></i> ক্লাসের মাসিক উপস্থিতির সারাংশ</h3>
-                <div class="month-selector" id="classMonthSelector"></div>
-                <div id="classMonthlyCalendar"></div>
-            </div>
+            <h2><i class="fas fa-calendar-alt"></i> অ্যাটেন্ডেন্স ব্যবস্থাপনা <span class="attendance-permission-badge"><i class="fas fa-lock"></i> শুধু শিক্ষক ও প্রশাসক পরিবর্তন করতে পারেন</span></h2>
+            <!-- শিক্ষার্থীদের জন্য ইতিহাস বিভাগ সর্বপ্রথম দেখানো হবে -->
             <div id="studentHistorySection" class="attendance-card" style="display: none;">
                 <h3><i class="fas fa-user-graduate"></i> আমার উপস্থিতির ইতিহাস</h3>
                 <div class="attendance-summary" id="studentSummary"></div>
                 <div class="month-selector" id="studentMonthSelector"></div>
                 <div id="studentCalendarGrid"></div>
             </div>
-        </div>
-
-        <div id="adminFeedbackPanel" class="panel">
-            <h2><i class="fas fa-archive"></i> সকল মতামত</h2>
-            <select id="feedbackClassFilter" style="margin-bottom:15px;"></select>
-            <div id="feedbackList"></div>
+            <!-- শিক্ষক ও অ্যাডমিনের জন্য উপস্থিতি দিন ও ক্লাস সারাংশ -->
+            <div id="teacherAttendanceSection" style="display: none;">
+                <div class="attendance-card">
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                        <select id="attendanceClassSelect" style="flex:2; margin-bottom: 0;"></select>
+                        <input type="date" id="attendanceDate" style="flex:1; margin-bottom: 0;">
+                        <button class="btn btn-blue" id="loadStudentsBtn"><i class="fas fa-users"></i> ছাত্র/ছাত্রী তালিকা দেখুন</button>
+                    </div>
+                </div>
+                <div id="studentAttendanceSection" class="attendance-card" style="display: none;">
+                    <h3><i class="fas fa-user-check"></i> উপস্থিতি দিন - <span id="selectedDateDisplay"></span></h3>
+                    <div id="studentAttendanceList" style="max-height: 400px; overflow-y: auto;"></div>
+                    <div style="margin-top: 16px; text-align: right;"><button class="btn btn-green" id="saveAttendanceBtn"><i class="fas fa-save"></i> উপস্থিতি সংরক্ষণ করুন</button></div>
+                </div>
+                <div class="attendance-card">
+                    <h3><i class="fas fa-chart-line"></i> ক্লাসের মাসিক উপস্থিতির সারাংশ</h3>
+                    <div class="month-selector" id="classMonthSelector"></div>
+                    <div id="classMonthlyCalendar"></div>
+                </div>
+            </div>
         </div>
         
-        <div id="adminRoutinePanel" class="panel">
-            <h2><i class="fas fa-calendar-edit"></i> রুটিন ম্যানেজার</h2>
-            <div id="routineEditArea"></div>
-            <button class="btn btn-green" id="saveAllRoutinesBtn"><i class="fas fa-save"></i> সব রুটিন সংরক্ষণ করুন</button>
-        </div>
-        
+        <div id="adminFeedbackPanel" class="panel"><h2><i class="fas fa-archive"></i> সকল মতামত</h2><select id="feedbackClassFilter" style="margin-bottom:15px;"></select><div id="feedbackList"></div></div>
+        <div id="adminRoutinePanel" class="panel"><h2><i class="fas fa-calendar-edit"></i> রুটিন ম্যানেজার</h2><div id="routineEditArea"></div><button class="btn btn-green" id="saveAllRoutinesBtn"><i class="fas fa-save"></i> সব রুটিন সংরক্ষণ করুন</button></div>
         <div id="socialFeedPanel" class="panel"><h2><i class="fas fa-comments"></i> Social Opinion</h2><textarea id="feedCaption" rows="2" placeholder="পোস্ট লিখুন..."></textarea><input type="text" id="feedImgUrl" placeholder="ছবির URL"><button onclick="window.publishPost()" class="btn btn-orange">পোস্ট করুন</button><div id="socialFeedContainer"></div></div>
     </div>
     <footer style="text-align:center; padding:16px; color:#666;">© Mastermind Academy</footer>
 </div>
 
-<div id="resultModal" class="result-modal"><div class="results-card"><i class="fas fa-chart-simple" style="font-size:48px; color:#f5b042;"></i><br><button><h2><a href="about.html" style="color: #2ecc71;"> একাডেমিক ফলাফল </a></h2></button><p>ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন। আমরা আপনার সহযোগিতা কামনা করি। <br> "ধন্যবাদ"</p><button class="btn btn-green" onclick="document.getElementById('resultModal').style.display='none'">বন্ধ করুন</button></div></div>
+<div id="resultModal" class="result-modal"><div class="results-card"><i class="fas fa-chart-simple" style="font-size:48px; color:#f5b042;"></i><br><a href="about.html" style="display:inline-block; margin:15px 0; background:#2ecc71; color:white; padding:10px 20px; border-radius:40px; text-decoration:none;"> একাডেমিক ফলাফল </a><p>ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন। আমরা আপনার সহযোগিতা কামনা করি। <br> "ধন্যবাদ"</p><button class="btn btn-green" onclick="document.getElementById('resultModal').style.display='none'">বন্ধ করুন</button></div></div>
 <div id="aboutModal" class="about-modal"><div class="about-card"><i class="fas fa-school" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i><h2 style="text-align:center;">মাস্টারমাইন্ড অ্যাকাডেমি</h2><p>আধুনিক শিক্ষাপ্রতিষ্ঠান যা মানসম্মত শিক্ষা ও প্রযুক্তিনির্ভর ক্লাসরুম ব্যবস্থাপনায় অনন্য।</p><p><strong>📍 ঠিকানা:</strong> পেকুয়া, কক্সবাজার</p><p><strong>📞 যোগাযোগ:</strong> 01623209091</p><button class="btn btn-orange" style="width:100%;" onclick="document.getElementById('aboutModal').style.display='none'">বন্ধ করুন</button></div></div>
 <div id="routineModal" class="routine-modal"><div class="routine-card"><i class="fas fa-calendar-week" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i><h2 style="text-align:center;">📅 ক্লাস রুটিন</h2><div id="routineContent"></div><button class="btn btn-orange" style="width:100%; margin-top:15px;" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button></div></div>
 
@@ -277,226 +228,95 @@
     let currentUser = { id: "", role: "", name: "", photo: "" };
     let currentClass = "Class 6";
     let studentsData = [];
-    const classes = ["Class 5", "Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "SSC Special Batch"];
+    const classes = ["Class 5", "Class 6", "Class 7", "Class 8", "Class 9-Sci","Class 9-Com","Class 9-Hum", "Class 10-Sci","Class 10-Com","Class 10-Hum", "SSC Special Batch-Sci","SSC Special Batch-Com","SSC Special Batch-Hum"];
     let teacherImageBase64 = "", studentImageBase64 = "";
     let currentStudentsList = [];
     let teacherAssignedClasses = [];
     let classRoutine = {};
     const days = ['শনিবার', 'রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার'];
     
-    function getBanglaDayName(englishDay) {
-        const dayMap = { 'Saturday': 'শনিবার', 'Sunday': 'রবিবার', 'Monday': 'সোমবার', 'Tuesday': 'মঙ্গলবার', 'Wednesday': 'বুধবার', 'Thursday': 'বৃহস্পতিবার', 'Friday': 'শুক্রবার' };
-        return dayMap[englishDay] || englishDay;
-    }
+    function getBanglaDayName(englishDay) { const dayMap = { 'Saturday': 'শনিবার', 'Sunday': 'রবিবার', 'Monday': 'সোমবার', 'Tuesday': 'মঙ্গলবার', 'Wednesday': 'বুধবার', 'Thursday': 'বৃহস্পতিবার', 'Friday': 'শুক্রবার' }; return dayMap[englishDay] || englishDay; }
+    function getTomorrowDayName() { const daysEng = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1); return getBanglaDayName(daysEng[tomorrow.getDay()]); }
+    function getTodayDayName() { const daysEng = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; const today = new Date(); return getBanglaDayName(daysEng[today.getDay()]); }
     
-    function getTomorrowDayName() {
-        const daysEng = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        return getBanglaDayName(daysEng[tomorrow.getDay()]);
-    }
+    const defaultRoutine = { "Class 5": { "শনিবার": "গণিত", "রবিবার": "বাংলা", "সোমবার": "ইংরেজি", "মঙ্গলবার": "বিজ্ঞান", "বুধবার": "সামাজিক", "বৃহস্পতিবার": "ধর্ম", "শুক্রবার": "ছুটি" }, "Class 6": { "শনিবার": "বিজ্ঞান", "রবিবার": "গণিত", "সোমবার": "বাংলা", "মঙ্গলবার": "ইংরেজি", "বুধবার": "কম্পিউটার", "বৃহস্পতিবার": "সাধারণ জ্ঞান", "শুক্রবার": "ছুটি" }, "Class 7": { "শনিবার": "ইংরেজি", "রবিবার": "বিজ্ঞান", "সোমবার": "গণিত", "মঙ্গলবার": "বাংলা", "বুধবার": "সামাজিক", "বৃহস্পতিবার": "ধর্ম", "শুক্রবার": "ছুটি" }, "Class 8": { "শনিবার": "বাংলা", "রবিবার": "ইংরেজি", "সোমবার": "গণিত", "মঙ্গলবার": "বিজ্ঞান", "বুধবার": "কৃষি", "বৃহস্পতিবার": "কম্পিউটার", "শুক্রবার": "ছুটি" }, "Class 9": { "শনিবার": "পদার্থবিজ্ঞান", "রবিবার": "রসায়ন", "সোমবার": "জীববিজ্ঞান", "মঙ্গলবার": "উচ্চতর গণিত", "বুধবার": "বাংলা", "বৃহস্পতিবার": "ইংরেজি", "শুক্রবার": "ছুটি" }, "Class 10": { "শনিবার": "রসায়ন", "রবিবার": "পদার্থবিজ্ঞান", "সোমবার": "জীববিজ্ঞান", "মঙ্গলবার": "উচ্চতর গণিত", "বুধবার": "ইংরেজি ২য় পত্র", "বৃহস্পতিবার": "বাংলা ২য় পত্র", "শুক্রবার": "ছুটি" }, "SSC Special Batch": { "শনিবার": "বাংলা (MCQ)", "রবিবার": "ইংরেজি (MCQ)", "সোমবার": "গণিত (MCQ)", "মঙ্গলবার": "সাধারণ বিজ্ঞান", "বুধবার": "মডেল টেস্ট", "বৃহস্পতিবার": "মডেল টেস্ট", "শুক্রবার": "ছুটি" } };
+    async function loadRoutineFromFirebase() { const snap = await db.ref('class_routines').get(); if(snap.exists()) { classRoutine = snap.val(); } else { classRoutine = JSON.parse(JSON.stringify(defaultRoutine)); await db.ref('class_routines').set(classRoutine); } return classRoutine; }
+    async function showTodayTomorrowRoutine() { const routine = await loadRoutineFromFirebase(); const container = document.getElementById('todayTomorrowRoutine'); if(!container) return; const todayName = getTodayDayName(); const tomorrowName = getTomorrowDayName(); if(currentUser.role === 'student') { let clsRoutine = routine[currentClass] || routine["Class 6"]; container.innerHTML = `<div class="today-routine-card"><h3>📚 আজকের ক্লাস (${todayName})</h3><div class="routine-subject">${clsRoutine[todayName] || 'ক্লাস নেই'}</div></div><div class="tomorrow-routine-card"><h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3><div class="routine-subject">${clsRoutine[tomorrowName] || 'ক্লাস নেই'}</div></div>`; } else { let todayHtml = `<div class="today-routine-card"><h3>📚 আজকের ক্লাস (${todayName})</h3>`; let tomorrowHtml = `<div class="tomorrow-routine-card"><h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3>`; for(let cls of classes) { let clsRoutine = routine[cls] || routine["Class 6"]; todayHtml += `<p><strong>${cls}:</strong> ${clsRoutine[todayName] || 'ক্লাস নেই'}</p>`; tomorrowHtml += `<p><strong>${cls}:</strong> ${clsRoutine[tomorrowName] || 'ক্লাস নেই'}</p>`; } todayHtml += `</div>`; tomorrowHtml += `</div>`; container.innerHTML = todayHtml + tomorrowHtml; } }
     
-    function getTodayDayName() {
-        const daysEng = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const today = new Date();
-        return getBanglaDayName(daysEng[today.getDay()]);
-    }
-    
-    const defaultRoutine = {
-        "Class 5": { "শনিবার": "গণিত", "রবিবার": "বাংলা", "সোমবার": "ইংরেজি", "মঙ্গলবার": "বিজ্ঞান", "বুধবার": "সামাজিক", "বৃহস্পতিবার": "ধর্ম", "শুক্রবার": "ছুটি" },
-        "Class 6": { "শনিবার": "বিজ্ঞান", "রবিবার": "গণিত", "সোমবার": "বাংলা", "মঙ্গলবার": "ইংরেজি", "বুধবার": "কম্পিউটার", "বৃহস্পতিবার": "সাধারণ জ্ঞান", "শুক্রবার": "ছুটি" },
-        "Class 7": { "শনিবার": "ইংরেজি", "রবিবার": "বিজ্ঞান", "সোমবার": "গণিত", "মঙ্গলবার": "বাংলা", "বুধবার": "সামাজিক", "বৃহস্পতিবার": "ধর্ম", "শুক্রবার": "ছুটি" },
-        "Class 8": { "শনিবার": "বাংলা", "রবিবার": "ইংরেজি", "সোমবার": "গণিত", "মঙ্গলবার": "বিজ্ঞান", "বুধবার": "কৃষি", "বৃহস্পতিবার": "কম্পিউটার", "শুক্রবার": "ছুটি" },
-        "Class 9": { "শনিবার": "পদার্থবিজ্ঞান", "রবিবার": "রসায়ন", "সোমবার": "জীববিজ্ঞান", "মঙ্গলবার": "উচ্চতর গণিত", "বুধবার": "বাংলা", "বৃহস্পতিবার": "ইংরেজি", "শুক্রবার": "ছুটি" },
-        "Class 10": { "শনিবার": "রসায়ন", "রবিবার": "পদার্থবিজ্ঞান", "সোমবার": "জীববিজ্ঞান", "মঙ্গলবার": "উচ্চতর গণিত", "বুধবার": "ইংরেজি ২য় পত্র", "বৃহস্পতিবার": "বাংলা ২য় পত্র", "শুক্রবার": "ছুটি" },
-        "SSC Special Batch": { "শনিবার": "বাংলা (MCQ)", "রবিবার": "ইংরেজি (MCQ)", "সোমবার": "গণিত (MCQ)", "মঙ্গলবার": "সাধারণ বিজ্ঞান", "বুধবার": "মডেল টেস্ট", "বৃহস্পতিবার": "মডেল টেস্ট", "শুক্রবার": "ছুটি" }
-    };
-    
-    async function loadRoutineFromFirebase() {
-        const snap = await db.ref('class_routines').get();
-        if(snap.exists()) { classRoutine = snap.val(); } 
-        else { classRoutine = JSON.parse(JSON.stringify(defaultRoutine)); await db.ref('class_routines').set(classRoutine); }
-        return classRoutine;
-    }
-    
-    async function showTodayTomorrowRoutine() {
-        const routine = await loadRoutineFromFirebase();
-        const container = document.getElementById('todayTomorrowRoutine');
-        if(!container) return;
-        const todayName = getTodayDayName();
-        const tomorrowName = getTomorrowDayName();
-        
-        if(currentUser.role === 'student') {
-            let clsRoutine = routine[currentClass] || routine["Class 6"];
-            container.innerHTML = `<div class="today-routine-card"><h3>📚 আজকের ক্লাস (${todayName})</h3><div class="routine-subject">${clsRoutine[todayName] || 'ক্লাস নেই'}</div></div>
-            <div class="tomorrow-routine-card"><h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3><div class="routine-subject">${clsRoutine[tomorrowName] || 'ক্লাস নেই'}</div></div>`;
-        } else {
-            let todayHtml = `<div class="today-routine-card"><h3>📚 আজকের ক্লাস (${todayName})</h3>`;
-            let tomorrowHtml = `<div class="tomorrow-routine-card"><h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3>`;
-            for(let cls of classes) {
-                let clsRoutine = routine[cls] || routine["Class 6"];
-                todayHtml += `<p><strong>${cls}:</strong> ${clsRoutine[todayName] || 'ক্লাস নেই'}</p>`;
-                tomorrowHtml += `<p><strong>${cls}:</strong> ${clsRoutine[tomorrowName] || 'ক্লাস নেই'}</p>`;
+    async function loadStudentOwnAttendance() {
+        if(currentUser.role !== 'student') return;
+        const studentClass = currentClass;
+        const classKey = studentClass.replace(/\s+/g,'_');
+        const studentId = currentUser.id;
+        let monthlyData = {};
+        const now = new Date();
+        let year = now.getFullYear(), month = now.getMonth();
+        const updateCalendar = async () => {
+            const daysInMonth = new Date(year, month+1, 0).getDate();
+            let presentCount = 0, absentCount = 0, totalDays = 0;
+            let attendanceHtml = `<div class="calendar-grid">`;
+            const weekdays = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'];
+            weekdays.forEach(day => attendanceHtml += `<div class="cal-day-header">${day}</div>`);
+            const firstDay = new Date(year, month, 1).getDay();
+            for(let i=0; i<firstDay; i++) attendanceHtml += `<div class="cal-day empty"></div>`;
+            for(let d=1; d<=daysInMonth; d++) {
+                let dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                let snap = await db.ref(`attendances/${classKey}/${dateStr}/${studentId}`).get();
+                let isPresent = snap.exists() && snap.val() === true;
+                if(isPresent) { presentCount++; totalDays++; attendanceHtml += `<div class="cal-day present"><div class="date-num">${d}</div><div class="status-icon">✅ উপস্থিত</div></div>`; }
+                else if(snap.exists() && snap.val() === false) { absentCount++; totalDays++; attendanceHtml += `<div class="cal-day absent"><div class="date-num">${d}</div><div class="status-icon">❌ অনুপস্থিত</div></div>`; }
+                else attendanceHtml += `<div class="cal-day"><div class="date-num">${d}</div><div class="status-icon">—</div></div>`;
             }
-            todayHtml += `</div>`; tomorrowHtml += `</div>`;
-            container.innerHTML = todayHtml + tomorrowHtml;
+            attendanceHtml += `</div>`;
+            document.getElementById('studentCalendarGrid').innerHTML = attendanceHtml;
+            let percentage = totalDays ? ((presentCount/totalDays)*100).toFixed(1) : 0;
+            document.getElementById('studentSummary').innerHTML = `<div class="summary-item"><div class="number">${presentCount}</div><div class="label">উপস্থিত</div></div><div class="summary-item"><div class="number">${absentCount}</div><div class="label">অনুপস্থিত</div></div><div class="summary-item"><div class="number">${percentage}%</div><div class="label">উপস্থিতির হার</div></div>`;
+        };
+        const months = ['জানুয়ারী', 'ফেব্রুয়ারী', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+        let selectorHtml = `<select id="studentMonthYearPicker">`;
+        for(let y of [2025, 2026]) for(let m=0; m<12; m++) selectorHtml += `<option value="${y}-${m}" ${(y===year && m===month)?'selected':''}>${months[m]} ${y}</option>`;
+        selectorHtml += `</select><button class="btn btn-blue" id="refreshStudentMonthBtn">দেখুন</button>`;
+        document.getElementById('studentMonthSelector').innerHTML = selectorHtml;
+        document.getElementById('refreshStudentMonthBtn').onclick = () => { const val = document.getElementById('studentMonthYearPicker').value; [year, month] = val.split('-').map(Number); updateCalendar(); };
+        await updateCalendar();
+    }
+    
+    async function initAttendancePanel() {
+        const isTeacherOrAdmin = (currentUser.role === 'teacher' || currentUser.role === 'admin');
+        const teacherSection = document.getElementById('teacherAttendanceSection');
+        const studentSection = document.getElementById('studentHistorySection');
+        if(currentUser.role === 'student') {
+            if(teacherSection) teacherSection.style.display = 'none';
+            if(studentSection) studentSection.style.display = 'block';
+            await loadStudentOwnAttendance();
+        } else {
+            if(teacherSection) teacherSection.style.display = 'block';
+            if(studentSection) studentSection.style.display = 'none';
+            await loadAttendanceClassSelect();
+            document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('loadStudentsBtn').onclick = () => loadStudentsForDate();
+            document.getElementById('saveAttendanceBtn').onclick = () => saveAttendance();
+            const months = ['জানুয়ারী', 'ফেব্রুয়ারী', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+            let classMonthHtml = `<select id="classMonthYearSelect">`;
+            for(let year of [2025, 2026]) for(let m=0; m<12; m++) classMonthHtml += `<option value="${year}-${m}" ${(year===2025 && m===new Date().getMonth())?'selected':''}>${months[m]} ${year}</option>`;
+            classMonthHtml += `</select><button class="btn btn-blue" id="refreshClassMonthBtn">দেখুন</button>`;
+            document.getElementById('classMonthSelector').innerHTML = classMonthHtml;
+            document.getElementById('refreshClassMonthBtn').onclick = () => loadClassMonthlyCalendar();
+            await loadClassMonthlyCalendar();
         }
     }
     
-    async function showRoutine() {
-        const routine = await loadRoutineFromFirebase();
-        let routineHtml = '<h3>সাপ্তাহিক রুটিন</h3>';
-        for(let cls of classes) {
-            let clsRoutine = routine[cls] || routine["Class 6"];
-            routineHtml += `<h4 style="margin-top:15px;">${cls}</h4><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th></tr></thead><tbody>`;
-            days.forEach(day => { routineHtml += `<tr><td>${day}</td><td>${clsRoutine[day] || 'ক্লাস নেই'}</td></tr>`; });
-            routineHtml += `</tbody></table>`;
-        }
-        document.getElementById('routineContent').innerHTML = routineHtml;
-        document.getElementById('routineModal').style.display = 'flex';
-    }
-    
-    const slides = document.querySelectorAll('.bg-slide');
-    let currentBgSlide = 0;
-    if(slides.length) { slides[0].classList.add('active'); setInterval(() => { slides[currentBgSlide].classList.remove('active'); currentBgSlide = (currentBgSlide + 1) % slides.length; slides[currentBgSlide].classList.add('active'); }, 5000); }
-
-    document.getElementById('teacherImageInput')?.addEventListener('change', e => { const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = ev => { teacherImageBase64 = ev.target.result; document.getElementById('teacherImagePreview').src = ev.target.result; }; reader.readAsDataURL(file); } });
-    document.getElementById('studentImageInput')?.addEventListener('change', e => { const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = ev => { studentImageBase64 = ev.target.result; document.getElementById('studentImagePreview').src = ev.target.result; }; reader.readAsDataURL(file); } });
-
-    function hideAllPanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); }
-    function showPanel(panelId) { hideAllPanels(); document.getElementById(panelId).classList.add('active'); }
-
-    document.getElementById('loginForm').onsubmit = async (e) => {
-        e.preventDefault();
-        let role = document.getElementById('loginRole').value;
-        let id = document.getElementById('loginId').value.trim().toLowerCase();
-        let pwd = document.getElementById('loginPassword').value.trim();
-        if(role === 'admin') { if(id === 'admin' && pwd === '#$t') { currentUser = { id, role: 'admin', name: 'প্রশাসক', photo: '' }; startApp(); } else alert('অ্যাডমিন আইডি বা পাসওয়ার্ড ভুল!'); }
-        else if(role === 'teacher') { let snap = await db.ref(`registered_teachers/${id}`).get(); if(snap.exists() && snap.val().password === pwd) { currentUser = { id, role: 'teacher', name: snap.val().teacher_name, photo: snap.val().photo || '' }; teacherAssignedClasses = snap.val().classes || []; startApp(); } else alert('শিক্ষক আইডি বা পাসওয়ার্ড ভুল!'); }
-        else { let found = false; for(let cls of classes) { let snap = await db.ref(`class_sheets/${cls.replace(/\s+/g,'_')}/students`).get(); if(snap.exists()) { let match = snap.val().find(s => s.id === id && s.password === pwd); if(match) { currentUser = { id, role: 'student', name: match.name, photo: match.photo || '' }; currentClass = cls; found = true; break; } } } if(found) startApp(); else alert('ছাত্র আইডি বা পাসওয়ার্ড ভুল!'); }
-    };
-
-    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
-
-    async function loadTeacherPanel() {
-        const snap = await db.ref(`registered_teachers/${currentUser.id}`).get();
-        if(!snap.exists()) { document.getElementById('teacherProfileArea').innerHTML = '<div class="empty-state">প্রোফাইল পাওয়া যায়নি</div>'; return; }
-        const teacher = snap.val();
-        teacherAssignedClasses = teacher.classes || [];
-        let photoHtml = teacher.photo ? `<img src="${teacher.photo}" style="width:80px;height:80px;border-radius:50%;">` : `<i class="fas fa-chalkboard-user" style="font-size:60px;"></i>`;
-        document.getElementById('teacherProfileArea').innerHTML = `<div>${photoHtml}<h3>${escapeHtml(teacher.teacher_name)}</h3><p>আইডি: ${teacher.teacher_id}</p></div>`;
-        
-        if(teacherAssignedClasses.length === 0) {
-            document.getElementById('teacherAssignedClasses').innerHTML = '<div class="teacher-class-card"><p>আপনার কোনো ক্লাস বরাদ্দ নেই।</p></div>';
-            return;
-        }
-        
-        let classHtml = `<div class="teacher-class-card"><h4>আমার ক্লাসসমূহ</h4><div style="display:flex; flex-wrap:wrap; gap:10px;">`;
-        for(let cls of teacherAssignedClasses) { classHtml += `<button class="btn btn-blue teacher-class-btn" data-class="${cls}">📖 ${cls}</button>`; }
-        classHtml += `</div></div>`;
-        document.getElementById('teacherAssignedClasses').innerHTML = classHtml;
-        document.querySelectorAll('.teacher-class-btn').forEach(btn => { btn.onclick = () => loadTeacherClassStudents(btn.dataset.class); });
-        if(teacherAssignedClasses.length > 0) await loadTeacherClassStudents(teacherAssignedClasses[0]);
-    }
-    
-    async function loadTeacherClassStudents(className) {
-        const classKey = className.replace(/\s+/g,'_');
-        const snap = await db.ref(`class_sheets/${classKey}/students`).get();
-        const students = snap.exists() ? snap.val() : [];
-        if(students.length === 0) { document.getElementById('teacherClassStudents').innerHTML = `<div class="teacher-class-card"><h4>${className}</h4><p>কোন ছাত্র/ছাত্রী নেই।</p></div>`; return; }
-        let html = `<div class="teacher-class-card"><h4>${className} - ছাত্র/ছাত্রীবৃন্দ</h4>`;
-        students.forEach(s => { html += `<div class="student-list-item"><img src="${s.photo || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name='+s.name}" style="width:40px;height:40px;border-radius:50%;"><div><strong>${escapeHtml(s.name)}</strong><br><small>ID: ${s.id}</small></div></div>`; });
-        html += `</div>`;
-        document.getElementById('teacherClassStudents').innerHTML = html;
-    }
-
-    let currentManageClass = classes[0];
-    function loadClassButtons() {
-        let cont = document.getElementById('classButtons');
-        if(!cont) return;
-        cont.innerHTML = '';
-        for(let c of classes) {
-            let btn = document.createElement('div');
-            btn.className = 'class-btn';
-            btn.innerHTML = `📖 ${c}`;
-            btn.onclick = () => {
-                document.querySelectorAll('.class-btn').forEach(b => b.style.background = '#eef2f5');
-                btn.style.background = '#f5b042';
-                btn.style.color = '#0a163b';
-                currentManageClass = c;
-                document.getElementById('selectedClassName').innerHTML = currentManageClass;
-                loadClassData(currentManageClass);
-            };
-            cont.appendChild(btn);
-        }
-        document.getElementById('selectedClassName').innerHTML = currentManageClass;
-        loadClassData(currentManageClass);
-    }
-    
-    async function loadClassData(className) {
-        currentClass = className;
-        const snap = await db.ref(`class_sheets/${className.replace(/\s+/g,'_')}/students`).get();
-        studentsData = snap.exists() ? snap.val() : [];
-        renderStudentsTable();
-    }
-    
-    function renderStudentsTable() {
-        let cont = document.getElementById('classStudentsTable');
-        if(!cont) return;
-        if(!studentsData.length) { cont.innerHTML='<div class="empty-state">কোন ছাত্র/ছাত্রী নেই। উপরে ফর্ম ব্যবহার করে ছাত্র/ছাত্রী যোগ করুন।</div>'; return; }
-        let html = `<table><thead><tr><th>ছবি</th><th>#</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>একশন</th></tr></thead><tbody>`;
-        studentsData.forEach((s,i) => {
-            let studentPhoto = s.photo ? `<img src="${s.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
-            html += `<tr><td>${studentPhoto}</td><td>${i+1}</td><td>${escapeHtml(s.id)}</td><td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td><td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td><td><button class="btn btn-red btn-sm" onclick="window.removeStudent(${i})">মুছুন</button></td></tr>`;
-        });
-        html += `</tbody></table>`;
-        cont.innerHTML = html;
-        document.querySelectorAll('.editName').forEach(inp => inp.onchange = (e) => studentsData[inp.dataset.index].name = inp.value);
-        document.querySelectorAll('.editPass').forEach(inp => inp.onchange = (e) => studentsData[inp.dataset.index].password = inp.value);
-    }
-    
-    window.removeStudent = (idx) => { studentsData.splice(idx,1); renderStudentsTable(); };
-    
-    document.getElementById('addCousinBtn').onclick = () => {
-        let name = document.getElementById('cousinName').value.trim();
-        let id = document.getElementById('cousinId').value.trim().toLowerCase();
-        let pwd = document.getElementById('cousinPass').value.trim();
-        if(!name || !id || !pwd) { alert('নাম, আইডি এবং পাসওয়ার্ড আবশ্যক!'); return; }
-        if(studentsData.find(s=>s.id===id)) { alert('এই আইডি ইতিমধ্যে বিদ্যমান!'); return; }
-        studentsData.push({ id, name, password: pwd, photo: studentImageBase64 || '' });
-        studentImageBase64 = '';
-        document.getElementById('studentImagePreview').src = 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=+';
-        document.getElementById('cousinName').value = '';
-        document.getElementById('cousinId').value = '';
-        document.getElementById('cousinPass').value = '';
-        renderStudentsTable();
-    };
-    
-    document.getElementById('saveClassBtn').onclick = async () => {
-        await db.ref(`class_sheets/${currentClass.replace(/\s+/g,'_')}`).set({ students: studentsData });
-        alert('ছাত্র/ছাত্রী তথ্য সংরক্ষিত!');
-    };
-
-    // অ্যাটেন্ডেন্স ফাংশন
     async function loadAttendanceClassSelect() {
         const classSelect = document.getElementById('attendanceClassSelect');
         if(!classSelect) return;
-        if(currentUser.role === 'teacher') {
-            classSelect.innerHTML = teacherAssignedClasses.map(c => `<option value="${c}">${c}</option>`).join('');
-            if(teacherAssignedClasses.length === 0) classSelect.innerHTML = '<option>কোন ক্লাস বরাদ্দ নেই</option>';
-        } else {
-            classSelect.innerHTML = classes.map(c => `<option value="${c}">${c}</option>`).join('');
-        }
+        if(currentUser.role === 'teacher') classSelect.innerHTML = teacherAssignedClasses.map(c => `<option value="${c}">${c}</option>`).join('');
+        else classSelect.innerHTML = classes.map(c => `<option value="${c}">${c}</option>`).join('');
     }
-
     async function loadStudentsForDate() {
         const className = document.getElementById('attendanceClassSelect').value;
         const date = document.getElementById('attendanceDate').value;
         if(!className || !date) { alert('ক্লাস এবং তারিখ নির্বাচন করুন'); return; }
-        if(currentUser.role === 'teacher' && !teacherAssignedClasses.includes(className)) {
-            alert('আপনি এই ক্লাসে উপস্থিতি দিতে পারবেন না। শুধু আপনার বরাদ্দকৃত ক্লাসে দিতে পারবেন।');
-            return;
-        }
+        if(currentUser.role === 'teacher' && !teacherAssignedClasses.includes(className)) { alert('আপনি এই ক্লাসে উপস্থিতি দিতে পারবেন না।'); return; }
         const classKey = className.replace(/\s+/g,'_');
         const studentsSnap = await db.ref(`class_sheets/${classKey}/students`).get();
         const students = studentsSnap.exists() ? studentsSnap.val() : [];
@@ -515,15 +335,11 @@
         document.getElementById('studentAttendanceSection').style.display = 'block';
         document.querySelectorAll('.att-student-cb').forEach(cb => { cb.addEventListener('change', (e) => { let idx = parseInt(cb.dataset.idx); currentStudentsList[idx].present = cb.checked; }); });
     }
-
     async function saveAttendance() {
         const className = document.getElementById('attendanceClassSelect').value;
         const date = document.getElementById('attendanceDate').value;
         if(!className || !date) return;
-        if(currentUser.role === 'teacher' && !teacherAssignedClasses.includes(className)) {
-            alert('আপনি এই ক্লাসে উপস্থিতি সংরক্ষণ করতে পারবেন না।');
-            return;
-        }
+        if(currentUser.role === 'teacher' && !teacherAssignedClasses.includes(className)) { alert('আপনি এই ক্লাসে উপস্থিতি সংরক্ষণ করতে পারবেন না।'); return; }
         const classKey = className.replace(/\s+/g,'_');
         let attendanceData = {};
         currentStudentsList.forEach(s => { attendanceData[s.id] = s.present === true; });
@@ -531,7 +347,6 @@
         alert('উপস্থিতি সংরক্ষিত হয়েছে!');
         await loadClassMonthlyCalendar();
     }
-
     async function loadClassMonthlyCalendar() {
         const className = document.getElementById('attendanceClassSelect').value;
         if(!className) return;
@@ -560,198 +375,11 @@
         html += `</div>`;
         document.getElementById('classMonthlyCalendar').innerHTML = html;
     }
-
-    async function initAttendanceSystem() {
-        await loadAttendanceClassSelect();
-        document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
-        document.getElementById('loadStudentsBtn').onclick = () => loadStudentsForDate();
-        document.getElementById('saveAttendanceBtn').onclick = () => saveAttendance();
-        
-        const months = ['জানুয়ারী', 'ফেব্রুয়ারী', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-        let classMonthHtml = `<select id="classMonthYearSelect">`;
-        for(let year of [2025, 2026]) for(let m=0; m<12; m++) classMonthHtml += `<option value="${year}-${m}" ${(year===2025 && m===new Date().getMonth())?'selected':''}>${months[m]} ${year}</option>`;
-        classMonthHtml += `</select><button class="btn btn-blue" id="refreshClassMonthBtn">দেখুন</button>`;
-        document.getElementById('classMonthSelector').innerHTML = classMonthHtml;
-        document.getElementById('refreshClassMonthBtn').onclick = () => loadClassMonthlyCalendar();
-        await loadClassMonthlyCalendar();
-    }
-
-    async function loadDashboard() { 
-        const snap = await db.ref('registered_teachers').get(); 
-        const container = document.getElementById('teachersGrid'); 
-        if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; } 
-        let html = ''; 
-        for(let key in snap.val()) { 
-            let t = snap.val()[key]; 
-            let photo = t.photo || `https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=${t.teacher_name}`; 
-            html += `<div class="teacher-card"><img src="${photo}"><h3>${escapeHtml(t.teacher_name)}</h3><p>📚 ${t.classes?.join(', ') || '—'}</p></div>`; 
-        } 
-        container.innerHTML = html; 
-    }
     
-    async function loadStudentFeedback() { 
-        const area = document.getElementById('studentFeedbackArea'); 
-        const teachersSnap = await db.ref('registered_teachers').get(); 
-        if(!teachersSnap.exists()) { area.innerHTML='<div class="empty-state">কোন শিক্ষক নেই</div>'; return; } 
-        const allTeachers = Object.values(teachersSnap.val());
-        const classTeachers = allTeachers.filter(teacher => teacher.classes && teacher.classes.includes(currentClass));
-        if(classTeachers.length === 0) { area.innerHTML='<div class="empty-state">আপনার ক্লাসের কোনো শিক্ষক নেই।</div>'; return; }
-        const classKeyForDB = currentClass.replace(/\s+/g, '_');
-        area.innerHTML = ''; 
-        for(let t of classTeachers) { 
-            const existing = await db.ref(`secret_evaluations/${classKeyForDB}/${currentUser.id}/${t.teacher_id}`).get(); 
-            const comment = existing.exists() ? existing.val().comment : ''; 
-            const div = document.createElement('div'); 
-            div.style.cssText = "background:#fff7e8; border-radius:24px; padding:14px; margin-bottom:14px;"; 
-            div.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><img src="${t.photo || 'https://ui-avatars.com/api/?background=1e7b4a&color=fff&name='+t.teacher_name}" style="width:40px;height:40px;border-radius:50%;"><strong>${escapeHtml(t.teacher_name)}</strong></div>
-            <textarea id="fb_${t.teacher_id}" rows="2" style="margin-top:8px;" placeholder="আপনার মতামত দিন...">${escapeHtml(comment)}</textarea>
-            <div style="text-align:right;"><span id="saved_${t.teacher_id}" style="color:green; display:none;">✓ সংরক্ষিত</span></div>`; 
-            area.appendChild(div); 
-            const ta = document.getElementById(`fb_${t.teacher_id}`); 
-            let timer; 
-            ta.addEventListener('input', () => { 
-                clearTimeout(timer); 
-                timer = setTimeout(async () => { 
-                    await db.ref(`secret_evaluations/${classKeyForDB}/${currentUser.id}/${t.teacher_id}`).set({ studentName: currentUser.name, teacherName: t.teacher_name, comment: ta.value, timestamp: new Date().toISOString() }); 
-                    const savedSpan = document.getElementById(`saved_${t.teacher_id}`); 
-                    if(savedSpan) { savedSpan.style.display = 'inline-block'; setTimeout(()=>savedSpan.style.display='none', 1500); } 
-                }, 700); 
-            }); 
-        } 
-    }
-    
-    document.getElementById('createTeacherBtn').onclick = async() => { 
-        const name = document.getElementById('newTeacherName').value.trim(); 
-        const id = document.getElementById('newTeacherId').value.trim().toLowerCase(); 
-        const pwd = document.getElementById('newTeacherPass').value.trim(); 
-        if(!name || !id || !pwd) { alert('নাম, আইডি এবং পাসওয়ার্ড আবশ্যক!'); return; } 
-        const selected = []; 
-        document.querySelectorAll('.teacherClassCheckbox:checked').forEach(cb => selected.push(cb.value)); 
-        await db.ref(`registered_teachers/${id}`).set({ teacher_name: name, teacher_id: id, password: pwd, classes: selected, photo: teacherImageBase64 || '' }); 
-        alert('শিক্ষক তৈরি সফল!'); 
-        teacherImageBase64 = ''; 
-        document.getElementById('newTeacherName').value = ''; 
-        document.getElementById('newTeacherId').value = ''; 
-        document.getElementById('newTeacherPass').value = ''; 
-        loadTeachersList(); 
-        loadDashboard(); 
-    };
-    
-    async function loadTeachersList() { 
-        const snap = await db.ref('registered_teachers').get(); 
-        if(!snap.exists()) { document.getElementById('teachersList').innerHTML='<div class="empty-state">কোন শিক্ষক নেই</div>'; return; } 
-        let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`; 
-        for(let key in snap.val()) { 
-            let t = snap.val()[key]; 
-            let photo = t.photo ? `<img src="${t.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user"></i>`; 
-            html += `<tr><td>${photo}</td><td>${escapeHtml(t.teacher_name)}</td><td>${t.teacher_id}</td><td>${t.classes?.join(', ')}</td><td><button class="btn btn-red btn-sm" onclick="window.deleteTeacher('${t.teacher_id}')">মুছুন</button></td></tr>`; 
-        } 
-        html += `</tbody></table>`; 
-        document.getElementById('teachersList').innerHTML = html; 
-    }
-    window.deleteTeacher = async (id) => { if(confirm('শিক্ষক মুছবেন?')){ await db.ref(`registered_teachers/${id}`).remove(); loadTeachersList(); loadDashboard(); } };
-    function loadClassCheckboxes() { 
-        let container = document.getElementById('classCheckboxes');
-        if(container) { container.innerHTML = ''; for(let c of classes) { let label = document.createElement('label'); label.style.cssText = "display:inline-block; margin:5px;"; label.innerHTML = `<input type="checkbox" value="${c}" class="teacherClassCheckbox"> ${c}`; container.appendChild(label); } }
-    }
-    
-    async function loadFeedbackArchive() { 
-        const filter = document.getElementById('feedbackClassFilter').value; 
-        const snap = await db.ref('secret_evaluations').get(); 
-        if(!snap.exists()) { document.getElementById('feedbackList').innerHTML='<div class="empty-state">কোন ফিডব্যাক নেই</div>'; return; } 
-        let items = []; 
-        for(let classKey in snap.val()) { 
-            let className = classKey.replace(/_/g, ' '); 
-            if(filter && className !== filter) continue; 
-            for(let student in snap.val()[classKey]) { 
-                for(let teacher in snap.val()[classKey][student]) { 
-                    items.push({ class: className, ...snap.val()[classKey][student][teacher] }); 
-                } 
-            } 
-        } 
-        if(!items.length) { document.getElementById('feedbackList').innerHTML='<div class="empty-state">কোন ফিডব্যাক নেই</div>'; return; } 
-        let html = ''; 
-        items.forEach(it => { html += `<div class="feedback-item"><strong>📚 ${it.class}</strong> | 👨‍🎓 ${escapeHtml(it.studentName)} | 👨‍🏫 ${escapeHtml(it.teacherName)}<br><small>📝 ${escapeHtml(it.comment)}</small><br><small>📅 ${new Date(it.timestamp).toLocaleDateString()}</small></div>`; }); 
-        document.getElementById('feedbackList').innerHTML = html; 
-    }
-    
-    async function loadClassFilter() { 
-        let sel = document.getElementById('feedbackClassFilter'); 
-        if(sel) { sel.innerHTML = '<option value="">সব ক্লাস</option>' + classes.map(c=>`<option value="${c}">${c}</option>`).join(''); 
-        sel.onchange = loadFeedbackArchive; await loadFeedbackArchive(); }
-    }
-    
-    window.publishPost = async () => { 
-        let cap = document.getElementById('feedCaption').value.trim(); 
-        if(!cap) { alert('ক্যাপশন লিখুন'); return; } 
-        let author = currentUser.role === 'admin' ? '🎓 প্রশাসক' : (currentUser.role === 'teacher' ? `👨‍🏫 ${currentUser.name}` : `🧑‍🎓 ${currentUser.name}`); 
-        let img = document.getElementById('feedImgUrl').value.trim(); 
-        await db.ref('social_feed').push({ caption: cap, imgUrl: img, author, timestamp: Date.now(), userId: currentUser.id, likes: {}, likeCount: 0 }); 
-        document.getElementById('feedCaption').value = ''; 
-        document.getElementById('feedImgUrl').value = ''; 
-    };
-    
-    function loadSocialFeed() { 
-        db.ref('social_feed').on('value', (snap) => { 
-            let container = document.getElementById('socialFeedContainer'); 
-            container.innerHTML = ''; 
-            let data = snap.val(); 
-            if(!data) { container.innerHTML = '<div class="empty-state">কোনো পোস্ট নেই</div>'; return; } 
-            let sorted = Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0)); 
-            for(let [pid, post] of sorted) { 
-                let card = document.createElement('div'); 
-                card.className = 'social-card';
-                card.innerHTML = `<div style="display:flex; justify-content:space-between;"><b>${escapeHtml(post.author)}</b></div>
-                <small>${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</small>
-                <p>${escapeHtml(post.caption)}</p>
-                ${post.imgUrl ? `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px;">` : ''}
-                <div class="like-section"><button class="like-btn" onclick="toggleLike('${pid}', this)"><i class="fas fa-heart"></i></button> <span class="like-count">${post.likeCount || 0} জন লাইক দিয়েছেন</span></div>
-                <div id="replies_${pid}"></div>
-                <div style="display:flex; gap:8px; margin-top:10px;"><input type="text" id="reply_inp_${pid}" placeholder="মন্তব্য করুন..." style="flex:1;"><button class="btn btn-blue btn-sm" onclick="addReply('${pid}')">পাঠান</button></div>`; 
-                container.appendChild(card); 
-            } 
-        }); 
-    }
-    
-    function setupMenu() {
-        document.getElementById('menuDashboard').onclick = () => { showPanel('dashboardPanel'); loadDashboard(); showTodayTomorrowRoutine(); };
-        document.getElementById('menuClassManager').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminClassPanel'); loadClassButtons(); } else alert('শুধু প্রশাসক এই প্যানেল ব্যবহার করতে পারবেন'); };
-        document.getElementById('menuTeachers').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminTeachersPanel'); loadClassCheckboxes(); loadTeachersList(); } else alert('শুধু প্রশাসক এই প্যানেল ব্যবহার করতে পারবেন'); };
-        document.getElementById('menuAttendance').onclick = () => { showPanel('attendancePanel'); initAttendanceSystem(); };
-        document.getElementById('menuFeedback').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminFeedbackPanel'); loadClassFilter(); } else alert('শুধু প্রশাসক এই প্যানেল ব্যবহার করতে পারবেন'); };
-        document.getElementById('menuRoutineManager').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminRoutinePanel'); loadRoutineEditForm(); } else alert('শুধু প্রশাসক এই প্যানেল ব্যবহার করতে পারবেন'); };
-        document.getElementById('menuSocialFeed').onclick = () => showPanel('socialFeedPanel');
-        document.getElementById('menuLogout').onclick = () => location.reload();
-        document.getElementById('menuToggle').onclick = (e) => { e.stopPropagation(); document.getElementById('dropdownMenu').classList.toggle('show'); };
-        document.addEventListener('click', () => document.getElementById('dropdownMenu').classList.remove('show'));
-    }
-    
-    async function loadRoutineEditForm() {
-        const routine = await loadRoutineFromFirebase();
-        let html = '';
-        for(let cls of classes) {
-            let clsRoutine = routine[cls] || {};
-            html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>একশন</th></tr></thead><tbody>`;
-            days.forEach((day, idx) => {
-                html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
-            });
-            html += `</tbody></table></div>`;
-        }
-        document.getElementById('routineEditArea').innerHTML = html;
-    }
-    
-    window.updateRoutineDay = async (className, day, idx) => {
-        const inputId = `input_${className.replace(/\s/g,'_')}_${idx}`;
-        const newSubject = document.getElementById(inputId).value.trim();
-        if(!newSubject) { alert('বিষয়ের নাম লিখুন'); return; }
-        const routine = await loadRoutineFromFirebase();
-        if(!routine[className]) routine[className] = {};
-        routine[className][day] = newSubject;
-        await db.ref('class_routines').set(routine);
-        alert(`${className} এর ${day} এর রুটিন আপডেট করা হয়েছে!`);
-        showTodayTomorrowRoutine();
-    };
-    
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+    async function loadDashboard() { const snap = await db.ref('registered_teachers').get(); const container = document.getElementById('teachersGrid'); if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; } let html = ''; for(let key in snap.val()) { let t = snap.val()[key]; let photo = t.photo || `https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=${t.teacher_name}`; html += `<div class="teacher-card"><img src="${photo}"><h3>${escapeHtml(t.teacher_name)}</h3><p>📚 ${t.classes?.join(', ') || '—'}</p></div>`; } container.innerHTML = html; }
+    async function loadTeacherPanel() { const snap = await db.ref(`registered_teachers/${currentUser.id}`).get(); if(!snap.exists()) return; const teacher = snap.val(); teacherAssignedClasses = teacher.classes || []; let photoHtml = teacher.photo ? `<img src="${teacher.photo}" style="width:80px;height:80px;border-radius:50%;">` : `<i class="fas fa-chalkboard-user" style="font-size:60px;"></i>`; document.getElementById('teacherProfileArea').innerHTML = `<div>${photoHtml}<h3>${escapeHtml(teacher.teacher_name)}</h3><p>আইডি: ${teacher.teacher_id}</p></div>`; if(teacherAssignedClasses.length === 0) { document.getElementById('teacherAssignedClasses').innerHTML = '<div class="teacher-class-card"><p>আপনার কোনো ক্লাস বরাদ্দ নেই।</p></div>'; return; } let classHtml = `<div class="teacher-class-card"><h4>আমার ক্লাসসমূহ</h4><div style="display:flex; flex-wrap:wrap; gap:10px;">`; for(let cls of teacherAssignedClasses) { classHtml += `<button class="btn btn-blue teacher-class-btn" data-class="${cls}">📖 ${cls}</button>`; } classHtml += `</div></div>`; document.getElementById('teacherAssignedClasses').innerHTML = classHtml; document.querySelectorAll('.teacher-class-btn').forEach(btn => { btn.onclick = () => loadTeacherClassStudents(btn.dataset.class); }); if(teacherAssignedClasses.length > 0) await loadTeacherClassStudents(teacherAssignedClasses[0]); }
+    async function loadTeacherClassStudents(className) { const classKey = className.replace(/\s+/g,'_'); const snap = await db.ref(`class_sheets/${classKey}/students`).get(); const students = snap.exists() ? snap.val() : []; if(students.length === 0) { document.getElementById('teacherClassStudents').innerHTML = `<div class="teacher-class-card"><h4>${className}</h4><p>কোন ছাত্র/ছাত্রী নেই।</p></div>`; return; } let html = `<div class="teacher-class-card"><h4>${className} - ছাত্র/ছাত্রীবৃন্দ</h4>`; students.forEach(s => { html += `<div class="student-list-item"><img src="${s.photo || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name='+s.name}" style="width:40px;height:40px;border-radius:50%;"><div><strong>${escapeHtml(s.name)}</strong><br><small>ID: ${s.id}</small></div></div>`; }); html += `</div>`; document.getElementById('teacherClassStudents').innerHTML = html; }
     async function startApp() {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('appContainer').style.display = 'block';
@@ -773,15 +401,44 @@
         document.getElementById('viewResultBtn')?.addEventListener('click', () => document.getElementById('resultModal').style.display = 'flex');
         document.getElementById('aboutUsBtn')?.addEventListener('click', () => document.getElementById('aboutModal').style.display = 'flex');
         document.getElementById('viewRoutineBtn')?.addEventListener('click', () => showRoutine());
-        document.getElementById('saveAllRoutinesBtn')?.addEventListener('click', async () => {
-            const routine = await loadRoutineFromFirebase();
-            for(let cls of classes) { if(!routine[cls]) routine[cls] = {}; for(let i=0; i<days.length; i++) { const inputId = `input_${cls.replace(/\s/g,'_')}_${i}`; const input = document.getElementById(inputId); if(input) routine[cls][days[i]] = input.value.trim() || ''; } }
-            await db.ref('class_routines').set(routine);
-            alert('সকল রুটিন সফলভাবে সংরক্ষিত হয়েছে!');
-            showTodayTomorrowRoutine();
-        });
     }
-    loadClassCheckboxes();
+    async function loadStudentFeedback() { const area = document.getElementById('studentFeedbackArea'); const teachersSnap = await db.ref('registered_teachers').get(); if(!teachersSnap.exists()) { area.innerHTML='<div class="empty-state">কোন শিক্ষক নেই</div>'; return; } const allTeachers = Object.values(teachersSnap.val()); const classTeachers = allTeachers.filter(teacher => teacher.classes && teacher.classes.includes(currentClass)); if(classTeachers.length === 0) { area.innerHTML='<div class="empty-state">আপনার ক্লাসের কোনো শিক্ষক নেই।</div>'; return; } const classKeyForDB = currentClass.replace(/\s+/g, '_'); area.innerHTML = ''; for(let t of classTeachers) { const existing = await db.ref(`secret_evaluations/${classKeyForDB}/${currentUser.id}/${t.teacher_id}`).get(); const comment = existing.exists() ? existing.val().comment : ''; const div = document.createElement('div'); div.style.cssText = "background:#fff7e8; border-radius:24px; padding:14px; margin-bottom:14px;"; div.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><img src="${t.photo || 'https://ui-avatars.com/api/?background=1e7b4a&color=fff&name='+t.teacher_name}" style="width:40px;height:40px;border-radius:50%;"><strong>${escapeHtml(t.teacher_name)}</strong></div><textarea id="fb_${t.teacher_id}" rows="2" style="margin-top:8px;" placeholder="আপনার মতামত দিন...">${escapeHtml(comment)}</textarea><div style="text-align:right;"><span id="saved_${t.teacher_id}" style="color:green; display:none;">✓ সংরক্ষিত</span></div>`; area.appendChild(div); const ta = document.getElementById(`fb_${t.teacher_id}`); let timer; ta.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(async () => { await db.ref(`secret_evaluations/${classKeyForDB}/${currentUser.id}/${t.teacher_id}`).set({ studentName: currentUser.name, teacherName: t.teacher_name, comment: ta.value, timestamp: new Date().toISOString() }); const savedSpan = document.getElementById(`saved_${t.teacher_id}`); if(savedSpan) { savedSpan.style.display = 'inline-block'; setTimeout(()=>savedSpan.style.display='none', 1500); } }, 700); }); } }
+    function setupMenu() {
+        document.getElementById('menuDashboard').onclick = () => { showPanel('dashboardPanel'); loadDashboard(); showTodayTomorrowRoutine(); };
+        document.getElementById('menuClassManager').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminClassPanel'); loadClassButtons(); } else alert('শুধু প্রশাসক'); };
+        document.getElementById('menuTeachers').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminTeachersPanel'); loadClassCheckboxes(); loadTeachersList(); } else alert('শুধু প্রশাসক'); };
+        document.getElementById('menuAttendance').onclick = () => { showPanel('attendancePanel'); initAttendancePanel(); };
+        document.getElementById('menuFeedback').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminFeedbackPanel'); loadClassFilter(); } else alert('শুধু প্রশাসক'); };
+        document.getElementById('menuRoutineManager').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminRoutinePanel'); loadRoutineEditForm(); } else alert('শুধু প্রশাসক'); };
+        document.getElementById('menuSocialFeed').onclick = () => showPanel('socialFeedPanel');
+        document.getElementById('menuLogout').onclick = () => location.reload();
+        document.getElementById('menuToggle').onclick = (e) => { e.stopPropagation(); document.getElementById('dropdownMenu').classList.toggle('show'); };
+        document.addEventListener('click', () => document.getElementById('dropdownMenu').classList.remove('show'));
+    }
+    function hideAllPanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); }
+    function showPanel(panelId) { hideAllPanels(); document.getElementById(panelId).classList.add('active'); }
+    async function loadRoutineEditForm() { const routine = await loadRoutineFromFirebase(); let html = ''; for(let cls of classes) { let clsRoutine = routine[cls] || {}; html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>একশন</th></tr></thead><tbody>`; days.forEach((day, idx) => { html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="window.updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`; }); html += `</tbody></table></div>`; } document.getElementById('routineEditArea').innerHTML = html; }
+    window.updateRoutineDay = async (className, day, idx) => { const inputId = `input_${className.replace(/\s/g,'_')}_${idx}`; const newSubject = document.getElementById(inputId).value.trim(); if(!newSubject) { alert('বিষয়ের নাম লিখুন'); return; } const routine = await loadRoutineFromFirebase(); if(!routine[className]) routine[className] = {}; routine[className][day] = newSubject; await db.ref('class_routines').set(routine); alert(`${className} এর ${day} এর রুটিন আপডেট করা হয়েছে!`); showTodayTomorrowRoutine(); };
+    async function showRoutine() { const routine = await loadRoutineFromFirebase(); let routineHtml = '<h3>সাপ্তাহিক রুটিন</h3>'; for(let cls of classes) { let clsRoutine = routine[cls] || routine["Class 6"]; routineHtml += `<h4 style="margin-top:15px;">${cls}</h4><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th></tr></thead><tbody>`; days.forEach(day => { routineHtml += `<tr><td>${day}</td><td>${clsRoutine[day] || 'ক্লাস নেই'}</td></tr>`; }); routineHtml += `</tbody></table>`; } document.getElementById('routineContent').innerHTML = routineHtml; document.getElementById('routineModal').style.display = 'flex'; }
+    async function loadTeachersList() { const snap = await db.ref('registered_teachers').get(); if(!snap.exists()) { document.getElementById('teachersList').innerHTML='<div class="empty-state">কোন শিক্ষক নেই</div>'; return; } let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`; for(let key in snap.val()) { let t = snap.val()[key]; let photo = t.photo ? `<img src="${t.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user"></i>`; html += `<tr><td>${photo}</td><td>${escapeHtml(t.teacher_name)}</td><td>${t.teacher_id}</td><td>${t.classes?.join(', ')}</td><td><button class="btn btn-red btn-sm" onclick="window.deleteTeacher('${t.teacher_id}')">মুছুন</button></td></tr>`; } html += `</tbody></table>`; document.getElementById('teachersList').innerHTML = html; }
+    window.deleteTeacher = async (id) => { if(confirm('শিক্ষক মুছবেন?')){ await db.ref(`registered_teachers/${id}`).remove(); loadTeachersList(); loadDashboard(); } };
+    function loadClassCheckboxes() { let container = document.getElementById('classCheckboxes'); if(container) { container.innerHTML = ''; for(let c of classes) { let label = document.createElement('label'); label.style.cssText = "display:inline-block; margin:5px;"; label.innerHTML = `<input type="checkbox" value="${c}" class="teacherClassCheckbox"> ${c}`; container.appendChild(label); } } }
+    async function loadClassFilter() { let sel = document.getElementById('feedbackClassFilter'); if(sel) { sel.innerHTML = '<option value="">সব ক্লাস</option>' + classes.map(c=>`<option value="${c}">${c}</option>`).join(''); sel.onchange = loadFeedbackArchive; await loadFeedbackArchive(); } }
+    async function loadFeedbackArchive() { const filter = document.getElementById('feedbackClassFilter').value; const snap = await db.ref('secret_evaluations').get(); if(!snap.exists()) { document.getElementById('feedbackList').innerHTML='<div class="empty-state">কোন ফিডব্যাক নেই</div>'; return; } let items = []; for(let classKey in snap.val()) { let className = classKey.replace(/_/g, ' '); if(filter && className !== filter) continue; for(let student in snap.val()[classKey]) { for(let teacher in snap.val()[classKey][student]) { items.push({ class: className, ...snap.val()[classKey][student][teacher] }); } } } if(!items.length) { document.getElementById('feedbackList').innerHTML='<div class="empty-state">কোন ফিডব্যাক নেই</div>'; return; } let html = ''; items.forEach(it => { html += `<div class="feedback-item"><strong>📚 ${it.class}</strong> | 👨‍🎓 ${escapeHtml(it.studentName)} | 👨‍🏫 ${escapeHtml(it.teacherName)}<br><small>📝 ${escapeHtml(it.comment)}</small><br><small>📅 ${new Date(it.timestamp).toLocaleDateString()}</small></div>`; }); document.getElementById('feedbackList').innerHTML = html; }
+    window.publishPost = async () => { let cap = document.getElementById('feedCaption').value.trim(); if(!cap) { alert('ক্যাপশন লিখুন'); return; } let author = currentUser.role === 'admin' ? '🎓 প্রশাসক' : (currentUser.role === 'teacher' ? `👨‍🏫 ${currentUser.name}` : `🧑‍🎓 ${currentUser.name}`); let img = document.getElementById('feedImgUrl').value.trim(); await db.ref('social_feed').push({ caption: cap, imgUrl: img, author, timestamp: Date.now(), userId: currentUser.id, likes: {}, likeCount: 0 }); document.getElementById('feedCaption').value = ''; document.getElementById('feedImgUrl').value = ''; };
+    function loadSocialFeed() { db.ref('social_feed').on('value', (snap) => { let container = document.getElementById('socialFeedContainer'); container.innerHTML = ''; let data = snap.val(); if(!data) { container.innerHTML = '<div class="empty-state">কোনো পোস্ট নেই</div>'; return; } let sorted = Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0)); for(let [pid, post] of sorted) { let card = document.createElement('div'); card.className = 'social-card'; card.innerHTML = `<div style="display:flex; justify-content:space-between;"><b>${escapeHtml(post.author)}</b></div><small>${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</small><p>${escapeHtml(post.caption)}</p>${post.imgUrl ? `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px;">` : ''}<div class="like-section"><button class="like-btn" onclick="toggleLike('${pid}', this)"><i class="fas fa-heart"></i></button> <span class="like-count">${post.likeCount || 0} জন লাইক দিয়েছেন</span></div><div id="replies_${pid}"></div><div style="display:flex; gap:8px; margin-top:10px;"><input type="text" id="reply_inp_${pid}" placeholder="মন্তব্য করুন..." style="flex:1;"><button class="btn btn-blue btn-sm" onclick="addReply('${pid}')">পাঠান</button></div>`; container.appendChild(card); } }); }
+    function loadClassButtons() { let cont = document.getElementById('classButtons'); if(!cont) return; cont.innerHTML = ''; for(let c of classes) { let btn = document.createElement('div'); btn.className = 'class-btn'; btn.innerHTML = `📖 ${c}`; btn.onclick = () => { document.querySelectorAll('.class-btn').forEach(b => b.style.background = '#eef2f5'); btn.style.background = '#f5b042'; btn.style.color = '#0a163b'; currentManageClass = c; document.getElementById('selectedClassName').innerHTML = currentManageClass; loadClassData(currentManageClass); }; cont.appendChild(btn); } document.getElementById('selectedClassName').innerHTML = currentManageClass; loadClassData(currentManageClass); }
+    async function loadClassData(className) { currentClass = className; const snap = await db.ref(`class_sheets/${className.replace(/\s+/g,'_')}/students`).get(); studentsData = snap.exists() ? snap.val() : []; renderStudentsTable(); }
+    function renderStudentsTable() { let cont = document.getElementById('classStudentsTable'); if(!cont) return; if(!studentsData.length) { cont.innerHTML='<div class="empty-state">কোন ছাত্র/ছাত্রী নেই। উপরে ফর্ম ব্যবহার করে ছাত্র/ছাত্রী যোগ করুন।</div>'; return; } let html = `<table><thead><tr><th>ছবি</th><th>#</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>একশন</th></tr></thead><tbody>`; studentsData.forEach((s,i) => { let studentPhoto = s.photo ? `<img src="${s.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`; html += `<tr><td>${studentPhoto}</td><td>${i+1}</td><td>${escapeHtml(s.id)}</td><td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td><td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td><td><button class="btn btn-red btn-sm" onclick="window.removeStudent(${i})">মুছুন</button></td></tr>`; }); html += `</tbody></table>`; cont.innerHTML = html; document.querySelectorAll('.editName').forEach(inp => inp.onchange = (e) => studentsData[inp.dataset.index].name = inp.value); document.querySelectorAll('.editPass').forEach(inp => inp.onchange = (e) => studentsData[inp.dataset.index].password = inp.value); }
+    window.removeStudent = (idx) => { studentsData.splice(idx,1); renderStudentsTable(); };
+    document.getElementById('addCousinBtn').onclick = () => { let name = document.getElementById('cousinName').value.trim(); let id = document.getElementById('cousinId').value.trim().toLowerCase(); let pwd = document.getElementById('cousinPass').value.trim(); if(!name || !id || !pwd) { alert('নাম, আইডি এবং পাসওয়ার্ড আবশ্যক!'); return; } if(studentsData.find(s=>s.id===id)) { alert('এই আইডি ইতিমধ্যে বিদ্যমান!'); return; } studentsData.push({ id, name, password: pwd, photo: studentImageBase64 || '' }); studentImageBase64 = ''; document.getElementById('studentImagePreview').src = 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=+'; document.getElementById('cousinName').value = ''; document.getElementById('cousinId').value = ''; document.getElementById('cousinPass').value = ''; renderStudentsTable(); };
+    document.getElementById('saveClassBtn').onclick = async () => { await db.ref(`class_sheets/${currentClass.replace(/\s+/g,'_')}`).set({ students: studentsData }); alert('ছাত্র/ছাত্রী তথ্য সংরক্ষিত!'); };
+    document.getElementById('teacherImageInput')?.addEventListener('change', e => { const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = ev => { teacherImageBase64 = ev.target.result; document.getElementById('teacherImagePreview').src = ev.target.result; }; reader.readAsDataURL(file); } });
+    document.getElementById('studentImageInput')?.addEventListener('change', e => { const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = ev => { studentImageBase64 = ev.target.result; document.getElementById('studentImagePreview').src = ev.target.result; }; reader.readAsDataURL(file); } });
+    document.getElementById('createTeacherBtn').onclick = async() => { const name = document.getElementById('newTeacherName').value.trim(); const id = document.getElementById('newTeacherId').value.trim().toLowerCase(); const pwd = document.getElementById('newTeacherPass').value.trim(); if(!name || !id || !pwd) { alert('নাম, আইডি এবং পাসওয়ার্ড আবশ্যক!'); return; } const selected = []; document.querySelectorAll('.teacherClassCheckbox:checked').forEach(cb => selected.push(cb.value)); await db.ref(`registered_teachers/${id}`).set({ teacher_name: name, teacher_id: id, password: pwd, classes: selected, photo: teacherImageBase64 || '' }); alert('শিক্ষক তৈরি সফল!'); teacherImageBase64 = ''; document.getElementById('newTeacherName').value = ''; document.getElementById('newTeacherId').value = ''; document.getElementById('newTeacherPass').value = ''; loadTeachersList(); loadDashboard(); };
+    const slides = document.querySelectorAll('.bg-slide'); let currentBgSlide = 0; if(slides.length) { slides[0].classList.add('active'); setInterval(() => { slides[currentBgSlide].classList.remove('active'); currentBgSlide = (currentBgSlide + 1) % slides.length; slides[currentBgSlide].classList.add('active'); }, 5000); }
+    document.getElementById('loginForm').onsubmit = async (e) => { e.preventDefault(); let role = document.getElementById('loginRole').value; let id = document.getElementById('loginId').value.trim().toLowerCase(); let pwd = document.getElementById('loginPassword').value.trim(); if(role === 'admin') { if(id === 'admin' && pwd === '#$t') { currentUser = { id, role: 'admin', name: 'প্রশাসক', photo: '' }; startApp(); } else alert('অ্যাডমিন আইডি বা পাসওয়ার্ড ভুল!'); } else if(role === 'teacher') { let snap = await db.ref(`registered_teachers/${id}`).get(); if(snap.exists() && snap.val().password === pwd) { currentUser = { id, role: 'teacher', name: snap.val().teacher_name, photo: snap.val().photo || '' }; teacherAssignedClasses = snap.val().classes || []; startApp(); } else alert('শিক্ষক আইডি বা পাসওয়ার্ড ভুল!'); } else { let found = false; for(let cls of classes) { let snap = await db.ref(`class_sheets/${cls.replace(/\s+/g,'_')}/students`).get(); if(snap.exists()) { let match = snap.val().find(s => s.id === id && s.password === pwd); if(match) { currentUser = { id, role: 'student', name: match.name, photo: match.photo || '' }; currentClass = cls; found = true; break; } } } if(found) startApp(); else alert('ছাত্র আইডি বা পাসওয়ার্ড ভুল!'); } };
+    document.getElementById('saveAllRoutinesBtn')?.addEventListener('click', async () => { const routine = await loadRoutineFromFirebase(); for(let cls of classes) { if(!routine[cls]) routine[cls] = {}; for(let i=0; i<days.length; i++) { const inputId = `input_${cls.replace(/\s/g,'_')}_${i}`; const input = document.getElementById(inputId); if(input) routine[cls][days[i]] = input.value.trim() || ''; } } await db.ref('class_routines').set(routine); alert('সকল রুটিন সফলভাবে সংরক্ষিত হয়েছে!'); showTodayTomorrowRoutine(); });
 </script>
 </body>
 </html>
