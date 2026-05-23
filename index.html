@@ -756,7 +756,7 @@
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('appContainer').style.display = 'block';
         document.getElementById('userNameDisplay').innerText = currentUser.name;
-        document.getElementById('roleDisplay').innerText = currentUser.role == 'admin' ? 'প্রশাসক' : (currentUser.role == 'teacher' ? 'শিক্ষক' : 'ছাত্র');
+        document.getElementById('roleDisplay').innerText = currentUser.role == 'admin' ? 'প্রশাসক' : (currentUser.role == 'teacher' ? 'শিক্ষক' : 'ছাত্র/ছাত্রী');
         let isAdmin = currentUser.role === 'admin';
         document.getElementById('menuClassManager').style.display = isAdmin ? 'block' : 'none';
         document.getElementById('menuTeachers').style.display = isAdmin ? 'block' : 'none';
