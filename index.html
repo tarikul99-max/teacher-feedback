@@ -113,6 +113,8 @@
 </head>
 <body>
 <div class="bg-slideshow" id="bgSlideshow">
+    <div class="bg-slide" style="background-image: url('master01.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('master03.jpg');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2032&auto=format');"></div>
@@ -120,7 +122,9 @@
 
 <div id="loginScreen" class="login-screen">
     <div class="login-card">
-        <img src="mastermined.jpg" alt="Logo">
+                <div align="center">
+                    <img src="mastermined.jpg" alt="Logo" style="width: 70px; height: 70px; object-fit: cover;border-radius: 50%; padding: 2px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff7e8;">
+                </div>
         <h3><i class="fas fa-brain"></i> Mastermind Academy</h3>
         <form id="loginForm">
             <select id="loginRole">
@@ -145,7 +149,7 @@
                     <a id="menuDashboard"><i class="fas fa-chalkboard-user"></i> ড্যাশবোর্ড</a>
                     <a id="menuClassManager"><i class="fas fa-school"></i> ক্লাস ম্যানেজার</a>
                     <a id="menuTeachers"><i class="fas fa-chalkboard"></i> শিক্ষক ব্যবস্থাপনা</a>
-                    <a id="menuAttendance"><i class="fas fa-calendar-check"></i> অ্যাটেন্ডেন্স ফিড</a>
+                    <a id="menuAttendance"><i class="fas fa-calendar-check"></i> অ্যাটেন্ডেন্স </a>
                     <a id="menuFeedback"><i class="fas fa-comment-dots"></i> ফিডব্যাক</a>
                     <a id="menuRoutineManager" style="display:none;"><i class="fas fa-calendar-alt"></i> রুটিন ম্যানেজার</a>
                     <a id="menuSocialFeed"><i class="fas fa-users-viewfinder"></i> সোশ্যাল কানেক্টেভিটি</a>
@@ -200,9 +204,9 @@
             <div style="background:#f9f5ed; padding:16px; border-radius:28px; margin-top:20px;">
                 <h3>➕ ছাত্র/ছাত্রী যোগ করুন - <span id="selectedClassName">ক্লাস সিলেক্ট করুন</span></h3>
                 <div style="text-align:center;"><img id="studentImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=+"><label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="studentImageInput" accept="image/*" style="display:none;"></label></div>
-                <input type="text" id="cousinName" placeholder="ছাত্রের নাম *">
-                <input type="text" id="cousinId" placeholder="ছাত্র আইডি *">
-                <input type="text" id="cousinPass" placeholder="পাসওয়ার্ড *">
+                <input type="text" id="cousinName" placeholder=" নাম *">
+                <input type="text" id="cousinId" placeholder=" আইডি *">
+                <input type="text" id="cousinPass" placeholder=" পাসওয়ার্ড *">
                 <button class="btn btn-blue" id="addCousinBtn">যোগ করুন</button>
             </div>
             <button class="btn btn-green" id="saveClassBtn">সব সংরক্ষণ করুন</button>
@@ -210,7 +214,7 @@
         </div>
 
         <div id="attendancePanel" class="panel">
-            <h2><i class="fas fa-calendar-alt"></i> অ্যাটেন্ডেন্স ফিড</h2>
+            <h2><i class="fas fa-calendar-alt"></i> অ্যাটেন্ডেন্স</h2>
             <div class="attendance-card">
                 <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
                     <select id="attendanceClassSelect" style="flex:2; margin-bottom: 0;"></select>
@@ -248,12 +252,12 @@
             <button class="btn btn-green" id="saveAllRoutinesBtn"><i class="fas fa-save"></i> সব রুটিন সংরক্ষণ করুন</button>
         </div>
         
-        <div id="socialFeedPanel" class="panel"><h2><i class="fas fa-comments"></i> সোশ্যাল ফিড</h2><textarea id="feedCaption" rows="2" placeholder="পোস্ট লিখুন..."></textarea><input type="text" id="feedImgUrl" placeholder="ছবির URL"><button onclick="window.publishPost()" class="btn btn-orange">পোস্ট করুন</button><div id="socialFeedContainer"></div></div>
+        <div id="socialFeedPanel" class="panel"><h2><i class="fas fa-comments"></i> Social Opinion</h2><textarea id="feedCaption" rows="2" placeholder="পোস্ট লিখুন..."></textarea><input type="text" id="feedImgUrl" placeholder="ছবির URL"><button onclick="window.publishPost()" class="btn btn-orange">পোস্ট করুন</button><div id="socialFeedContainer"></div></div>
     </div>
     <footer style="text-align:center; padding:16px; color:#666;">© Mastermind Academy</footer>
 </div>
 
-<div id="resultModal" class="result-modal"><div class="results-card"><i class="fas fa-chart-simple" style="font-size:48px; color:#f5b042;"></i><h2>একাডেমিক ফলাফল</h2><p>ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন। আমরা আপনার সহযোগিতা কামনা করি। <br> "ধন্যবাদ"</p><button class="btn btn-green" onclick="document.getElementById('resultModal').style.display='none'">বন্ধ করুন</button></div></div>
+<div id="resultModal" class="result-modal"><div class="results-card"><i class="fas fa-chart-simple" style="font-size:48px; color:#f5b042;"></i><br><button><h2><a href="about.html" style="color: #2ecc71;"> একাডেমিক ফলাফল </a></h2></button><p>ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন। আমরা আপনার সহযোগিতা কামনা করি। <br> "ধন্যবাদ"</p><button class="btn btn-green" onclick="document.getElementById('resultModal').style.display='none'">বন্ধ করুন</button></div></div>
 <div id="aboutModal" class="about-modal"><div class="about-card"><i class="fas fa-school" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i><h2 style="text-align:center;">মাস্টারমাইন্ড অ্যাকাডেমি</h2><p>আধুনিক শিক্ষাপ্রতিষ্ঠান যা মানসম্মত শিক্ষা ও প্রযুক্তিনির্ভর ক্লাসরুম ব্যবস্থাপনায় অনন্য।</p><p><strong>📍 ঠিকানা:</strong> পেকুয়া, কক্সবাজার</p><p><strong>📞 যোগাযোগ:</strong> 01623209091</p><button class="btn btn-orange" style="width:100%;" onclick="document.getElementById('aboutModal').style.display='none'">বন্ধ করুন</button></div></div>
 <div id="routineModal" class="routine-modal"><div class="routine-card"><i class="fas fa-calendar-week" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i><h2 style="text-align:center;">📅 ক্লাস রুটিন</h2><div id="routineContent"></div><button class="btn btn-orange" style="width:100%; margin-top:15px;" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button></div></div>
 
