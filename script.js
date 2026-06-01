@@ -17,8 +17,8 @@ let classRoutine = {};
 let teacherImageBase64 = "", studentImageBase64 = "";
 let currentStudentsList = [];
 
-// Your selfSMS API endpoint on Render
-const SELF_SMS_API_URL = "https://selfsms.onrender.com/api/send-sms";
+// Your selfSMS service URL on Render
+const SELF_SMS_URL = "https://selfsms.onrender.com";
 
 const classes = [
     "Class 5", "Class 6", "Class 7", "Class 8",
@@ -51,28 +51,29 @@ function getTomorrowDayName() {
     return getBanglaDayName(daysEng[tomorrow.getDay()]);
 }
 
-// SMS Function using your selfSMS Render service
+// SMS Function using your selfSMS service - WORKING VERSION
 async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherName) {
     if (!phoneNumber || phoneNumber.length < 10) {
         console.log("Invalid phone number:", phoneNumber);
-        return false;
+        return { success: false, message: "ফোন নম্বর সঠিক নয়" };
     }
     
-    // Format phone number
-    let formattedPhone = phoneNumber;
-    if (phoneNumber.startsWith('01')) {
-        formattedPhone = '880' + phoneNumber.substring(1);
-    } else if (phoneNumber.startsWith('+88')) {
-        formattedPhone = phoneNumber.substring(1);
-    } else if (!phoneNumber.startsWith('880') && !phoneNumber.startsWith('+880')) {
-        formattedPhone = '880' + phoneNumber;
+    // Format phone number - remove any spaces or special chars
+    let formattedPhone = phoneNumber.replace(/[^0-9]/g, '');
+    if (formattedPhone.startsWith('01')) {
+        formattedPhone = '880' + formattedPhone.substring(1);
+    } else if (formattedPhone.startsWith('88')) {
+        formattedPhone = '880' + formattedPhone.substring(2);
+    } else if (!formattedPhone.startsWith('880')) {
+        formattedPhone = '880' + formattedPhone;
     }
     
-    // Create SMS message in Bengali
-    const message = `📢 মাস্টারমাইন্ড অ্যাকাডেমি\nপ্রিয় অভিভাবক,\n${studentName} ${date} তারিখে ${className} ক্লাসে উপস্থিত ছিলেন না।\nদয়া করে আপনার সন্তানের উপস্থিতি নিশ্চিত করুন।\nধন্যবাদ - ${teacherName || "মাস্টারমাইন্ড অ্যাকাডেমি"}`;
+    console.log("Sending SMS to:", formattedPhone);
+    console.log("Student:", studentName, "Class:", className, "Date:", date);
     
     try {
-        const response = await fetch(SELF_SMS_API_URL, {
+        // Call your selfSMS service - correct endpoint
+        const response = await fetch(`${SELF_SMS_URL}/api/send-sms`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -81,8 +82,7 @@ async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherN
                 phone: formattedPhone,
                 studentName: studentName,
                 className: className,
-                date: date,
-                message: message
+                date: date
             })
         });
         
@@ -90,15 +90,14 @@ async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherN
         console.log("SMS API Response:", result);
         
         if (result.success === true) {
-            console.log(`SMS sent successfully to ${phoneNumber}`);
-            return true;
+            return { success: true, message: "SMS পাঠানো হয়েছে" };
         } else {
-            console.log(`SMS failed: ${result.message || 'Unknown error'}`);
-            return false;
+            return { success: false, message: result.error || "SMS ব্যর্থ হয়েছে" };
         }
+        
     } catch (error) {
         console.error("SMS API error:", error);
-        return false;
+        return { success: false, message: "নেটওয়ার্ক সমস্যা" };
     }
 }
 
@@ -341,41 +340,65 @@ async function loadStudentsForDate() {
     document.querySelectorAll('.att-student-cb').forEach(cb => { cb.addEventListener('change', (e) => { let idx = parseInt(cb.dataset.idx); currentStudentsList[idx].present = cb.checked; }); });
 }
 
+// Fixed saveAttendance function with working SMS
 async function saveAttendance() {
     const className = document.getElementById('attendanceClassSelect').value;
     const date = document.getElementById('attendanceDate').value;
-    if(!className || !date) return;
+    if(!className || !date) {
+        alert('ক্লাস এবং তারিখ নির্বাচন করুন');
+        return;
+    }
+    
     const classKey = className.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
     let attendanceData = {};
     currentStudentsList.forEach(s => { attendanceData[s.id] = s.present === true; });
+    
     await db.ref(`attendances/${classKey}/${date}`).set(attendanceData);
     
     // Get absent students with guardian phone numbers
     const absentStudents = currentStudentsList.filter(s => s.present !== true && s.guardian_phone && s.guardian_phone.length >= 10);
+    const presentCount = currentStudentsList.filter(s => s.present === true).length;
+    const absentCount = currentStudentsList.length - presentCount;
     
     let smsSentCount = 0;
+    let smsFailedList = [];
+    
     if(absentStudents.length > 0) {
         // Send SMS to each absent student's guardian
         for(let student of absentStudents) {
-            const success = await sendAbsentSMS(
+            const result = await sendAbsentSMS(
                 student.guardian_phone, 
                 student.name, 
                 className, 
                 date,
                 currentUser.name || (currentUser.role === 'admin' ? 'প্রশাসক' : 'শিক্ষক')
             );
-            if(success) smsSentCount++;
+            
+            if(result.success) {
+                smsSentCount++;
+                console.log(`✓ SMS sent to ${student.name} (${student.guardian_phone})`);
+            } else {
+                smsFailedList.push(`${student.name}`);
+                console.log(`✗ SMS failed for ${student.name}: ${result.message}`);
+            }
             // Small delay to avoid rate limiting
             await new Promise(resolve => setTimeout(resolve, 500));
         }
         
-        if(smsSentCount > 0) {
-            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n📱 ${absentStudents.length} জন অভিভাবকের মধ্যে ${smsSentCount} জনকে SMS পাঠানো হয়েছে।`);
+        // Show final result
+        if(smsSentCount > 0 && smsFailedList.length === 0) {
+            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ${absentCount} জন\n📱 ${smsSentCount} জন অভিভাবককে SMS সফলভাবে পাঠানো হয়েছে।`);
+        } else if(smsSentCount > 0 && smsFailedList.length > 0) {
+            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ${absentCount} জন\n📱 ${smsSentCount} জন সফল, ${smsFailedList.length} জন ব্যর্থ।\n\nব্যর্থ: ${smsFailedList.join(', ')}`);
         } else {
-            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n⚠️ তবে SMS পাঠানো সম্ভব হয়নি। ফোন নম্বর চেক করুন।`);
+            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ${absentCount} জন\n⚠️ কিন্তু SMS পাঠানো সম্ভব হয়নি।\n\nকারণ: ফোন নম্বর সঠিক নাও হতে পারে অথবা সার্ভিস ডাউন।`);
         }
     } else {
-        alert('✅ উপস্থিতি সংরক্ষিত হয়েছে!');
+        if(absentCount === 0) {
+            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ০ জন\nসবাই উপস্থিত।`);
+        } else {
+            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ${absentCount} জন\n⚠️ অনুপস্থিত ${absentCount} জনের ফোন নম্বর নেই।`);
+        }
     }
     
     await loadClassMonthlyCalendar();
@@ -505,7 +528,7 @@ async function loadTeachersTableView() {
     const snap = await db.ref('registered_teachers').get();
     const container = document.getElementById('teachersTable');
     if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; }
-    let html = `<table class="teacher-table"><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for(let key in snap.val()) {
         let t = snap.val()[key];
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
@@ -697,7 +720,7 @@ async function showRoutine() {
     let routineHtml = '<h3>সাপ্তাহিক রুটিন</h3>';
     for(let cls of classes) {
         let clsRoutine = routine[cls] || routine["Class 5"];
-        routineHtml += `<h4 style="margin-top:15px;">${cls}</h4><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th></tr></thead><tbody>`;
+        routineHtml += `<h4 style="margin-top:15px;">${cls}</h4><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><tr></thead><tbody>`;
         days.forEach(day => { routineHtml += `<tr><td>${day}</td><td>${clsRoutine[day] || 'ক্লাস নেই'}</td></tr>`; });
         routineHtml += `</tbody></table>`;
     }
@@ -856,8 +879,8 @@ async function initDemoData() {
         const classSnap = await db.ref(`class_sheets/${classKey}/students`).get();
         if(!classSnap.exists() && cls === 'Class 6') {
             await db.ref(`class_sheets/Class_6/students`).set([
-                { id: 'student1', name: 'রহিম উদ্দিন', password: '1234', guardian_phone: '01889343480', photo: '' },
-                { id: 'student2', name: 'করিমা বেগম', password: '1234', guardian_phone: '01889343481', photo: '' }
+                { id: 'student1', name: 'রহিম উদ্দিন', password: '1234', guardian_phone: '01973166719', photo: '' },
+                { id: 'student2', name: 'করিমা বেগম', password: '1234', guardian_phone: '01973166720', photo: '' }
             ]);
         }
     }
