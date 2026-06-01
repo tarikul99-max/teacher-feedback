@@ -543,6 +543,7 @@ input:checked + .slider:before {
 .class-btn:hover {
     background: #f5b042;
     color: #0a163b;
+    transform: scale(1.02);
 }
 
 .class-buttons-container {
@@ -611,6 +612,10 @@ input:checked + .slider:before {
     cursor: pointer;
     font-size: 11px;
     margin-left: 10px;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
 }
 
 .reaction-bar {
