@@ -10,6 +10,11 @@
 <body>
 <div class="bg-slideshow" id="bgSlideshow">
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format');"></div>
+    <div class="bg-slide" style="background-image: url('https://windows10spotlight.com/wp-content/uploads/2017/12/2d38e20a092ae8b0a13971c5a7055283.jpg');"></div>    
+    <div class="bg-slide" style="background-image: url('');"></div>
+    <div class="bg-slide" style="background-image: url('');"></div>
+
+
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2032&auto=format');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=2070&auto=format');"></div>
@@ -20,7 +25,7 @@
         <div align="center">
             <i class="fas fa-brain" style="font-size: 60px; color: #f5b042;"></i>
         </div>
-        <h3><i class="fas fa-brain"></i> Mastermind Academy</h3>
+        <h3><i class="fas fa-brain"></i> মাস্টারমাইন্ড অ্যাকাডেমি</h3>
         <form id="loginForm">
             <select id="loginRole">
                 <option value="student">👨‍🎓 ছাত্র/ছাত্রী লগইন</option>
@@ -31,13 +36,13 @@
             <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
             <button type="submit"><i class="fas fa-arrow-right-to-bracket"></i> প্রবেশ করুন</button>
         </form>
-        <p style="margin-top:12px; font-size:11px; color:#ffe6b3;"><strong>Demo Credentials:</strong><br>Admin: admin / #$t<br>Teacher: teacher1 / 1234<br>Student: student1 / 1234</p>
+        <p style="margin-top:12px; font-size:11px; color:#ffe6b3;"><strong>ডেমো তথ্য:</strong><br>Admin: admin / #$t<br>Teacher: teacher1 / 1234<br>Student: student1 / 1234</p>
     </div>
 </div>
 
 <div id="appContainer" class="app-container">
     <div class="navbar">
-        <div class="logo-area"><i class="fas fa-brain" style="font-size:28px; color:#f5b042;"></i><span>MASTERMIND ACADEMY</span></div>
+        <div class="logo-area"><i class="fas fa-brain" style="font-size:28px; color:#f5b042;"></i><span>মাস্টারমাইন্ড অ্যাকাডেমি</span></div>
         <div class="user-area"><span id="userNameDisplay"></span> (<span id="roleDisplay"></span>)
             <div class="dropdown"><button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
                 <div class="dropdown-content" id="dropdownMenu">
@@ -47,7 +52,7 @@
                     <a id="menuAttendance"><i class="fas fa-calendar-check"></i> অ্যাটেন্ডেন্স</a>
                     <a id="menuFeedback" style="display:none;"><i class="fas fa-comment-dots"></i> ফিডব্যাক</a>
                     <a id="menuRoutineManager" style="display:none;"><i class="fas fa-calendar-alt"></i> রুটিন ম্যানেজার</a>
-                    <a id="menuSocialFeed"><i class="fas fa-users-viewfinder"></i> সোশ্যাল কানেক্টেভিটি</a>
+                    <a id="menuSocialFeed"><i class="fas fa-users-viewfinder"></i> সোশ্যাল কানেক্টিভিটি</a>
                     <a id="menuStudentFeedback" style="display: none;"><i class="fas fa-star-of-life"></i> শিক্ষকদের মতামত দিন</a>
                     <a id="menuLogout"><i class="fas fa-sign-out-alt"></i> লগআউট</a>
                 </div>
@@ -61,7 +66,7 @@
                 <h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2>
                 <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
                     <button class="btn btn-orange" id="viewResultBtn"><i class="fas fa-file-alt"></i> ফলাফল দেখুন</button>
-                    <button class="btn btn-blue" id="aboutUsBtn"><i class="fas fa-info-circle"></i> About Us</button>
+                    <button class="btn btn-blue" id="aboutUsBtn"><i class="fas fa-info-circle"></i> সম্পর্কে</button>
                     <button class="btn btn-green" id="viewRoutineBtn"><i class="fas fa-calendar-week"></i> রুটিন দেখুন</button>
                 </div>
             </div>
@@ -91,7 +96,7 @@
             <h2><i class="fas fa-user-plus"></i> শিক্ষক তৈরি করুন</h2>
             <div style="background:#f7fafc; padding:16px; border-radius:28px; margin-bottom:20px;">
                 <div style="text-align:center;">
-                    <img id="teacherImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=Teacher">
+                    <img id="teacherImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=শিক্ষক">
                     <label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="teacherImageInput" accept="image/*" style="display:none;"></label>
                 </div>
                 <input type="text" id="newTeacherName" placeholder="পূর্ণ নাম">
@@ -108,9 +113,9 @@
             <h2>ক্লাস ম্যানেজার</h2>
             <div id="classButtons" class="class-buttons-container"></div>
             <div style="background:#f9f5ed; padding:16px; border-radius:28px; margin-top:20px;">
-                <h3>➕ ছাত্র/ছাত্রী যোগ করুন - <span id="selectedClassName">ক্লাস সিলেক্ট করুন</span></h3>
+                <h3>➕ ছাত্র/ছাত্রী যোগ করুন - <span id="selectedClassName">ক্লাস নির্বাচন করুন</span></h3>
                 <div style="text-align:center;">
-                    <img id="studentImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=Student">
+                    <img id="studentImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=ছাত্র">
                     <label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="studentImageInput" accept="image/*" style="display:none;"></label>
                 </div>
                 <input type="text" id="cousinName" placeholder="নাম *">
@@ -136,7 +141,7 @@
                     <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
                         <select id="attendanceClassSelect" style="flex:2; margin-bottom: 0;"></select>
                         <input type="date" id="attendanceDate" style="flex:1; margin-bottom: 0;">
-                        <button class="btn btn-blue" id="loadStudentsBtn"><i class="fas fa-users"></i> ছাত্র/ছাত্রী তালিকা দেখুন</button>
+                        <button class="btn btn-blue" id="loadStudentsBtn"><i class="fas fa-users"></i> ছাত্র তালিকা দেখুন</button>
                     </div>
                 </div>
                 <div id="studentAttendanceSection" class="attendance-card" style="display: none;">
@@ -172,14 +177,13 @@
             <div id="socialFeedContainer" style="margin-top: 20px;"></div>
         </div>
     </div>
-    <footer style="text-align:center; padding:16px; color:#666;">© Mastermind Academy</footer>
+    <footer style="text-align:center; padding:16px; color:#666;">© মাস্টারমাইন্ড অ্যাকাডেমি</footer>
 </div>
 
-<!-- Result Modal - Fixed -->
 <div id="resultModal" class="result-modal">
     <div class="results-card">
         <i class="fas fa-chart-simple" style="font-size:48px; color:#f5b042;"></i>
-        <h2 style="margin-top:15px;">📊 একাডেমিক ফলাফল</h2>
+        <h2 style="margin-top:15px;"><a href="about.html">📊 একাডেমিক ফলাফল</a></h2>
         <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
         <p style="margin-bottom:20px;">ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন। আমরা আপনার সহযোগিতা কামনা করি।</p>
         <p style="margin-bottom:20px; font-style:italic;">"ধন্যবাদ"</p>
