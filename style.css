@@ -406,6 +406,7 @@ input, select, textarea {
     text-align: center;
     border: 1px solid #e2e8f0;
     min-height: 70px;
+    transition: all 0.2s;
 }
 
 .cal-day.present {
@@ -418,6 +419,11 @@ input, select, textarea {
     background: #fee2e2;
     color: #b91c1c;
     border-color: #fecaca;
+}
+
+.cal-day.today {
+    border: 2px solid #f5b042;
+    background: #fef3c7;
 }
 
 .cal-day .date-num {
@@ -626,6 +632,7 @@ input:checked + .slider:before {
 
 .reaction-btn:hover {
     background: #e0e0e0;
+    transform: scale(1.05);
 }
 
 .reaction-btn.active {
