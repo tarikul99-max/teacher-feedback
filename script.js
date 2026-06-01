@@ -17,10 +17,8 @@ let classRoutine = {};
 let teacherImageBase64 = "", studentImageBase64 = "";
 let currentStudentsList = [];
 
-// MoceanAPI Configuration
-const MOCEAN_API_KEY = "OQIS2YCpY9TzuEiCmVrGM8AGJWAL9LSuq-9q61d";
-//const MOCEAN_API_SECRET = ""; // Add your API secret if needed
-const MOCEAN_SENDER = "MOCEAN";
+// Your selfSMS API endpoint on Render
+const SELF_SMS_API_URL = "https://selfsms.onrender.com/api/send-sms";
 
 const classes = [
     "Class 5", "Class 6", "Class 7", "Class 8",
@@ -53,14 +51,14 @@ function getTomorrowDayName() {
     return getBanglaDayName(daysEng[tomorrow.getDay()]);
 }
 
-// SMS Function using MoceanAPI
+// SMS Function using your selfSMS Render service
 async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherName) {
     if (!phoneNumber || phoneNumber.length < 10) {
         console.log("Invalid phone number:", phoneNumber);
         return false;
     }
     
-    // Format phone number for Bangladesh (add 880 if not present)
+    // Format phone number
     let formattedPhone = phoneNumber;
     if (phoneNumber.startsWith('01')) {
         formattedPhone = '880' + phoneNumber.substring(1);
@@ -74,52 +72,33 @@ async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherN
     const message = `📢 মাস্টারমাইন্ড অ্যাকাডেমি\nপ্রিয় অভিভাবক,\n${studentName} ${date} তারিখে ${className} ক্লাসে উপস্থিত ছিলেন না।\nদয়া করে আপনার সন্তানের উপস্থিতি নিশ্চিত করুন।\nধন্যবাদ - ${teacherName || "মাস্টারমাইন্ড অ্যাকাডেমি"}`;
     
     try {
-        // Using MoceanAPI endpoint
-        const response = await fetch('https://rest.moceanapi.com/rest/2/sms', {
+        const response = await fetch(SELF_SMS_API_URL, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': `Bearer ${MOCEAN_API_KEY}`
+                'Content-Type': 'application/json'
             },
-            body: new URLSearchParams({
-                'mocean-from': MOCEAN_SENDER,
-                'mocean-to': formattedPhone,
-                'mocean-text': message,
-                'mocean-api-key': MOCEAN_API_KEY
+            body: JSON.stringify({
+                phone: formattedPhone,
+                studentName: studentName,
+                className: className,
+                date: date,
+                message: message
             })
         });
         
         const result = await response.json();
         console.log("SMS API Response:", result);
         
-        if (result.status === '0' || result.messages) {
+        if (result.success === true) {
             console.log(`SMS sent successfully to ${phoneNumber}`);
             return true;
         } else {
-            console.log(`SMS failed: ${result.err_msg || 'Unknown error'}`);
+            console.log(`SMS failed: ${result.message || 'Unknown error'}`);
             return false;
         }
     } catch (error) {
         console.error("SMS API error:", error);
-        // Try alternative endpoint
-        try {
-            const response2 = await fetch('https://selfsms.onrender.com', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    phone: phoneNumber, 
-                    studentName: studentName, 
-                    className: className, 
-                    date: date,
-                    teacherName: teacherName 
-                })
-            });
-            const result2 = await response2.json();
-            return result2.success === true;
-        } catch (error2) {
-            console.error("Both SMS services failed:", error2);
-            return false;
-        }
+        return false;
     }
 }
 
@@ -383,7 +362,7 @@ async function saveAttendance() {
                 student.name, 
                 className, 
                 date,
-                currentUser.name || currentUser.role === 'admin' ? 'প্রশাসক' : 'শিক্ষক'
+                currentUser.name || (currentUser.role === 'admin' ? 'প্রশাসক' : 'শিক্ষক')
             );
             if(success) smsSentCount++;
             // Small delay to avoid rate limiting
@@ -526,7 +505,7 @@ async function loadTeachersTableView() {
     const snap = await db.ref('registered_teachers').get();
     const container = document.getElementById('teachersTable');
     if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; }
-    let html = `<table><thead>汽<th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table class="teacher-table"><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for(let key in snap.val()) {
         let t = snap.val()[key];
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
@@ -607,7 +586,7 @@ function renderStudentsTable() {
     let cont = document.getElementById('classStudentsTable');
     if(!cont) return;
     if(!studentsData.length) { cont.innerHTML='<div class="empty-state">কোন ছাত্র/ছাত্রী নেই। উপরে ফর্ম ব্যবহার করে যোগ করুন।</div>'; return; }
-    let html = `<table><thead>汽<th>ছবি</th><th>ক্রমিক</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table class="student-table"><thead><tr><th>ছবি</th><th>ক্রমিক</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     studentsData.forEach((s,i) => {
         let studentPhoto = s.photo ? `<img src="${s.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
         html += `<tr>
@@ -720,7 +699,7 @@ async function showRoutine() {
         let clsRoutine = routine[cls] || routine["Class 5"];
         routineHtml += `<h4 style="margin-top:15px;">${cls}</h4><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th></tr></thead><tbody>`;
         days.forEach(day => { routineHtml += `<tr><td>${day}</td><td>${clsRoutine[day] || 'ক্লাস নেই'}</td></tr>`; });
-        routineHtml += `</tbody><tr>`;
+        routineHtml += `</tbody></table>`;
     }
     document.getElementById('routineContent').innerHTML = routineHtml;
     document.getElementById('routineModal').style.display = 'flex';
