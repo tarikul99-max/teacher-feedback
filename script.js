@@ -19,7 +19,7 @@ let currentStudentsList = [];
 
 // MoceanAPI Configuration
 const MOCEAN_API_KEY = "OQIS2YCpY9TzuEiCmVrGM8AGJWAL9LSuq-9q61d";
-const MOCEAN_API_SECRET = ""; // Add your API secret if needed
+//const MOCEAN_API_SECRET = ""; // Add your API secret if needed
 const MOCEAN_SENDER = "MOCEAN";
 
 const classes = [
@@ -103,7 +103,7 @@ async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherN
         console.error("SMS API error:", error);
         // Try alternative endpoint
         try {
-            const response2 = await fetch('https://selfsms.onrender.com/api/send-sms', {
+            const response2 = await fetch('https://selfsms.onrender.com', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
