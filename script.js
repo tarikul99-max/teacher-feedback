@@ -26,7 +26,10 @@ const classes = [
 
 const days = ['শনিবার', 'রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার'];
 
-function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+function escapeHtml(str) { 
+    if(!str) return ''; 
+    return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); 
+}
 
 function getBanglaDayName(englishDay) {
     const dayMap = { 'Saturday': 'শনিবার', 'Sunday': 'রবিবার', 'Monday': 'সোমবার', 'Tuesday': 'মঙ্গলবার', 'Wednesday': 'বুধবার', 'Thursday': 'বৃহস্পতিবার', 'Friday': 'শুক্রবার' };
@@ -45,7 +48,6 @@ function getTomorrowDayName() {
     return getBanglaDayName(daysEng[tomorrow.getDay()]);
 }
 
-// Default routine for all classes
 const defaultRoutine = {
     "Class 5": { "শনিবার": "গণিত", "রবিবার": "বাংলা", "সোমবার": "ইংরেজি", "মঙ্গলবার": "বিজ্ঞান", "বুধবার": "সামাজিক", "বৃহস্পতিবার": "ধর্ম", "শুক্রবার": "ছুটি" },
     "Class 6": { "শনিবার": "বিজ্ঞান", "রবিবার": "গণিত", "সোমবার": "বাংলা", "মঙ্গলবার": "ইংরেজি", "বুধবার": "কম্পিউটার", "বৃহস্পতিবার": "সাধারণ জ্ঞান", "শুক্রবার": "ছুটি" },
@@ -116,7 +118,6 @@ async function loadDashboard() {
     container.innerHTML = html;
 }
 
-// Student Attendance History - Shows every day
 async function loadStudentOwnAttendance() {
     if(currentUser.role !== 'student') return;
     const classKey = currentClass.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
@@ -422,7 +423,7 @@ async function loadTeachersTableView() {
     const snap = await db.ref('registered_teachers').get();
     const container = document.getElementById('teachersTable');
     if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; }
-    let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table><thead>汽<th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for(let key in snap.val()) {
         let t = snap.val()[key];
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
@@ -503,7 +504,7 @@ function renderStudentsTable() {
     let cont = document.getElementById('classStudentsTable');
     if(!cont) return;
     if(!studentsData.length) { cont.innerHTML='<div class="empty-state">কোন ছাত্র/ছাত্রী নেই। উপরে ফর্ম ব্যবহার করে যোগ করুন।</div>'; return; }
-    let html = `</table><thead><tr><th>ছবি</th><th>#</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>অভিভাবকের মোবাইল</th><th>একশন</th></tr></thead><tbody>`;
+    let html = `<table class="student-table"><thead><tr><th>ছবি</th><th>ক্রমিক</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     studentsData.forEach((s,i) => {
         let studentPhoto = s.photo ? `<img src="${s.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
         html += `<tr>
@@ -534,7 +535,7 @@ document.getElementById('addCousinBtn').onclick = () => {
     if(studentsData.find(s=>s.id===id)) { alert('এই আইডি ইতিমধ্যে বিদ্যমান!'); return; }
     studentsData.push({ id, name, password: pwd, photo: studentImageBase64 || '', guardian_phone: guardianPhone || '' });
     studentImageBase64 = '';
-    document.getElementById('studentImagePreview').src = 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=Student';
+    document.getElementById('studentImagePreview').src = 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=ছাত্র';
     document.getElementById('cousinName').value = '';
     document.getElementById('cousinId').value = '';
     document.getElementById('cousinPass').value = '';
@@ -588,7 +589,7 @@ async function loadRoutineEditForm() {
     let html = '';
     for(let cls of classes) {
         let clsRoutine = routine[cls] || {};
-        html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>একশন</th></tr></thead><tbody>`;
+        html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>অ্যাকশন</th></tr></thead><tbody>`;
         days.forEach((day, idx) => {
             html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="window.updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
         });
