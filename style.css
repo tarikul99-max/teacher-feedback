@@ -1,5 +1,3 @@
-
-/* style.css */
 * {
     margin: 0;
     padding: 0;
@@ -65,16 +63,6 @@ body {
     z-index: 2;
 }
 
-.login-card img {
-    width: 85px;
-    height: 85px;
-    object-fit: contain;
-    margin-bottom: 12px;
-    border-radius: 50%;
-    background: #fff7e8;
-    padding: 8px;
-}
-
 .login-card h3 {
     color: #ffefcf;
     margin-bottom: 20px;
@@ -116,15 +104,8 @@ body {
 }
 
 @keyframes fadeSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .navbar {
@@ -145,15 +126,6 @@ body {
     align-items: center;
     gap: 8px;
     flex: 1;
-}
-
-.logo-area img {
-    height: 40px;
-    width: 40px;
-    object-fit: contain;
-    border-radius: 12px;
-    background: white;
-    padding: 4px;
 }
 
 .logo-area span {
@@ -231,25 +203,17 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.panel.active {
+.panel.active-panel, .panel.active {
     display: block;
     animation: fadeSlide 0.3s ease;
 }
 
 @keyframes fadeSlide {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.panel h2,
-.panel h3 {
+.panel h2, .panel h3 {
     color: #0a0f3b;
     margin-bottom: 16px;
     border-left: 4px solid #f5b042;
@@ -279,25 +243,10 @@ body {
     font-size: 12px;
 }
 
-.btn-green {
-    background: #1e267b;
-    color: white;
-}
-
-.btn-blue {
-    background: #0f2c4e;
-    color: white;
-}
-
-.btn-red {
-    background: #c52828;
-    color: white;
-}
-
-.btn-orange {
-    background: #f5b042;
-    color: #1e0a3b;
-}
+.btn-green { background: #1e267b; color: white; }
+.btn-blue { background: #0f2c4e; color: white; }
+.btn-red { background: #c52828; color: white; }
+.btn-orange { background: #f5b042; color: #1e0a3b; }
 
 .today-routine-card {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -335,8 +284,7 @@ table {
     min-width: 500px;
 }
 
-th,
-td {
+th, td {
     padding: 10px 8px;
     border-bottom: 1px solid #e2e8f0;
     text-align: left;
@@ -347,9 +295,7 @@ th {
     background: #eef3f0;
 }
 
-input,
-select,
-textarea {
+input, select, textarea {
     padding: 12px 14px;
     border: 1px solid #cfdfd9;
     border-radius: 30px;
@@ -426,7 +372,6 @@ textarea {
     border-radius: 24px;
     margin-bottom: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    position: relative;
 }
 
 .attendance-card {
@@ -461,8 +406,6 @@ textarea {
     text-align: center;
     border: 1px solid #e2e8f0;
     min-height: 70px;
-    cursor: default;
-    transition: all 0.2s;
 }
 
 .cal-day.present {
@@ -475,11 +418,6 @@ textarea {
     background: #fee2e2;
     color: #b91c1c;
     border-color: #fecaca;
-}
-
-.cal-day.today {
-    border: 2px solid #f5b042;
-    background: #fef3c7;
 }
 
 .cal-day .date-num {
@@ -499,12 +437,6 @@ textarea {
     justify-content: center;
     margin-bottom: 20px;
     flex-wrap: wrap;
-}
-
-.month-selector select {
-    width: auto;
-    min-width: 180px;
-    margin-bottom: 0;
 }
 
 .attendance-summary {
@@ -564,11 +496,11 @@ textarea {
     border-radius: 50%;
 }
 
-input:checked+.slider {
+input:checked + .slider {
     background-color: #2ecc71;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
     transform: translateX(26px);
 }
 
@@ -605,7 +537,6 @@ input:checked+.slider:before {
 .class-btn:hover {
     background: #f5b042;
     color: #0a163b;
-    transform: scale(1.02);
 }
 
 .class-buttons-container {
@@ -616,9 +547,7 @@ input:checked+.slider:before {
     justify-content: center;
 }
 
-.result-modal,
-.about-modal,
-.routine-modal {
+.result-modal, .about-modal, .routine-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -631,9 +560,7 @@ input:checked+.slider:before {
     align-items: center;
 }
 
-.results-card,
-.about-card,
-.routine-card {
+.results-card, .about-card, .routine-card {
     background: white;
     padding: 30px;
     border-radius: 30px;
@@ -650,8 +577,7 @@ input:checked+.slider:before {
     margin-top: 15px;
 }
 
-.routine-table th,
-.routine-table td {
+.routine-table th, .routine-table td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
@@ -691,10 +617,6 @@ input:checked+.slider:before {
     margin-left: 10px;
 }
 
-.delete-btn:hover {
-    background: #c0392b;
-}
-
 .reaction-bar {
     display: flex;
     gap: 8px;
@@ -714,7 +636,6 @@ input:checked+.slider:before {
 
 .reaction-btn:hover {
     background: #e0e0e0;
-    transform: scale(1.05);
 }
 
 .reaction-btn.active {
@@ -743,18 +664,14 @@ input:checked+.slider:before {
     padding-left: 0;
 }
 
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
 @media (max-width: 700px) {
-    .calendar-grid {
-        gap: 4px;
-    }
-
-    .cal-day {
-        padding: 6px 2px;
-        font-size: 11px;
-        min-height: 55px;
-    }
-
-    .cal-day .date-num {
-        font-size: 14px;
-    }
+    .calendar-grid { gap: 4px; }
+    .cal-day { padding: 6px 2px; font-size: 11px; min-height: 55px; }
+    .cal-day .date-num { font-size: 14px; }
 }
