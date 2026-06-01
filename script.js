@@ -10,16 +10,21 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 let currentUser = { id: "", role: "", name: "", photo: "" };
-let currentClass = "Class 6";
+let currentClass = "Class 5";
 let studentsData = [];
 let teacherAssignedClasses = [];
 let classRoutine = {};
 let teacherImageBase64 = "", studentImageBase64 = "";
 let currentStudentsList = [];
 
-const classes = ["Class 5", "Class 6", "Class 7", "Class 8", "Class 9", "Class 10"];
+const classes = [
+    "Class 5", "Class 6", "Class 7", "Class 8",
+    "Class 9 (Science)", "Class 9 (Commerce)", "Class 9 (Humanities)",
+    "Class 10 (Science)", "Class 10 (Commerce)", "Class 10 (Humanities)",
+    "SSC Special Batch (Science)", "SSC Special Batch (Commerce)", "SSC Special Batch (Humanities)"
+];
+
 const days = ['শনিবার', 'রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার'];
-const SMS_API_URL = "https://selfsms.onrender.com/api";
 
 function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
 
@@ -40,26 +45,21 @@ function getTomorrowDayName() {
     return getBanglaDayName(daysEng[tomorrow.getDay()]);
 }
 
-async function sendAbsentSMS(phoneNumber, studentName, className, date) {
-    if (!phoneNumber || phoneNumber.length !== 11 || !phoneNumber.startsWith('01')) return false;
-    try {
-        const response = await fetch(`${SMS_API_URL}/send-sms`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone: phoneNumber, studentName: studentName, className: className, date: date })
-        });
-        const result = await response.json();
-        return result.success === true;
-    } catch (error) { return false; }
-}
-
+// Default routine for all classes
 const defaultRoutine = {
     "Class 5": { "শনিবার": "গণিত", "রবিবার": "বাংলা", "সোমবার": "ইংরেজি", "মঙ্গলবার": "বিজ্ঞান", "বুধবার": "সামাজিক", "বৃহস্পতিবার": "ধর্ম", "শুক্রবার": "ছুটি" },
     "Class 6": { "শনিবার": "বিজ্ঞান", "রবিবার": "গণিত", "সোমবার": "বাংলা", "মঙ্গলবার": "ইংরেজি", "বুধবার": "কম্পিউটার", "বৃহস্পতিবার": "সাধারণ জ্ঞান", "শুক্রবার": "ছুটি" },
     "Class 7": { "শনিবার": "ইংরেজি", "রবিবার": "বিজ্ঞান", "সোমবার": "গণিত", "মঙ্গলবার": "বাংলা", "বুধবার": "সামাজিক", "বৃহস্পতিবার": "ধর্ম", "শুক্রবার": "ছুটি" },
     "Class 8": { "শনিবার": "বাংলা", "রবিবার": "ইংরেজি", "সোমবার": "গণিত", "মঙ্গলবার": "বিজ্ঞান", "বুধবার": "কৃষি", "বৃহস্পতিবার": "কম্পিউটার", "শুক্রবার": "ছুটি" },
-    "Class 9": { "শনিবার": "পদার্থবিজ্ঞান", "রবিবার": "রসায়ন", "সোমবার": "জীববিজ্ঞান", "মঙ্গলবার": "উচ্চতর গণিত", "বুধবার": "বাংলা", "বৃহস্পতিবার": "ইংরেজি", "শুক্রবার": "ছুটি" },
-    "Class 10": { "শনিবার": "রসায়ন", "রবিবার": "পদার্থবিজ্ঞান", "সোমবার": "জীববিজ্ঞান", "মঙ্গলবার": "উচ্চতর গণিত", "বুধবার": "ইংরেজি", "বৃহস্পতিবার": "বাংলা", "শুক্রবার": "ছুটি" }
+    "Class 9 (Science)": { "শনিবার": "পদার্থবিজ্ঞান", "রবিবার": "রসায়ন", "সোমবার": "জীববিজ্ঞান", "মঙ্গলবার": "উচ্চতর গণিত", "বুধবার": "বাংলা", "বৃহস্পতিবার": "ইংরেজি", "শুক্রবার": "ছুটি" },
+    "Class 9 (Commerce)": { "শনিবার": "হিসাববিজ্ঞান", "রবিবার": "ব্যবসায় উদ্যোগ", "সোমবার": "অর্থনীতি", "মঙ্গলবার": "গণিত", "বুধবার": "বাংলা", "বৃহস্পতিবার": "ইংরেজি", "শুক্রবার": "ছুটি" },
+    "Class 9 (Humanities)": { "শনিবার": "ইতিহাস", "রবিবার": "ভূগোল", "সোমবার": "নাগরিকতা", "মঙ্গলবার": "অর্থনীতি", "বুধবার": "বাংলা", "বৃহস্পতিবার": "ইংরেজি", "শুক্রবার": "ছুটি" },
+    "Class 10 (Science)": { "শনিবার": "রসায়ন", "রবিবার": "পদার্থবিজ্ঞান", "সোমবার": "জীববিজ্ঞান", "মঙ্গলবার": "উচ্চতর গণিত", "বুধবার": "ইংরেজি", "বৃহস্পতিবার": "বাংলা", "শুক্রবার": "ছুটি" },
+    "Class 10 (Commerce)": { "শনিবার": "ব্যবস্থাপনা", "রবিবার": "হিসাববিজ্ঞান", "সোমবার": "ব্যবসায় গণিত", "মঙ্গলবার": "অর্থনীতি", "বুধবার": "ইংরেজি", "বৃহস্পতিবার": "বাংলা", "শুক্রবার": "ছুটি" },
+    "Class 10 (Humanities)": { "শনিবার": "ইতিহাস", "রবিবার": "ভূগোল", "সোমবার": "সমাজবিজ্ঞান", "মঙ্গলবার": "নীতিশাস্ত্র", "বুধবার": "ইংরেজি", "বৃহস্পতিবার": "বাংলা", "শুক্রবার": "ছুটি" },
+    "SSC Special Batch (Science)": { "শনিবার": "বাংলা (MCQ)", "রবিবার": "ইংরেজি (MCQ)", "সোমবার": "গণিত (MCQ)", "মঙ্গলবার": "সাধারণ বিজ্ঞান", "বুধবার": "মডেল টেস্ট", "বৃহস্পতিবার": "মডেল টেস্ট", "শুক্রবার": "ছুটি" },
+    "SSC Special Batch (Commerce)": { "শনিবার": "বাংলা (MCQ)", "রবিবার": "ইংরেজি (MCQ)", "সোমবার": "ব্যবসায় গণিত", "মঙ্গলবার": "হিসাববিজ্ঞান", "বুধবার": "মডেল টেস্ট", "বৃহস্পতিবার": "মডেল টেস্ট", "শুক্রবার": "ছুটি" },
+    "SSC Special Batch (Humanities)": { "শনিবার": "বাংলা (MCQ)", "রবিবার": "ইংরেজি (MCQ)", "সোমবার": "ইতিহাস", "মঙ্গলবার": "ভূগোল", "বুধবার": "মডেল টেস্ট", "বৃহস্পতিবার": "মডেল টেস্ট", "শুক্রবার": "ছুটি" }
 };
 
 async function loadRoutineFromFirebase() {
@@ -77,7 +77,7 @@ async function showTodayTomorrowRoutine() {
     const tomorrowName = getTomorrowDayName();
     
     if(currentUser.role === 'student') {
-        let clsRoutine = routine[currentClass] || routine["Class 6"];
+        let clsRoutine = routine[currentClass] || routine["Class 5"];
         container.innerHTML = `
             <div class="today-routine-card">
                 <h3>📚 আজকের ক্লাস (${todayName})</h3>
@@ -93,7 +93,7 @@ async function showTodayTomorrowRoutine() {
         let todayHtml = `<div class="today-routine-card"><h3>📚 আজকের ক্লাস (${todayName})</h3>`;
         let tomorrowHtml = `<div class="tomorrow-routine-card"><h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3>`;
         for(let cls of classes) {
-            let clsRoutine = routine[cls] || routine["Class 6"];
+            let clsRoutine = routine[cls] || routine["Class 5"];
             todayHtml += `<p><strong>${cls}:</strong> ${clsRoutine[todayName] || 'ক্লাস নেই'}</p>`;
             tomorrowHtml += `<p><strong>${cls}:</strong> ${clsRoutine[tomorrowName] || 'ক্লাস নেই'}</p>`;
         }
@@ -116,11 +116,12 @@ async function loadDashboard() {
     container.innerHTML = html;
 }
 
+// Student Attendance History - Shows every day
 async function loadStudentOwnAttendance() {
     if(currentUser.role !== 'student') return;
-    const classKey = currentClass.replace(/\s+/g,'_');
+    const classKey = currentClass.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
     const studentId = currentUser.id;
-    let year = 2025, month = new Date().getMonth();
+    let year = new Date().getFullYear(), month = new Date().getMonth();
     
     const updateCalendar = async () => {
         const daysInMonth = new Date(year, month+1, 0).getDate();
@@ -135,19 +136,37 @@ async function loadStudentOwnAttendance() {
             let dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
             let snap = await db.ref(`attendances/${classKey}/${dateStr}/${studentId}`).get();
             let isPresent = snap.exists() && snap.val() === true;
-            if(isPresent) { presentCount++; totalDays++; attendanceHtml += `<div class="cal-day present"><div class="date-num">${d}</div><div class="status-icon">✅ উপস্থিত</div></div>`; }
-            else if(snap.exists() && snap.val() === false) { absentCount++; totalDays++; attendanceHtml += `<div class="cal-day absent"><div class="date-num">${d}</div><div class="status-icon">❌ অনুপস্থিত</div></div>`; }
-            else attendanceHtml += `<div class="cal-day"><div class="date-num">${d}</div><div class="status-icon">—</div></div>`;
+            let isToday = (new Date().toISOString().split('T')[0] === dateStr);
+            let todayClass = isToday ? ' today' : '';
+            
+            if(isPresent) { 
+                presentCount++; 
+                totalDays++; 
+                attendanceHtml += `<div class="cal-day present${todayClass}"><div class="date-num">${d}</div><div class="status-icon">✅ উপস্থিত</div></div>`; 
+            }
+            else if(snap.exists() && snap.val() === false) { 
+                absentCount++; 
+                totalDays++; 
+                attendanceHtml += `<div class="cal-day absent${todayClass}"><div class="date-num">${d}</div><div class="status-icon">❌ অনুপস্থিত</div></div>`; 
+            }
+            else {
+                attendanceHtml += `<div class="cal-day${todayClass}"><div class="date-num">${d}</div><div class="status-icon">—</div></div>`;
+            }
         }
         attendanceHtml += `</div>`;
         document.getElementById('studentCalendarGrid').innerHTML = attendanceHtml;
         let percentage = totalDays ? ((presentCount/totalDays)*100).toFixed(1) : 0;
-        document.getElementById('studentSummary').innerHTML = `<div class="summary-item"><div class="number">${presentCount}</div><div>উপস্থিত</div></div><div class="summary-item"><div class="number">${absentCount}</div><div>অনুপস্থিত</div></div><div class="summary-item"><div class="number">${percentage}%</div><div>উপস্থিতির হার</div></div>`;
+        document.getElementById('studentSummary').innerHTML = `
+            <div class="summary-item"><div class="number">${presentCount}</div><div>উপস্থিত</div></div>
+            <div class="summary-item"><div class="number">${absentCount}</div><div>অনুপস্থিত</div></div>
+            <div class="summary-item"><div class="number">${percentage}%</div><div>উপস্থিতির হার</div></div>
+            <div class="summary-item"><div class="number">${totalDays}</div><div>মোট কার্যদিবস</div></div>
+        `;
     };
     
     const months = ['জানুয়ারী', 'ফেব্রুয়ারী', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
     let selectorHtml = `<select id="studentMonthYearPicker">`;
-    for(let y of [2025, 2026]) for(let m=0; m<12; m++) selectorHtml += `<option value="${y}-${m}" ${(y===2025 && m===month)?'selected':''}>${months[m]} ${y}</option>`;
+    for(let y of [2025, 2026]) for(let m=0; m<12; m++) selectorHtml += `<option value="${y}-${m}" ${(y===year && m===month)?'selected':''}>${months[m]} ${y}</option>`;
     selectorHtml += `</select><button class="btn btn-blue" id="refreshStudentMonthBtn">দেখুন</button>`;
     document.getElementById('studentMonthSelector').innerHTML = selectorHtml;
     document.getElementById('refreshStudentMonthBtn').onclick = () => { const val = document.getElementById('studentMonthYearPicker').value; [year, month] = val.split('-').map(Number); updateCalendar(); };
@@ -175,7 +194,7 @@ async function loadTeacherPanel() {
 }
 
 async function loadTeacherClassStudents(className) {
-    const classKey = className.replace(/\s+/g,'_');
+    const classKey = className.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
     const snap = await db.ref(`class_sheets/${classKey}/students`).get();
     const students = snap.exists() ? snap.val() : [];
     if(students.length === 0) { document.getElementById('teacherClassStudents').innerHTML = `<div class="teacher-class-card"><h4>${className}</h4><p>কোন ছাত্র/ছাত্রী নেই।</p></div>`; return; }
@@ -187,9 +206,6 @@ async function loadTeacherClassStudents(className) {
     document.getElementById('teacherClassStudents').innerHTML = html;
 }
 
-// TEACHER CANNOT SEE ANY FEEDBACK - function removed
-// No loadTeacherFeedback function exists anymore
-
 async function loadStudentFeedback() {
     const area = document.getElementById('studentFeedbackArea');
     if(!area) return;
@@ -198,7 +214,7 @@ async function loadStudentFeedback() {
     const allTeachers = Object.values(teachersSnap.val());
     const classTeachers = allTeachers.filter(teacher => teacher.classes && teacher.classes.includes(currentClass));
     if(classTeachers.length === 0) { area.innerHTML='<div class="empty-state">আপনার ক্লাসের কোনো শিক্ষক নেই।</div>'; return; }
-    const classKeyForDB = currentClass.replace(/\s+/g, '_');
+    const classKeyForDB = currentClass.replace(/\s+/g, '_').replace(/\(/g,'').replace(/\)/g,'');
     area.innerHTML = '';
     for(let t of classTeachers) {
         const existing = await db.ref(`secret_evaluations/${classKeyForDB}/${currentUser.id}/${t.teacher_id}`).get();
@@ -250,7 +266,7 @@ async function loadStudentsForDate() {
     const date = document.getElementById('attendanceDate').value;
     if(!className || !date) { alert('ক্লাস এবং তারিখ নির্বাচন করুন'); return; }
     if(currentUser.role === 'teacher' && !teacherAssignedClasses.includes(className)) { alert('আপনি এই ক্লাসে উপস্থিতি দিতে পারবেন না।'); return; }
-    const classKey = className.replace(/\s+/g,'_');
+    const classKey = className.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
     const studentsSnap = await db.ref(`class_sheets/${classKey}/students`).get();
     const students = studentsSnap.exists() ? studentsSnap.val() : [];
     if(students.length === 0) { alert('এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই'); return; }
@@ -274,25 +290,18 @@ async function saveAttendance() {
     const className = document.getElementById('attendanceClassSelect').value;
     const date = document.getElementById('attendanceDate').value;
     if(!className || !date) return;
-    const classKey = className.replace(/\s+/g,'_');
+    const classKey = className.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
     let attendanceData = {};
     currentStudentsList.forEach(s => { attendanceData[s.id] = s.present === true; });
     await db.ref(`attendances/${classKey}/${date}`).set(attendanceData);
-    const absentStudents = currentStudentsList.filter(s => s.present !== true && s.guardian_phone);
-    if(absentStudents.length > 0) {
-        for(let student of absentStudents) {
-            await sendAbsentSMS(student.guardian_phone, student.name, className, date);
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-        alert(`✅ উপস্থিতি সংরক্ষিত!\n📱 ${absentStudents.length} জন অভিভাবককে SMS পাঠানো হয়েছে`);
-    } else { alert('✅ উপস্থিতি সংরক্ষিত হয়েছে!'); }
+    alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!`);
     await loadClassMonthlyCalendar();
 }
 
 async function loadClassMonthlyCalendar() {
     const className = document.getElementById('attendanceClassSelect').value;
     if(!className) return;
-    const classKey = className.replace(/\s+/g,'_');
+    const classKey = className.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
     const now = new Date();
     let year = now.getFullYear(), month = now.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -314,8 +323,10 @@ async function loadClassMonthlyCalendar() {
         else html += `<div class="cal-day absent"><div class="date-num">${d}</div><div class="status-icon">❌ ডাটা নেই</div></div>`;
     }
     html += `</div>`;
-    const monthSelector = `<select id="classMonthYearSelect"><option value="${year}-${month}" selected>${year} ${month+1}</option></select>`;
+    const months = ['জানুয়ারী', 'ফেব্রুয়ারী', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+    const monthSelector = `<select id="classMonthYearSelect"><option value="${year}-${month}" selected>${months[month]} ${year}</option></select><button class="btn btn-blue" id="refreshClassMonthBtn">দেখুন</button>`;
     document.getElementById('classMonthSelector').innerHTML = monthSelector;
+    document.getElementById('refreshClassMonthBtn').onclick = () => loadClassMonthlyCalendar();
     document.getElementById('classMonthlyCalendar').innerHTML = html;
 }
 
@@ -397,7 +408,7 @@ function loadSocialFeed() {
     });
 }
 
-// Admin Functions - Only Admin can see and delete feedback
+// Admin Functions
 window.deleteTeacher = async (id) => { if(confirm('শিক্ষক মুছবেন?')){ await db.ref(`registered_teachers/${id}`).remove(); loadTeachersTableView(); loadDashboard(); } };
 window.deleteFeedback = async (classKey, studentId, teacherId) => {
     if(confirm('এই মতামতটি মুছতে চান?')) {
@@ -411,7 +422,7 @@ async function loadTeachersTableView() {
     const snap = await db.ref('registered_teachers').get();
     const container = document.getElementById('teachersTable');
     if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; }
-    let html = `</td><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for(let key in snap.val()) {
         let t = snap.val()[key];
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
@@ -427,7 +438,6 @@ async function loadTeachersTableView() {
     container.innerHTML = html;
 }
 
-// Only Admin can access feedback archive
 async function loadFeedbackArchive() {
     if(currentUser.role !== 'admin') return;
     const filter = document.getElementById('feedbackClassFilter')?.value || '';
@@ -458,7 +468,7 @@ async function loadClassFilter() {
 }
 
 // Class Management
-let currentManageClass = "Class 6";
+let currentManageClass = "Class 5";
 
 function loadClassButtons() {
     let cont = document.getElementById('classButtons');
@@ -483,7 +493,8 @@ function loadClassButtons() {
 }
 
 async function loadClassData(className) {
-    const snap = await db.ref(`class_sheets/${className.replace(/\s+/g,'_')}/students`).get();
+    const classKey = className.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
+    const snap = await db.ref(`class_sheets/${classKey}/students`).get();
     studentsData = snap.exists() ? snap.val() : [];
     renderStudentsTable();
 }
@@ -492,7 +503,7 @@ function renderStudentsTable() {
     let cont = document.getElementById('classStudentsTable');
     if(!cont) return;
     if(!studentsData.length) { cont.innerHTML='<div class="empty-state">কোন ছাত্র/ছাত্রী নেই। উপরে ফর্ম ব্যবহার করে যোগ করুন।</div>'; return; }
-    let html = `<table><thead><tr><th>ছবি</th><th>#</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>অভিভাবকের মোবাইল</th><th>একশন</th></tr></thead><tbody>`;
+    let html = `</table><thead><tr><th>ছবি</th><th>#</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>অভিভাবকের মোবাইল</th><th>একশন</th></tr></thead><tbody>`;
     studentsData.forEach((s,i) => {
         let studentPhoto = s.photo ? `<img src="${s.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
         html += `<tr>
@@ -531,7 +542,11 @@ document.getElementById('addCousinBtn').onclick = () => {
     renderStudentsTable();
 };
 
-document.getElementById('saveClassBtn').onclick = async () => { await db.ref(`class_sheets/${currentManageClass.replace(/\s+/g,'_')}`).set({ students: studentsData }); alert('ছাত্র/ছাত্রী তথ্য সংরক্ষিত!'); };
+document.getElementById('saveClassBtn').onclick = async () => { 
+    const classKey = currentManageClass.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
+    await db.ref(`class_sheets/${classKey}`).set({ students: studentsData }); 
+    alert('ছাত্র/ছাত্রী তথ্য সংরক্ষিত!'); 
+};
 
 document.getElementById('teacherImageInput')?.addEventListener('change', e => { const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = ev => { teacherImageBase64 = ev.target.result; document.getElementById('teacherImagePreview').src = ev.target.result; }; reader.readAsDataURL(file); } });
 
@@ -575,7 +590,7 @@ async function loadRoutineEditForm() {
         let clsRoutine = routine[cls] || {};
         html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>একশন</th></tr></thead><tbody>`;
         days.forEach((day, idx) => {
-            html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="window.updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
+            html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="window.updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
         });
         html += `</tbody></table></div>`;
     }
@@ -583,7 +598,7 @@ async function loadRoutineEditForm() {
 }
 
 window.updateRoutineDay = async (className, day, idx) => {
-    const inputId = `input_${className.replace(/\s/g,'_')}_${idx}`;
+    const inputId = `input_${className.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}`;
     const newSubject = document.getElementById(inputId).value.trim();
     if(!newSubject) { alert('বিষয়ের নাম লিখুন'); return; }
     const routine = await loadRoutineFromFirebase();
@@ -598,7 +613,7 @@ async function showRoutine() {
     const routine = await loadRoutineFromFirebase();
     let routineHtml = '<h3>সাপ্তাহিক রুটিন</h3>';
     for(let cls of classes) {
-        let clsRoutine = routine[cls] || routine["Class 6"];
+        let clsRoutine = routine[cls] || routine["Class 5"];
         routineHtml += `<h4 style="margin-top:15px;">${cls}</h4><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th></tr></thead><tbody>`;
         days.forEach(day => { routineHtml += `<tr><td>${day}</td><td>${clsRoutine[day] || 'ক্লাস নেই'}</td></tr>`; });
         routineHtml += `</tbody></table>`;
@@ -612,7 +627,7 @@ document.getElementById('saveAllRoutinesBtn')?.addEventListener('click', async (
     for(let cls of classes) {
         if(!routine[cls]) routine[cls] = {};
         for(let i=0; i<days.length; i++) {
-            const inputId = `input_${cls.replace(/\s/g,'_')}_${i}`;
+            const inputId = `input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${i}`;
             const input = document.getElementById(inputId);
             if(input) routine[cls][days[i]] = input.value.trim() || '';
         }
@@ -677,7 +692,6 @@ async function startApp() {
         showPanel('dashboardPanel');
     } else if(isTeacher) {
         await loadTeacherPanel();
-        // Teacher cannot see feedback - removed
         showPanel('teacherPanel');
     } else {
         await loadDashboard();
@@ -724,7 +738,8 @@ document.getElementById('loginForm').onsubmit = async (e) => {
     } else {
         let found = false;
         for(let cls of classes) {
-            let snap = await db.ref(`class_sheets/${cls.replace(/\s+/g,'_')}/students`).get();
+            const classKey = cls.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
+            let snap = await db.ref(`class_sheets/${classKey}/students`).get();
             if(snap.exists()) {
                 let match = snap.val().find(s => s.id === id && s.password === pwd);
                 if(match) {
@@ -750,11 +765,12 @@ async function initDemoData() {
         });
         await db.ref('registered_teachers/teacher2').set({
             teacher_name: 'মেরি স্যার', teacher_id: 'teacher2', password: '1234',
-            classes: ['Class 8', 'Class 9'], photo: ''
+            classes: ['Class 8', 'Class 9 (Science)'], photo: ''
         });
     }
     for(let cls of classes) {
-        const classSnap = await db.ref(`class_sheets/${cls.replace(/\s+/g,'_')}/students`).get();
+        const classKey = cls.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
+        const classSnap = await db.ref(`class_sheets/${classKey}/students`).get();
         if(!classSnap.exists() && cls === 'Class 6') {
             await db.ref(`class_sheets/Class_6/students`).set([
                 { id: 'student1', name: 'রহিম উদ্দিন', password: '1234', guardian_phone: '01700000000', photo: '' },
