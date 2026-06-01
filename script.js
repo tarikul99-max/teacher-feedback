@@ -187,31 +187,8 @@ async function loadTeacherClassStudents(className) {
     document.getElementById('teacherClassStudents').innerHTML = html;
 }
 
-async function loadTeacherFeedback() {
-    if(currentUser.role !== 'teacher') return;
-    const container = document.getElementById('teacherFeedbackList');
-    if(!container) return;
-    container.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</div>';
-    const snap = await db.ref('secret_evaluations').get();
-    if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন মতামত নেই</div>'; return; }
-    let teacherFeedback = [];
-    for(let classKey in snap.val()) {
-        let className = classKey.replace(/_/g, ' ');
-        for(let studentId in snap.val()[classKey]) {
-            for(let teacherId in snap.val()[classKey][studentId]) {
-                if(teacherId === currentUser.id) {
-                    teacherFeedback.push({ className, ...snap.val()[classKey][studentId][teacherId] });
-                }
-            }
-        }
-    }
-    if(teacherFeedback.length === 0) { container.innerHTML = '<div class="empty-state">আপনার সম্পর্কে কোনো মতামত এখনো দেওয়া হয়নি</div>'; return; }
-    let html = '';
-    teacherFeedback.forEach(fb => {
-        html += `<div class="feedback-item"><strong>📚 ${fb.className}</strong> <small>${new Date(fb.timestamp).toLocaleDateString()}</small><div><strong>👨‍🎓 ${escapeHtml(fb.studentName)}</strong></div><div><small>📝 "${escapeHtml(fb.comment)}"</small></div></div>`;
-    });
-    container.innerHTML = html;
-}
+// TEACHER CANNOT SEE ANY FEEDBACK - function removed
+// No loadTeacherFeedback function exists anymore
 
 async function loadStudentFeedback() {
     const area = document.getElementById('studentFeedbackArea');
@@ -420,7 +397,7 @@ function loadSocialFeed() {
     });
 }
 
-// Admin Functions
+// Admin Functions - Only Admin can see and delete feedback
 window.deleteTeacher = async (id) => { if(confirm('শিক্ষক মুছবেন?')){ await db.ref(`registered_teachers/${id}`).remove(); loadTeachersTableView(); loadDashboard(); } };
 window.deleteFeedback = async (classKey, studentId, teacherId) => {
     if(confirm('এই মতামতটি মুছতে চান?')) {
@@ -434,17 +411,25 @@ async function loadTeachersTableView() {
     const snap = await db.ref('registered_teachers').get();
     const container = document.getElementById('teachersTable');
     if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; }
-    let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `</td><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for(let key in snap.val()) {
         let t = snap.val()[key];
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
-        html += `<tr><td>${photo}</td><td>${escapeHtml(t.teacher_name)}</td><td>${t.teacher_id}</td><td>${t.classes?.join(', ') || '—'}</td><td><button class="btn btn-red btn-sm" onclick="window.deleteTeacher('${t.teacher_id}')">মুছুন</button></td></tr>`;
+        html += `<tr>
+            <td>${photo}</td>
+            <td>${escapeHtml(t.teacher_name)}</td>
+            <td>${t.teacher_id}</td>
+            <td>${t.classes?.join(', ') || '—'}</td>
+            <td><button class="btn btn-red btn-sm" onclick="window.deleteTeacher('${t.teacher_id}')">মুছুন</button></td>
+        </tr>`;
     }
     html += `</tbody></table>`;
     container.innerHTML = html;
 }
 
+// Only Admin can access feedback archive
 async function loadFeedbackArchive() {
+    if(currentUser.role !== 'admin') return;
     const filter = document.getElementById('feedbackClassFilter')?.value || '';
     const snap = await db.ref('secret_evaluations').get();
     if(!snap.exists()) { document.getElementById('feedbackList').innerHTML='<div class="empty-state">কোন ফিডব্যাক নেই</div>'; return; }
@@ -467,6 +452,7 @@ async function loadFeedbackArchive() {
 }
 
 async function loadClassFilter() {
+    if(currentUser.role !== 'admin') return;
     let sel = document.getElementById('feedbackClassFilter');
     if(sel) { sel.innerHTML = '<option value="">সব ক্লাস</option>' + classes.map(c=>`<option value="${c}">${c}</option>`).join(''); sel.onchange = loadFeedbackArchive; await loadFeedbackArchive(); }
 }
@@ -691,7 +677,7 @@ async function startApp() {
         showPanel('dashboardPanel');
     } else if(isTeacher) {
         await loadTeacherPanel();
-        await loadTeacherFeedback();
+        // Teacher cannot see feedback - removed
         showPanel('teacherPanel');
     } else {
         await loadDashboard();
