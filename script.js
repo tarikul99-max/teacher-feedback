@@ -165,7 +165,7 @@ ${teacherName || 'মাস্টারমাইন্ড অ্যাকাড�
     }
 }
 
-window.testWhatsApp = async function(phone = "+8801973166719") {
+window.testWhatsApp = async function(phone = "+8801889343480") {
     console.log("🧪 Testing WhatsApp with phone:", phone);
     
     const formatted = formatPhoneNumber(phone);
