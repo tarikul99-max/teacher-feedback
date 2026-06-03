@@ -19,7 +19,7 @@ let classRoutine = {};
 let teacherImageBase64 = "", studentImageBase64 = "";
 let currentStudentsList = [];
 
-// SMS API URL (your selfSMS service on Render)
+// SMS API URL
 const SELF_SMS_URL = "https://selfsms.onrender.com";
 
 // Class list with groups
@@ -32,7 +32,6 @@ const classes = [
 
 const days = ['শনিবার', 'রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার'];
 
-// Helper Functions
 function escapeHtml(str) { 
     if(!str) return ''; 
     return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); 
@@ -55,30 +54,47 @@ function getTomorrowDayName() {
     return getBanglaDayName(daysEng[tomorrow.getDay()]);
 }
 
-// ==================== PHONE NUMBER FORMATTING ====================
+// ==================== PHONE NUMBER FORMATTING - MUST BE +8801XXXXXXXXX ====================
 function formatPhoneNumber(phoneNumber) {
     if (!phoneNumber) return null;
+    
+    // Remove all non-numeric characters
     let cleanNumber = phoneNumber.toString().replace(/[^0-9]/g, '');
     
+    console.log(`📞 Original: ${phoneNumber} → Clean: ${cleanNumber}`);
+    
+    // MUST return +8801XXXXXXXXX format (13 digits starting with 8801)
     if (cleanNumber.length === 13 && cleanNumber.startsWith('8801')) {
         return cleanNumber;
-    } else if (cleanNumber.length === 11 && cleanNumber.startsWith('01')) {
+    }
+    else if (cleanNumber.length === 11 && cleanNumber.startsWith('01')) {
         return '880' + cleanNumber.substring(1);
-    } else if (cleanNumber.length === 10 && cleanNumber.startsWith('1')) {
+    }
+    else if (cleanNumber.length === 10 && cleanNumber.startsWith('1')) {
         return '880' + cleanNumber;
-    } else if (cleanNumber.length === 10) {
+    }
+    else if (cleanNumber.length === 10) {
         return '8801' + cleanNumber;
-    } else if (cleanNumber.length === 12 && cleanNumber.startsWith('880')) {
-        return cleanNumber + '0';
-    } else {
+    }
+    else if (cleanNumber.length === 9) {
+        return '8801' + cleanNumber;
+    }
+    else if (cleanNumber.length === 13 && cleanNumber.startsWith('880')) {
+        return cleanNumber;
+    }
+    else {
         let last10 = cleanNumber.slice(-10);
         return '8801' + last10;
     }
 }
 
-// ==================== SMS FUNCTIONS (TextMeBot WhatsApp API) ====================
+function isValidPhoneNumber(phoneNumber) {
+    const formatted = formatPhoneNumber(phoneNumber);
+    return formatted && formatted.length === 13 && formatted.startsWith('8801');
+}
 
-// Check SMS service health
+// ==================== WHATSAPP SMS FUNCTIONS ====================
+
 async function checkSMSService() {
     try {
         const response = await fetch(`${SELF_SMS_URL}/health`);
@@ -91,17 +107,19 @@ async function checkSMSService() {
     }
 }
 
-// Send WhatsApp message via TextMeBot
 async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherName) {
     if (!phoneNumber) {
         return { success: false, error: "ফোন নম্বর প্রয়োজন" };
     }
     
     const formattedPhone = formatPhoneNumber(phoneNumber);
-    if (!formattedPhone || formattedPhone.length !== 13) {
+    
+    console.log(`📤 Sending to: ${phoneNumber} → Formatted: ${formattedPhone}`);
+    
+    if (!formattedPhone || formattedPhone.length !== 13 || !formattedPhone.startsWith('8801')) {
         return { 
             success: false, 
-            error: `ফোন নম্বর সঠিক নয়: ${phoneNumber}\nসঠিক ফরম্যাট: +8801XXXXXXXXX`
+            error: `ফোন নম্বর সঠিক নয়: ${phoneNumber}\nসঠিক ফরম্যাট: +8801XXXXXXXXX (যেমন: +8801973166719)`
         };
     }
     
@@ -111,7 +129,6 @@ async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherN
         day: 'numeric'
     }) : 'আজ';
     
-    // WhatsApp message with formatting
     const message = `📢 *মাস্টারমাইন্ড অ্যাকাডেমি*
 
 প্রিয় অভিভাবক,
@@ -122,8 +139,6 @@ async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherN
 
 ধন্যবাদ
 ${teacherName || 'মাস্টারমাইন্ড অ্যাকাডেমি'}`;
-    
-    console.log(`📤 Sending WhatsApp to: ${formattedPhone}`);
     
     try {
         const response = await fetch(`${SELF_SMS_URL}/send-sms`, {
@@ -141,23 +156,31 @@ ${teacherName || 'মাস্টারমাইন্ড অ্যাকাড�
         });
         
         const result = await response.json();
-        console.log("📨 WhatsApp Response:", result);
+        console.log("📨 API Response:", result);
         return result;
         
     } catch (error) {
-        console.error("❌ WhatsApp Error:", error);
+        console.error("❌ Error:", error);
         return { success: false, error: error.message };
     }
 }
 
-// Test WhatsApp function (for console testing)
-window.testWhatsApp = async function(phone = "8801889343480") {
-    console.log("🧪 Sending test WhatsApp message...");
-    const result = await sendAbsentSMS(phone, "পরীক্ষা", "টেস্ট ক্লাস", new Date().toISOString().split('T')[0], "প্রশাসক");
+window.testWhatsApp = async function(phone = "+8801973166719") {
+    console.log("🧪 Testing WhatsApp with phone:", phone);
+    
+    const formatted = formatPhoneNumber(phone);
+    
+    if (!formatted || formatted.length !== 13 || !formatted.startsWith('8801')) {
+        alert(`❌ ফোন নম্বর সঠিক নয়!\n\nআপনার নম্বর: ${phone}\nসঠিক ফরম্যাট: +8801973166719`);
+        return { success: false, error: "Invalid phone format" };
+    }
+    
+    const result = await sendAbsentSMS(phone, "পরীক্ষা শিক্ষার্থী", "টেস্ট ক্লাস", new Date().toISOString().split('T')[0], "প্রশাসক");
+    
     if (result.success) {
-        alert("✅ টেস্ট WhatsApp মেসেজ সফলভাবে পাঠানো হয়েছে!");
+        alert(`✅ টেস্ট WhatsApp মেসেজ সফলভাবে পাঠানো হয়েছে!\n\n📱 ফোন: ${formatted}\n\nআপনার WhatsApp চেক করুন।`);
     } else {
-        alert(`❌ টেস্ট মেসেজ ব্যর্থ!\n\nত্রুটি: ${result.error}`);
+        alert(`❌ টেস্ট মেসেজ ব্যর্থ!\n\n📱 ফোন: ${formatted}\n⚠️ ত্রুটি: ${result.error}`);
     }
     return result;
 };
@@ -179,7 +202,6 @@ const defaultRoutine = {
     "SSC Special Batch (Humanities)": { "শনিবার": "বাংলা (MCQ)", "রবিবার": "ইংরেজি (MCQ)", "সোমবার": "ইতিহাস", "মঙ্গলবার": "ভূগোল", "বুধবার": "মডেল টেস্ট", "বৃহস্পতিবার": "মডেল টেস্ট", "শুক্রবার": "ছুটি" }
 };
 
-// ==================== ROUTINE FUNCTIONS ====================
 async function loadRoutineFromFirebase() {
     const snap = await db.ref('class_routines').get();
     if(snap.exists()) { classRoutine = snap.val(); }
@@ -221,7 +243,6 @@ async function showTodayTomorrowRoutine() {
     }
 }
 
-// ==================== DASHBOARD FUNCTIONS ====================
 async function loadDashboard() {
     const snap = await db.ref('registered_teachers').get();
     const container = document.getElementById('teachersGrid');
@@ -235,7 +256,6 @@ async function loadDashboard() {
     container.innerHTML = html;
 }
 
-// ==================== STUDENT ATTENDANCE HISTORY ====================
 async function loadStudentOwnAttendance() {
     if(currentUser.role !== 'student') return;
     const classKey = currentClass.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
@@ -292,7 +312,6 @@ async function loadStudentOwnAttendance() {
     await updateCalendar();
 }
 
-// ==================== TEACHER FUNCTIONS ====================
 async function loadTeacherPanel() {
     const snap = await db.ref(`registered_teachers/${currentUser.id}`).get();
     if(!snap.exists()) return;
@@ -326,7 +345,6 @@ async function loadTeacherClassStudents(className) {
     document.getElementById('teacherClassStudents').innerHTML = html;
 }
 
-// ==================== STUDENT FEEDBACK ====================
 async function loadStudentFeedback() {
     const area = document.getElementById('studentFeedbackArea');
     if(!area) return;
@@ -357,7 +375,6 @@ async function loadStudentFeedback() {
     }
 }
 
-// ==================== ATTENDANCE FUNCTIONS ====================
 async function initAttendancePanel() {
     const teacherSection = document.getElementById('teacherAttendanceSection');
     const studentSection = document.getElementById('studentHistorySection');
@@ -408,7 +425,6 @@ async function loadStudentsForDate() {
     document.querySelectorAll('.att-student-cb').forEach(cb => { cb.addEventListener('change', (e) => { let idx = parseInt(cb.dataset.idx); currentStudentsList[idx].present = cb.checked; }); });
 }
 
-// Main Save Attendance Function with WhatsApp SMS
 async function saveAttendance() {
     const className = document.getElementById('attendanceClassSelect').value;
     const date = document.getElementById('attendanceDate').value;
@@ -433,8 +449,8 @@ async function saveAttendance() {
     
     if(absentStudents.length > 0) {
         const loadingMsg = document.createElement('div');
-        loadingMsg.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:10px; z-index:9999; box-shadow:0 0 10px rgba(0,0,0,0.3); text-align:center; min-width:300px;';
-        loadingMsg.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${absentStudents.length} জন অভিভাবককে WhatsApp মেসেজ পাঠানো হচ্ছে...<br><br><small style="color:#666;">📱 ফোন ফরম্যাট: +8801XXXXXXXXX</small>`;
+        loadingMsg.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:10px; z-index:9999; box-shadow:0 0 10px rgba(0,0,0,0.3); text-align:center; min-width:350px;';
+        loadingMsg.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${absentStudents.length} জন অভিভাবককে WhatsApp মেসেজ পাঠানো হচ্ছে...<br><br><small style="color:#666;">📱 সঠিক ফরম্যাট: +8801XXXXXXXXX</small>`;
         document.body.appendChild(loadingMsg);
         
         for(let i = 0; i < absentStudents.length; i++) {
@@ -475,11 +491,10 @@ async function saveAttendance() {
         
         if(smsFailedList.length > 0) {
             resultMessage += `❌ ব্যর্থ: ${smsFailedList.length} জন\n`;
-            resultMessage += `${smsFailedList.join('\n')}\n\n`;
         }
         
         if(smsSentCount === 0 && smsFailedList.length > 0) {
-            resultMessage += `⚠️ কোন WhatsApp মেসেজ পাঠানো যায়নি। দয়া করে ফোন নম্বর +8801XXXXXXXXX ফরম্যাটে আপডেট করুন।`;
+            resultMessage += `\n⚠️ কোন WhatsApp মেসেজ পাঠানো যায়নি।\n\n📱 সঠিক ফোন নম্বর ফরম্যাট: +8801XXXXXXXXX\nউদাহরণ: +8801973166719`;
         }
         
         alert(resultMessage);
@@ -487,7 +502,7 @@ async function saveAttendance() {
         if(absentCount === 0) {
             alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ০ জন\nসবাই উপস্থিত।`);
         } else {
-            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ${absentCount} জন\n⚠️ অনুপস্থিত ${absentCount} জনের ফোন নম্বর নেই।`);
+            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ${absentCount} জন\n⚠️ অনুপস্থিত ${absentCount} জনের ফোন নম্বর নেই।\n\n📱 সঠিক ফোন ফরম্যাট: +8801XXXXXXXXX`);
         }
     }
     
@@ -526,7 +541,6 @@ async function loadClassMonthlyCalendar() {
     document.getElementById('classMonthlyCalendar').innerHTML = html;
 }
 
-// ==================== SOCIAL FEED FUNCTIONS ====================
 window.publishPost = async () => {
     let cap = document.getElementById('feedCaption').value.trim();
     if(!cap) { alert('ক্যাপশন লিখুন'); return; }
@@ -604,7 +618,6 @@ function loadSocialFeed() {
     });
 }
 
-// ==================== ADMIN FUNCTIONS ====================
 window.deleteTeacher = async (id) => { if(confirm('শিক্ষক মুছবেন?')){ await db.ref(`registered_teachers/${id}`).remove(); loadTeachersTableView(); loadDashboard(); } };
 window.deleteFeedback = async (classKey, studentId, teacherId) => {
     if(confirm('এই মতামতটি মুছতে চান?')) {
@@ -663,7 +676,6 @@ async function loadClassFilter() {
     if(sel) { sel.innerHTML = '<option value="">সব ক্লাস</option>' + classes.map(c=>`<option value="${c}">${c}</option>`).join(''); sel.onchange = loadFeedbackArchive; await loadFeedbackArchive(); }
 }
 
-// ==================== CLASS MANAGEMENT ====================
 let currentManageClass = "Class 5";
 
 function loadClassButtons() {
@@ -778,7 +790,6 @@ function loadClassCheckboxes() {
     }
 }
 
-// ==================== ROUTINE MANAGEMENT ====================
 async function loadRoutineEditForm() {
     const routine = await loadRoutineFromFirebase();
     let html = '';
@@ -788,7 +799,7 @@ async function loadRoutineEditForm() {
         days.forEach((day, idx) => {
             html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="window.updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
         });
-        html += `</tbody></table></div>`;
+        html += `</tbody></tr></div>`;
     }
     document.getElementById('routineEditArea').innerHTML = html;
 }
@@ -833,7 +844,6 @@ document.getElementById('saveAllRoutinesBtn')?.addEventListener('click', async (
     showTodayTomorrowRoutine();
 });
 
-// ==================== MENU & NAVIGATION ====================
 function setupMenu() {
     document.getElementById('menuDashboard').onclick = () => { showPanel('dashboardPanel'); if(currentUser.role === 'student') showTodayTomorrowRoutine(); else { loadDashboard(); showTodayTomorrowRoutine(); } };
     document.getElementById('menuClassManager').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminClassPanel'); loadClassButtons(); } else alert('শুধু প্রশাসক'); };
@@ -850,7 +860,6 @@ function setupMenu() {
 function hideAllPanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active', 'active-panel')); }
 function showPanel(panelId) { hideAllPanels(); document.getElementById(panelId).classList.add('active-panel'); }
 
-// ==================== START APP ====================
 async function startApp() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appContainer').style.display = 'block';
@@ -901,7 +910,6 @@ async function startApp() {
     document.getElementById('viewRoutineBtn')?.addEventListener('click', () => showRoutine());
 }
 
-// ==================== BACKGROUND SLIDESHOW ====================
 const slides = document.querySelectorAll('.bg-slide');
 let currentBgSlide = 0;
 if(slides.length) {
@@ -913,7 +921,6 @@ if(slides.length) {
     }, 5000);
 }
 
-// ==================== LOGIN ====================
 document.getElementById('loginForm').onsubmit = async (e) => {
     e.preventDefault();
     let role = document.getElementById('loginRole').value;
@@ -952,7 +959,6 @@ document.getElementById('loginForm').onsubmit = async (e) => {
     }
 };
 
-// ==================== DEMO DATA INITIALIZATION ====================
 async function initDemoData() {
     const teachersSnap = await db.ref('registered_teachers').get();
     if(!teachersSnap.exists()) {
@@ -970,20 +976,19 @@ async function initDemoData() {
         const classSnap = await db.ref(`class_sheets/${classKey}/students`).get();
         if(!classSnap.exists() && cls === 'Class 6') {
             await db.ref(`class_sheets/Class_6/students`).set([
-                { id: 'student1', name: 'রহিম উদ্দিন', password: '1234', guardian_phone: '+8801889343480', photo: '' },
-                { id: 'student2', name: 'করিমা বেগম', password: '1234', guardian_phone: '+8801889343481', photo: '' }
+                { id: 'student1', name: 'রহিম উদ্দিন', password: '1234', guardian_phone: '+8801973166719', photo: '' },
+                { id: 'student2', name: 'করিমা বেগম', password: '1234', guardian_phone: '+8801973166720', photo: '' }
             ]);
         }
     }
 }
 initDemoData();
 
-// Check SMS service on load
 setTimeout(async () => {
     const isActive = await checkSMSService();
     if (isActive) {
         console.log("✅ WhatsApp SMS Service is active!");
-        console.log("📱 Test: testWhatsApp('+8801889343480')");
+        console.log("📱 Test: testWhatsApp('+8801973166719')");
     } else {
         console.log("⚠️ WhatsApp SMS Service not responding");
     }
