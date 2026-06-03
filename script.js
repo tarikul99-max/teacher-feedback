@@ -101,7 +101,7 @@ async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherN
     
     console.log(`📤 Sending SMS to: ${phoneNumber} → Formatted: ${formattedPhone}`);
     
-    if (!formattedPhone || formattedPhone.length !== 13) {
+    if (!formattedPhone || formattedPhone.length !== 14) {
         return { 
             success: false, 
             error: `ফোন নম্বর সঠিক নয়: ${phoneNumber}\nসঠিক ফরম্যাট: +8801XXXXXXXXX`
@@ -146,7 +146,7 @@ ${teacherName || 'মাস্টারমাইন্ড অ্যাকাড�
 }
 
 // Test SMS function (for console testing)
-window.testSMS = async function(phone = "8801889343480") {
+window.testSMS = async function(phone = "+8801889343480") {
     console.log("🧪 Sending test SMS...");
     const result = await sendAbsentSMS(phone, "পরীক্ষা শিক্ষার্থী", "টেস্ট ক্লাস", new Date().toISOString().split('T')[0], "প্রশাসক");
     if (result.success) {
