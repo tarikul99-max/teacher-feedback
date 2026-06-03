@@ -1,115 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>মাস্টারমাইন্ড অ্যাকাডেমি </title>
+    <title>মাস্টারমাইন্ড অ্যাকাডেমি</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif; }
-        body { min-height: 100vh; background: radial-gradient(circle at 20% 30%, #0a1f4a, #07112e); position: relative; }
-        .bg-slideshow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; }
-        .bg-slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.5s ease-in-out; }
-        .bg-slide.active { opacity: 1; }
-        .login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 100; background-color: rgba(10,30,79,0.17); backdrop-filter: blur(3px); padding: 16px; }
-        .login-card { background: rgba(22,45,116,0.39); backdrop-filter: blur(2px); padding: 30px 24px; border-radius: 48px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 35px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(245,176,66,0.4); border: 1px solid rgba(245,176,66,0.5); z-index: 2; }
-        .login-card img { width: 85px; height: 85px; object-fit: contain; margin-bottom: 12px; border-radius: 50%; background: #fff7e8; padding: 8px; }
-        .login-card h3 { color: #ffefcf; margin-bottom: 20px; font-weight: 800; font-size: 1.3rem; }
-        .login-card input, .login-card select { width: 100%; padding: 14px 18px; margin: 10px 0; border: 1px solid #adc6ff; border-radius: 60px; background: rgba(255,255,255,0.92); font-size: 15px; }
-        .login-card button { width: 100%; padding: 14px; background: #f5b042; color: #0a163b; border: none; border-radius: 60px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; }
-        .app-container { display: none; animation: fadeSlideUp 0.5s ease; position: relative; z-index: 20; background: #eef2f9; min-height: 100vh; }
-        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .navbar { background: #0c1b4b; color: white; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 999; }
-        .logo-area { display: flex; align-items: center; gap: 8px; flex: 1; }
-        .logo-area img { height: 40px; width: 40px; object-fit: contain; border-radius: 12px; background: white; padding: 4px; }
-        .logo-area span { font-weight: 800; font-size: 0.95rem; background: linear-gradient(135deg, #fff, #f5b042); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .user-area { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; }
-        .menu-btn { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
-        .dropdown { position: relative; }
-        .dropdown-content { display: none; position: absolute; right: 0; top: 45px; background: #111a44; min-width: 240px; border-radius: 20px; overflow: hidden; box-shadow: 0 18px 32px rgba(0,0,0,0.3); z-index: 1000; }
-        .dropdown-content a { display: block; padding: 12px 18px; color: #faf0e1; text-decoration: none; border-bottom: 1px solid rgba(245,176,66,0.2); cursor: pointer; font-size: 14px; }
-        .dropdown-content a:hover { background: #f5b042; color: #0a1c3b; }
-        .show { display: block; }
-        .content { max-width: 1200px; margin: 16px auto; padding: 0 12px; }
-        .panel { display: none; background: rgba(255,255,255,0.96); border-radius: 28px; padding: 18px 16px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-        .panel.active { display: block; animation: fadeSlide 0.3s ease; }
-        @keyframes fadeSlide { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-        .panel h2, .panel h3 { color: #0a0f3b; margin-bottom: 16px; border-left: 4px solid #f5b042; padding-left: 14px; font-size: 1.2rem; }
-        .btn { padding: 10px 18px; border: none; border-radius: 40px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s; display: inline-block; margin: 3px; }
-        .btn:hover { transform: scale(1.02); opacity: 0.9; }
-        .btn-sm { padding: 6px 14px; font-size: 12px; }
-        .btn-green { background: #1e267b; color: white; }
-        .btn-blue { background: #0f2c4e; color: white; }
-        .btn-red { background: #c52828; color: white; }
-        .btn-orange { background: #f5b042; color: #1e0a3b; }
-        .today-routine-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 24px; padding: 20px; margin-bottom: 20px; text-align: center; }
-        .tomorrow-routine-card { background: linear-gradient(135deg, #f5b042 0%, #e67e22 100%); color: white; border-radius: 24px; padding: 20px; margin-bottom: 20px; text-align: center; }
-        .routine-subject { font-size: 24px; font-weight: bold; margin: 10px 0; }
-        .table-responsive { overflow-x: auto; margin: 10px 0; border-radius: 20px; }
-        table { width: 100%; border-collapse: collapse; min-width: 500px; }
-        th, td { padding: 10px 8px; border-bottom: 1px solid #e2e8f0; text-align: left; font-size: 13px; }
-        th { background: #eef3f0; }
-        input, select, textarea { padding: 12px 14px; border: 1px solid #cfdfd9; border-radius: 30px; width: 100%; font-size: 14px; margin-bottom: 8px; }
-        .teacher-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 20px; }
-        .teacher-card { background: linear-gradient(135deg, #ffffff, #fef9ef); border-radius: 28px; padding: 18px; text-align: center; border: 1px solid rgba(245,176,66,0.5); }
-        .teacher-card img { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; border: 3px solid #f5b042; }
-        .student-list-item { display: flex; align-items: center; gap: 12px; padding: 10px; background: #fef9ef; border-radius: 20px; margin-bottom: 8px; }
-        .student-list-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 2px solid #f5b042; }
-        .image-preview { width: 80px; height: 80px; object-fit: cover; border-radius: 50%; margin: 8px auto; display: block; border: 2px solid #f5b042; }
-        .file-input-label { background: #eef2f5; padding: 8px 12px; border-radius: 30px; cursor: pointer; font-size: 12px; display: inline-block; margin: 5px 0; }
-        .social-card { background: #ffffff; padding: 16px; border-radius: 24px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative; }
-        .attendance-card { background: white; border-radius: 24px; padding: 20px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 16px; }
-        .cal-day-header { background: #0f2c4e; color: white; padding: 10px; text-align: center; border-radius: 12px; font-weight: bold; font-size: 14px; }
-        .cal-day { background: #f8fafc; border-radius: 12px; padding: 10px 4px; text-align: center; border: 1px solid #e2e8f0; min-height: 70px; cursor: default; transition: all 0.2s; }
-        .cal-day.present { background: #dcfce7; color: #15803d; border-color: #86efac; }
-        .cal-day.absent { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
-        .cal-day.today { border: 2px solid #f5b042; background: #fef3c7; }
-        .cal-day .date-num { font-size: 18px; font-weight: bold; }
-        .cal-day .status-icon { font-size: 12px; margin-top: 5px; }
-        .month-selector { display: flex; gap: 12px; align-items: center; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
-        .month-selector select { width: auto; min-width: 180px; margin-bottom: 0; }
-        .attendance-summary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 20px; margin-bottom: 20px; display: flex; justify-content: space-around; flex-wrap: wrap; }
-        .summary-item { text-align: center; }
-        .summary-item .number { font-size: 28px; font-weight: bold; }
-        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 24px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #e74c3c; transition: 0.3s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; }
-        input:checked + .slider { background-color: #2ecc71; }
-        input:checked + .slider:before { transform: translateX(26px); }
-        .student-att-row { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #eee; }
-        .student-att-row:hover { background: #f8fafc; }
-        .teacher-class-card { background: linear-gradient(135deg, #fef9ef, #ffffff); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid #f5b04233; }
-        .class-btn { display: inline-block; margin: 5px; background: #eef2f5; padding: 10px 20px; border-radius: 40px; cursor: pointer; transition: 0.2s; }
-        .class-btn:hover { background: #f5b042; color: #0a163b; transform: scale(1.02); }
-        .class-buttons-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; justify-content: center; }
-        .result-modal, .about-modal, .routine-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
-        .results-card, .about-card, .routine-card { background: white; padding: 30px; border-radius: 30px; max-width: 600px; width: 90%; text-align: center; max-height: 80vh; overflow-y: auto; }
-        .routine-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .routine-table th, .routine-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        .routine-table th { background: #f5b042; color: white; }
-        .feedback-item { background: #f9f5ed; border-radius: 16px; padding: 12px; margin-bottom: 10px; border-left: 4px solid #f5b042; }
-        .attendance-permission-badge { background: #fef3c7; border-radius: 24px; padding: 6px 12px; font-size: 12px; color: #b45309; display: inline-block; margin-left: 10px; }
-        @media (max-width: 700px) { .calendar-grid { gap: 4px; } .cal-day { padding: 6px 2px; font-size: 11px; min-height: 55px; } .cal-day .date-num { font-size: 14px; } }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="bg-slideshow" id="bgSlideshow">
-    <div class="bg-slide" style="background-image: url('master01.jpg');"></div>
-    <div class="bg-slide" style="background-image: url('master03.jpg');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2032&auto=format');"></div>
+    <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=2070&auto=format');"></div>
 </div>
 
 <div id="loginScreen" class="login-screen">
     <div class="login-card">
         <div align="center">
-                    <img src="mastermined.jpg" alt="Logo" style="width: 70px; height: 70px; object-fit: cover;border-radius: 50%; padding: 2px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff7e8;">
+            <i class="fas fa-brain" style="font-size: 60px; color: #f5b042;"></i>
         </div>
-        <h3><i class="fas fa-brain"></i> Mastermind Academy</h3>
+        <h3><i class="fas fa-brain"></i> মাস্টারমাইন্ড অ্যাকাডেমি</h3>
         <form id="loginForm">
             <select id="loginRole">
                 <option value="student">👨‍🎓 ছাত্র/ছাত্রী লগইন</option>
@@ -120,23 +31,23 @@
             <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
             <button type="submit"><i class="fas fa-arrow-right-to-bracket"></i> প্রবেশ করুন</button>
         </form>
-        <p style="margin-top:12px; font-size:11px; color:#ffe6b3;"> আইডি,পার্সওয়াড ভুলে গেলে অফিসে যোগাযোগ করুন</p>
+        <p style="margin-top:12px; font-size:11px; color:#ffe6b3;"><strong>ডেমো তথ্য:</strong><br>Admin: admin / #$t<br>Teacher: teacher1 / 1234<br>Student: student1 / 1234</p>
     </div>
 </div>
 
 <div id="appContainer" class="app-container">
     <div class="navbar">
-        <div class="logo-area"><img src="mastermined.jpg" alt="Logo"><span>MASTERMIND ACADEMY</span></div>
+        <div class="logo-area"><i class="fas fa-brain" style="font-size:28px; color:#f5b042;"></i><span>মাস্টারমাইন্ড অ্যাকাডেমি</span></div>
         <div class="user-area"><span id="userNameDisplay"></span> (<span id="roleDisplay"></span>)
             <div class="dropdown"><button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
                 <div class="dropdown-content" id="dropdownMenu">
                     <a id="menuDashboard"><i class="fas fa-chalkboard-user"></i> ড্যাশবোর্ড</a>
-                    <a id="menuClassManager"><i class="fas fa-school"></i> ক্লাস ম্যানেজার</a>
-                    <a id="menuTeachers"><i class="fas fa-chalkboard"></i> শিক্ষক ব্যবস্থাপনা</a>
-                    <a id="menuAttendance"><i class="fas fa-calendar-check"></i> অ্যাটেন্ডেন্স </a>
-                    <a id="menuFeedback"><i class="fas fa-comment-dots"></i> ফিডব্যাক</a>
+                    <a id="menuClassManager" style="display:none;"><i class="fas fa-school"></i> ক্লাস ম্যানেজার</a>
+                    <a id="menuTeachers" style="display:none;"><i class="fas fa-chalkboard"></i> শিক্ষক ব্যবস্থাপনা</a>
+                    <a id="menuAttendance"><i class="fas fa-calendar-check"></i> অ্যাটেন্ডেন্স</a>
+                    <a id="menuFeedback" style="display:none;"><i class="fas fa-comment-dots"></i> ফিডব্যাক</a>
                     <a id="menuRoutineManager" style="display:none;"><i class="fas fa-calendar-alt"></i> রুটিন ম্যানেজার</a>
-                    <a id="menuSocialFeed"><i class="fas fa-users-viewfinder"></i> সোশ্যাল কানেক্টেভিটি</a>
+                    <a id="menuSocialFeed"><i class="fas fa-users-viewfinder"></i> সোশ্যাল কানেক্টিভিটি</a>
                     <a id="menuStudentFeedback" style="display: none;"><i class="fas fa-star-of-life"></i> শিক্ষকদের মতামত দিন</a>
                     <a id="menuLogout"><i class="fas fa-sign-out-alt"></i> লগআউট</a>
                 </div>
@@ -145,47 +56,87 @@
     </div>
 
     <div class="content">
-
-        <div id="dashboardPanel" class="panel">
-            <div class="dashboard-header"><h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2>
+        <div id="dashboardPanel" class="panel active-panel">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2>
                 <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
                     <button class="btn btn-orange" id="viewResultBtn"><i class="fas fa-file-alt"></i> ফলাফল দেখুন</button>
-                    <button class="btn btn-blue" id="aboutUsBtn"><i class="fas fa-info-circle"></i> About Us</button>
+                    <button class="btn btn-blue" id="aboutUsBtn"><i class="fas fa-info-circle"></i> সম্পর্কে</button>
                     <button class="btn btn-green" id="viewRoutineBtn"><i class="fas fa-calendar-week"></i> রুটিন দেখুন</button>
                 </div>
             </div>
-            <div id="todayTomorrowRoutine"></div><div id="teachersGrid" class="teacher-grid"></div>
-            <br><br>
-            <div class="features-grid"><h3><i class="fas fa-graduation-cap"></i> শিক্ষার্থীদের ধারাবাহিক উন্নতির জন্য থাকছে...</h3>
-                <div class="features-list"><div class="feature-badge"><i class="fas fa-calendar-week"></i> দৈনিক উপস্থিতি ট্র্যাকিং</div>
-                <div class="feature-badge"><i class="fas fa-chart-line"></i> মাসিক উপস্থিতির সারাংশ</div>
-                <div class="feature-badge"><i class="fas fa-chart-line"></i> নিয়মিত পর্যবেক্ষণ ও ব্যক্তিগত ফলোআপ।</div>
-                <div class="feature-badge"><i class="fas fa-chart-line"></i> সাপ্তাহিক, মাসিক মূল্যায়ন ও চূড়ান্ত মডেল টেস্ট।</div>
-                <div class="feature-badge"><i class="fas fa-chart-line"></i> মূল্যায়নে ১ম, ২য়, ৩য় সহ ভালো ফলাফল অর্জনকারীদের জন্য আকর্ষণীয় পুরস্কার।</div>
-                <div class="feature-badge"><i class="fas fa-chart-line"></i> নিয়মিত শিক্ষার্থীদের এটেন্ডেন্সশীট সংরক্ষণ এবং এবসেন্ট থাকলে অভিভাবকদের ইনফর্ম করার ব্যবস্থা।</div>
-                
-            </div></div></div>
-        <div id="studentPanel" class="panel"><h2><i class="fas fa-comment-dots"></i> শিক্ষকদের মতামত দিন</h2><div id="studentFeedbackArea"></div></div>
-        <div id="teacherPanel" class="panel"><h2><i class="fas fa-chalkboard"></i> শিক্ষক ড্যাশবোর্ড</h2><div id="teacherProfileArea"></div><div id="teacherAssignedClasses"></div><div id="teacherClassStudents"></div></div>
-        <div id="adminTeachersPanel" class="panel"><h2><i class="fas fa-user-plus"></i> শিক্ষক তৈরি করুন</h2><div style="background:#f7fafc; padding:16px; border-radius:28px;"><div style="text-align:center;"><img id="teacherImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=+"><label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="teacherImageInput" accept="image/*" style="display:none;"></label></div><input type="text" id="newTeacherName" placeholder="পূর্ণ নাম"><input type="text" id="newTeacherId" placeholder="শিক্ষক আইডি"><input type="text" id="newTeacherPass" placeholder="পাসওয়ার্ড"><div id="classCheckboxes"></div><button class="btn btn-green" id="createTeacherBtn">শিক্ষক তৈরি করুন</button></div><h3>📋 বিদ্যমান শিক্ষকবৃন্দ</h3><div id="teachersList"></div></div>
-        <div id="adminClassPanel" class="panel"><h2>ক্লাস ম্যানেজার</h2><div id="classButtons" class="class-buttons-container"></div><div style="background:#f9f5ed; padding:16px; border-radius:28px; margin-top:20px;"><h3>➕ ছাত্র/ছাত্রী যোগ করুন - <span id="selectedClassName">ক্লাস সিলেক্ট করুন</span></h3><div style="text-align:center;"><img id="studentImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=+"><label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="studentImageInput" accept="image/*" style="display:none;"></label></div><input type="text" id="cousinName" placeholder="নাম *"><input type="text" id="cousinId" placeholder="আইডি *"><input type="text" id="cousinPass" placeholder="পাসওয়ার্ড *"><button class="btn btn-blue" id="addCousinBtn">যোগ করুন</button></div><button class="btn btn-green" id="saveClassBtn">সব সংরক্ষণ করুন</button><div class="table-responsive"><div id="classStudentsTable"></div></div></div>
+            <div id="studentClassInfo" class="student-info-card" style="display: none;">
+                <h3><i class="fas fa-user-graduate"></i> আমার তথ্য</h3>
+                <p><strong>নাম:</strong> <span id="studentNameDisplay"></span></p>
+                <p><strong>ক্লাস:</strong> <span id="studentClassDisplay"></span></p>
+                <p><strong>আইডি:</strong> <span id="studentIdDisplay"></span></p>
+            </div>
+            <div id="todayTomorrowRoutine"></div>
+            <div id="teachersGrid" class="teacher-grid"></div>
+        </div>
+        
+        <div id="studentPanel" class="panel">
+            <h2><i class="fas fa-comment-dots"></i> শিক্ষকদের মতামত দিন</h2>
+            <div id="studentFeedbackArea"></div>
+        </div>
+        
+        <div id="teacherPanel" class="panel">
+            <h2><i class="fas fa-chalkboard"></i> শিক্ষক ড্যাশবোর্ড</h2>
+            <div id="teacherProfileArea"></div>
+            <div id="teacherAssignedClasses"></div>
+            <div id="teacherClassStudents"></div>
+        </div>
+        
+        <div id="adminTeachersPanel" class="panel">
+            <h2><i class="fas fa-user-plus"></i> শিক্ষক তৈরি করুন</h2>
+            <div style="background:#f7fafc; padding:16px; border-radius:28px; margin-bottom:20px;">
+                <div style="text-align:center;">
+                    <img id="teacherImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=শিক্ষক">
+                    <label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="teacherImageInput" accept="image/*" style="display:none;"></label>
+                </div>
+                <input type="text" id="newTeacherName" placeholder="পূর্ণ নাম">
+                <input type="text" id="newTeacherId" placeholder="শিক্ষক আইডি">
+                <input type="text" id="newTeacherPass" placeholder="পাসওয়ার্ড">
+                <div id="classCheckboxes"></div>
+                <button class="btn btn-green" id="createTeacherBtn">শিক্ষক তৈরি করুন</button>
+            </div>
+            <h3>📋 বিদ্যমান শিক্ষকবৃন্দ</h3>
+            <div class="table-responsive"><div id="teachersTable"></div></div>
+        </div>
+        
+        <div id="adminClassPanel" class="panel">
+            <h2>ক্লাস ম্যানেজার</h2>
+            <div id="classButtons" class="class-buttons-container"></div>
+            <div style="background:#f9f5ed; padding:16px; border-radius:28px; margin-top:20px;">
+                <h3>➕ ছাত্র/ছাত্রী যোগ করুন - <span id="selectedClassName">ক্লাস নির্বাচন করুন</span></h3>
+                <div style="text-align:center;">
+                    <img id="studentImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=ছাত্র">
+                    <label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="studentImageInput" accept="image/*" style="display:none;"></label>
+                </div>
+                <input type="text" id="cousinName" placeholder="নাম *">
+                <input type="text" id="cousinId" placeholder="আইডি *">
+                <input type="text" id="cousinPass" placeholder="পাসওয়ার্ড *">
+                <input type="tel" id="cousinGuardianPhone" placeholder="অভিভাবকের মোবাইল (01XXXXXXXXX)">
+                <button class="btn btn-blue" id="addCousinBtn">যোগ করুন</button>
+            </div>
+            <button class="btn btn-green" id="saveClassBtn">সব সংরক্ষণ করুন</button>
+            <div class="table-responsive"><div id="classStudentsTable"></div></div>
+        </div>
         
         <div id="attendancePanel" class="panel">
-            <h2><i class="fas fa-calendar-alt"></i> অ্যাটেন্ডেন্স ব্যবস্থাপনা <span class="attendance-permission-badge"><i class="fas fa-lock"></i> শুধু শিক্ষক ও প্রশাসক পরিবর্তন করতে পারেন</span></h2>
-            <!-- শিক্ষার্থীদের জন্য ইতিহাস বিভাগ সর্বপ্রথম দেখানো হবে -->
+            <h2><i class="fas fa-calendar-alt"></i> অ্যাটেন্ডেন্স ব্যবস্থাপনা</h2>
             <div id="studentHistorySection" class="attendance-card" style="display: none;">
                 <h3><i class="fas fa-user-graduate"></i> আমার উপস্থিতির ইতিহাস</h3>
                 <div class="attendance-summary" id="studentSummary"></div>
                 <div class="month-selector" id="studentMonthSelector"></div>
                 <div id="studentCalendarGrid"></div>
             </div>
-            <!-- শিক্ষক ও অ্যাডমিনের জন্য উপস্থিতি দিন ও ক্লাস সারাংশ -->
             <div id="teacherAttendanceSection" style="display: none;">
                 <div class="attendance-card">
                     <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
                         <select id="attendanceClassSelect" style="flex:2; margin-bottom: 0;"></select>
                         <input type="date" id="attendanceDate" style="flex:1; margin-bottom: 0;">
-                        <button class="btn btn-blue" id="loadStudentsBtn"><i class="fas fa-users"></i> ছাত্র/ছাত্রী তালিকা দেখুন</button>
+                        <button class="btn btn-blue" id="loadStudentsBtn"><i class="fas fa-users"></i> ছাত্র তালিকা দেখুন</button>
                     </div>
                 </div>
                 <div id="studentAttendanceSection" class="attendance-card" style="display: none;">
@@ -201,244 +152,62 @@
             </div>
         </div>
         
-        <div id="adminFeedbackPanel" class="panel"><h2><i class="fas fa-archive"></i> সকল মতামত</h2><select id="feedbackClassFilter" style="margin-bottom:15px;"></select><div id="feedbackList"></div></div>
-        <div id="adminRoutinePanel" class="panel"><h2><i class="fas fa-calendar-edit"></i> রুটিন ম্যানেজার</h2><div id="routineEditArea"></div><button class="btn btn-green" id="saveAllRoutinesBtn"><i class="fas fa-save"></i> সব রুটিন সংরক্ষণ করুন</button></div>
-        <div id="socialFeedPanel" class="panel"><h2><i class="fas fa-comments"></i> Social Opinion</h2><textarea id="feedCaption" rows="2" placeholder="পোস্ট লিখুন..."></textarea><input type="text" id="feedImgUrl" placeholder="ছবির URL"><button onclick="window.publishPost()" class="btn btn-orange">পোস্ট করুন</button><div id="socialFeedContainer"></div></div>
+        <div id="adminFeedbackPanel" class="panel">
+            <h2><i class="fas fa-archive"></i> সকল মতামত (শুধু প্রশাসক)</h2>
+            <select id="feedbackClassFilter" style="margin-bottom:15px;"></select>
+            <div id="feedbackList"></div>
+        </div>
+        
+        <div id="adminRoutinePanel" class="panel">
+            <h2><i class="fas fa-calendar-edit"></i> রুটিন ম্যানেজার</h2>
+            <div id="routineEditArea"></div>
+            <button class="btn btn-green" id="saveAllRoutinesBtn"><i class="fas fa-save"></i> সব রুটিন সংরক্ষণ করুন</button>
+        </div>
+        
+        <div id="socialFeedPanel" class="panel">
+            <h2><i class="fas fa-comments"></i> সোশ্যাল কানেক্টিভিটি</h2>
+            <textarea id="feedCaption" rows="2" placeholder="পোস্ট লিখুন..."></textarea>
+            <input type="text" id="feedImgUrl" placeholder="ছবির URL (ঐচ্ছিক)">
+            <button onclick="window.publishPost()" class="btn btn-orange">পোস্ট করুন</button>
+            <div id="socialFeedContainer" style="margin-top: 20px;"></div>
+        </div>
     </div>
-    <footer style="text-align:center; padding:16px; color:#666;">© Mastermind Academy</footer>
+    <footer style="text-align:center; padding:16px; color:#666;">© মাস্টারমাইন্ড অ্যাকাডেমি</footer>
 </div>
 
-<div id="resultModal" class="result-modal"><div class="results-card"><i class="fas fa-chart-simple" style="font-size:48px; color:#f5b042;"></i><br><a href="about.html" style="display:inline-block; margin:15px 0; background:#2ecc71; color:white; padding:10px 20px; border-radius:40px; text-decoration:none;"> একাডেমিক ফলাফল </a><p>ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন। আমরা আপনার সহযোগিতা কামনা করি। <br> "ধন্যবাদ"</p><button class="btn btn-green" onclick="document.getElementById('resultModal').style.display='none'">বন্ধ করুন</button></div></div>
-<div id="aboutModal" class="about-modal"><div class="about-card"><i class="fas fa-school" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i><h2 style="text-align:center;">মাস্টারমাইন্ড অ্যাকাডেমি</h2><p>আধুনিক শিক্ষাপ্রতিষ্ঠান যা মানসম্মত শিক্ষা ও প্রযুক্তিনির্ভর ক্লাসরুম ব্যবস্থাপনায় অনন্য।</p><p><strong>📍 ঠিকানা:</strong> পেকুয়া, কক্সবাজার</p><p><strong>📞 যোগাযোগ:</strong> 01623209091</p><button class="btn btn-orange" style="width:100%;" onclick="document.getElementById('aboutModal').style.display='none'">বন্ধ করুন</button></div></div>
-<div id="routineModal" class="routine-modal"><div class="routine-card"><i class="fas fa-calendar-week" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i><h2 style="text-align:center;">📅 ক্লাস রুটিন</h2><div id="routineContent"></div><button class="btn btn-orange" style="width:100%; margin-top:15px;" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button></div></div>
+<div id="resultModal" class="result-modal">
+    <div class="results-card">
+        <i class="fas fa-chart-simple" style="font-size:48px; color:#f5b042;"></i>
+        <h2 style="margin-top:15px;"><a href="about.html" style="font-size: 20px;"> 📊 একাডেমিক ফলাফল</a></h2>
+        <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
+        <p style="margin-bottom:20px;">ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।</p>
+        <p style="margin-bottom:20px; font-style:italic;">"ধন্যবাদ"</p>
+        <button class="btn btn-green" onclick="document.getElementById('resultModal').style.display='none'">বন্ধ করুন</button>
+    </div>
+</div>
+
+<div id="aboutModal" class="about-modal">
+    <div class="about-card">
+        <i class="fas fa-school" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
+        <h2 style="text-align:center;">মাস্টারমাইন্ড অ্যাকাডেমি</h2>
+        <p style="margin:15px 0;">আধুনিক শিক্ষাপ্রতিষ্ঠান যা মানসম্মত শিক্ষা ও প্রযুক্তিনির্ভর ক্লাসরুম ব্যবস্থাপনায় অনন্য।</p>
+        <p><strong>📍 ঠিকানা:</strong> পেকুয়া, কক্সবাজার</p>
+        <p><strong>📞 যোগাযোগ:</strong> 01623209091</p>
+        <button class="btn btn-orange" style="width:100%; margin-top:15px;" onclick="document.getElementById('aboutModal').style.display='none'">বন্ধ করুন</button>
+    </div>
+</div>
+
+<div id="routineModal" class="routine-modal">
+    <div class="routine-card">
+        <i class="fas fa-calendar-week" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
+        <h2 style="text-align:center;">📅 ক্লাস রুটিন</h2>
+        <div id="routineContent"></div>
+        <button class="btn btn-orange" style="width:100%; margin-top:15px;" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button>
+    </div>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyD4xuqY5FDdiEwlYpkC1cfMEN1aIwPtB_A",
-        authDomain: "studentcom-3e387.firebaseapp.com",
-        projectId: "studentcom-3e387",
-        databaseURL: "https://studentcom-3e387-default-rtdb.firebaseio.com",
-        messagingSenderId: "284949876238",
-        appId: "1:284949876238:web:d6a8cde91411a033e9f65f"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    let currentUser = { id: "", role: "", name: "", photo: "" };
-    let currentClass = "Class 6";
-    let studentsData = [];
-    const classes = ["Class 5", "Class 6", "Class 7", "Class 8", "Class 9-Sci","Class 9-Com","Class 9-Hum", "Class 10-Sci","Class 10-Com","Class 10-Hum", "SSC Special Batch-Sci","SSC Special Batch-Com","SSC Special Batch-Hum"];
-    let teacherImageBase64 = "", studentImageBase64 = "";
-    let currentStudentsList = [];
-    let teacherAssignedClasses = [];
-    let classRoutine = {};
-    const days = ['শনিবার', 'রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার'];
-    
-    function getBanglaDayName(englishDay) { const dayMap = { 'Saturday': 'শনিবার', 'Sunday': 'রবিবার', 'Monday': 'সোমবার', 'Tuesday': 'মঙ্গলবার', 'Wednesday': 'বুধবার', 'Thursday': 'বৃহস্পতিবার', 'Friday': 'শুক্রবার' }; return dayMap[englishDay] || englishDay; }
-    function getTomorrowDayName() { const daysEng = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1); return getBanglaDayName(daysEng[tomorrow.getDay()]); }
-    function getTodayDayName() { const daysEng = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; const today = new Date(); return getBanglaDayName(daysEng[today.getDay()]); }
-    
-    const defaultRoutine = { "Class 5": { "শনিবার": "গণিত", "রবিবার": "বাংলা", "সোমবার": "ইংরেজি", "মঙ্গলবার": "বিজ্ঞান", "বুধবার": "সামাজিক", "বৃহস্পতিবার": "ধর্ম", "শুক্রবার": "ছুটি" }, "Class 6": { "শনিবার": "বিজ্ঞান", "রবিবার": "গণিত", "সোমবার": "বাংলা", "মঙ্গলবার": "ইংরেজি", "বুধবার": "কম্পিউটার", "বৃহস্পতিবার": "সাধারণ জ্ঞান", "শুক্রবার": "ছুটি" }, "Class 7": { "শনিবার": "ইংরেজি", "রবিবার": "বিজ্ঞান", "সোমবার": "গণিত", "মঙ্গলবার": "বাংলা", "বুধবার": "সামাজিক", "বৃহস্পতিবার": "ধর্ম", "শুক্রবার": "ছুটি" }, "Class 8": { "শনিবার": "বাংলা", "রবিবার": "ইংরেজি", "সোমবার": "গণিত", "মঙ্গলবার": "বিজ্ঞান", "বুধবার": "কৃষি", "বৃহস্পতিবার": "কম্পিউটার", "শুক্রবার": "ছুটি" }, "Class 9": { "শনিবার": "পদার্থবিজ্ঞান", "রবিবার": "রসায়ন", "সোমবার": "জীববিজ্ঞান", "মঙ্গলবার": "উচ্চতর গণিত", "বুধবার": "বাংলা", "বৃহস্পতিবার": "ইংরেজি", "শুক্রবার": "ছুটি" }, "Class 10": { "শনিবার": "রসায়ন", "রবিবার": "পদার্থবিজ্ঞান", "সোমবার": "জীববিজ্ঞান", "মঙ্গলবার": "উচ্চতর গণিত", "বুধবার": "ইংরেজি ২য় পত্র", "বৃহস্পতিবার": "বাংলা ২য় পত্র", "শুক্রবার": "ছুটি" }, "SSC Special Batch": { "শনিবার": "বাংলা (MCQ)", "রবিবার": "ইংরেজি (MCQ)", "সোমবার": "গণিত (MCQ)", "মঙ্গলবার": "সাধারণ বিজ্ঞান", "বুধবার": "মডেল টেস্ট", "বৃহস্পতিবার": "মডেল টেস্ট", "শুক্রবার": "ছুটি" } };
-    async function loadRoutineFromFirebase() { const snap = await db.ref('class_routines').get(); if(snap.exists()) { classRoutine = snap.val(); } else { classRoutine = JSON.parse(JSON.stringify(defaultRoutine)); await db.ref('class_routines').set(classRoutine); } return classRoutine; }
-    async function showTodayTomorrowRoutine() { const routine = await loadRoutineFromFirebase(); const container = document.getElementById('todayTomorrowRoutine'); if(!container) return; const todayName = getTodayDayName(); const tomorrowName = getTomorrowDayName(); if(currentUser.role === 'student') { let clsRoutine = routine[currentClass] || routine["Class 6"]; container.innerHTML = `<div class="today-routine-card"><h3>📚 আজকের ক্লাস (${todayName})</h3><div class="routine-subject">${clsRoutine[todayName] || 'ক্লাস নেই'}</div></div><div class="tomorrow-routine-card"><h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3><div class="routine-subject">${clsRoutine[tomorrowName] || 'ক্লাস নেই'}</div></div>`; } else { let todayHtml = `<div class="today-routine-card"><h3>📚 আজকের ক্লাস (${todayName})</h3>`; let tomorrowHtml = `<div class="tomorrow-routine-card"><h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3>`; for(let cls of classes) { let clsRoutine = routine[cls] || routine["Class 6"]; todayHtml += `<p><strong>${cls}:</strong> ${clsRoutine[todayName] || 'ক্লাস নেই'}</p>`; tomorrowHtml += `<p><strong>${cls}:</strong> ${clsRoutine[tomorrowName] || 'ক্লাস নেই'}</p>`; } todayHtml += `</div>`; tomorrowHtml += `</div>`; container.innerHTML = todayHtml + tomorrowHtml; } }
-    
-    async function loadStudentOwnAttendance() {
-        if(currentUser.role !== 'student') return;
-        const studentClass = currentClass;
-        const classKey = studentClass.replace(/\s+/g,'_');
-        const studentId = currentUser.id;
-        let monthlyData = {};
-        const now = new Date();
-        let year = now.getFullYear(), month = now.getMonth();
-        const updateCalendar = async () => {
-            const daysInMonth = new Date(year, month+1, 0).getDate();
-            let presentCount = 0, absentCount = 0, totalDays = 0;
-            let attendanceHtml = `<div class="calendar-grid">`;
-            const weekdays = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'];
-            weekdays.forEach(day => attendanceHtml += `<div class="cal-day-header">${day}</div>`);
-            const firstDay = new Date(year, month, 1).getDay();
-            for(let i=0; i<firstDay; i++) attendanceHtml += `<div class="cal-day empty"></div>`;
-            for(let d=1; d<=daysInMonth; d++) {
-                let dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-                let snap = await db.ref(`attendances/${classKey}/${dateStr}/${studentId}`).get();
-                let isPresent = snap.exists() && snap.val() === true;
-                if(isPresent) { presentCount++; totalDays++; attendanceHtml += `<div class="cal-day present"><div class="date-num">${d}</div><div class="status-icon">✅ উপস্থিত</div></div>`; }
-                else if(snap.exists() && snap.val() === false) { absentCount++; totalDays++; attendanceHtml += `<div class="cal-day absent"><div class="date-num">${d}</div><div class="status-icon">❌ অনুপস্থিত</div></div>`; }
-                else attendanceHtml += `<div class="cal-day"><div class="date-num">${d}</div><div class="status-icon">—</div></div>`;
-            }
-            attendanceHtml += `</div>`;
-            document.getElementById('studentCalendarGrid').innerHTML = attendanceHtml;
-            let percentage = totalDays ? ((presentCount/totalDays)*100).toFixed(1) : 0;
-            document.getElementById('studentSummary').innerHTML = `<div class="summary-item"><div class="number">${presentCount}</div><div class="label">উপস্থিত</div></div><div class="summary-item"><div class="number">${absentCount}</div><div class="label">অনুপস্থিত</div></div><div class="summary-item"><div class="number">${percentage}%</div><div class="label">উপস্থিতির হার</div></div>`;
-        };
-        const months = ['জানুয়ারী', 'ফেব্রুয়ারী', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-        let selectorHtml = `<select id="studentMonthYearPicker">`;
-        for(let y of [2025, 2026]) for(let m=0; m<12; m++) selectorHtml += `<option value="${y}-${m}" ${(y===year && m===month)?'selected':''}>${months[m]} ${y}</option>`;
-        selectorHtml += `</select><button class="btn btn-blue" id="refreshStudentMonthBtn">দেখুন</button>`;
-        document.getElementById('studentMonthSelector').innerHTML = selectorHtml;
-        document.getElementById('refreshStudentMonthBtn').onclick = () => { const val = document.getElementById('studentMonthYearPicker').value; [year, month] = val.split('-').map(Number); updateCalendar(); };
-        await updateCalendar();
-    }
-    
-    async function initAttendancePanel() {
-        const isTeacherOrAdmin = (currentUser.role === 'teacher' || currentUser.role === 'admin');
-        const teacherSection = document.getElementById('teacherAttendanceSection');
-        const studentSection = document.getElementById('studentHistorySection');
-        if(currentUser.role === 'student') {
-            if(teacherSection) teacherSection.style.display = 'none';
-            if(studentSection) studentSection.style.display = 'block';
-            await loadStudentOwnAttendance();
-        } else {
-            if(teacherSection) teacherSection.style.display = 'block';
-            if(studentSection) studentSection.style.display = 'none';
-            await loadAttendanceClassSelect();
-            document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('loadStudentsBtn').onclick = () => loadStudentsForDate();
-            document.getElementById('saveAttendanceBtn').onclick = () => saveAttendance();
-            const months = ['জানুয়ারী', 'ফেব্রুয়ারী', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-            let classMonthHtml = `<select id="classMonthYearSelect">`;
-            for(let year of [2025, 2026]) for(let m=0; m<12; m++) classMonthHtml += `<option value="${year}-${m}" ${(year===2025 && m===new Date().getMonth())?'selected':''}>${months[m]} ${year}</option>`;
-            classMonthHtml += `</select><button class="btn btn-blue" id="refreshClassMonthBtn">দেখুন</button>`;
-            document.getElementById('classMonthSelector').innerHTML = classMonthHtml;
-            document.getElementById('refreshClassMonthBtn').onclick = () => loadClassMonthlyCalendar();
-            await loadClassMonthlyCalendar();
-        }
-    }
-    
-    async function loadAttendanceClassSelect() {
-        const classSelect = document.getElementById('attendanceClassSelect');
-        if(!classSelect) return;
-        if(currentUser.role === 'teacher') classSelect.innerHTML = teacherAssignedClasses.map(c => `<option value="${c}">${c}</option>`).join('');
-        else classSelect.innerHTML = classes.map(c => `<option value="${c}">${c}</option>`).join('');
-    }
-    async function loadStudentsForDate() {
-        const className = document.getElementById('attendanceClassSelect').value;
-        const date = document.getElementById('attendanceDate').value;
-        if(!className || !date) { alert('ক্লাস এবং তারিখ নির্বাচন করুন'); return; }
-        if(currentUser.role === 'teacher' && !teacherAssignedClasses.includes(className)) { alert('আপনি এই ক্লাসে উপস্থিতি দিতে পারবেন না।'); return; }
-        const classKey = className.replace(/\s+/g,'_');
-        const studentsSnap = await db.ref(`class_sheets/${classKey}/students`).get();
-        const students = studentsSnap.exists() ? studentsSnap.val() : [];
-        if(students.length === 0) { alert('এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই'); return; }
-        let attendanceMap = {};
-        const attSnap = await db.ref(`attendances/${classKey}/${date}`).get();
-        if(attSnap.exists()) attendanceMap = attSnap.val();
-        currentStudentsList = students.map(s => ({ ...s, present: attendanceMap[s.id] === true }));
-        let html = `<div class="attendance-info">মোট ছাত্র/ছাত্রী: ${students.length} জন</div>`;
-        currentStudentsList.forEach((s, idx) => {
-            let photo = s.photo || `https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=${s.name}`;
-            html += `<div class="student-att-row"><img src="${photo}" style="width:40px;height:40px;border-radius:50%;"><div style="flex:1;"><strong>${escapeHtml(s.name)}</strong><br><small>ID: ${s.id}</small></div><label class="toggle-switch"><input type="checkbox" class="att-student-cb" data-idx="${idx}" ${s.present ? 'checked' : ''}><span class="slider"></span></label></div>`;
-        });
-        document.getElementById('studentAttendanceList').innerHTML = html;
-        document.getElementById('selectedDateDisplay').innerText = date;
-        document.getElementById('studentAttendanceSection').style.display = 'block';
-        document.querySelectorAll('.att-student-cb').forEach(cb => { cb.addEventListener('change', (e) => { let idx = parseInt(cb.dataset.idx); currentStudentsList[idx].present = cb.checked; }); });
-    }
-    async function saveAttendance() {
-        const className = document.getElementById('attendanceClassSelect').value;
-        const date = document.getElementById('attendanceDate').value;
-        if(!className || !date) return;
-        if(currentUser.role === 'teacher' && !teacherAssignedClasses.includes(className)) { alert('আপনি এই ক্লাসে উপস্থিতি সংরক্ষণ করতে পারবেন না।'); return; }
-        const classKey = className.replace(/\s+/g,'_');
-        let attendanceData = {};
-        currentStudentsList.forEach(s => { attendanceData[s.id] = s.present === true; });
-        await db.ref(`attendances/${classKey}/${date}`).set(attendanceData);
-        alert('উপস্থিতি সংরক্ষিত হয়েছে!');
-        await loadClassMonthlyCalendar();
-    }
-    async function loadClassMonthlyCalendar() {
-        const className = document.getElementById('attendanceClassSelect').value;
-        if(!className) return;
-        const classKey = className.replace(/\s+/g,'_');
-        const monthSelect = document.getElementById('classMonthYearSelect');
-        if(!monthSelect) return;
-        let [year, month] = monthSelect.value.split('-').map(Number);
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const firstDay = new Date(year, month, 1).getDay();
-        let attendanceData = {};
-        for(let d=1; d<=daysInMonth; d++) {
-            let dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-            let snap = await db.ref(`attendances/${classKey}/${dateStr}`).get();
-            if(snap.exists()) { let data = snap.val(); let total = Object.keys(data).length; let present = Object.values(data).filter(v=>v===true).length; attendanceData[dateStr] = { present, total }; }
-        }
-        let html = `<div class="calendar-grid">`;
-        const weekdays = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'];
-        weekdays.forEach(day => html += `<div class="cal-day-header">${day}</div>`);
-        for(let i=0; i<firstDay; i++) html += `<div class="cal-day empty"></div>`;
-        for(let d=1; d<=daysInMonth; d++) {
-            let dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-            let att = attendanceData[dateStr];
-            if(att) html += `<div class="cal-day present"><div class="date-num">${d}</div><div class="status-icon">✅ ${att.present}/${att.total}</div></div>`;
-            else html += `<div class="cal-day absent"><div class="date-num">${d}</div><div class="status-icon">❌ ডাটা নেই</div></div>`;
-        }
-        html += `</div>`;
-        document.getElementById('classMonthlyCalendar').innerHTML = html;
-    }
-    
-    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
-    async function loadDashboard() { const snap = await db.ref('registered_teachers').get(); const container = document.getElementById('teachersGrid'); if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; } let html = ''; for(let key in snap.val()) { let t = snap.val()[key]; let photo = t.photo || `https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=${t.teacher_name}`; html += `<div class="teacher-card"><img src="${photo}"><h3>${escapeHtml(t.teacher_name)}</h3><p>📚 ${t.classes?.join(', ') || '—'}</p></div>`; } container.innerHTML = html; }
-    async function loadTeacherPanel() { const snap = await db.ref(`registered_teachers/${currentUser.id}`).get(); if(!snap.exists()) return; const teacher = snap.val(); teacherAssignedClasses = teacher.classes || []; let photoHtml = teacher.photo ? `<img src="${teacher.photo}" style="width:80px;height:80px;border-radius:50%;">` : `<i class="fas fa-chalkboard-user" style="font-size:60px;"></i>`; document.getElementById('teacherProfileArea').innerHTML = `<div>${photoHtml}<h3>${escapeHtml(teacher.teacher_name)}</h3><p>আইডি: ${teacher.teacher_id}</p></div>`; if(teacherAssignedClasses.length === 0) { document.getElementById('teacherAssignedClasses').innerHTML = '<div class="teacher-class-card"><p>আপনার কোনো ক্লাস বরাদ্দ নেই।</p></div>'; return; } let classHtml = `<div class="teacher-class-card"><h4>আমার ক্লাসসমূহ</h4><div style="display:flex; flex-wrap:wrap; gap:10px;">`; for(let cls of teacherAssignedClasses) { classHtml += `<button class="btn btn-blue teacher-class-btn" data-class="${cls}">📖 ${cls}</button>`; } classHtml += `</div></div>`; document.getElementById('teacherAssignedClasses').innerHTML = classHtml; document.querySelectorAll('.teacher-class-btn').forEach(btn => { btn.onclick = () => loadTeacherClassStudents(btn.dataset.class); }); if(teacherAssignedClasses.length > 0) await loadTeacherClassStudents(teacherAssignedClasses[0]); }
-    async function loadTeacherClassStudents(className) { const classKey = className.replace(/\s+/g,'_'); const snap = await db.ref(`class_sheets/${classKey}/students`).get(); const students = snap.exists() ? snap.val() : []; if(students.length === 0) { document.getElementById('teacherClassStudents').innerHTML = `<div class="teacher-class-card"><h4>${className}</h4><p>কোন ছাত্র/ছাত্রী নেই।</p></div>`; return; } let html = `<div class="teacher-class-card"><h4>${className} - ছাত্র/ছাত্রীবৃন্দ</h4>`; students.forEach(s => { html += `<div class="student-list-item"><img src="${s.photo || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name='+s.name}" style="width:40px;height:40px;border-radius:50%;"><div><strong>${escapeHtml(s.name)}</strong><br><small>ID: ${s.id}</small></div></div>`; }); html += `</div>`; document.getElementById('teacherClassStudents').innerHTML = html; }
-    async function startApp() {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('appContainer').style.display = 'block';
-        document.getElementById('userNameDisplay').innerText = currentUser.name;
-        document.getElementById('roleDisplay').innerText = currentUser.role == 'admin' ? 'প্রশাসক' : (currentUser.role == 'teacher' ? 'শিক্ষক' : 'ছাত্র/ছাত্রী');
-        let isAdmin = currentUser.role === 'admin';
-        document.getElementById('menuClassManager').style.display = isAdmin ? 'block' : 'none';
-        document.getElementById('menuTeachers').style.display = isAdmin ? 'block' : 'none';
-        document.getElementById('menuFeedback').style.display = isAdmin ? 'block' : 'none';
-        document.getElementById('menuRoutineManager').style.display = isAdmin ? 'block' : 'none';
-        document.getElementById('menuAttendance').style.display = 'block';
-        const studentMenuItem = document.getElementById('menuStudentFeedback');
-        if(currentUser.role === 'student') { studentMenuItem.style.display = 'block'; studentMenuItem.onclick = () => { showPanel('studentPanel'); loadStudentFeedback(); }; } else studentMenuItem.style.display = 'none';
-        await loadDashboard(); loadSocialFeed(); await loadRoutineFromFirebase(); await showTodayTomorrowRoutine();
-        if(currentUser.role === 'student') { await loadStudentFeedback(); showPanel('studentPanel'); }
-        else if(currentUser.role === 'teacher') { await loadTeacherPanel(); showPanel('teacherPanel'); }
-        else { await loadDashboard(); showPanel('dashboardPanel'); }
-        setupMenu(); 
-        document.getElementById('viewResultBtn')?.addEventListener('click', () => document.getElementById('resultModal').style.display = 'flex');
-        document.getElementById('aboutUsBtn')?.addEventListener('click', () => document.getElementById('aboutModal').style.display = 'flex');
-        document.getElementById('viewRoutineBtn')?.addEventListener('click', () => showRoutine());
-    }
-    async function loadStudentFeedback() { const area = document.getElementById('studentFeedbackArea'); const teachersSnap = await db.ref('registered_teachers').get(); if(!teachersSnap.exists()) { area.innerHTML='<div class="empty-state">কোন শিক্ষক নেই</div>'; return; } const allTeachers = Object.values(teachersSnap.val()); const classTeachers = allTeachers.filter(teacher => teacher.classes && teacher.classes.includes(currentClass)); if(classTeachers.length === 0) { area.innerHTML='<div class="empty-state">আপনার ক্লাসের কোনো শিক্ষক নেই।</div>'; return; } const classKeyForDB = currentClass.replace(/\s+/g, '_'); area.innerHTML = ''; for(let t of classTeachers) { const existing = await db.ref(`secret_evaluations/${classKeyForDB}/${currentUser.id}/${t.teacher_id}`).get(); const comment = existing.exists() ? existing.val().comment : ''; const div = document.createElement('div'); div.style.cssText = "background:#fff7e8; border-radius:24px; padding:14px; margin-bottom:14px;"; div.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><img src="${t.photo || 'https://ui-avatars.com/api/?background=1e7b4a&color=fff&name='+t.teacher_name}" style="width:40px;height:40px;border-radius:50%;"><strong>${escapeHtml(t.teacher_name)}</strong></div><textarea id="fb_${t.teacher_id}" rows="2" style="margin-top:8px;" placeholder="আপনার মতামত দিন...">${escapeHtml(comment)}</textarea><div style="text-align:right;"><span id="saved_${t.teacher_id}" style="color:green; display:none;">✓ সংরক্ষিত</span></div>`; area.appendChild(div); const ta = document.getElementById(`fb_${t.teacher_id}`); let timer; ta.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(async () => { await db.ref(`secret_evaluations/${classKeyForDB}/${currentUser.id}/${t.teacher_id}`).set({ studentName: currentUser.name, teacherName: t.teacher_name, comment: ta.value, timestamp: new Date().toISOString() }); const savedSpan = document.getElementById(`saved_${t.teacher_id}`); if(savedSpan) { savedSpan.style.display = 'inline-block'; setTimeout(()=>savedSpan.style.display='none', 1500); } }, 700); }); } }
-    function setupMenu() {
-        document.getElementById('menuDashboard').onclick = () => { showPanel('dashboardPanel'); loadDashboard(); showTodayTomorrowRoutine(); };
-        document.getElementById('menuClassManager').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminClassPanel'); loadClassButtons(); } else alert('শুধু প্রশাসক'); };
-        document.getElementById('menuTeachers').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminTeachersPanel'); loadClassCheckboxes(); loadTeachersList(); } else alert('শুধু প্রশাসক'); };
-        document.getElementById('menuAttendance').onclick = () => { showPanel('attendancePanel'); initAttendancePanel(); };
-        document.getElementById('menuFeedback').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminFeedbackPanel'); loadClassFilter(); } else alert('শুধু প্রশাসক'); };
-        document.getElementById('menuRoutineManager').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminRoutinePanel'); loadRoutineEditForm(); } else alert('শুধু প্রশাসক'); };
-        document.getElementById('menuSocialFeed').onclick = () => showPanel('socialFeedPanel');
-        document.getElementById('menuLogout').onclick = () => location.reload();
-        document.getElementById('menuToggle').onclick = (e) => { e.stopPropagation(); document.getElementById('dropdownMenu').classList.toggle('show'); };
-        document.addEventListener('click', () => document.getElementById('dropdownMenu').classList.remove('show'));
-    }
-    function hideAllPanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); }
-    function showPanel(panelId) { hideAllPanels(); document.getElementById(panelId).classList.add('active'); }
-    async function loadRoutineEditForm() { const routine = await loadRoutineFromFirebase(); let html = ''; for(let cls of classes) { let clsRoutine = routine[cls] || {}; html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>একশন</th></tr></thead><tbody>`; days.forEach((day, idx) => { html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="window.updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`; }); html += `</tbody></table></div>`; } document.getElementById('routineEditArea').innerHTML = html; }
-    window.updateRoutineDay = async (className, day, idx) => { const inputId = `input_${className.replace(/\s/g,'_')}_${idx}`; const newSubject = document.getElementById(inputId).value.trim(); if(!newSubject) { alert('বিষয়ের নাম লিখুন'); return; } const routine = await loadRoutineFromFirebase(); if(!routine[className]) routine[className] = {}; routine[className][day] = newSubject; await db.ref('class_routines').set(routine); alert(`${className} এর ${day} এর রুটিন আপডেট করা হয়েছে!`); showTodayTomorrowRoutine(); };
-    async function showRoutine() { const routine = await loadRoutineFromFirebase(); let routineHtml = '<h3>সাপ্তাহিক রুটিন</h3>'; for(let cls of classes) { let clsRoutine = routine[cls] || routine["Class 6"]; routineHtml += `<h4 style="margin-top:15px;">${cls}</h4><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th></tr></thead><tbody>`; days.forEach(day => { routineHtml += `<tr><td>${day}</td><td>${clsRoutine[day] || 'ক্লাস নেই'}</td></tr>`; }); routineHtml += `</tbody></table>`; } document.getElementById('routineContent').innerHTML = routineHtml; document.getElementById('routineModal').style.display = 'flex'; }
-    async function loadTeachersList() { const snap = await db.ref('registered_teachers').get(); if(!snap.exists()) { document.getElementById('teachersList').innerHTML='<div class="empty-state">কোন শিক্ষক নেই</div>'; return; } let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`; for(let key in snap.val()) { let t = snap.val()[key]; let photo = t.photo ? `<img src="${t.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user"></i>`; html += `<tr><td>${photo}</td><td>${escapeHtml(t.teacher_name)}</td><td>${t.teacher_id}</td><td>${t.classes?.join(', ')}</td><td><button class="btn btn-red btn-sm" onclick="window.deleteTeacher('${t.teacher_id}')">মুছুন</button></td></tr>`; } html += `</tbody></table>`; document.getElementById('teachersList').innerHTML = html; }
-    window.deleteTeacher = async (id) => { if(confirm('শিক্ষক মুছবেন?')){ await db.ref(`registered_teachers/${id}`).remove(); loadTeachersList(); loadDashboard(); } };
-    function loadClassCheckboxes() { let container = document.getElementById('classCheckboxes'); if(container) { container.innerHTML = ''; for(let c of classes) { let label = document.createElement('label'); label.style.cssText = "display:inline-block; margin:5px;"; label.innerHTML = `<input type="checkbox" value="${c}" class="teacherClassCheckbox"> ${c}`; container.appendChild(label); } } }
-    async function loadClassFilter() { let sel = document.getElementById('feedbackClassFilter'); if(sel) { sel.innerHTML = '<option value="">সব ক্লাস</option>' + classes.map(c=>`<option value="${c}">${c}</option>`).join(''); sel.onchange = loadFeedbackArchive; await loadFeedbackArchive(); } }
-    async function loadFeedbackArchive() { const filter = document.getElementById('feedbackClassFilter').value; const snap = await db.ref('secret_evaluations').get(); if(!snap.exists()) { document.getElementById('feedbackList').innerHTML='<div class="empty-state">কোন ফিডব্যাক নেই</div>'; return; } let items = []; for(let classKey in snap.val()) { let className = classKey.replace(/_/g, ' '); if(filter && className !== filter) continue; for(let student in snap.val()[classKey]) { for(let teacher in snap.val()[classKey][student]) { items.push({ class: className, ...snap.val()[classKey][student][teacher] }); } } } if(!items.length) { document.getElementById('feedbackList').innerHTML='<div class="empty-state">কোন ফিডব্যাক নেই</div>'; return; } let html = ''; items.forEach(it => { html += `<div class="feedback-item"><strong>📚 ${it.class}</strong> | 👨‍🎓 ${escapeHtml(it.studentName)} | 👨‍🏫 ${escapeHtml(it.teacherName)}<br><small>📝 ${escapeHtml(it.comment)}</small><br><small>📅 ${new Date(it.timestamp).toLocaleDateString()}</small></div>`; }); document.getElementById('feedbackList').innerHTML = html; }
-    window.publishPost = async () => { let cap = document.getElementById('feedCaption').value.trim(); if(!cap) { alert('ক্যাপশন লিখুন'); return; } let author = currentUser.role === 'admin' ? '🎓 প্রশাসক' : (currentUser.role === 'teacher' ? `👨‍🏫 ${currentUser.name}` : `🧑‍🎓 ${currentUser.name}`); let img = document.getElementById('feedImgUrl').value.trim(); await db.ref('social_feed').push({ caption: cap, imgUrl: img, author, timestamp: Date.now(), userId: currentUser.id, likes: {}, likeCount: 0 }); document.getElementById('feedCaption').value = ''; document.getElementById('feedImgUrl').value = ''; };
-    function loadSocialFeed() { db.ref('social_feed').on('value', (snap) => { let container = document.getElementById('socialFeedContainer'); container.innerHTML = ''; let data = snap.val(); if(!data) { container.innerHTML = '<div class="empty-state">কোনো পোস্ট নেই</div>'; return; } let sorted = Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0)); for(let [pid, post] of sorted) { let card = document.createElement('div'); card.className = 'social-card'; card.innerHTML = `<div style="display:flex; justify-content:space-between;"><b>${escapeHtml(post.author)}</b></div><small>${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</small><p>${escapeHtml(post.caption)}</p>${post.imgUrl ? `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px;">` : ''}<div class="like-section"><button class="like-btn" onclick="toggleLike('${pid}', this)"><i class="fas fa-heart"></i></button> <span class="like-count">${post.likeCount || 0} জন লাইক দিয়েছেন</span></div><div id="replies_${pid}"></div><div style="display:flex; gap:8px; margin-top:10px;"><input type="text" id="reply_inp_${pid}" placeholder="মন্তব্য করুন..." style="flex:1;"><button class="btn btn-blue btn-sm" onclick="addReply('${pid}')">পাঠান</button></div>`; container.appendChild(card); } }); }
-    function loadClassButtons() { let cont = document.getElementById('classButtons'); if(!cont) return; cont.innerHTML = ''; for(let c of classes) { let btn = document.createElement('div'); btn.className = 'class-btn'; btn.innerHTML = `📖 ${c}`; btn.onclick = () => { document.querySelectorAll('.class-btn').forEach(b => b.style.background = '#eef2f5'); btn.style.background = '#f5b042'; btn.style.color = '#0a163b'; currentManageClass = c; document.getElementById('selectedClassName').innerHTML = currentManageClass; loadClassData(currentManageClass); }; cont.appendChild(btn); } document.getElementById('selectedClassName').innerHTML = currentManageClass; loadClassData(currentManageClass); }
-    async function loadClassData(className) { currentClass = className; const snap = await db.ref(`class_sheets/${className.replace(/\s+/g,'_')}/students`).get(); studentsData = snap.exists() ? snap.val() : []; renderStudentsTable(); }
-    function renderStudentsTable() { let cont = document.getElementById('classStudentsTable'); if(!cont) return; if(!studentsData.length) { cont.innerHTML='<div class="empty-state">কোন ছাত্র/ছাত্রী নেই। উপরে ফর্ম ব্যবহার করে ছাত্র/ছাত্রী যোগ করুন।</div>'; return; } let html = `<table><thead><tr><th>ছবি</th><th>#</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>একশন</th></tr></thead><tbody>`; studentsData.forEach((s,i) => { let studentPhoto = s.photo ? `<img src="${s.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`; html += `<tr><td>${studentPhoto}</td><td>${i+1}</td><td>${escapeHtml(s.id)}</td><td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td><td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td><td><button class="btn btn-red btn-sm" onclick="window.removeStudent(${i})">মুছুন</button></td></tr>`; }); html += `</tbody></table>`; cont.innerHTML = html; document.querySelectorAll('.editName').forEach(inp => inp.onchange = (e) => studentsData[inp.dataset.index].name = inp.value); document.querySelectorAll('.editPass').forEach(inp => inp.onchange = (e) => studentsData[inp.dataset.index].password = inp.value); }
-    window.removeStudent = (idx) => { studentsData.splice(idx,1); renderStudentsTable(); };
-    document.getElementById('addCousinBtn').onclick = () => { let name = document.getElementById('cousinName').value.trim(); let id = document.getElementById('cousinId').value.trim().toLowerCase(); let pwd = document.getElementById('cousinPass').value.trim(); if(!name || !id || !pwd) { alert('নাম, আইডি এবং পাসওয়ার্ড আবশ্যক!'); return; } if(studentsData.find(s=>s.id===id)) { alert('এই আইডি ইতিমধ্যে বিদ্যমান!'); return; } studentsData.push({ id, name, password: pwd, photo: studentImageBase64 || '' }); studentImageBase64 = ''; document.getElementById('studentImagePreview').src = 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=+'; document.getElementById('cousinName').value = ''; document.getElementById('cousinId').value = ''; document.getElementById('cousinPass').value = ''; renderStudentsTable(); };
-    document.getElementById('saveClassBtn').onclick = async () => { await db.ref(`class_sheets/${currentClass.replace(/\s+/g,'_')}`).set({ students: studentsData }); alert('ছাত্র/ছাত্রী তথ্য সংরক্ষিত!'); };
-    document.getElementById('teacherImageInput')?.addEventListener('change', e => { const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = ev => { teacherImageBase64 = ev.target.result; document.getElementById('teacherImagePreview').src = ev.target.result; }; reader.readAsDataURL(file); } });
-    document.getElementById('studentImageInput')?.addEventListener('change', e => { const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = ev => { studentImageBase64 = ev.target.result; document.getElementById('studentImagePreview').src = ev.target.result; }; reader.readAsDataURL(file); } });
-    document.getElementById('createTeacherBtn').onclick = async() => { const name = document.getElementById('newTeacherName').value.trim(); const id = document.getElementById('newTeacherId').value.trim().toLowerCase(); const pwd = document.getElementById('newTeacherPass').value.trim(); if(!name || !id || !pwd) { alert('নাম, আইডি এবং পাসওয়ার্ড আবশ্যক!'); return; } const selected = []; document.querySelectorAll('.teacherClassCheckbox:checked').forEach(cb => selected.push(cb.value)); await db.ref(`registered_teachers/${id}`).set({ teacher_name: name, teacher_id: id, password: pwd, classes: selected, photo: teacherImageBase64 || '' }); alert('শিক্ষক তৈরি সফল!'); teacherImageBase64 = ''; document.getElementById('newTeacherName').value = ''; document.getElementById('newTeacherId').value = ''; document.getElementById('newTeacherPass').value = ''; loadTeachersList(); loadDashboard(); };
-    const slides = document.querySelectorAll('.bg-slide'); let currentBgSlide = 0; if(slides.length) { slides[0].classList.add('active'); setInterval(() => { slides[currentBgSlide].classList.remove('active'); currentBgSlide = (currentBgSlide + 1) % slides.length; slides[currentBgSlide].classList.add('active'); }, 5000); }
-    document.getElementById('loginForm').onsubmit = async (e) => { e.preventDefault(); let role = document.getElementById('loginRole').value; let id = document.getElementById('loginId').value.trim().toLowerCase(); let pwd = document.getElementById('loginPassword').value.trim(); if(role === 'admin') { if(id === 'admin' && pwd === '#$t') { currentUser = { id, role: 'admin', name: 'প্রশাসক', photo: '' }; startApp(); } else alert('অ্যাডমিন আইডি বা পাসওয়ার্ড ভুল!'); } else if(role === 'teacher') { let snap = await db.ref(`registered_teachers/${id}`).get(); if(snap.exists() && snap.val().password === pwd) { currentUser = { id, role: 'teacher', name: snap.val().teacher_name, photo: snap.val().photo || '' }; teacherAssignedClasses = snap.val().classes || []; startApp(); } else alert('শিক্ষক আইডি বা পাসওয়ার্ড ভুল!'); } else { let found = false; for(let cls of classes) { let snap = await db.ref(`class_sheets/${cls.replace(/\s+/g,'_')}/students`).get(); if(snap.exists()) { let match = snap.val().find(s => s.id === id && s.password === pwd); if(match) { currentUser = { id, role: 'student', name: match.name, photo: match.photo || '' }; currentClass = cls; found = true; break; } } } if(found) startApp(); else alert('ছাত্র আইডি বা পাসওয়ার্ড ভুল!'); } };
-    document.getElementById('saveAllRoutinesBtn')?.addEventListener('click', async () => { const routine = await loadRoutineFromFirebase(); for(let cls of classes) { if(!routine[cls]) routine[cls] = {}; for(let i=0; i<days.length; i++) { const inputId = `input_${cls.replace(/\s/g,'_')}_${i}`; const input = document.getElementById(inputId); if(input) routine[cls][days[i]] = input.value.trim() || ''; } } await db.ref('class_routines').set(routine); alert('সকল রুটিন সফলভাবে সংরক্ষিত হয়েছে!'); showTodayTomorrowRoutine(); });
-</script>
+<script src="script.js"></script>
 </body>
 </html>
