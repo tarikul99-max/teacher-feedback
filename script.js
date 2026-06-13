@@ -76,7 +76,7 @@ function formatPhoneNumber(phoneNumber) {
     }
 }
 
-// ==================== SMS FUNCTIONS (Working with SMSMobileAPI) ====================
+// ==================== SMS FUNCTIONS ====================
 
 // Check SMS service health
 async function checkSMSService() {
@@ -101,7 +101,8 @@ async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherN
     
     console.log(`📤 Sending SMS to: ${phoneNumber} → Formatted: ${formattedPhone}`);
     
-    if (!formattedPhone || formattedPhone.length !== 14) {
+    // ✅ সঠিক চেক: 13 ডিজিট হবে (8801XXXXXXXXX)
+    if (!formattedPhone || formattedPhone.length !== 13) {
         return { 
             success: false, 
             error: `ফোন নম্বর সঠিক নয়: ${phoneNumber}\nসঠিক ফরম্যাট: +8801XXXXXXXXX`
@@ -145,7 +146,7 @@ ${teacherName || 'মাস্টারমাইন্ড অ্যাকাড�
     }
 }
 
-// Test SMS function (for console testing)
+// Test SMS function
 window.testSMS = async function(phone = "+8801889343480") {
     console.log("🧪 Sending test SMS...");
     const result = await sendAbsentSMS(phone, "পরীক্ষা শিক্ষার্থী", "টেস্ট ক্লাস", new Date().toISOString().split('T')[0], "প্রশাসক");
@@ -611,19 +612,19 @@ async function loadTeachersTableView() {
     const snap = await db.ref('registered_teachers').get();
     const container = document.getElementById('teachersTable');
     if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; }
-    let html = `<table><thead>汽<th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table class="teacher-table"><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for(let key in snap.val()) {
         let t = snap.val()[key];
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
         html += `<tr>
-            <td>${photo}</td>
-            <td>${escapeHtml(t.teacher_name)}</td>
-            <td>${t.teacher_id}</td>
-            <td>${t.classes?.join(', ') || '—'}</td>
-            <td><button class="btn btn-red btn-sm" onclick="window.deleteTeacher('${t.teacher_id}')">মুছুন</button></td>
-        </tr>`;
+                    <td>${photo}</td>
+                    <td>${escapeHtml(t.teacher_name)}</td>
+                    <td>${t.teacher_id}</td>
+                    <td>${t.classes?.join(', ') || '—'}</td>
+                    <td><button class="btn btn-red btn-sm" onclick="window.deleteTeacher('${t.teacher_id}')">মুছুন</button></td>
+                </tr>`;
     }
-    html += `</tbody></td>`;
+    html += `</tbody></table>`;
     container.innerHTML = html;
 }
 
@@ -696,14 +697,14 @@ function renderStudentsTable() {
     studentsData.forEach((s,i) => {
         let studentPhoto = s.photo ? `<img src="${s.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
         html += `<tr>
-            <td>${studentPhoto}</td>
-            <td>${i+1}</td>
-            <td>${escapeHtml(s.id)}</td>
-            <td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td>
-            <td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td>
-            <td><input type="tel" class="editPhone" data-index="${i}" value="${escapeHtml(s.guardian_phone || '')}" placeholder="+8801XXXXXXXXX"></td>
-            <td><button class="btn btn-red btn-sm" onclick="window.removeStudent(${i})">মুছুন</button></td>
-        </tr>`;
+                    <td>${studentPhoto}</td>
+                    <td>${i+1}</td>
+                    <td>${escapeHtml(s.id)}</td>
+                    <td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td>
+                    <td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td>
+                    <td><input type="tel" class="editPhone" data-index="${i}" value="${escapeHtml(s.guardian_phone || '')}" placeholder="+8801XXXXXXXXX"></td>
+                    <td><button class="btn btn-red btn-sm" onclick="window.removeStudent(${i})">মুছুন</button></td>
+                </tr>`;
     });
     html += `</tbody></table>`;
     cont.innerHTML = html;
@@ -779,7 +780,11 @@ async function loadRoutineEditForm() {
         let clsRoutine = routine[cls] || {};
         html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>অ্যাকশন</th></tr></thead><tbody>`;
         days.forEach((day, idx) => {
-            html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="window.updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
+            html += `<tr>
+                        <td>${day}</td>
+                        <td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td>
+                        <td><button class="btn btn-orange btn-sm" onclick="window.updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td>
+                    </tr>`;
         });
         html += `</tbody></table></div>`;
     }
@@ -805,7 +810,7 @@ async function showRoutine() {
         let clsRoutine = routine[cls] || routine["Class 5"];
         routineHtml += `<h4 style="margin-top:15px;">${cls}</h4><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th></tr></thead><tbody>`;
         days.forEach(day => { routineHtml += `<tr><td>${day}</td><td>${clsRoutine[day] || 'ক্লাস নেই'}</td></tr>`; });
-        routineHtml += `</tbody></td>`;
+        routineHtml += `</tbody></table>`;
     }
     document.getElementById('routineContent').innerHTML = routineHtml;
     document.getElementById('routineModal').style.display = 'flex';
@@ -978,6 +983,6 @@ setTimeout(async () => {
         console.log("✅ SMS Service is active!");
         console.log("📱 Test: testSMS('+8801889343480')");
     } else {
-        console.log("⚠️ SMS Service not responding");
+        console.log("⚠️ SMS Service not responding. Make sure selfSMS server is running.");
     }
 }, 3000);
