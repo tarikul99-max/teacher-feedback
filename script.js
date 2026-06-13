@@ -150,14 +150,16 @@ async function showTodayTomorrowRoutine() {
     if(currentUser.role === 'student') {
         let clsRoutine = routine[currentClass] || routine["Class 5"];
         container.innerHTML = `
-            <div class="today-routine-card">
-                <h3>📚 আজকের ক্লাস (${todayName})</h3>
-                <div class="routine-subject">${clsRoutine[todayName] || 'ক্লাস নেই'}</div>
-                <p style="margin-top:10px;">আপনার ক্লাস: ${currentClass}</p>
-            </div>
-            <div class="tomorrow-routine-card">
-                <h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3>
-                <div class="routine-subject">${clsRoutine[tomorrowName] || 'ক্লাস নেই'}</div>
+            <div class="routine-side-by-side">
+                <div class="today-routine-card">
+                    <h3>📚 আজকের ক্লাস (${todayName})</h3>
+                    <div class="routine-subject">${clsRoutine[todayName] || 'ক্লাস নেই'}</div>
+                    <p style="margin-top:10px;">আপনার ক্লাস: ${currentClass}</p>
+                </div>
+                <div class="tomorrow-routine-card">
+                    <h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3>
+                    <div class="routine-subject">${clsRoutine[tomorrowName] || 'ক্লাস নেই'}</div>
+                </div>
             </div>
         `;
     } else {
@@ -170,7 +172,7 @@ async function showTodayTomorrowRoutine() {
         }
         todayHtml += `</div>`;
         tomorrowHtml += `</div>`;
-        container.innerHTML = todayHtml + tomorrowHtml;
+        container.innerHTML = `<div class="routine-side-by-side">${todayHtml}${tomorrowHtml}</div>`;
     }
 }
 
@@ -500,7 +502,7 @@ function createMediaPreview(src, type, index) {
     if (type === 'image') {
         previewDiv.innerHTML = `
             <img src="${src}" style="width:100px; height:100px; object-fit:cover; border-radius:10px; border:2px solid #1877f2;">
-            <button onclick="removeMedia(${index}, 'image')" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:14px; line-height:1;">×</button>
+            <button onclick="window.removeMedia(${index}, 'image')" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:14px; line-height:1;">×</button>
         `;
     } else {
         previewDiv.innerHTML = `
@@ -508,7 +510,7 @@ function createMediaPreview(src, type, index) {
             <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.6); border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center;">
                 <i class="fas fa-play" style="color:white; font-size:12px;"></i>
             </div>
-            <button onclick="removeMedia(${index}, 'video')" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:14px; line-height:1;">×</button>
+            <button onclick="window.removeMedia(${index}, 'video')" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:14px; line-height:1;">×</button>
         `;
     }
     
@@ -803,14 +805,14 @@ function renderCommentTree(comments, postId, level = 0) {
                     </div>
                     <div class="fb-comment-text">${escapeHtml(comment.text)}</div>
                     <div class="fb-comment-actions">
-                        <span onclick="showReplyInput('${postId}', '${commentId}', '${escapeHtml(comment.author)}')">উত্তর</span>
-                        ${showDelete ? `<span class="delete-comment" onclick="deleteComment('${postId}', '${commentId}', '${comment.authorId}')">মুছুন</span>` : ''}
+                        <span onclick="window.showReplyInput('${postId}', '${commentId}', '${escapeHtml(comment.author)}')">উত্তর</span>
+                        ${showDelete ? `<span class="delete-comment" onclick="window.deleteComment('${postId}', '${commentId}', '${comment.authorId}')">মুছুন</span>` : ''}
                     </div>
                     <div id="reply_input_${postId}_${commentId}" style="display:none; margin-top: 10px;">
                         <div class="fb-comment-input-small">
                             <input type="text" id="reply_text_${postId}_${commentId}" placeholder="উত্তর লিখুন..." class="fb-comment-field">
-                            <button class="fb-comment-send-small" onclick="addNestedComment('${postId}', '${commentId}', '${escapeHtml(comment.author)}')">পাঠান</button>
-                            <button class="fb-comment-cancel" onclick="hideReplyInput('${postId}', '${commentId}')">বাতিল</button>
+                            <button class="fb-comment-send-small" onclick="window.addNestedComment('${postId}', '${commentId}', '${escapeHtml(comment.author)}')">পাঠান</button>
+                            <button class="fb-comment-cancel" onclick="window.hideReplyInput('${postId}', '${commentId}')">বাতিল</button>
                         </div>
                     </div>
         `;
@@ -878,10 +880,10 @@ function loadSocialFeed() {
                     </div>
                 </div>
                 <div class="fb-action-buttons">
-                    <button class="fb-action-btn ${userReaction ? 'active' : ''}" onclick="showReactionPicker('${pid}', this)">
+                    <button class="fb-action-btn ${userReaction ? 'active' : ''}" onclick="window.showReactionPicker('${pid}', this)">
                         <i class="fas fa-thumbs-up"></i> পছন্দ
                     </button>
-                    <button class="fb-action-btn" onclick="toggleComments('${pid}')">
+                    <button class="fb-action-btn" onclick="window.toggleComments('${pid}')">
                         <i class="fas fa-comment"></i> মন্তব্য
                     </button>
                     <button class="fb-action-btn">
@@ -889,13 +891,13 @@ function loadSocialFeed() {
                     </button>
                 </div>
                 <div class="reaction-picker" id="reactionPicker_${pid}" style="display:none;">
-                    <button onclick="addReaction('${pid}', '👍')">👍</button>
-                    <button onclick="addReaction('${pid}', '❤️')">❤️</button>
-                    <button onclick="addReaction('${pid}', '😢')">😢</button>
-                    <button onclick="addReaction('${pid}', '😲')">😲</button>
-                    <button onclick="addReaction('${pid}', '🥳')">🥳</button>
-                    <button onclick="addReaction('${pid}', '🔥')">🔥</button>
-                    <button onclick="addReaction('${pid}', '🤔')">🤔</button>
+                    <button onclick="window.addReaction('${pid}', '👍')">👍</button>
+                    <button onclick="window.addReaction('${pid}', '❤️')">❤️</button>
+                    <button onclick="window.addReaction('${pid}', '😢')">😢</button>
+                    <button onclick="window.addReaction('${pid}', '😲')">😲</button>
+                    <button onclick="window.addReaction('${pid}', '🥳')">🥳</button>
+                    <button onclick="window.addReaction('${pid}', '🔥')">🔥</button>
+                    <button onclick="window.addReaction('${pid}', '🤔')">🤔</button>
                 </div>
             `;
             
@@ -940,7 +942,7 @@ function loadSocialFeed() {
                         <div class="fb-post-author">${escapeHtml(post.author)}</div>
                         <div class="fb-post-time">${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</div>
                     </div>
-                    ${showDelete ? `<button class="fb-post-menu" onclick="deletePost('${pid}', '${post.userId}')"><i class="fas fa-trash"></i></button>` : ''}
+                    ${showDelete ? `<button class="fb-post-menu" onclick="window.deletePost('${pid}', '${post.userId}')"><i class="fas fa-trash"></i></button>` : ''}
                 </div>
                 <div class="fb-post-caption">
                     <p>${escapeHtml(post.caption)}</p>
@@ -954,7 +956,7 @@ function loadSocialFeed() {
                             <i class="fas fa-user-circle"></i>
                         </div>
                         <input type="text" id="comment_input_${pid}" placeholder="মন্তব্য লিখুন..." class="fb-comment-field">
-                        <button class="fb-comment-send" onclick="addComment('${pid}')">পাঠান</button>
+                        <button class="fb-comment-send" onclick="window.addComment('${pid}')">পাঠান</button>
                     </div>
                 </div>
             `;
@@ -1241,7 +1243,7 @@ async function loadTeachersTableView() {
     for(let key in snap.val()) {
         let t = snap.val()[key];
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
-        html += `<tr><td>${photo}</td><td>${escapeHtml(t.teacher_name)}</td><td>${t.teacher_id}</td><td>${t.classes?.join(', ') || '—'}</td><td><button class="btn btn-red btn-sm" onclick="deleteTeacher('${t.teacher_id}')">মুছুন</button></td></tr>`;
+        html += `<tr><td>${photo}</td><td>${escapeHtml(t.teacher_name)}</td><td>${t.teacher_id}</td><td>${t.classes?.join(', ') || '—'}</td><td><button class="btn btn-red btn-sm" onclick="window.deleteTeacher('${t.teacher_id}')">মুছুন</button></td></tr>`;
     }
     html += `</tbody></table>`;
     container.innerHTML = html;
@@ -1265,7 +1267,7 @@ async function loadFeedbackArchive() {
     if(!items.length) { document.getElementById('feedbackList').innerHTML='<div class="empty-state">কোন ফিডব্যাক নেই</div>'; return; }
     let html = '';
     items.forEach(it => {
-        html += `<div class="feedback-item"><strong>📚 ${it.class}</strong> | 👨‍🎓 ${escapeHtml(it.studentName)} | 👨‍🏫 ${escapeHtml(it.teacherName)}<button class="delete-btn" onclick="deleteFeedback('${it.classKey}', '${it.studentId}', '${it.teacherId}')"><i class="fas fa-trash"></i> মুছুন</button><br><small>📝 ${escapeHtml(it.comment)}</small><br><small>📅 ${new Date(it.timestamp).toLocaleDateString()}</small></div>`;
+        html += `<div class="feedback-item"><strong>📚 ${it.class}</strong> | 👨‍🎓 ${escapeHtml(it.studentName)} | 👨‍🏫 ${escapeHtml(it.teacherName)}<button class="delete-btn" onclick="window.deleteFeedback('${it.classKey}', '${it.studentId}', '${it.teacherId}')"><i class="fas fa-trash"></i> মুছুন</button><br><small>📝 ${escapeHtml(it.comment)}</small><br><small>📅 ${new Date(it.timestamp).toLocaleDateString()}</small></div>`;
     });
     document.getElementById('feedbackList').innerHTML = html;
 }
@@ -1315,14 +1317,14 @@ function renderStudentsTable() {
     studentsData.forEach((s,i) => {
         let studentPhoto = s.photo ? `<img src="${s.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
         html += `<tr>
-                    <td>${studentPhoto}</td>
-                    <td>${i+1}</td>
-                    <td>${escapeHtml(s.id)}</td>
-                    <td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td>
-                    <td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td>
-                    <td><input type="tel" class="editPhone" data-index="${i}" value="${escapeHtml(s.guardian_phone || '')}" placeholder="+8801XXXXXXXXX"></td>
-                    <td><button class="btn btn-red btn-sm" onclick="removeStudent(${i})">মুছুন</button></td>
-                </tr>`;
+                     <td>${studentPhoto}</td>
+                     <td>${i+1}</td>
+                     <td>${escapeHtml(s.id)}</td>
+                     <td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td>
+                     <td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td>
+                     <td><input type="tel" class="editPhone" data-index="${i}" value="${escapeHtml(s.guardian_phone || '')}" placeholder="+8801XXXXXXXXX"></td>
+                     <td><button class="btn btn-red btn-sm" onclick="window.removeStudent(${i})">মুছুন</button></td>
+                 </tr>`;
     });
     html += `</tbody></table>`;
     cont.innerHTML = html;
@@ -1397,7 +1399,7 @@ async function loadRoutineEditForm() {
         let clsRoutine = routine[cls] || {};
         html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>অ্যাকশন</th></tr></thead><tbody>`;
         days.forEach((day, idx) => {
-            html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
+            html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="window.updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
         });
         html += `</tbody></table></div>`;
     }
