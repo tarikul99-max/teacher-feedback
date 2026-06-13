@@ -620,7 +620,7 @@ function loadSocialFeed() {
                     const showReplyDelete = (currentUser.role === 'admin') || (currentUser.id === reply.authorId);
                     repliesHtml += `<div style="margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:5px;">
                         <strong>${escapeHtml(reply.author)}</strong> <small>${reply.authorRole == 'admin' ? '🎓' : (reply.authorRole == 'teacher' ? '👨‍🏫' : '🧑‍🎓')}</small>
-                        ${showReplyDelete ? `<button onclick="deleteReply('${pid}', '${rid}', '${reply.authorId}')" style="background:#e74c3c; color:white; border:none; border-radius:15px; padding:2px 8px; cursor:pointer; font-size:10px; margin-left:8px;">🗑️</button>` : ''}
+                        ${showReplyDelete ? `<button onclick="deleteReply('${pid}', '${rid}', '${reply.authorId}')" style="background:#e74c3c; color:#f94449; border:none; border-radius:15px; padding:3px 9px; cursor:pointer; font-size:10px; margin-left:8px;">'Delet'</button>` : ''}
                         <br><small>${escapeHtml(reply.text)}</small>
                         <br><small style="font-size:10px; color:#888;">${new Date(reply.timestamp).toLocaleString()}</small>
                     </div>`;
