@@ -140,6 +140,7 @@ async function loadRoutineFromFirebase() {
     return classRoutine;
 }
 
+// FIXED: showTodayTomorrowRoutine - Now side by side for ALL users
 async function showTodayTomorrowRoutine() {
     const routine = await loadRoutineFromFirebase();
     const container = document.getElementById('todayTomorrowRoutine');
@@ -163,6 +164,7 @@ async function showTodayTomorrowRoutine() {
             </div>
         `;
     } else {
+        // For admin/teacher - also side by side
         let todayHtml = `<div class="today-routine-card"><h3>📚 আজকের ক্লাস (${todayName})</h3>`;
         let tomorrowHtml = `<div class="tomorrow-routine-card"><h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3>`;
         for(let cls of classes) {
@@ -172,6 +174,7 @@ async function showTodayTomorrowRoutine() {
         }
         todayHtml += `</div>`;
         tomorrowHtml += `</div>`;
+        // IMPORTANT: Wrap both boxes in the side-by-side container
         container.innerHTML = `<div class="routine-side-by-side">${todayHtml}${tomorrowHtml}</div>`;
     }
 }
