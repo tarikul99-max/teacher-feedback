@@ -427,7 +427,7 @@ async function loadClassMonthlyCalendar() {
     document.getElementById('classMonthlyCalendar').innerHTML = html;
 }
 
-// ==================== FACEBOOK-LIKE SOCIAL FEED FUNCTIONS ====================
+// ==================== FACEBOOK-LIKE SOCIAL FEED WITH NESTED COMMENTS ====================
 
 function setupMediaPreview() {
     const fileInput = document.getElementById('feedImageInput');
@@ -572,7 +572,8 @@ window.publishPost = async () => {
         timestamp: Date.now(),
         userId: currentUser.id,
         reactions: { '👍': 0, '❤️': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 },
-        userReactions: {}
+        userReactions: {},
+        comments: {} // Store comments with nesting support
     });
     
     document.getElementById('feedCaption').value = '';
@@ -619,7 +620,6 @@ window.showReactionPicker = (postId, buttonElement) => {
     if(picker.style.display === 'flex') {
         picker.style.display = 'none';
     } else {
-        // Hide all other pickers
         document.querySelectorAll('.reaction-picker').forEach(p => p.style.display = 'none');
         picker.style.display = 'flex';
         const rect = buttonElement.getBoundingClientRect();
@@ -628,40 +628,141 @@ window.showReactionPicker = (postId, buttonElement) => {
         picker.style.top = `${rect.top - 50}px`;
         picker.style.left = `${rect.left}px`;
         
-        // Auto hide after 3 seconds
         setTimeout(() => {
             picker.style.display = 'none';
         }, 3000);
     }
 };
 
-window.addReply = async (postId) => {
-    const replyInput = document.getElementById(`reply_inp_${postId}`);
-    const replyText = replyInput.value.trim();
-    if(!replyText) { alert('মন্তব্য লিখুন'); return; }
-    await db.ref(`social_feed/${postId}/replies`).push({
-        text: replyText, author: currentUser.name, authorId: currentUser.id, authorRole: currentUser.role, timestamp: Date.now()
-    });
-    replyInput.value = '';
+// Nested comment functions
+window.showReplyInput = (postId, parentCommentId, authorName) => {
+    const replyDiv = document.getElementById(`reply_input_${postId}_${parentCommentId}`);
+    if(replyDiv.style.display === 'none') {
+        replyDiv.style.display = 'block';
+        const input = document.getElementById(`reply_text_${postId}_${parentCommentId}`);
+        if(input) input.placeholder = `${authorName} কে উত্তর দিন...`;
+        input.focus();
+    } else {
+        replyDiv.style.display = 'none';
+    }
 };
 
-window.deleteReply = async (postId, replyId, replyAuthorId) => {
-    const canDelete = (currentUser.role === 'admin') || (currentUser.id === replyAuthorId);
+window.hideReplyInput = (postId, parentCommentId) => {
+    const replyDiv = document.getElementById(`reply_input_${postId}_${parentCommentId}`);
+    replyDiv.style.display = 'none';
+    const input = document.getElementById(`reply_text_${postId}_${parentCommentId}`);
+    if(input) input.value = '';
+};
+
+window.addNestedComment = async (postId, parentCommentId, parentAuthorName) => {
+    const input = document.getElementById(`reply_text_${postId}_${parentCommentId}`);
+    const replyText = input.value.trim();
+    if(!replyText) { alert('মন্তব্য লিখুন'); return; }
+    
+    const commentData = {
+        text: replyText,
+        author: currentUser.name,
+        authorId: currentUser.id,
+        authorRole: currentUser.role,
+        timestamp: Date.now(),
+        replies: {}
+    };
+    
+    const postRef = db.ref(`social_feed/${postId}/comments/${parentCommentId}/replies`);
+    const newReplyRef = postRef.push();
+    await newReplyRef.set(commentData);
+    
+    input.value = '';
+    document.getElementById(`reply_input_${postId}_${parentCommentId}`).style.display = 'none';
+};
+
+window.addComment = async (postId) => {
+    const input = document.getElementById(`comment_input_${postId}`);
+    const commentText = input.value.trim();
+    if(!commentText) { alert('মন্তব্য লিখুন'); return; }
+    
+    const commentData = {
+        text: commentText,
+        author: currentUser.name,
+        authorId: currentUser.id,
+        authorRole: currentUser.role,
+        timestamp: Date.now(),
+        replies: {}
+    };
+    
+    const postRef = db.ref(`social_feed/${postId}/comments`);
+    const newCommentRef = postRef.push();
+    await newCommentRef.set(commentData);
+    
+    input.value = '';
+};
+
+window.deleteComment = async (postId, commentId, commentAuthorId) => {
+    const canDelete = (currentUser.role === 'admin') || (currentUser.id === commentAuthorId);
     if(!canDelete) { alert('⚠️ আপনি শুধু আপনার নিজের মন্তব্য ডিলিট করতে পারবেন!'); return; }
     if(confirm('মন্তব্যটি ডিলিট করতে চান?')) {
-        await db.ref(`social_feed/${postId}/replies/${replyId}`).remove();
+        await db.ref(`social_feed/${postId}/comments/${commentId}`).remove();
         alert('✅ মন্তব্য ডিলিট করা হয়েছে!');
     }
 };
 
+window.deleteReply = async (postId, commentId, replyId, replyAuthorId) => {
+    const canDelete = (currentUser.role === 'admin') || (currentUser.id === replyAuthorId);
+    if(!canDelete) { alert('⚠️ আপনি শুধু আপনার নিজের উত্তর ডিলিট করতে পারবেন!'); return; }
+    if(confirm('উত্তরটি ডিলিট করতে চান?')) {
+        await db.ref(`social_feed/${postId}/comments/${commentId}/replies/${replyId}`).remove();
+        alert('✅ উত্তর ডিলিট করা হয়েছে!');
+    }
+};
+
 window.toggleComments = (postId) => {
-    const commentsDiv = document.getElementById(`comments_${postId}`);
+    const commentsDiv = document.getElementById(`comments_section_${postId}`);
     if(commentsDiv.style.display === 'none') {
         commentsDiv.style.display = 'block';
     } else {
         commentsDiv.style.display = 'none';
     }
 };
+
+// Function to render nested comments recursively
+function renderCommentTree(comments, postId, level = 0) {
+    let html = '';
+    for(let [commentId, comment] of Object.entries(comments)) {
+        const showDelete = (currentUser.role === 'admin') || (currentUser.id === comment.authorId);
+        const marginLeft = level * 40;
+        
+        html += `
+            <div class="fb-comment" style="margin-left: ${marginLeft}px;">
+                <div class="fb-comment-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="fb-comment-content">
+                    <div class="fb-comment-author">${escapeHtml(comment.author)} 
+                        <small>${comment.authorRole == 'admin' ? '🎓' : (comment.authorRole == 'teacher' ? '👨‍🏫' : '🧑‍🎓')}</small>
+                    </div>
+                    <div class="fb-comment-text">${escapeHtml(comment.text)}</div>
+                    <div class="fb-comment-actions">
+                        <span onclick="showReplyInput('${postId}', '${commentId}', '${escapeHtml(comment.author)}')">উত্তর</span>
+                        ${showDelete ? `<span class="delete-comment" onclick="deleteComment('${postId}', '${commentId}', '${comment.authorId}')">মুছুন</span>` : ''}
+                    </div>
+                    <div id="reply_input_${postId}_${commentId}" style="display:none; margin-top: 10px;">
+                        <div class="fb-comment-input-small">
+                            <input type="text" id="reply_text_${postId}_${commentId}" placeholder="উত্তর লিখুন..." class="fb-comment-field">
+                            <button class="fb-comment-send-small" onclick="addNestedComment('${postId}', '${commentId}', '${escapeHtml(comment.author)}')">পাঠান</button>
+                            <button class="fb-comment-cancel" onclick="hideReplyInput('${postId}', '${commentId}')">বাতিল</button>
+                        </div>
+                    </div>
+        `;
+        
+        // Render replies recursively
+        if(comment.replies && Object.keys(comment.replies).length > 0) {
+            html += renderCommentTree(comment.replies, postId, level + 1);
+        }
+        
+        html += `</div></div>`;
+    }
+    return html;
+}
 
 function loadSocialFeed() {
     db.ref('social_feed').on('value', (snap) => {
@@ -686,7 +787,6 @@ function loadSocialFeed() {
             let userReaction = (post.userReactions || {})[currentUser.id];
             const showDelete = (currentUser.role === 'admin') || (currentUser.id === post.userId);
             
-            // Calculate total reactions
             let totalReactions = Object.values(reactions).reduce((a, b) => a + b, 0);
             let topReaction = '';
             for(let [emoji, count] of Object.entries(reactions)) {
@@ -696,13 +796,26 @@ function loadSocialFeed() {
                 }
             }
             
+            // Count total comments (including nested)
+            let totalComments = 0;
+            if(post.comments) {
+                const countComments = (comments) => {
+                    let count = Object.keys(comments).length;
+                    for(let [id, comment] of Object.entries(comments)) {
+                        if(comment.replies) count += Object.keys(comment.replies).length;
+                    }
+                    return count;
+                };
+                totalComments = countComments(post.comments);
+            }
+            
             let reactionBar = `
                 <div class="fb-reaction-bar">
                     <div class="fb-reaction-stats">
                         ${totalReactions > 0 ? `<span class="fb-reaction-icon">${topReaction}</span> <span>${totalReactions}</span>` : ''}
                     </div>
                     <div class="fb-comment-share-count">
-                        ${post.replies ? Object.keys(post.replies).length : 0} টি মন্তব্য
+                        ${totalComments} টি মন্তব্য
                     </div>
                 </div>
                 <div class="fb-action-buttons">
@@ -727,32 +840,10 @@ function loadSocialFeed() {
                 </div>
             `;
             
-            let repliesHtml = '';
-            if(post.replies && Object.keys(post.replies).length > 0) {
-                let repliesArr = Object.entries(post.replies).sort((a,b)=>(a[1].timestamp||0)-(b[1].timestamp||0));
-                repliesHtml = '<div class="fb-comments-list">';
-                for(let [rid, reply] of repliesArr) {
-                    const showReplyDelete = (currentUser.role === 'admin') || (currentUser.id === reply.authorId);
-                    repliesHtml += `
-                        <div class="fb-comment">
-                            <div class="fb-comment-avatar">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
-                            <div class="fb-comment-content">
-                                <div class="fb-comment-author">${escapeHtml(reply.author)} 
-                                    <small>${reply.authorRole == 'admin' ? '🎓' : (reply.authorRole == 'teacher' ? '👨‍🏫' : '🧑‍🎓')}</small>
-                                </div>
-                                <div class="fb-comment-text">${escapeHtml(reply.text)}</div>
-                                <div class="fb-comment-actions">
-                                    <span>পছন্দ</span>
-                                    <span>উত্তর</span>
-                                    ${showReplyDelete ? `<span class="delete-comment" onclick="deleteReply('${pid}', '${rid}', '${reply.authorId}')">মুছুন</span>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-                repliesHtml += '</div>';
+            // Render comments with nesting
+            let commentsHtml = '';
+            if(post.comments && Object.keys(post.comments).length > 0) {
+                commentsHtml = `<div class="fb-comments-list">${renderCommentTree(post.comments, pid)}</div>`;
             }
             
             let mediaHtml = '';
@@ -798,14 +889,14 @@ function loadSocialFeed() {
                 </div>
                 ${mediaHtml}
                 ${reactionBar}
-                <div class="fb-comments-section" id="comments_${pid}" style="display:none;">
-                    ${repliesHtml}
+                <div class="fb-comments-section" id="comments_section_${pid}" style="display:none;">
+                    ${commentsHtml}
                     <div class="fb-comment-input">
                         <div class="fb-comment-avatar-small">
                             <i class="fas fa-user-circle"></i>
                         </div>
-                        <input type="text" id="reply_inp_${pid}" placeholder="মন্তব্য লিখুন..." class="fb-comment-field">
-                        <button class="fb-comment-send" onclick="addReply('${pid}')">পাঠান</button>
+                        <input type="text" id="comment_input_${pid}" placeholder="মন্তব্য লিখুন..." class="fb-comment-field">
+                        <button class="fb-comment-send" onclick="addComment('${pid}')">পাঠান</button>
                     </div>
                 </div>
             `;
@@ -814,7 +905,7 @@ function loadSocialFeed() {
     });
 }
 
-// Add Facebook-like CSS
+// Add Facebook-like CSS with nested comment support
 const fbStyle = document.createElement('style');
 fbStyle.textContent = `
     .fb-post-card {
@@ -966,6 +1057,8 @@ fbStyle.textContent = `
     }
     .fb-comments-list {
         margin: 12px 0;
+        max-height: 400px;
+        overflow-y: auto;
     }
     .fb-comment {
         display: flex;
@@ -981,6 +1074,7 @@ fbStyle.textContent = `
         align-items: center;
         justify-content: center;
         color: #65676b;
+        flex-shrink: 0;
     }
     .fb-comment-content {
         flex: 1;
@@ -1007,6 +1101,9 @@ fbStyle.textContent = `
     .fb-comment-actions span {
         cursor: pointer;
     }
+    .fb-comment-actions span:hover {
+        text-decoration: underline;
+    }
     .delete-comment {
         color: #e74c3c;
     }
@@ -1015,6 +1112,12 @@ fbStyle.textContent = `
         align-items: center;
         gap: 8px;
         margin-top: 12px;
+    }
+    .fb-comment-input-small {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
     }
     .fb-comment-avatar-small {
         width: 28px;
@@ -1036,7 +1139,7 @@ fbStyle.textContent = `
     .fb-comment-field:focus {
         outline: none;
     }
-    .fb-comment-send {
+    .fb-comment-send, .fb-comment-send-small {
         background: #1877f2;
         color: white;
         border: none;
@@ -1044,6 +1147,15 @@ fbStyle.textContent = `
         border-radius: 20px;
         cursor: pointer;
         font-weight: 600;
+    }
+    .fb-comment-cancel {
+        background: #e4e6eb;
+        color: #65676b;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 12px;
     }
     .empty-feed {
         text-align: center;
@@ -1073,7 +1185,7 @@ async function loadTeachersTableView() {
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
         html += `<tr><td>${photo}</td><td>${escapeHtml(t.teacher_name)}</td><td>${t.teacher_id}</td><td>${t.classes?.join(', ') || '—'}</td><td><button class="btn btn-red btn-sm" onclick="deleteTeacher('${t.teacher_id}')">মুছুন</button></td></tr>`;
     }
-    html += `</tbody></table>`;
+    html += `</tbody><tr>`;
     container.innerHTML = html;
 }
 
@@ -1225,7 +1337,7 @@ async function loadRoutineEditForm() {
     let html = '';
     for(let cls of classes) {
         let clsRoutine = routine[cls] || {};
-        html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+        html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>অ্যাকশন</th><tr></thead><tbody>`;
         days.forEach((day, idx) => {
             html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
         });
