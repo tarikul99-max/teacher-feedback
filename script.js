@@ -19,10 +19,10 @@ let classRoutine = {};
 let teacherImageBase64 = "", studentImageBase64 = "";
 let currentStudentsList = [];
 
-// SMS API URL (your selfSMS service on Render)
+// SMS API URL
 const SELF_SMS_URL = "https://selfsms.onrender.com";
 
-// Class list with groups
+// Class list
 const classes = [
     "Class 5", "Class 6", "Class 7", "Class 8",
     "Class 9 (Science)", "Class 9 (Commerce)", "Class 9 (Humanities)",
@@ -32,7 +32,6 @@ const classes = [
 
 const days = ['শনিবার', 'রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার'];
 
-// Helper Functions
 function escapeHtml(str) { 
     if(!str) return ''; 
     return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); 
@@ -55,28 +54,19 @@ function getTomorrowDayName() {
     return getBanglaDayName(daysEng[tomorrow.getDay()]);
 }
 
-// ==================== PHONE NUMBER FORMATTING ====================
 function formatPhoneNumber(phoneNumber) {
     if (!phoneNumber) return null;
     let cleanNumber = phoneNumber.toString().replace(/[^0-9]/g, '');
     
-    if (cleanNumber.length === 13 && cleanNumber.startsWith('8801')) {
-        return cleanNumber;
-    } else if (cleanNumber.length === 11 && cleanNumber.startsWith('01')) {
-        return '880' + cleanNumber.substring(1);
-    } else if (cleanNumber.length === 10 && cleanNumber.startsWith('1')) {
-        return '880' + cleanNumber;
-    } else if (cleanNumber.length === 10) {
-        return '8801' + cleanNumber;
-    } else if (cleanNumber.length === 9) {
-        return '8801' + cleanNumber;
-    } else {
-        let last10 = cleanNumber.slice(-10);
-        return '8801' + last10;
-    }
+    if (cleanNumber.length === 13 && cleanNumber.startsWith('8801')) return cleanNumber;
+    if (cleanNumber.length === 11 && cleanNumber.startsWith('01')) return '880' + cleanNumber.substring(1);
+    if (cleanNumber.length === 10 && cleanNumber.startsWith('1')) return '880' + cleanNumber;
+    if (cleanNumber.length === 10) return '8801' + cleanNumber;
+    if (cleanNumber.length === 9) return '8801' + cleanNumber;
+    
+    let last10 = cleanNumber.slice(-10);
+    return '8801' + last10;
 }
-
-// ==================== SMS FUNCTIONS ====================
 
 async function checkSMSService() {
     try {
@@ -91,52 +81,26 @@ async function checkSMSService() {
 }
 
 async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherName) {
-    if (!phoneNumber) {
-        return { success: false, error: "ফোন নম্বর প্রয়োজন" };
-    }
+    if (!phoneNumber) return { success: false, error: "ফোন নম্বর প্রয়োজন" };
     
     const formattedPhone = formatPhoneNumber(phoneNumber);
     
-    console.log(`📤 Sending SMS to: ${phoneNumber} → Formatted: ${formattedPhone}`);
-    
     if (!formattedPhone || formattedPhone.length !== 13) {
-        return { 
-            success: false, 
-            error: `ফোন নম্বর সঠিক নয়: ${phoneNumber}\nসঠিক ফরম্যাট: +8801XXXXXXXXX`
-        };
+        return { success: false, error: `ফোন নম্বর সঠিক নয়: ${phoneNumber}` };
     }
     
     const banglaDate = date ? new Date(date).toLocaleDateString('bn-BD') : 'আজ';
-    
-    const message = `মাস্টারমাইন্ড অ্যাকাডেমি
-
-প্রিয় অভিভাবক,
-${studentName || 'শিক্ষার্থী'} ${banglaDate} তারিখে ${className || ''} ক্লাসে উপস্থিত ছিলেন না।
-
-দয়া করে সন্তানের উপস্থিতি নিশ্চিত করুন।
-
-ধন্যবাদ
-${teacherName || 'মাস্টারমাইন্ড অ্যাকাডেমি'}`;
+    const message = `মাস্টারমাইন্ড অ্যাকাডেমি\n\nপ্রিয় অভিভাবক,\n${studentName || 'শিক্ষার্থী'} ${banglaDate} তারিখে ${className || ''} ক্লাসে উপস্থিত ছিলেন না।\n\nদয়া করে সন্তানের উপস্থিতি নিশ্চিত করুন।\n\nধন্যবাদ\n${teacherName || 'মাস্টারমাইন্ড অ্যাকাডেমি'}`;
     
     try {
         const response = await fetch(`${SELF_SMS_URL}/send-sms`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                phone: formattedPhone,
-                message: message,
-                studentName: studentName,
-                className: className,
-                date: date
-            })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: formattedPhone, message: message, studentName, className, date })
         });
-        
         const result = await response.json();
         console.log("📨 SMS Response:", result);
         return result;
-        
     } catch (error) {
         console.error("❌ SMS Error:", error);
         return { success: false, error: error.message };
@@ -144,17 +108,11 @@ ${teacherName || 'মাস্টারমাইন্ড অ্যাকাড�
 }
 
 window.testSMS = async function(phone = "+8801889343480") {
-    console.log("🧪 Sending test SMS...");
     const result = await sendAbsentSMS(phone, "পরীক্ষা শিক্ষার্থী", "টেস্ট ক্লাস", new Date().toISOString().split('T')[0], "প্রশাসক");
-    if (result.success) {
-        alert("✅ টেস্ট SMS সফলভাবে পাঠানো হয়েছে!");
-    } else {
-        alert(`❌ টেস্ট SMS ব্যর্থ!\n\nত্রুটি: ${result.error}`);
-    }
+    alert(result.success ? "✅ টেস্ট SMS সফল!" : `❌ ব্যর্থ: ${result.error}`);
     return result;
 };
 
-// ==================== DEFAULT ROUTINE ====================
 const defaultRoutine = {
     "Class 5": { "শনিবার": "গণিত", "রবিবার": "বাংলা", "সোমবার": "ইংরেজি", "মঙ্গলবার": "বিজ্ঞান", "বুধবার": "সামাজিক", "বৃহস্পতিবার": "ধর্ম", "শুক্রবার": "ছুটি" },
     "Class 6": { "শনিবার": "বিজ্ঞান", "রবিবার": "গণিত", "সোমবার": "বাংলা", "মঙ্গলবার": "ইংরেজি", "বুধবার": "কম্পিউটার", "বৃহস্পতিবার": "সাধারণ জ্ঞান", "শুক্রবার": "ছুটি" },
@@ -248,13 +206,11 @@ async function loadStudentOwnAttendance() {
             let todayClass = isToday ? ' today' : '';
             
             if(isPresent) { 
-                presentCount++; 
-                totalDays++; 
+                presentCount++; totalDays++; 
                 attendanceHtml += `<div class="cal-day present${todayClass}"><div class="date-num">${d}</div><div class="status-icon">✅ উপস্থিত</div></div>`; 
             }
             else if(snap.exists() && snap.val() === false) { 
-                absentCount++; 
-                totalDays++; 
+                absentCount++; totalDays++; 
                 attendanceHtml += `<div class="cal-day absent${todayClass}"><div class="date-num">${d}</div><div class="status-icon">❌ অনুপস্থিত</div></div>`; 
             }
             else {
@@ -394,80 +350,45 @@ async function loadStudentsForDate() {
     document.querySelectorAll('.att-student-cb').forEach(cb => { cb.addEventListener('change', (e) => { let idx = parseInt(cb.dataset.idx); currentStudentsList[idx].present = cb.checked; }); });
 }
 
-// ==================== MAIN SAVE ATTENDANCE FUNCTION ====================
 async function saveAttendance() {
     const className = document.getElementById('attendanceClassSelect').value;
     const date = document.getElementById('attendanceDate').value;
-    if(!className || !date) {
-        alert('❌ ক্লাস এবং তারিখ নির্বাচন করুন');
-        return;
-    }
+    if(!className || !date) { alert('❌ ক্লাস এবং তারিখ নির্বাচন করুন'); return; }
     
     const classKey = className.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
     let attendanceData = {};
     currentStudentsList.forEach(s => { attendanceData[s.id] = s.present === true; });
-    
     await db.ref(`attendances/${classKey}/${date}`).set(attendanceData);
     
     const absentStudents = currentStudentsList.filter(s => s.present !== true && s.guardian_phone && s.guardian_phone.length >= 10);
     const presentCount = currentStudentsList.filter(s => s.present === true).length;
     const absentCount = currentStudentsList.length - presentCount;
     
-    let smsSentCount = 0;
-    let smsFailedList = [];
+    let smsSentCount = 0, smsFailedList = [];
     
     if(absentStudents.length > 0) {
         const loadingMsg = document.createElement('div');
-        loadingMsg.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:10px; z-index:9999; box-shadow:0 0 10px rgba(0,0,0,0.3); text-align:center; min-width:350px;';
+        loadingMsg.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:10px; z-index:9999; box-shadow:0 0 10px rgba(0,0,0,0.3); text-align:center;';
         loadingMsg.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${absentStudents.length} জন অভিভাবককে SMS পাঠানো হচ্ছে...`;
         document.body.appendChild(loadingMsg);
         
         for(let i = 0; i < absentStudents.length; i++) {
             const student = absentStudents[i];
             loadingMsg.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${i+1}/${absentStudents.length} - ${student.name} কে SMS পাঠানো হচ্ছে...`;
-            
-            const result = await sendAbsentSMS(
-                student.guardian_phone, 
-                student.name, 
-                className, 
-                date,
-                currentUser.name || (currentUser.role === 'admin' ? 'প্রশাসক' : 'শিক্ষক')
-            );
-            
-            if(result.success) {
-                smsSentCount++;
-                console.log(`✅ SMS sent to ${student.name}`);
-            } else {
-                smsFailedList.push(`${student.name} - ${result.error || 'Unknown error'}`);
-                console.log(`❌ SMS failed for ${student.name}: ${result.error}`);
-            }
+            const result = await sendAbsentSMS(student.guardian_phone, student.name, className, date, currentUser.name || (currentUser.role === 'admin' ? 'প্রশাসক' : 'শিক্ষক'));
+            if(result.success) smsSentCount++;
+            else smsFailedList.push(student.name);
             await new Promise(resolve => setTimeout(resolve, 2000));
         }
-        
         loadingMsg.remove();
         
-        let resultMessage = `✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n`;
-        resultMessage += `📊 উপস্থিত: ${presentCount} জন\n`;
-        resultMessage += `📋 অনুপস্থিত: ${absentCount} জন\n\n`;
-        
-        if(smsSentCount > 0) {
-            resultMessage += `✅ সফলভাবে SMS পেয়েছেন: ${smsSentCount} জন\n`;
-        }
-        
-        if(smsFailedList.length > 0) {
-            resultMessage += `❌ ব্যর্থ: ${smsFailedList.length} জন\n`;
-            resultMessage += `${smsFailedList.join('\n')}\n`;
-        }
-        
-        alert(resultMessage);
+        let msg = `✅ উপস্থিতি সংরক্ষিত!\n📊 উপস্থিত: ${presentCount}\n📋 অনুপস্থিত: ${absentCount}`;
+        if(smsSentCount > 0) msg += `\n✅ SMS সফল: ${smsSentCount}`;
+        if(smsFailedList.length > 0) msg += `\n❌ ব্যর্থ: ${smsFailedList.join(', ')}`;
+        alert(msg);
     } else {
-        if(absentCount === 0) {
-            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ০ জন\nসবাই উপস্থিত।`);
-        } else {
-            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ${absentCount} জন\n⚠️ অনুপস্থিত ${absentCount} জনের ফোন নম্বর নেই।`);
-        }
+        alert(absentCount === 0 ? `✅ সবাই উপস্থিত!` : `✅ উপস্থিতি সংরক্ষিত!\n⚠️ ${absentCount} জনের ফোন নম্বর নেই।`);
     }
-    
     await loadClassMonthlyCalendar();
 }
 
@@ -475,9 +396,8 @@ async function loadClassMonthlyCalendar() {
     const className = document.getElementById('attendanceClassSelect').value;
     if(!className) return;
     const classKey = className.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
-    const now = new Date();
-    let year = now.getFullYear(), month = now.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    let year = new Date().getFullYear(), month = new Date().getMonth();
+    const daysInMonth = new Date(year, month+1, 0).getDate();
     const firstDay = new Date(year, month, 1).getDay();
     let attendanceData = {};
     for(let d=1; d<=daysInMonth; d++) {
@@ -503,9 +423,6 @@ async function loadClassMonthlyCalendar() {
     document.getElementById('classMonthlyCalendar').innerHTML = html;
 }
 
-// ==================== SOCIAL FEED FUNCTIONS WITH FILE UPLOAD ====================
-
-// ফাইল আপলোডের জন্য
 async function uploadFile(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -521,30 +438,37 @@ window.publishPost = async () => {
     
     let author = currentUser.role === 'admin' ? '🎓 প্রশাসক' : (currentUser.role === 'teacher' ? `👨‍🏫 ${currentUser.name}` : `🧑‍🎓 ${currentUser.name}`);
     
-    // ফাইল আপলোড চেক করুন
     const fileInput = document.getElementById('feedImageInput');
     let imgBase64 = '';
     
     if(fileInput && fileInput.files.length > 0) {
         const file = fileInput.files[0];
-        if(file.type.startsWith('image/')) {
-            imgBase64 = await uploadFile(file);
-        }
+        if(file.type.startsWith('image/')) imgBase64 = await uploadFile(file);
+    } else {
+        const urlInput = document.getElementById('feedImgUrl');
+        if(urlInput && urlInput.value.trim()) imgBase64 = urlInput.value.trim();
     }
     
     await db.ref('social_feed').push({
-        caption: cap,
-        imgUrl: imgBase64,
-        author: author,
-        timestamp: Date.now(),
-        userId: currentUser.id,
-        reactions: { '👍': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 },
-        userReactions: {}
+        caption: cap, imgUrl: imgBase64, author: author, authorId: currentUser.id, authorRole: currentUser.role,
+        timestamp: Date.now(), userId: currentUser.id,
+        reactions: { '👍': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 }, userReactions: {}
     });
     
     document.getElementById('feedCaption').value = '';
     if(fileInput) fileInput.value = '';
+    const urlInput = document.getElementById('feedImgUrl');
+    if(urlInput) urlInput.value = '';
     alert('পোস্ট প্রকাশিত হয়েছে!');
+};
+
+window.deletePost = async (postId, postAuthorId) => {
+    const canDelete = (currentUser.role === 'admin') || (currentUser.id === postAuthorId);
+    if(!canDelete) { alert('⚠️ আপনি শুধু আপনার নিজের পোস্ট ডিলিট করতে পারবেন!'); return; }
+    if(confirm('পোস্টটি ডিলিট করতে চান?')) {
+        await db.ref(`social_feed/${postId}`).remove();
+        alert('✅ পোস্ট ডিলিট করা হয়েছে!');
+    }
 };
 
 window.addReaction = async (postId, emoji) => {
@@ -573,9 +497,18 @@ window.addReply = async (postId) => {
     const replyText = replyInput.value.trim();
     if(!replyText) { alert('মন্তব্য লিখুন'); return; }
     await db.ref(`social_feed/${postId}/replies`).push({
-        text: replyText, author: currentUser.name, authorRole: currentUser.role, timestamp: Date.now()
+        text: replyText, author: currentUser.name, authorId: currentUser.id, authorRole: currentUser.role, timestamp: Date.now()
     });
     replyInput.value = '';
+};
+
+window.deleteReply = async (postId, replyId, replyAuthorId) => {
+    const canDelete = (currentUser.role === 'admin') || (currentUser.id === replyAuthorId);
+    if(!canDelete) { alert('⚠️ আপনি শুধু আপনার নিজের মন্তব্য ডিলিট করতে পারবেন!'); return; }
+    if(confirm('মন্তব্যটি ডিলিট করতে চান?')) {
+        await db.ref(`social_feed/${postId}/replies/${replyId}`).remove();
+        alert('✅ মন্তব্য ডিলিট করা হয়েছে!');
+    }
 };
 
 function loadSocialFeed() {
@@ -584,51 +517,64 @@ function loadSocialFeed() {
         container.innerHTML = '';
         let data = snap.val();
         if(!data) { container.innerHTML = '<div class="empty-state">কোনো পোস্ট নেই</div>'; return; }
+        
         let sorted = Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0));
+        
         for(let [pid, post] of sorted) {
             let reactions = post.reactions || { '👍': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 };
             let userReaction = (post.userReactions || {})[currentUser.id];
-            let repliesHtml = '';
-            if(post.replies) {
-                let repliesArr = Object.entries(post.replies).sort((a,b)=>(a[1].timestamp||0)-(b[1].timestamp||0));
-                repliesHtml = '<div style="margin-top:10px; margin-left:20px; background:#f5f5f5; padding:10px; border-radius:16px;">';
-                for(let [rid, reply] of repliesArr) {
-                    repliesHtml += `<div style="margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:5px;"><strong>${escapeHtml(reply.author)}</strong> <small>${reply.authorRole == 'admin' ? '🎓' : (reply.authorRole == 'teacher' ? '👨‍🏫' : '🧑‍🎓')}</small><br><small>${escapeHtml(reply.text)}</small><br><small>${new Date(reply.timestamp).toLocaleString()}</small></div>`;
-                }
-                repliesHtml += '</div>';
-            }
+            const showDelete = (currentUser.role === 'admin') || (currentUser.id === post.userId);
+            
             let reactionBar = `<div class="reaction-bar">`;
             for(let [emoji, count] of Object.entries(reactions)) {
                 let isActive = userReaction === emoji;
                 reactionBar += `<button class="reaction-btn ${isActive ? 'active' : ''}" onclick="addReaction('${pid}', '${emoji}')">${emoji} <span class="reaction-count">${count}</span></button>`;
             }
             reactionBar += `</div>`;
-            let card = document.createElement('div');
-            card.className = 'social-card';
+            
+            let repliesHtml = '';
+            if(post.replies) {
+                let repliesArr = Object.entries(post.replies).sort((a,b)=>(a[1].timestamp||0)-(b[1].timestamp||0));
+                repliesHtml = '<div style="margin-top:10px; margin-left:20px; background:#f5f5f5; padding:10px; border-radius:16px;">';
+                for(let [rid, reply] of repliesArr) {
+                    const showReplyDelete = (currentUser.role === 'admin') || (currentUser.id === reply.authorId);
+                    repliesHtml += `<div style="margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:5px;">
+                        <strong>${escapeHtml(reply.author)}</strong> <small>${reply.authorRole == 'admin' ? '🎓' : (reply.authorRole == 'teacher' ? '👨‍🏫' : '🧑‍🎓')}</small>
+                        ${showReplyDelete ? `<button onclick="deleteReply('${pid}', '${rid}', '${reply.authorId}')" style="background:#e74c3c; color:white; border:none; border-radius:15px; padding:2px 8px; cursor:pointer; font-size:10px; margin-left:8px;">🗑️</button>` : ''}
+                        <br><small>${escapeHtml(reply.text)}</small>
+                        <br><small style="font-size:10px; color:#888;">${new Date(reply.timestamp).toLocaleString()}</small>
+                    </div>`;
+                }
+                repliesHtml += '</div>';
+            }
             
             let imageHtml = '';
-            if(post.imgUrl && post.imgUrl.startsWith('data:image')) {
-                imageHtml = `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px; margin-top:10px;">`;
-            } else if(post.imgUrl && post.imgUrl.length > 0) {
+            if(post.imgUrl && (post.imgUrl.startsWith('data:image') || post.imgUrl.startsWith('http'))) {
                 imageHtml = `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px; margin-top:10px;">`;
             }
             
-            card.innerHTML = `<div><b>${escapeHtml(post.author)}</b></div>
-                            <small>${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</small>
-                            <p>${escapeHtml(post.caption)}</p>
-                            ${imageHtml}
-                            ${reactionBar}
-                            ${repliesHtml}
-                            <div style="display:flex; gap:8px; margin-top:10px;">
-                                <input type="text" id="reply_inp_${pid}" placeholder="মন্তব্য করুন..." style="flex:1;">
-                                <button class="btn btn-blue btn-sm" onclick="addReply('${pid}')">পাঠান</button>
-                            </div>`;
+            let card = document.createElement('div');
+            card.className = 'social-card';
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div><b>${escapeHtml(post.author)}</b> <small>${post.authorRole == 'admin' ? '🎓 প্রশাসক' : (post.authorRole == 'teacher' ? '👨‍🏫 শিক্ষক' : '🧑‍🎓 ছাত্র/ছাত্রী')}</small></div>
+                    ${showDelete ? `<button class="delete-post-btn" onclick="deletePost('${pid}', '${post.userId}')">🗑️ ডিলিট</button>` : ''}
+                </div>
+                <small style="color:#888;">${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</small>
+                <p style="margin-top:10px;">${escapeHtml(post.caption)}</p>
+                ${imageHtml}
+                ${reactionBar}
+                ${repliesHtml}
+                <div style="display:flex; gap:8px; margin-top:10px;">
+                    <input type="text" id="reply_inp_${pid}" placeholder="মন্তব্য করুন..." style="flex:1; padding:8px; border-radius:20px; border:1px solid #ddd;">
+                    <button class="btn btn-blue btn-sm" onclick="addReply('${pid}')">পাঠান</button>
+                </div>
+            `;
             container.appendChild(card);
         }
     });
 }
 
-// ==================== ADMIN FUNCTIONS ====================
 window.deleteTeacher = async (id) => { if(confirm('শিক্ষক মুছবেন?')){ await db.ref(`registered_teachers/${id}`).remove(); loadTeachersTableView(); loadDashboard(); } };
 window.deleteFeedback = async (classKey, studentId, teacherId) => {
     if(confirm('এই মতামতটি মুছতে চান?')) {
@@ -642,17 +588,11 @@ async function loadTeachersTableView() {
     const snap = await db.ref('registered_teachers').get();
     const container = document.getElementById('teachersTable');
     if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; }
-    let html = `<table class="teacher-table"><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for(let key in snap.val()) {
         let t = snap.val()[key];
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
-        html += `<tr>
-                    <td>${photo}</td>
-                    <td>${escapeHtml(t.teacher_name)}</td>
-                    <td>${t.teacher_id}</td>
-                    <td>${t.classes?.join(', ') || '—'}</td>
-                    <td><button class="btn btn-red btn-sm" onclick="window.deleteTeacher('${t.teacher_id}')">মুছুন</button></td>
-                </tr>`;
+        html += `<tr><td>${photo}</td><td>${escapeHtml(t.teacher_name)}</td><td>${t.teacher_id}</td><td>${t.classes?.join(', ') || '—'}</td><td><button class="btn btn-red btn-sm" onclick="deleteTeacher('${t.teacher_id}')">মুছুন</button></td></tr>`;
     }
     html += `</tbody></table>`;
     container.innerHTML = html;
@@ -676,7 +616,7 @@ async function loadFeedbackArchive() {
     if(!items.length) { document.getElementById('feedbackList').innerHTML='<div class="empty-state">কোন ফিডব্যাক নেই</div>'; return; }
     let html = '';
     items.forEach(it => {
-        html += `<div class="feedback-item"><strong>📚 ${it.class}</strong> | 👨‍🎓 ${escapeHtml(it.studentName)} | 👨‍🏫 ${escapeHtml(it.teacherName)}<button class="delete-btn" onclick="window.deleteFeedback('${it.classKey}', '${it.studentId}', '${it.teacherId}')"><i class="fas fa-trash"></i> মুছুন</button><br><small>📝 ${escapeHtml(it.comment)}</small><br><small>📅 ${new Date(it.timestamp).toLocaleDateString()}</small></div>`;
+        html += `<div class="feedback-item"><strong>📚 ${it.class}</strong> | 👨‍🎓 ${escapeHtml(it.studentName)} | 👨‍🏫 ${escapeHtml(it.teacherName)}<button class="delete-btn" onclick="deleteFeedback('${it.classKey}', '${it.studentId}', '${it.teacherId}')"><i class="fas fa-trash"></i> মুছুন</button><br><small>📝 ${escapeHtml(it.comment)}</small><br><small>📅 ${new Date(it.timestamp).toLocaleDateString()}</small></div>`;
     });
     document.getElementById('feedbackList').innerHTML = html;
 }
@@ -687,7 +627,6 @@ async function loadClassFilter() {
     if(sel) { sel.innerHTML = '<option value="">সব ক্লাস</option>' + classes.map(c=>`<option value="${c}">${c}</option>`).join(''); sel.onchange = loadFeedbackArchive; await loadFeedbackArchive(); }
 }
 
-// ==================== CLASS MANAGEMENT ====================
 let currentManageClass = "Class 5";
 
 function loadClassButtons() {
@@ -723,20 +662,12 @@ function renderStudentsTable() {
     let cont = document.getElementById('classStudentsTable');
     if(!cont) return;
     if(!studentsData.length) { cont.innerHTML='<div class="empty-state">কোন ছাত্র/ছাত্রী নেই। উপরে ফর্ম ব্যবহার করে যোগ করুন।</div>'; return; }
-    let html = `<table class="student-table"><thead><tr><th>ছবি</th><th>ক্রমিক</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table><thead><tr><th>ছবি</th><th>ক্রমিক</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     studentsData.forEach((s,i) => {
         let studentPhoto = s.photo ? `<img src="${s.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
-        html += `<tr>
-                    <td>${studentPhoto}</td>
-                    <td>${i+1}</td>
-                    <td>${escapeHtml(s.id)}</td>
-                    <td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td>
-                    <td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td>
-                    <td><input type="tel" class="editPhone" data-index="${i}" value="${escapeHtml(s.guardian_phone || '')}" placeholder="+8801XXXXXXXXX"></td>
-                    <td><button class="btn btn-red btn-sm" onclick="window.removeStudent(${i})">মুছুন</button></td>
-                </tr>`;
+        html += `<tr><td>${studentPhoto}</td><td>${i+1}</td><td>${escapeHtml(s.id)}</td><td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td><td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td><td><input type="tel" class="editPhone" data-index="${i}" value="${escapeHtml(s.guardian_phone || '')}" placeholder="+8801XXXXXXXXX"></td><td><button class="btn btn-red btn-sm" onclick="removeStudent(${i})">মুছুন</button></td></tr>`;
     });
-    html += `</tbody></td>`;
+    html += `</tbody></table>`;
     cont.innerHTML = html;
     document.querySelectorAll('.editName').forEach(inp => inp.onchange = (e) => studentsData[inp.dataset.index].name = inp.value);
     document.querySelectorAll('.editPass').forEach(inp => inp.onchange = (e) => studentsData[inp.dataset.index].password = inp.value);
@@ -802,7 +733,6 @@ function loadClassCheckboxes() {
     }
 }
 
-// ==================== ROUTINE MANAGEMENT ====================
 async function loadRoutineEditForm() {
     const routine = await loadRoutineFromFirebase();
     let html = '';
@@ -810,11 +740,7 @@ async function loadRoutineEditForm() {
         let clsRoutine = routine[cls] || {};
         html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>অ্যাকশন</th></tr></thead><tbody>`;
         days.forEach((day, idx) => {
-            html += `<tr>
-                        <td>${day}</td>
-                        <td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td>
-                        <td><button class="btn btn-orange btn-sm" onclick="window.updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td>
-                    </tr>`;
+            html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
         });
         html += `</tbody></table></div>`;
     }
@@ -861,7 +787,6 @@ document.getElementById('saveAllRoutinesBtn')?.addEventListener('click', async (
     showTodayTomorrowRoutine();
 });
 
-// ==================== MENU & NAVIGATION ====================
 function setupMenu() {
     document.getElementById('menuDashboard').onclick = () => { showPanel('dashboardPanel'); if(currentUser.role === 'student') showTodayTomorrowRoutine(); else { loadDashboard(); showTodayTomorrowRoutine(); } };
     document.getElementById('menuClassManager').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminClassPanel'); loadClassButtons(); } else alert('শুধু প্রশাসক'); };
@@ -878,7 +803,6 @@ function setupMenu() {
 function hideAllPanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active', 'active-panel')); }
 function showPanel(panelId) { hideAllPanels(); document.getElementById(panelId).classList.add('active-panel'); }
 
-// ==================== START APP ====================
 async function startApp() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appContainer').style.display = 'block';
@@ -929,7 +853,6 @@ async function startApp() {
     document.getElementById('viewRoutineBtn')?.addEventListener('click', () => showRoutine());
 }
 
-// ==================== BACKGROUND SLIDESHOW ====================
 const slides = document.querySelectorAll('.bg-slide');
 let currentBgSlide = 0;
 if(slides.length) {
@@ -941,7 +864,6 @@ if(slides.length) {
     }, 5000);
 }
 
-// ==================== LOGIN ====================
 document.getElementById('loginForm').onsubmit = async (e) => {
     e.preventDefault();
     let role = document.getElementById('loginRole').value;
@@ -980,7 +902,6 @@ document.getElementById('loginForm').onsubmit = async (e) => {
     }
 };
 
-// ==================== DEMO DATA INITIALIZATION ====================
 async function initDemoData() {
     const teachersSnap = await db.ref('registered_teachers').get();
     if(!teachersSnap.exists()) {
@@ -989,7 +910,7 @@ async function initDemoData() {
             classes: ['Class 6', 'Class 7'], photo: ''
         });
         await db.ref('registered_teachers/teacher2').set({
-            teacher_name: 'মেরি স্যার', teacher_id: 'teacher2', password: '1234',
+            teacher_name: '*_স্যার', teacher_id: 'teacher2', password: '1234',
             classes: ['Class 8', 'Class 9 (Science)'], photo: ''
         });
     }
@@ -1006,13 +927,8 @@ async function initDemoData() {
 }
 initDemoData();
 
-// Check SMS service on load
 setTimeout(async () => {
     const isActive = await checkSMSService();
-    if (isActive) {
-        console.log("✅ SMS Service is active!");
-        console.log("📱 Test: testSMS('+8801889343480')");
-    } else {
-        console.log("⚠️ SMS Service not responding. Make sure selfSMS server is running.");
-    }
+    if (isActive) console.log("✅ SMS Service is active!");
+    else console.log("⚠️ SMS Service not responding.");
 }, 3000);
