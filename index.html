@@ -18,9 +18,9 @@
 <div id="loginScreen" class="login-screen">
     <div class="login-card">
         <div align="center">
-                <img src="mastermined.jpg" alt="Logo" style="height:40px; width:40px; object-fit:contain; border-radius:12px;">
+            <img src="mastermined.jpg" alt="Logo" style="height:40px; width:40px; object-fit:contain; border-radius:12px;">
         </div>
-        <h3> মাস্টারমাইন্ড অ্যাকাডেমি</h3>
+        <h3>মাস্টারমাইন্ড অ্যাকাডেমি</h3>
         <form id="loginForm">
             <select id="loginRole">
                 <option value="student">👨‍🎓 ছাত্র/ছাত্রী লগইন</option>
@@ -38,13 +38,16 @@
 <div id="appContainer" class="app-container">
     <div class="navbar">
         <div class="logo-area">
-                <img src="mastermined.jpg" alt="Logo" style="height:40px; width:40px; object-fit:contain; border-radius:12px;">
-            <span>মাস্টারমাইন্ড অ্যাকাডেমি</span></div>
-        <div class="user-area"><span id="userNameDisplay"></span> (<span id="roleDisplay"></span>)
-            <div class="dropdown"><button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
+            <img src="mastermined.jpg" alt="Logo" style="height:40px; width:40px; object-fit:contain; border-radius:12px;">
+            <span>মাস্টারমাইন্ড অ্যাকাডেমি</span>
+        </div>
+        <div class="user-area">
+            <span id="userNameDisplay"></span> (<span id="roleDisplay"></span>)
+            <div class="dropdown">
+                <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
                 <div class="dropdown-content" id="dropdownMenu">
                     <a id="menuDashboard"><i class="fas fa-chalkboard-user"></i> ড্যাশবোর্ড</a>
-                    <a id="menuClassManager" style="display:none;"><i class="fas fa-school"></i>  ছাত্র/ছাত্রী ম্যানেজার</a>
+                    <a id="menuClassManager" style="display:none;"><i class="fas fa-school"></i> ছাত্র/ছাত্রী ম্যানেজার</a>
                     <a id="menuTeachers" style="display:none;"><i class="fas fa-chalkboard"></i> শিক্ষক ম্যানেজার</a>
                     <a id="menuAttendance"><i class="fas fa-calendar-check"></i> অ্যাটেন্ডেন্স</a>
                     <a id="menuFeedback" style="display:none;"><i class="fas fa-comment-dots"></i> ফিডব্যাক</a>
@@ -62,7 +65,7 @@
             <div class="dashboard-header">
                 <h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2>
                 <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
-                    <button class="btn btn-orange" id="viewResultBtn"><i class="fas fa-file-alt" ></i> ফলাফল দেখুন</button>
+                    <button class="btn btn-orange" id="viewResultBtn"><i class="fas fa-file-alt"></i> ফলাফল দেখুন</button>
                     <button class="btn btn-blue" id="aboutUsBtn"><i class="fas fa-info-circle"></i> সম্পর্কে</button>
                     <button class="btn btn-green" id="viewRoutineBtn"><i class="fas fa-calendar-week"></i> রুটিন দেখুন</button>
                 </div>
@@ -173,7 +176,6 @@
                 <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; align-items:center;">
                     <label style="background:#eef2f5; padding:8px 15px; border-radius:30px; cursor:pointer;">
                         <i class="fas fa-image"></i> নির্বাচন করুন
-                        <!-- Update the file input in your social feed form -->
                         <input type="file" id="feedImageInput" accept="image/*,video/*" multiple style="display:none;">
                     </label>
                     <div id="imagePreviewContainer" style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;"></div>
@@ -193,7 +195,8 @@
         <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
         <p style="margin-bottom:20px;">ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।</p>
         <p style="margin-bottom:20px; font-style:italic;">"ধন্যবাদ"</p>
-        <button class="btn btn-orange" style="width:100%; position: fixed; bottom: 0; left: 0; z-index: 9999;" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button>    </div>
+        <button class="btn btn-orange" style="width:100%;" onclick="document.getElementById('resultModal').style.display='none'">বন্ধ করুন</button>
+    </div>
 </div>
 
 <div id="aboutModal" class="about-modal">
@@ -212,7 +215,8 @@
         <i class="fas fa-calendar-week" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
         <h2 style="text-align:center;">📅 ক্লাস রুটিন</h2>
         <div id="routineContent"></div>
-        <button class="btn btn-orange" style="width:100%; position: fixed; bottom: 0; left: 0; z-index: 9999;" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button>    </div>
+        <button class="btn btn-orange" style="width:100%; margin-top:15px;" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button>
+    </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
