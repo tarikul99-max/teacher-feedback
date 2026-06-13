@@ -116,7 +116,7 @@
                 <input type="text" id="cousinName" placeholder="নাম *">
                 <input type="text" id="cousinId" placeholder="আইডি *">
                 <input type="text" id="cousinPass" placeholder="পাসওয়ার্ড *">
-                <input type="tel" id="cousinGuardianPhone" placeholder="অভিভাবকের মোবাইল (01XXXXXXXXX)">
+                <input type="tel" id="cousinGuardianPhone" placeholder="অভিভাবকের মোবাইল (+8801XXXXXXXXX)">
                 <button class="btn btn-blue" id="addCousinBtn">যোগ করুন</button>
             </div>
             <button class="btn btn-green" id="saveClassBtn">সব সংরক্ষণ করুন</button>
@@ -153,7 +153,7 @@
         </div>
         
         <div id="adminFeedbackPanel" class="panel">
-            <h2><i class="fas fa-archive"></i> সকল মতামত (শুধু প্রশাসক)</h2>
+            <h2><i class="fas fa-archive"></i> সকল মতামত</h2>
             <select id="feedbackClassFilter" style="margin-bottom:15px;"></select>
             <div id="feedbackList"></div>
         </div>
@@ -166,11 +166,17 @@
         
         <div id="socialFeedPanel" class="panel">
             <h2><i class="fas fa-comments"></i> সোশ্যাল কানেক্টিভিটি</h2>
-            <textarea id="feedCaption" rows="2" placeholder="পোস্ট লিখুন..."></textarea>
-    <!-- এই লাইনটি যোগ করুন - ছবি আপলোডের জন্য -->
-            <input type="file" id="feedImageInput" accept="image/*" style="margin-bottom:8px;">
-            <input type="text" id="feedImgUrl" placeholder="ছবির URL (ঐচ্ছিক)">
-            <button onclick="window.publishPost()" class="btn btn-orange">পোস্ট করুন</button>
+            <div style="background:#f9f5ed; padding:15px; border-radius:20px; margin-bottom:15px;">
+                <textarea id="feedCaption" rows="2" placeholder="আপনার মনের কথা লিখুন..." style="width:100%; border-radius:15px;"></textarea>
+                <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+                    <label style="background:#eef2f5; padding:8px 15px; border-radius:30px; cursor:pointer;">
+                        <i class="fas fa-image"></i> ছবি আপলোড
+                        <input type="file" id="feedImageInput" accept="image/*" style="display:none;">
+                    </label>
+                    <input type="text" id="feedImgUrl" placeholder="অথবা ছবির URL দিন" style="flex:1;">
+                    <button onclick="window.publishPost()" class="btn btn-orange"><i class="fas fa-paper-plane"></i> পোস্ট করুন</button>
+                </div>
+            </div>
             <div id="socialFeedContainer" style="margin-top: 20px;"></div>
         </div>
     </div>
@@ -180,7 +186,7 @@
 <div id="resultModal" class="result-modal">
     <div class="results-card">
         <i class="fas fa-chart-simple" style="font-size:48px; color:#f5b042;"></i>
-        <h2 style="margin-top:15px;"><a href="about.html" style="font-size: 20px;"> 📊 একাডেমিক ফলাফল</a></h2>
+        <h2 style="margin-top:15px;">📊 একাডেমিক ফলাফল</h2>
         <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
         <p style="margin-bottom:20px;">ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।</p>
         <p style="margin-bottom:20px; font-style:italic;">"ধন্যবাদ"</p>
