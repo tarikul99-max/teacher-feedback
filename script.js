@@ -427,7 +427,7 @@ async function loadClassMonthlyCalendar() {
     document.getElementById('classMonthlyCalendar').innerHTML = html;
 }
 
-// ==================== SOCIAL FEED FUNCTIONS WITH MULTIPLE IMAGES AND VIDEOS ====================
+// ==================== FACEBOOK-LIKE SOCIAL FEED FUNCTIONS ====================
 
 function setupMediaPreview() {
     const fileInput = document.getElementById('feedImageInput');
@@ -481,12 +481,12 @@ function createMediaPreview(src, type, index) {
     
     if (type === 'image') {
         previewDiv.innerHTML = `
-            <img src="${src}" style="width:100px; height:100px; object-fit:cover; border-radius:10px; border:2px solid #f5b042;">
+            <img src="${src}" style="width:100px; height:100px; object-fit:cover; border-radius:10px; border:2px solid #1877f2;">
             <button onclick="removeMedia(${index}, 'image')" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:14px; line-height:1;">×</button>
         `;
     } else {
         previewDiv.innerHTML = `
-            <video src="${src}" style="width:100px; height:100px; object-fit:cover; border-radius:10px; border:2px solid #f5b042;" muted></video>
+            <video src="${src}" style="width:100px; height:100px; object-fit:cover; border-radius:10px; border:2px solid #1877f2;" muted></video>
             <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.6); border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center;">
                 <i class="fas fa-play" style="color:white; font-size:12px;"></i>
             </div>
@@ -571,7 +571,7 @@ window.publishPost = async () => {
         authorRole: currentUser.role,
         timestamp: Date.now(),
         userId: currentUser.id,
-        reactions: { '👍': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 },
+        reactions: { '👍': 0, '❤️': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 },
         userReactions: {}
     });
     
@@ -597,7 +597,7 @@ window.addReaction = async (postId, emoji) => {
     const snap = await postRef.get();
     if(snap.exists()) {
         const post = snap.val();
-        let reactions = post.reactions || { '👍': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 };
+        let reactions = post.reactions || { '👍': 0, '❤️': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 };
         let userReactions = post.userReactions || {};
         const userId = currentUser.id;
         const oldEmoji = userReactions[userId];
@@ -611,6 +611,27 @@ window.addReaction = async (postId, emoji) => {
             userReactions[userId] = emoji;
         }
         await postRef.update({ reactions: reactions, userReactions: userReactions });
+    }
+};
+
+window.showReactionPicker = (postId, buttonElement) => {
+    const picker = document.getElementById(`reactionPicker_${postId}`);
+    if(picker.style.display === 'flex') {
+        picker.style.display = 'none';
+    } else {
+        // Hide all other pickers
+        document.querySelectorAll('.reaction-picker').forEach(p => p.style.display = 'none');
+        picker.style.display = 'flex';
+        const rect = buttonElement.getBoundingClientRect();
+        picker.style.position = 'fixed';
+        picker.style.bottom = 'auto';
+        picker.style.top = `${rect.top - 50}px`;
+        picker.style.left = `${rect.left}px`;
+        
+        // Auto hide after 3 seconds
+        setTimeout(() => {
+            picker.style.display = 'none';
+        }, 3000);
     }
 };
 
@@ -633,78 +654,159 @@ window.deleteReply = async (postId, replyId, replyAuthorId) => {
     }
 };
 
+window.toggleComments = (postId) => {
+    const commentsDiv = document.getElementById(`comments_${postId}`);
+    if(commentsDiv.style.display === 'none') {
+        commentsDiv.style.display = 'block';
+    } else {
+        commentsDiv.style.display = 'none';
+    }
+};
+
 function loadSocialFeed() {
     db.ref('social_feed').on('value', (snap) => {
         let container = document.getElementById('socialFeedContainer');
         container.innerHTML = '';
         let data = snap.val();
-        if(!data) { container.innerHTML = '<div class="empty-state">কোনো পোস্ট নেই</div>'; return; }
+        if(!data) { 
+            container.innerHTML = `
+                <div class="empty-feed">
+                    <i class="fas fa-newspaper" style="font-size: 64px; color: #ccc; margin-bottom: 20px;"></i>
+                    <h3>কোনো পোস্ট নেই</h3>
+                    <p>প্রথম পোস্টটি করুন!</p>
+                </div>
+            `; 
+            return; 
+        }
         
         let sorted = Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0));
         
         for(let [pid, post] of sorted) {
-            let reactions = post.reactions || { '👍': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 };
+            let reactions = post.reactions || { '👍': 0, '❤️': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 };
             let userReaction = (post.userReactions || {})[currentUser.id];
             const showDelete = (currentUser.role === 'admin') || (currentUser.id === post.userId);
             
-            let reactionBar = `<div class="reaction-bar">`;
+            // Calculate total reactions
+            let totalReactions = Object.values(reactions).reduce((a, b) => a + b, 0);
+            let topReaction = '';
             for(let [emoji, count] of Object.entries(reactions)) {
-                let isActive = userReaction === emoji;
-                reactionBar += `<button class="reaction-btn ${isActive ? 'active' : ''}" onclick="addReaction('${pid}', '${emoji}')">${emoji} <span class="reaction-count">${count}</span></button>`;
+                if(count > 0) {
+                    topReaction = emoji;
+                    break;
+                }
             }
-            reactionBar += `</div>`;
+            
+            let reactionBar = `
+                <div class="fb-reaction-bar">
+                    <div class="fb-reaction-stats">
+                        ${totalReactions > 0 ? `<span class="fb-reaction-icon">${topReaction}</span> <span>${totalReactions}</span>` : ''}
+                    </div>
+                    <div class="fb-comment-share-count">
+                        ${post.replies ? Object.keys(post.replies).length : 0} টি মন্তব্য
+                    </div>
+                </div>
+                <div class="fb-action-buttons">
+                    <button class="fb-action-btn ${userReaction ? 'active' : ''}" onclick="showReactionPicker('${pid}', this)">
+                        <i class="fas fa-thumbs-up"></i> পছন্দ
+                    </button>
+                    <button class="fb-action-btn" onclick="toggleComments('${pid}')">
+                        <i class="fas fa-comment"></i> মন্তব্য
+                    </button>
+                    <button class="fb-action-btn">
+                        <i class="fas fa-share"></i> শেয়ার
+                    </button>
+                </div>
+                <div class="reaction-picker" id="reactionPicker_${pid}" style="display:none;">
+                    <button onclick="addReaction('${pid}', '👍')">👍</button>
+                    <button onclick="addReaction('${pid}', '❤️')">❤️</button>
+                    <button onclick="addReaction('${pid}', '😢')">😢</button>
+                    <button onclick="addReaction('${pid}', '😲')">😲</button>
+                    <button onclick="addReaction('${pid}', '🥳')">🥳</button>
+                    <button onclick="addReaction('${pid}', '🔥')">🔥</button>
+                    <button onclick="addReaction('${pid}', '🤔')">🤔</button>
+                </div>
+            `;
             
             let repliesHtml = '';
-            if(post.replies) {
+            if(post.replies && Object.keys(post.replies).length > 0) {
                 let repliesArr = Object.entries(post.replies).sort((a,b)=>(a[1].timestamp||0)-(b[1].timestamp||0));
-                repliesHtml = '<div style="margin-top:10px; margin-left:20px; background:#f5f5f5; padding:10px; border-radius:16px;">';
+                repliesHtml = '<div class="fb-comments-list">';
                 for(let [rid, reply] of repliesArr) {
                     const showReplyDelete = (currentUser.role === 'admin') || (currentUser.id === reply.authorId);
-                    repliesHtml += `<div style="margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:5px;">
-                        <strong>${escapeHtml(reply.author)}</strong> <small>${reply.authorRole == 'admin' ? '🎓' : (reply.authorRole == 'teacher' ? '👨‍🏫' : '🧑‍🎓')}</small>
-                        ${showReplyDelete ? `<button onclick="deleteReply('${pid}', '${rid}', '${reply.authorId}')" style="background:#e74c3c; color:white; border:none; border-radius:15px; padding:3px 9px; cursor:pointer; font-size:10px; margin-left:8px;">মুছুন</button>` : ''}
-                        <br><small>${escapeHtml(reply.text)}</small>
-                        <br><small style="font-size:10px; color:#888;">${new Date(reply.timestamp).toLocaleString()}</small>
-                    </div>`;
+                    repliesHtml += `
+                        <div class="fb-comment">
+                            <div class="fb-comment-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="fb-comment-content">
+                                <div class="fb-comment-author">${escapeHtml(reply.author)} 
+                                    <small>${reply.authorRole == 'admin' ? '🎓' : (reply.authorRole == 'teacher' ? '👨‍🏫' : '🧑‍🎓')}</small>
+                                </div>
+                                <div class="fb-comment-text">${escapeHtml(reply.text)}</div>
+                                <div class="fb-comment-actions">
+                                    <span>পছন্দ</span>
+                                    <span>উত্তর</span>
+                                    ${showReplyDelete ? `<span class="delete-comment" onclick="deleteReply('${pid}', '${rid}', '${reply.authorId}')">মুছুন</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
                 }
                 repliesHtml += '</div>';
             }
             
             let mediaHtml = '';
             if(post.media && post.media.length > 0) {
-                mediaHtml = '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">';
-                for(let mediaItem of post.media) {
+                if(post.media.length === 1) {
+                    const mediaItem = post.media[0];
                     if(mediaItem.type === 'image') {
-                        mediaHtml += `<img src="${mediaItem.data}" style="width:calc(33% - 7px); min-width:100px; max-width:200px; height:150px; object-fit:cover; border-radius:16px; cursor:pointer;" onclick="window.open(this.src)">`;
+                        mediaHtml = `<div class="fb-single-media"><img src="${mediaItem.data}" onclick="window.open(this.src)"></div>`;
                     } else if(mediaItem.type === 'video') {
-                        mediaHtml += `
-                            <video controls style="width:calc(33% - 7px); min-width:100px; max-width:300px; height:150px; object-fit:cover; border-radius:16px;">
-                                <source src="${mediaItem.data}">
-                                আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
-                            </video>
-                        `;
+                        mediaHtml = `<div class="fb-single-media"><video controls src="${mediaItem.data}"></video></div>`;
                     }
+                } else {
+                    const gridClass = post.media.length === 2 ? 'fb-grid-2' : (post.media.length === 3 ? 'fb-grid-3' : 'fb-grid-4');
+                    mediaHtml = `<div class="fb-media-grid ${gridClass}">`;
+                    for(let mediaItem of post.media) {
+                        if(mediaItem.type === 'image') {
+                            mediaHtml += `<div class="fb-media-item"><img src="${mediaItem.data}" onclick="window.open(this.src)"></div>`;
+                        } else if(mediaItem.type === 'video') {
+                            mediaHtml += `<div class="fb-media-item"><video controls src="${mediaItem.data}"></video></div>`;
+                        }
+                    }
+                    mediaHtml += `</div>`;
                 }
-                mediaHtml += '</div>';
             } else if(post.imgUrl && (post.imgUrl.startsWith('data:image') || post.imgUrl.startsWith('http'))) {
-                mediaHtml = `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px; margin-top:10px; cursor:pointer;" onclick="window.open(this.src)">`;
+                mediaHtml = `<div class="fb-single-media"><img src="${post.imgUrl}" onclick="window.open(this.src)"></div>`;
             }
             
             let card = document.createElement('div');
-            card.className = 'social-card';
+            card.className = 'fb-post-card';
             card.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div><b>${escapeHtml(post.author)}</b> <small>${post.authorRole == 'admin' ? '🎓 প্রশাসক' : (post.authorRole == 'teacher' ? '👨‍🏫 শিক্ষক' : '🧑‍🎓 ছাত্র/ছাত্রী')}</small></div>
-                    ${showDelete ? `<button class="delete-post-btn" onclick="deletePost('${pid}', '${post.userId}')">🗑️ ডিলিট</button>` : ''}
+                <div class="fb-post-header">
+                    <div class="fb-post-avatar">
+                        <i class="fas ${post.authorRole == 'admin' ? 'fa-crown' : (post.authorRole == 'teacher' ? 'fa-chalkboard-user' : 'fa-user-graduate')}"></i>
+                    </div>
+                    <div class="fb-post-info">
+                        <div class="fb-post-author">${escapeHtml(post.author)}</div>
+                        <div class="fb-post-time">${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</div>
+                    </div>
+                    ${showDelete ? `<button class="fb-post-menu" onclick="deletePost('${pid}', '${post.userId}')"><i class="fas fa-trash"></i></button>` : ''}
                 </div>
-                <small style="color:#888;">${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</small>
-                <p style="margin-top:10px;">${escapeHtml(post.caption)}</p>
+                <div class="fb-post-caption">
+                    <p>${escapeHtml(post.caption)}</p>
+                </div>
                 ${mediaHtml}
                 ${reactionBar}
-                ${repliesHtml}
-                <div style="display:flex; gap:8px; margin-top:10px;">
-                    <input type="text" id="reply_inp_${pid}" placeholder="মন্তব্য করুন..." style="flex:1; padding:8px; border-radius:20px; border:1px solid #ddd;">
-                    <button class="btn btn-blue btn-sm" onclick="addReply('${pid}')">পাঠান</button>
+                <div class="fb-comments-section" id="comments_${pid}" style="display:none;">
+                    ${repliesHtml}
+                    <div class="fb-comment-input">
+                        <div class="fb-comment-avatar-small">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <input type="text" id="reply_inp_${pid}" placeholder="মন্তব্য লিখুন..." class="fb-comment-field">
+                        <button class="fb-comment-send" onclick="addReply('${pid}')">পাঠান</button>
+                    </div>
                 </div>
             `;
             container.appendChild(card);
@@ -712,18 +814,245 @@ function loadSocialFeed() {
     });
 }
 
-// Add CSS for video display
-const style = document.createElement('style');
-style.textContent = `
-    video::-webkit-media-controls {
-        border-radius: 16px;
+// Add Facebook-like CSS
+const fbStyle = document.createElement('style');
+fbStyle.textContent = `
+    .fb-post-card {
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        overflow: hidden;
     }
-    video:hover {
-        transform: scale(1.02);
-        transition: transform 0.3s ease;
+    .fb-post-header {
+        display: flex;
+        padding: 12px 16px;
+        align-items: center;
+        gap: 12px;
+    }
+    .fb-post-avatar {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #1877f2, #0e5a9e);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+    .fb-post-avatar i {
+        font-size: 20px;
+    }
+    .fb-post-info {
+        flex: 1;
+    }
+    .fb-post-author {
+        font-weight: 600;
+        color: #050505;
+    }
+    .fb-post-time {
+        font-size: 12px;
+        color: #65676b;
+    }
+    .fb-post-menu {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #65676b;
+        padding: 8px;
+        border-radius: 50%;
+    }
+    .fb-post-menu:hover {
+        background: #f0f2f5;
+    }
+    .fb-post-caption {
+        padding: 0 16px 12px 16px;
+        font-size: 14px;
+        color: #050505;
+    }
+    .fb-single-media {
+        background: #f0f2f5;
+    }
+    .fb-single-media img, .fb-single-media video {
+        width: 100%;
+        max-height: 500px;
+        object-fit: contain;
+    }
+    .fb-media-grid {
+        display: grid;
+        gap: 2px;
+        background: #f0f2f5;
+    }
+    .fb-grid-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+    .fb-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .fb-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .fb-media-item img, .fb-media-item video {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+    .fb-reaction-bar {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 16px;
+        border-top: 1px solid #e4e6eb;
+        border-bottom: 1px solid #e4e6eb;
+        font-size: 13px;
+        color: #65676b;
+    }
+    .fb-reaction-stats {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .fb-reaction-icon {
+        font-size: 14px;
+    }
+    .fb-action-buttons {
+        display: flex;
+        padding: 4px;
+        gap: 4px;
+    }
+    .fb-action-btn {
+        flex: 1;
+        background: none;
+        border: none;
+        padding: 8px;
+        border-radius: 8px;
+        font-weight: 600;
+        color: #65676b;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    .fb-action-btn:hover {
+        background: #f0f2f5;
+    }
+    .fb-action-btn.active {
+        color: #1877f2;
+    }
+    .reaction-picker {
+        position: fixed;
+        background: white;
+        border-radius: 40px;
+        padding: 8px 12px;
+        display: flex;
+        gap: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+        z-index: 1000;
+    }
+    .reaction-picker button {
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .reaction-picker button:hover {
+        transform: scale(1.2);
+    }
+    .fb-comments-section {
+        padding: 0 16px 12px 16px;
+        border-top: 1px solid #e4e6eb;
+    }
+    .fb-comments-list {
+        margin: 12px 0;
+    }
+    .fb-comment {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+    .fb-comment-avatar {
+        width: 32px;
+        height: 32px;
+        background: #e4e6eb;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #65676b;
+    }
+    .fb-comment-content {
+        flex: 1;
+        background: #f0f2f5;
+        padding: 8px 12px;
+        border-radius: 18px;
+    }
+    .fb-comment-author {
+        font-weight: 600;
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+    .fb-comment-text {
+        font-size: 13px;
+        color: #050505;
+    }
+    .fb-comment-actions {
+        font-size: 11px;
+        color: #65676b;
+        margin-top: 4px;
+        display: flex;
+        gap: 12px;
+    }
+    .fb-comment-actions span {
+        cursor: pointer;
+    }
+    .delete-comment {
+        color: #e74c3c;
+    }
+    .fb-comment-input {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+    }
+    .fb-comment-avatar-small {
+        width: 28px;
+        height: 28px;
+        background: #e4e6eb;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .fb-comment-field {
+        flex: 1;
+        background: #f0f2f5;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    .fb-comment-field:focus {
+        outline: none;
+    }
+    .fb-comment-send {
+        background: #1877f2;
+        color: white;
+        border: none;
+        padding: 6px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+    .empty-feed {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 12px;
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(fbStyle);
 
 window.deleteTeacher = async (id) => { if(confirm('শিক্ষক মুছবেন?')){ await db.ref(`registered_teachers/${id}`).remove(); loadTeachersTableView(); loadDashboard(); } };
 window.deleteFeedback = async (classKey, studentId, teacherId) => {
