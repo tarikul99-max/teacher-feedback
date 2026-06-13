@@ -167,6 +167,8 @@
         <div id="socialFeedPanel" class="panel">
             <h2><i class="fas fa-comments"></i> সোশ্যাল কানেক্টিভিটি</h2>
             <textarea id="feedCaption" rows="2" placeholder="পোস্ট লিখুন..."></textarea>
+    <!-- এই লাইনটি যোগ করুন - ছবি আপলোডের জন্য -->
+            <input type="file" id="feedImageInput" accept="image/*" style="margin-bottom:8px;">
             <input type="text" id="feedImgUrl" placeholder="ছবির URL (ঐচ্ছিক)">
             <button onclick="window.publishPost()" class="btn btn-orange">পোস্ট করুন</button>
             <div id="socialFeedContainer" style="margin-top: 20px;"></div>
