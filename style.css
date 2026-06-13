@@ -254,7 +254,7 @@ body {
     border-radius: 24px;
     padding: 20px;
     margin-bottom: 20px;
-    text-align: center;
+    text-align: left;
 }
 
 .tomorrow-routine-card {
@@ -263,7 +263,7 @@ body {
     border-radius: 24px;
     padding: 20px;
     margin-bottom: 20px;
-    text-align: center;
+    text-align: left;
 }
 
 .routine-subject {
