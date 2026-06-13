@@ -442,10 +442,11 @@ function handleFileChange(e) {
     selectedFiles = [];
     selectedVideos = [];
     const previewContainer = document.getElementById('imagePreviewContainer');
+    if (!previewContainer) return;
     previewContainer.innerHTML = '';
     
     const files = Array.from(e.target.files);
-    const maxFiles = 5;
+    const maxFiles = 3;
     
     if (files.length > maxFiles) {
         alert(`সর্বোচ্চ ${maxFiles}টি মিডিয়া ফাইল আপলোড করতে পারবেন।`);
@@ -453,22 +454,39 @@ function handleFileChange(e) {
         return;
     }
     
+    let imageCount = 0;
+    let videoCount = 0;
+    
     files.forEach((file, index) => {
         if (file.type.startsWith('image/')) {
-            selectedFiles.push(file);
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const previewDiv = createMediaPreview(e.target.result, 'image', index);
-                previewContainer.appendChild(previewDiv);
-            };
-            reader.readAsDataURL(file);
+            if (imageCount < 3) {
+                selectedFiles.push(file);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewDiv = createMediaPreview(e.target.result, 'image', selectedFiles.indexOf(file));
+                    previewContainer.appendChild(previewDiv);
+                };
+                reader.readAsDataURL(file);
+                imageCount++;
+            } else {
+                alert('সর্বোচ্চ ৩টি ছবি আপলোড করতে পারবেন');
+            }
         } else if (file.type.startsWith('video/')) {
-            selectedVideos.push(file);
-            const videoURL = URL.createObjectURL(file);
-            const previewDiv = createMediaPreview(videoURL, 'video', index);
-            previewContainer.appendChild(previewDiv);
+            if (videoCount < 1) {
+                if (file.size > 15 * 1024 * 1024) {
+                    alert(`"${file.name}" ভিডিওটি 15MB এর বেশি। দয়া করে ছোট ভিডিও ব্যবহার করুন।`);
+                    return;
+                }
+                selectedVideos.push(file);
+                const videoURL = URL.createObjectURL(file);
+                const previewDiv = createMediaPreview(videoURL, 'video', selectedVideos.indexOf(file));
+                previewContainer.appendChild(previewDiv);
+                videoCount++;
+            } else {
+                alert('সর্বোচ্চ ১টি ভিডিও আপলোড করতে পারবেন');
+            }
         } else {
-            alert(`"${file.name}" সাপোর্টেড নয়। শুধু ছবি এবং ভিডিও আপলোড করুন।`);
+            alert(`"${file.name}" সাপোর্টেড নয়। শুধু ছবি (.jpg, .png, .gif) এবং ভিডিও (.mp4, .webm) আপলোড করুন।`);
         }
     });
 }
@@ -486,7 +504,7 @@ function createMediaPreview(src, type, index) {
         `;
     } else {
         previewDiv.innerHTML = `
-            <video src="${src}" style="width:100px; height:100px; object-fit:cover; border-radius:10px; border:2px solid #1877f2;" muted></video>
+            <video src="${src}" style="width:100px; height:100px; object-fit:cover; border-radius:10px; border:2px solid #1877f2;" muted preload="metadata"></video>
             <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.6); border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center;">
                 <i class="fas fa-play" style="color:white; font-size:12px;"></i>
             </div>
@@ -502,11 +520,19 @@ window.removeMedia = function(index, type) {
         selectedFiles.splice(index, 1);
     } else if (type === 'video' && index >= 0 && index < selectedVideos.length) {
         selectedVideos.splice(index, 1);
+        const previewContainer = document.getElementById('imagePreviewContainer');
+        if(previewContainer) {
+            const videos = previewContainer.querySelectorAll('video');
+            videos.forEach(video => {
+                if(video.src) URL.revokeObjectURL(video.src);
+            });
+        }
     }
     
     const fileInput = document.getElementById('feedImageInput');
-    fileInput.value = '';
+    if(fileInput) fileInput.value = '';
     const previewContainer = document.getElementById('imagePreviewContainer');
+    if(!previewContainer) return;
     previewContainer.innerHTML = '';
     
     selectedFiles.forEach((file, idx) => {
@@ -525,17 +551,6 @@ window.removeMedia = function(index, type) {
     });
 };
 
-async function uploadMultipleMedia(files, isVideo = false) {
-    const uploadedMedia = [];
-    for (const file of files) {
-        if (isVideo ? file.type.startsWith('video/') : file.type.startsWith('image/')) {
-            const base64 = await uploadFile(file);
-            uploadedMedia.push({ type: isVideo ? 'video' : 'image', data: base64 });
-        }
-    }
-    return uploadedMedia;
-}
-
 async function uploadFile(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -545,43 +560,91 @@ async function uploadFile(file) {
     });
 }
 
+async function uploadMultipleMedia(files, isVideo = false) {
+    const uploadedMedia = [];
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (isVideo ? file.type.startsWith('video/') : file.type.startsWith('image/')) {
+            try {
+                if (isVideo && file.size > 10 * 1024 * 1024) {
+                    alert(`"${file.name}" ভিডিওটি 10MB এর বেশি। ছোট ভিডিও ব্যবহার করুন।`);
+                    continue;
+                }
+                const base64 = await uploadFile(file);
+                uploadedMedia.push({ 
+                    type: isVideo ? 'video' : 'image', 
+                    data: base64,
+                    name: file.name,
+                    size: file.size
+                });
+            } catch(error) {
+                console.error('Upload error:', error);
+                alert(`"${file.name}" আপলোড করতে ব্যর্থ হয়েছে`);
+            }
+        } else {
+            alert(`"${file.name}" সাপোর্টেড নয়। শুধু ছবি এবং ভিডিও আপলোড করুন।`);
+        }
+    }
+    return uploadedMedia;
+}
+
 window.publishPost = async () => {
     let cap = document.getElementById('feedCaption').value.trim();
-    if(!cap) { alert('ক্যাপশন লিখুন'); return; }
+    if(!cap) { 
+        alert('ক্যাপশন লিখুন'); 
+        return; 
+    }
     
     let author = currentUser.role === 'admin' ? '🎓 প্রশাসক' : (currentUser.role === 'teacher' ? `👨‍🏫 ${currentUser.name}` : `🧑‍🎓 ${currentUser.name}`);
     
     let media = [];
     
-    if (selectedFiles.length > 0) {
-        const imageMedia = await uploadMultipleMedia(selectedFiles, false);
-        media.push(...imageMedia);
+    const publishBtn = document.querySelector('#socialFeedPanel .fb-create-post button:last-child');
+    const originalText = publishBtn?.innerHTML;
+    if(publishBtn) {
+        publishBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> পোস্ট করা হচ্ছে...';
+        publishBtn.disabled = true;
     }
     
-    if (selectedVideos.length > 0) {
-        const videoMedia = await uploadMultipleMedia(selectedVideos, true);
-        media.push(...videoMedia);
+    try {
+        if (selectedFiles.length > 0) {
+            const imageMedia = await uploadMultipleMedia(selectedFiles, false);
+            media.push(...imageMedia);
+        }
+        
+        if (selectedVideos.length > 0) {
+            const videoMedia = await uploadMultipleMedia(selectedVideos, true);
+            media.push(...videoMedia);
+        }
+        
+        await db.ref('social_feed').push({
+            caption: cap,
+            media: media,
+            author: author,
+            authorId: currentUser.id,
+            authorRole: currentUser.role,
+            timestamp: Date.now(),
+            userId: currentUser.id,
+            reactions: { '👍': 0, '❤️': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 },
+            userReactions: {},
+            comments: {}
+        });
+        
+        document.getElementById('feedCaption').value = '';
+        document.getElementById('feedImageInput').value = '';
+        document.getElementById('imagePreviewContainer').innerHTML = '';
+        selectedFiles = [];
+        selectedVideos = [];
+        alert('✅ পোস্ট প্রকাশিত হয়েছে!');
+    } catch(error) {
+        console.error('Publish error:', error);
+        alert('পোস্ট করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।');
+    } finally {
+        if(publishBtn) {
+            publishBtn.innerHTML = originalText;
+            publishBtn.disabled = false;
+        }
     }
-    
-    await db.ref('social_feed').push({
-        caption: cap,
-        media: media,
-        author: author,
-        authorId: currentUser.id,
-        authorRole: currentUser.role,
-        timestamp: Date.now(),
-        userId: currentUser.id,
-        reactions: { '👍': 0, '❤️': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 },
-        userReactions: {},
-        comments: {} // Store comments with nesting support
-    });
-    
-    document.getElementById('feedCaption').value = '';
-    document.getElementById('feedImageInput').value = '';
-    document.getElementById('imagePreviewContainer').innerHTML = '';
-    selectedFiles = [];
-    selectedVideos = [];
-    alert('পোস্ট প্রকাশিত হয়েছে!');
 };
 
 window.deletePost = async (postId, postAuthorId) => {
@@ -634,7 +697,6 @@ window.showReactionPicker = (postId, buttonElement) => {
     }
 };
 
-// Nested comment functions
 window.showReplyInput = (postId, parentCommentId, authorName) => {
     const replyDiv = document.getElementById(`reply_input_${postId}_${parentCommentId}`);
     if(replyDiv.style.display === 'none') {
@@ -724,7 +786,6 @@ window.toggleComments = (postId) => {
     }
 };
 
-// Function to render nested comments recursively
 function renderCommentTree(comments, postId, level = 0) {
     let html = '';
     for(let [commentId, comment] of Object.entries(comments)) {
@@ -754,7 +815,6 @@ function renderCommentTree(comments, postId, level = 0) {
                     </div>
         `;
         
-        // Render replies recursively
         if(comment.replies && Object.keys(comment.replies).length > 0) {
             html += renderCommentTree(comment.replies, postId, level + 1);
         }
@@ -796,7 +856,6 @@ function loadSocialFeed() {
                 }
             }
             
-            // Count total comments (including nested)
             let totalComments = 0;
             if(post.comments) {
                 const countComments = (comments) => {
@@ -840,7 +899,6 @@ function loadSocialFeed() {
                 </div>
             `;
             
-            // Render comments with nesting
             let commentsHtml = '';
             if(post.comments && Object.keys(post.comments).length > 0) {
                 commentsHtml = `<div class="fb-comments-list">${renderCommentTree(post.comments, pid)}</div>`;
@@ -1185,7 +1243,7 @@ async function loadTeachersTableView() {
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
         html += `<tr><td>${photo}</td><td>${escapeHtml(t.teacher_name)}</td><td>${t.teacher_id}</td><td>${t.classes?.join(', ') || '—'}</td><td><button class="btn btn-red btn-sm" onclick="deleteTeacher('${t.teacher_id}')">মুছুন</button></td></tr>`;
     }
-    html += `</tbody><tr>`;
+    html += `</tbody></table>`;
     container.innerHTML = html;
 }
 
@@ -1337,7 +1395,7 @@ async function loadRoutineEditForm() {
     let html = '';
     for(let cls of classes) {
         let clsRoutine = routine[cls] || {};
-        html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>অ্যাকশন</th><tr></thead><tbody>`;
+        html += `<div style="background:#f9f5ed; border-radius:20px; padding:16px; margin-bottom:20px;"><h3>${cls}</h3><table class="routine-table"><thead><tr><th>দিন</th><th>বিষয়</th><th>অ্যাকশন</th></tr></thead><tbody>`;
         days.forEach((day, idx) => {
             html += `<tr><td>${day}</td><td><input type="text" id="input_${cls.replace(/\s/g,'_').replace(/\(/g,'').replace(/\)/g,'')}_${idx}" value="${escapeHtml(clsRoutine[day] || '')}" style="width:100%;"></td><td><button class="btn btn-orange btn-sm" onclick="updateRoutineDay('${cls}', '${day}', ${idx})">আপডেট</button></td></tr>`;
         });
@@ -1394,7 +1452,10 @@ function setupMenu() {
     document.getElementById('menuFeedback').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminFeedbackPanel'); loadClassFilter(); } else alert('শুধু প্রশাসক'); };
     document.getElementById('menuRoutineManager').onclick = () => { if(currentUser.role === 'admin') { showPanel('adminRoutinePanel'); loadRoutineEditForm(); } else alert('শুধু প্রশাসক'); };
     document.getElementById('menuSocialFeed').onclick = () => showPanel('socialFeedPanel');
-    document.getElementById('menuLogout').onclick = () => location.reload();
+    document.getElementById('menuLogout').onclick = () => {
+        localStorage.removeItem('userSession');
+        location.reload();
+    };
     document.getElementById('menuToggle').onclick = (e) => { e.stopPropagation(); document.getElementById('dropdownMenu').classList.toggle('show'); };
     document.addEventListener('click', () => document.getElementById('dropdownMenu').classList.remove('show'));
 }
@@ -1452,6 +1513,50 @@ async function startApp() {
     document.getElementById('viewRoutineBtn')?.addEventListener('click', () => showRoutine());
 }
 
+// Session check on page load
+window.addEventListener('DOMContentLoaded', async () => {
+    const savedSession = localStorage.getItem('userSession');
+    if (savedSession) {
+        try {
+            const session = JSON.parse(savedSession);
+            if (session.role === 'admin') {
+                currentUser = session;
+                startApp();
+            } else if (session.role === 'teacher') {
+                const snap = await db.ref(`registered_teachers/${session.id}`).get();
+                if (snap.exists()) {
+                    currentUser = session;
+                    teacherAssignedClasses = snap.val().classes || [];
+                    startApp();
+                } else {
+                    localStorage.removeItem('userSession');
+                    document.getElementById('loginScreen').style.display = 'flex';
+                    document.getElementById('appContainer').style.display = 'none';
+                }
+            } else if (session.role === 'student') {
+                const classKey = session.className?.replace(/\s+/g,'_').replace(/\(/g,'').replace(/\)/g,'');
+                const snap = await db.ref(`class_sheets/${classKey}/students`).get();
+                if (snap.exists() && snap.val().find(s => s.id === session.id)) {
+                    currentUser = session;
+                    currentClass = session.className;
+                    startApp();
+                } else {
+                    localStorage.removeItem('userSession');
+                    document.getElementById('loginScreen').style.display = 'flex';
+                    document.getElementById('appContainer').style.display = 'none';
+                }
+            }
+        } catch(e) {
+            localStorage.removeItem('userSession');
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('appContainer').style.display = 'none';
+        }
+    } else {
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('appContainer').style.display = 'none';
+    }
+});
+
 const slides = document.querySelectorAll('.bg-slide');
 let currentBgSlide = 0;
 if(slides.length) {
@@ -1472,6 +1577,7 @@ document.getElementById('loginForm').onsubmit = async (e) => {
     if(role === 'admin') {
         if(id === 'admin' && pwd === '#$t') {
             currentUser = { id, role: 'admin', name: 'প্রশাসক', photo: '' };
+            localStorage.setItem('userSession', JSON.stringify(currentUser));
             startApp();
         } else alert('অ্যাডমিন আইডি বা পাসওয়ার্ড ভুল!');
     } else if(role === 'teacher') {
@@ -1479,6 +1585,7 @@ document.getElementById('loginForm').onsubmit = async (e) => {
         if(snap.exists() && snap.val().password === pwd) {
             currentUser = { id, role: 'teacher', name: snap.val().teacher_name, photo: snap.val().photo || '' };
             teacherAssignedClasses = snap.val().classes || [];
+            localStorage.setItem('userSession', JSON.stringify(currentUser));
             startApp();
         } else alert('শিক্ষক আইডি বা পাসওয়ার্ড ভুল!');
     } else {
@@ -1489,8 +1596,9 @@ document.getElementById('loginForm').onsubmit = async (e) => {
             if(snap.exists()) {
                 let match = snap.val().find(s => s.id === id && s.password === pwd);
                 if(match) {
-                    currentUser = { id, role: 'student', name: match.name, photo: match.photo || '' };
+                    currentUser = { id, role: 'student', name: match.name, photo: match.photo || '', className: cls };
                     currentClass = cls;
+                    localStorage.setItem('userSession', JSON.stringify({ ...currentUser, className: cls }));
                     found = true;
                     break;
                 }
