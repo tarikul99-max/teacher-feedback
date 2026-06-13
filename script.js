@@ -451,7 +451,7 @@ function handleFileChange(e) {
     previewContainer.innerHTML = '';
     
     const files = Array.from(e.target.files);
-    const maxFiles = 3;
+    const maxFiles = 10;
     
     if (files.length > maxFiles) {
         alert(`সর্বোচ্চ ${maxFiles}টি মিডিয়া ফাইল আপলোড করতে পারবেন।`);
@@ -464,7 +464,7 @@ function handleFileChange(e) {
     
     files.forEach((file, index) => {
         if (file.type.startsWith('image/')) {
-            if (imageCount < 3) {
+            if (imageCount < 10) {
                 selectedFiles.push(file);
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -474,12 +474,12 @@ function handleFileChange(e) {
                 reader.readAsDataURL(file);
                 imageCount++;
             } else {
-                alert('সর্বোচ্চ ৩টি ছবি আপলোড করতে পারবেন');
+                alert('সর্বোচ্চ 10টি ছবি আপলোড করতে পারবেন');
             }
         } else if (file.type.startsWith('video/')) {
             if (videoCount < 1) {
-                if (file.size > 15 * 1024 * 1024) {
-                    alert(`"${file.name}" ভিডিওটি 15MB এর বেশি। দয়া করে ছোট ভিডিও ব্যবহার করুন।`);
+                if (file.size > 100 * 1024 * 1024) {
+                    alert(`"${file.name}" ভিডিওটি 100MB এর বেশি। দয়া করে ছোট ভিডিও ব্যবহার করুন।`);
                     return;
                 }
                 selectedVideos.push(file);
