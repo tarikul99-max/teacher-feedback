@@ -423,6 +423,85 @@ async function loadClassMonthlyCalendar() {
     document.getElementById('classMonthlyCalendar').innerHTML = html;
 }
 
+// ==================== SOCIAL FEED FUNCTIONS WITH MULTIPLE IMAGES ====================
+
+let selectedFiles = [];
+
+function setupImagePreview() {
+    const fileInput = document.getElementById('feedImageInput');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    if (!fileInput) return;
+    
+    fileInput.addEventListener('change', function(e) {
+        selectedFiles = [];
+        previewContainer.innerHTML = '';
+        const files = Array.from(e.target.files);
+        const maxFiles = 5;
+        
+        if (files.length > maxFiles) {
+            alert(`সর্বোচ্চ ${maxFiles}টি ছবি আপলোড করতে পারবেন।`);
+            fileInput.value = '';
+            return;
+        }
+        
+        files.forEach((file, index) => {
+            if (file.type.startsWith('image/')) {
+                selectedFiles.push(file);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.style.position = 'relative';
+                    previewDiv.style.display = 'inline-block';
+                    previewDiv.style.margin = '5px';
+                    previewDiv.innerHTML = `
+                        <img src="${e.target.result}" style="width:80px; height:80px; object-fit:cover; border-radius:10px; border:2px solid #f5b042;">
+                        <button onclick="removeImage(${index})" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; font-size:12px; line-height:1;">×</button>
+                    `;
+                    previewContainer.appendChild(previewDiv);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+}
+
+window.removeImage = function(index) {
+    if (index >= 0 && index < selectedFiles.length) {
+        selectedFiles.splice(index, 1);
+        const fileInput = document.getElementById('feedImageInput');
+        fileInput.value = '';
+        const previewContainer = document.getElementById('imagePreviewContainer');
+        previewContainer.innerHTML = '';
+        
+        selectedFiles.forEach((file, idx) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewDiv = document.createElement('div');
+                previewDiv.style.position = 'relative';
+                previewDiv.style.display = 'inline-block';
+                previewDiv.style.margin = '5px';
+                previewDiv.innerHTML = `
+                    <img src="${e.target.result}" style="width:80px; height:80px; object-fit:cover; border-radius:10px; border:2px solid #f5b042;">
+                    <button onclick="removeImage(${idx})" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; font-size:12px; line-height:1;">×</button>
+                `;
+                previewContainer.appendChild(previewDiv);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+};
+
+async function uploadMultipleImages(files) {
+    const uploadedImages = [];
+    for (const file of files) {
+        if (file.type.startsWith('image/')) {
+            const base64 = await uploadFile(file);
+            uploadedImages.push(base64);
+        }
+    }
+    return uploadedImages;
+}
+
 async function uploadFile(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -438,27 +517,27 @@ window.publishPost = async () => {
     
     let author = currentUser.role === 'admin' ? '🎓 প্রশাসক' : (currentUser.role === 'teacher' ? `👨‍🏫 ${currentUser.name}` : `🧑‍🎓 ${currentUser.name}`);
     
-    const fileInput = document.getElementById('feedImageInput');
-    let imgBase64 = '';
-    
-    if(fileInput && fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        if(file.type.startsWith('image/')) imgBase64 = await uploadFile(file);
-    } else {
-        const urlInput = document.getElementById('feedImgUrl');
-        if(urlInput && urlInput.value.trim()) imgBase64 = urlInput.value.trim();
+    let images = [];
+    if (selectedFiles.length > 0) {
+        images = await uploadMultipleImages(selectedFiles);
     }
     
     await db.ref('social_feed').push({
-        caption: cap, imgUrl: imgBase64, author: author, authorId: currentUser.id, authorRole: currentUser.role,
-        timestamp: Date.now(), userId: currentUser.id,
-        reactions: { '👍': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 }, userReactions: {}
+        caption: cap,
+        images: images,
+        author: author,
+        authorId: currentUser.id,
+        authorRole: currentUser.role,
+        timestamp: Date.now(),
+        userId: currentUser.id,
+        reactions: { '👍': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 },
+        userReactions: {}
     });
     
     document.getElementById('feedCaption').value = '';
-    if(fileInput) fileInput.value = '';
-    const urlInput = document.getElementById('feedImgUrl');
-    if(urlInput) urlInput.value = '';
+    document.getElementById('feedImageInput').value = '';
+    document.getElementById('imagePreviewContainer').innerHTML = '';
+    selectedFiles = [];
     alert('পোস্ট প্রকাশিত হয়েছে!');
 };
 
@@ -480,6 +559,7 @@ window.addReaction = async (postId, emoji) => {
         let userReactions = post.userReactions || {};
         const userId = currentUser.id;
         const oldEmoji = userReactions[userId];
+        
         if(oldEmoji === emoji) {
             reactions[emoji] = Math.max(0, (reactions[emoji] || 0) - 1);
             delete userReactions[userId];
@@ -548,9 +628,17 @@ function loadSocialFeed() {
                 repliesHtml += '</div>';
             }
             
-            let imageHtml = '';
-            if(post.imgUrl && (post.imgUrl.startsWith('data:image') || post.imgUrl.startsWith('http'))) {
-                imageHtml = `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px; margin-top:10px;">`;
+            let imagesHtml = '';
+            if(post.images && post.images.length > 0) {
+                imagesHtml = '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">';
+                for(let img of post.images) {
+                    if(img && (img.startsWith('data:image') || img.startsWith('http'))) {
+                        imagesHtml += `<img src="${img}" style="width:calc(33% - 7px); min-width:100px; max-width:200px; height:150px; object-fit:cover; border-radius:16px; cursor:pointer;" onclick="window.open(this.src)">`;
+                    }
+                }
+                imagesHtml += '</div>';
+            } else if(post.imgUrl && (post.imgUrl.startsWith('data:image') || post.imgUrl.startsWith('http'))) {
+                imagesHtml = `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px; margin-top:10px; cursor:pointer;" onclick="window.open(this.src)">`;
             }
             
             let card = document.createElement('div');
@@ -562,7 +650,7 @@ function loadSocialFeed() {
                 </div>
                 <small style="color:#888;">${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</small>
                 <p style="margin-top:10px;">${escapeHtml(post.caption)}</p>
-                ${imageHtml}
+                ${imagesHtml}
                 ${reactionBar}
                 ${repliesHtml}
                 <div style="display:flex; gap:8px; margin-top:10px;">
@@ -588,7 +676,7 @@ async function loadTeachersTableView() {
     const snap = await db.ref('registered_teachers').get();
     const container = document.getElementById('teachersTable');
     if(!snap.exists()) { container.innerHTML = '<div class="empty-state">কোন শিক্ষক নেই</div>'; return; }
-    let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table class="teacher-table"><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for(let key in snap.val()) {
         let t = snap.val()[key];
         let photo = t.photo ? `<img src="${t.photo}" style="width:40px;height:40px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
@@ -662,10 +750,18 @@ function renderStudentsTable() {
     let cont = document.getElementById('classStudentsTable');
     if(!cont) return;
     if(!studentsData.length) { cont.innerHTML='<div class="empty-state">কোন ছাত্র/ছাত্রী নেই। উপরে ফর্ম ব্যবহার করে যোগ করুন।</div>'; return; }
-    let html = `<table><thead><tr><th>ছবি</th><th>ক্রমিক</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table class="student-table"><thead><tr><th>ছবি</th><th>ক্রমিক</th><th>আইডি</th><th>নাম</th><th>পাসওয়ার্ড</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     studentsData.forEach((s,i) => {
         let studentPhoto = s.photo ? `<img src="${s.photo}" style="width:35px;height:35px;border-radius:50%;">` : `<i class="fas fa-user-circle"></i>`;
-        html += `<tr><td>${studentPhoto}</td><td>${i+1}</td><td>${escapeHtml(s.id)}</td><td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td><td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td><td><input type="tel" class="editPhone" data-index="${i}" value="${escapeHtml(s.guardian_phone || '')}" placeholder="+8801XXXXXXXXX"></td><td><button class="btn btn-red btn-sm" onclick="removeStudent(${i})">মুছুন</button></td></tr>`;
+        html += `<tr>
+                    <td>${studentPhoto}</td>
+                    <td>${i+1}</td>
+                    <td>${escapeHtml(s.id)}</td>
+                    <td><input type="text" class="editName" data-index="${i}" value="${escapeHtml(s.name)}"></td>
+                    <td><input type="text" class="editPass" data-index="${i}" value="${escapeHtml(s.password)}"></td>
+                    <td><input type="tel" class="editPhone" data-index="${i}" value="${escapeHtml(s.guardian_phone || '')}" placeholder="+8801XXXXXXXXX"></td>
+                    <td><button class="btn btn-red btn-sm" onclick="removeStudent(${i})">মুছুন</button></td>
+                </tr>`;
     });
     html += `</tbody></table>`;
     cont.innerHTML = html;
@@ -910,7 +1006,7 @@ async function initDemoData() {
             classes: ['Class 6', 'Class 7'], photo: ''
         });
         await db.ref('registered_teachers/teacher2').set({
-            teacher_name: '*_স্যার', teacher_id: 'teacher2', password: '1234',
+            teacher_name: 'মেরি স্যার', teacher_id: 'teacher2', password: '1234',
             classes: ['Class 8', 'Class 9 (Science)'], photo: ''
         });
     }
@@ -932,3 +1028,7 @@ setTimeout(async () => {
     if (isActive) console.log("✅ SMS Service is active!");
     else console.log("⚠️ SMS Service not responding.");
 }, 3000);
+
+document.addEventListener('DOMContentLoaded', function() {
+    setupImagePreview();
+});
