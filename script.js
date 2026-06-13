@@ -19,6 +19,10 @@ let classRoutine = {};
 let teacherImageBase64 = "", studentImageBase64 = "";
 let currentStudentsList = [];
 
+// Media variables for social feed
+let selectedFiles = [];
+let selectedVideos = [];
+
 // SMS API URL
 const SELF_SMS_URL = "https://selfsms.onrender.com";
 
@@ -423,83 +427,113 @@ async function loadClassMonthlyCalendar() {
     document.getElementById('classMonthlyCalendar').innerHTML = html;
 }
 
-// ==================== SOCIAL FEED FUNCTIONS WITH MULTIPLE IMAGES ====================
+// ==================== SOCIAL FEED FUNCTIONS WITH MULTIPLE IMAGES AND VIDEOS ====================
 
-let selectedFiles = [];
-
-function setupImagePreview() {
+function setupMediaPreview() {
     const fileInput = document.getElementById('feedImageInput');
     const previewContainer = document.getElementById('imagePreviewContainer');
     if (!fileInput) return;
     
-    fileInput.addEventListener('change', function(e) {
-        selectedFiles = [];
-        previewContainer.innerHTML = '';
-        const files = Array.from(e.target.files);
-        const maxFiles = 5;
-        
-        if (files.length > maxFiles) {
-            alert(`সর্বোচ্চ ${maxFiles}টি ছবি আপলোড করতে পারবেন।`);
-            fileInput.value = '';
-            return;
-        }
-        
-        files.forEach((file, index) => {
-            if (file.type.startsWith('image/')) {
-                selectedFiles.push(file);
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const previewDiv = document.createElement('div');
-                    previewDiv.style.position = 'relative';
-                    previewDiv.style.display = 'inline-block';
-                    previewDiv.style.margin = '5px';
-                    previewDiv.innerHTML = `
-                        <img src="${e.target.result}" style="width:80px; height:80px; object-fit:cover; border-radius:10px; border:2px solid #f5b042;">
-                        <button onclick="removeImage(${index})" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; font-size:12px; line-height:1;">×</button>
-                    `;
-                    previewContainer.appendChild(previewDiv);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    });
+    fileInput.removeEventListener('change', handleFileChange);
+    fileInput.addEventListener('change', handleFileChange);
 }
 
-window.removeImage = function(index) {
-    if (index >= 0 && index < selectedFiles.length) {
-        selectedFiles.splice(index, 1);
-        const fileInput = document.getElementById('feedImageInput');
-        fileInput.value = '';
-        const previewContainer = document.getElementById('imagePreviewContainer');
-        previewContainer.innerHTML = '';
-        
-        selectedFiles.forEach((file, idx) => {
+function handleFileChange(e) {
+    selectedFiles = [];
+    selectedVideos = [];
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    previewContainer.innerHTML = '';
+    
+    const files = Array.from(e.target.files);
+    const maxFiles = 5;
+    
+    if (files.length > maxFiles) {
+        alert(`সর্বোচ্চ ${maxFiles}টি মিডিয়া ফাইল আপলোড করতে পারবেন।`);
+        document.getElementById('feedImageInput').value = '';
+        return;
+    }
+    
+    files.forEach((file, index) => {
+        if (file.type.startsWith('image/')) {
+            selectedFiles.push(file);
             const reader = new FileReader();
             reader.onload = function(e) {
-                const previewDiv = document.createElement('div');
-                previewDiv.style.position = 'relative';
-                previewDiv.style.display = 'inline-block';
-                previewDiv.style.margin = '5px';
-                previewDiv.innerHTML = `
-                    <img src="${e.target.result}" style="width:80px; height:80px; object-fit:cover; border-radius:10px; border:2px solid #f5b042;">
-                    <button onclick="removeImage(${idx})" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; font-size:12px; line-height:1;">×</button>
-                `;
+                const previewDiv = createMediaPreview(e.target.result, 'image', index);
                 previewContainer.appendChild(previewDiv);
             };
             reader.readAsDataURL(file);
-        });
+        } else if (file.type.startsWith('video/')) {
+            selectedVideos.push(file);
+            const videoURL = URL.createObjectURL(file);
+            const previewDiv = createMediaPreview(videoURL, 'video', index);
+            previewContainer.appendChild(previewDiv);
+        } else {
+            alert(`"${file.name}" সাপোর্টেড নয়। শুধু ছবি এবং ভিডিও আপলোড করুন।`);
+        }
+    });
+}
+
+function createMediaPreview(src, type, index) {
+    const previewDiv = document.createElement('div');
+    previewDiv.style.position = 'relative';
+    previewDiv.style.display = 'inline-block';
+    previewDiv.style.margin = '5px';
+    
+    if (type === 'image') {
+        previewDiv.innerHTML = `
+            <img src="${src}" style="width:100px; height:100px; object-fit:cover; border-radius:10px; border:2px solid #f5b042;">
+            <button onclick="removeMedia(${index}, 'image')" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:14px; line-height:1;">×</button>
+        `;
+    } else {
+        previewDiv.innerHTML = `
+            <video src="${src}" style="width:100px; height:100px; object-fit:cover; border-radius:10px; border:2px solid #f5b042;" muted></video>
+            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.6); border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center;">
+                <i class="fas fa-play" style="color:white; font-size:12px;"></i>
+            </div>
+            <button onclick="removeMedia(${index}, 'video')" style="position:absolute; top:-8px; right:-8px; background:#e74c3c; color:white; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:14px; line-height:1;">×</button>
+        `;
     }
+    
+    return previewDiv;
+}
+
+window.removeMedia = function(index, type) {
+    if (type === 'image' && index >= 0 && index < selectedFiles.length) {
+        selectedFiles.splice(index, 1);
+    } else if (type === 'video' && index >= 0 && index < selectedVideos.length) {
+        selectedVideos.splice(index, 1);
+    }
+    
+    const fileInput = document.getElementById('feedImageInput');
+    fileInput.value = '';
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    previewContainer.innerHTML = '';
+    
+    selectedFiles.forEach((file, idx) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewDiv = createMediaPreview(e.target.result, 'image', idx);
+            previewContainer.appendChild(previewDiv);
+        };
+        reader.readAsDataURL(file);
+    });
+    
+    selectedVideos.forEach((video, idx) => {
+        const videoURL = URL.createObjectURL(video);
+        const previewDiv = createMediaPreview(videoURL, 'video', idx);
+        previewContainer.appendChild(previewDiv);
+    });
 };
 
-async function uploadMultipleImages(files) {
-    const uploadedImages = [];
+async function uploadMultipleMedia(files, isVideo = false) {
+    const uploadedMedia = [];
     for (const file of files) {
-        if (file.type.startsWith('image/')) {
+        if (isVideo ? file.type.startsWith('video/') : file.type.startsWith('image/')) {
             const base64 = await uploadFile(file);
-            uploadedImages.push(base64);
+            uploadedMedia.push({ type: isVideo ? 'video' : 'image', data: base64 });
         }
     }
-    return uploadedImages;
+    return uploadedMedia;
 }
 
 async function uploadFile(file) {
@@ -517,14 +551,21 @@ window.publishPost = async () => {
     
     let author = currentUser.role === 'admin' ? '🎓 প্রশাসক' : (currentUser.role === 'teacher' ? `👨‍🏫 ${currentUser.name}` : `🧑‍🎓 ${currentUser.name}`);
     
-    let images = [];
+    let media = [];
+    
     if (selectedFiles.length > 0) {
-        images = await uploadMultipleImages(selectedFiles);
+        const imageMedia = await uploadMultipleMedia(selectedFiles, false);
+        media.push(...imageMedia);
+    }
+    
+    if (selectedVideos.length > 0) {
+        const videoMedia = await uploadMultipleMedia(selectedVideos, true);
+        media.push(...videoMedia);
     }
     
     await db.ref('social_feed').push({
         caption: cap,
-        images: images,
+        media: media,
         author: author,
         authorId: currentUser.id,
         authorRole: currentUser.role,
@@ -538,6 +579,7 @@ window.publishPost = async () => {
     document.getElementById('feedImageInput').value = '';
     document.getElementById('imagePreviewContainer').innerHTML = '';
     selectedFiles = [];
+    selectedVideos = [];
     alert('পোস্ট প্রকাশিত হয়েছে!');
 };
 
@@ -620,7 +662,7 @@ function loadSocialFeed() {
                     const showReplyDelete = (currentUser.role === 'admin') || (currentUser.id === reply.authorId);
                     repliesHtml += `<div style="margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:5px;">
                         <strong>${escapeHtml(reply.author)}</strong> <small>${reply.authorRole == 'admin' ? '🎓' : (reply.authorRole == 'teacher' ? '👨‍🏫' : '🧑‍🎓')}</small>
-                        ${showReplyDelete ? `<button onclick="deleteReply('${pid}', '${rid}', '${reply.authorId}')" style="background:#e74c3c; color:#f94449; border:none; border-radius:15px; padding:3px 9px; cursor:pointer; font-size:10px; margin-left:8px;">'Delet'</button>` : ''}
+                        ${showReplyDelete ? `<button onclick="deleteReply('${pid}', '${rid}', '${reply.authorId}')" style="background:#e74c3c; color:white; border:none; border-radius:15px; padding:3px 9px; cursor:pointer; font-size:10px; margin-left:8px;">মুছুন</button>` : ''}
                         <br><small>${escapeHtml(reply.text)}</small>
                         <br><small style="font-size:10px; color:#888;">${new Date(reply.timestamp).toLocaleString()}</small>
                     </div>`;
@@ -628,17 +670,24 @@ function loadSocialFeed() {
                 repliesHtml += '</div>';
             }
             
-            let imagesHtml = '';
-            if(post.images && post.images.length > 0) {
-                imagesHtml = '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">';
-                for(let img of post.images) {
-                    if(img && (img.startsWith('data:image') || img.startsWith('http'))) {
-                        imagesHtml += `<img src="${img}" style="width:calc(33% - 7px); min-width:100px; max-width:200px; height:150px; object-fit:cover; border-radius:16px; cursor:pointer;" onclick="window.open(this.src)">`;
+            let mediaHtml = '';
+            if(post.media && post.media.length > 0) {
+                mediaHtml = '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">';
+                for(let mediaItem of post.media) {
+                    if(mediaItem.type === 'image') {
+                        mediaHtml += `<img src="${mediaItem.data}" style="width:calc(33% - 7px); min-width:100px; max-width:200px; height:150px; object-fit:cover; border-radius:16px; cursor:pointer;" onclick="window.open(this.src)">`;
+                    } else if(mediaItem.type === 'video') {
+                        mediaHtml += `
+                            <video controls style="width:calc(33% - 7px); min-width:100px; max-width:300px; height:150px; object-fit:cover; border-radius:16px;">
+                                <source src="${mediaItem.data}">
+                                আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
+                            </video>
+                        `;
                     }
                 }
-                imagesHtml += '</div>';
+                mediaHtml += '</div>';
             } else if(post.imgUrl && (post.imgUrl.startsWith('data:image') || post.imgUrl.startsWith('http'))) {
-                imagesHtml = `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px; margin-top:10px; cursor:pointer;" onclick="window.open(this.src)">`;
+                mediaHtml = `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px; margin-top:10px; cursor:pointer;" onclick="window.open(this.src)">`;
             }
             
             let card = document.createElement('div');
@@ -650,7 +699,7 @@ function loadSocialFeed() {
                 </div>
                 <small style="color:#888;">${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</small>
                 <p style="margin-top:10px;">${escapeHtml(post.caption)}</p>
-                ${imagesHtml}
+                ${mediaHtml}
                 ${reactionBar}
                 ${repliesHtml}
                 <div style="display:flex; gap:8px; margin-top:10px;">
@@ -662,6 +711,19 @@ function loadSocialFeed() {
         }
     });
 }
+
+// Add CSS for video display
+const style = document.createElement('style');
+style.textContent = `
+    video::-webkit-media-controls {
+        border-radius: 16px;
+    }
+    video:hover {
+        transform: scale(1.02);
+        transition: transform 0.3s ease;
+    }
+`;
+document.head.appendChild(style);
 
 window.deleteTeacher = async (id) => { if(confirm('শিক্ষক মুছবেন?')){ await db.ref(`registered_teachers/${id}`).remove(); loadTeachersTableView(); loadDashboard(); } };
 window.deleteFeedback = async (classKey, studentId, teacherId) => {
@@ -1030,5 +1092,5 @@ setTimeout(async () => {
 }, 3000);
 
 document.addEventListener('DOMContentLoaded', function() {
-    setupImagePreview();
+    setupMediaPreview();
 });
