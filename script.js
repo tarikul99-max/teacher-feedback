@@ -78,7 +78,6 @@ function formatPhoneNumber(phoneNumber) {
 
 // ==================== SMS FUNCTIONS ====================
 
-// Check SMS service health
 async function checkSMSService() {
     try {
         const response = await fetch(`${SELF_SMS_URL}/health`);
@@ -91,7 +90,6 @@ async function checkSMSService() {
     }
 }
 
-// Send SMS via your selfSMS service
 async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherName) {
     if (!phoneNumber) {
         return { success: false, error: "ফোন নম্বর প্রয়োজন" };
@@ -101,7 +99,6 @@ async function sendAbsentSMS(phoneNumber, studentName, className, date, teacherN
     
     console.log(`📤 Sending SMS to: ${phoneNumber} → Formatted: ${formattedPhone}`);
     
-    // ✅ সঠিক চেক: 13 ডিজিট হবে (8801XXXXXXXXX)
     if (!formattedPhone || formattedPhone.length !== 13) {
         return { 
             success: false, 
@@ -146,7 +143,6 @@ ${teacherName || 'মাস্টারমাইন্ড অ্যাকাড�
     }
 }
 
-// Test SMS function
 window.testSMS = async function(phone = "+8801889343480") {
     console.log("🧪 Sending test SMS...");
     const result = await sendAbsentSMS(phone, "পরীক্ষা শিক্ষার্থী", "টেস্ট ক্লাস", new Date().toISOString().split('T')[0], "প্রশাসক");
@@ -398,7 +394,7 @@ async function loadStudentsForDate() {
     document.querySelectorAll('.att-student-cb').forEach(cb => { cb.addEventListener('change', (e) => { let idx = parseInt(cb.dataset.idx); currentStudentsList[idx].present = cb.checked; }); });
 }
 
-// ==================== MAIN SAVE ATTENDANCE FUNCTION WITH SMS ====================
+// ==================== MAIN SAVE ATTENDANCE FUNCTION ====================
 async function saveAttendance() {
     const className = document.getElementById('attendanceClassSelect').value;
     const date = document.getElementById('attendanceDate').value;
@@ -413,29 +409,22 @@ async function saveAttendance() {
     
     await db.ref(`attendances/${classKey}/${date}`).set(attendanceData);
     
-    // Get absent students with guardian phone numbers
     const absentStudents = currentStudentsList.filter(s => s.present !== true && s.guardian_phone && s.guardian_phone.length >= 10);
     const presentCount = currentStudentsList.filter(s => s.present === true).length;
     const absentCount = currentStudentsList.length - presentCount;
     
     let smsSentCount = 0;
     let smsFailedList = [];
-    let smsSentList = [];
     
     if(absentStudents.length > 0) {
-        // Show loading message
         const loadingMsg = document.createElement('div');
         loadingMsg.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:10px; z-index:9999; box-shadow:0 0 10px rgba(0,0,0,0.3); text-align:center; min-width:350px;';
-        loadingMsg.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${absentStudents.length} জন অভিভাবককে SMS পাঠানো হচ্ছে...<br><br><small style="color:#666;">📱 সঠিক ফরম্যাট: +8801XXXXXXXXX</small>`;
+        loadingMsg.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${absentStudents.length} জন অভিভাবককে SMS পাঠানো হচ্ছে...`;
         document.body.appendChild(loadingMsg);
         
-        // Send SMS to each absent student's guardian
         for(let i = 0; i < absentStudents.length; i++) {
             const student = absentStudents[i];
-            const originalPhone = student.guardian_phone;
-            const formattedPhone = formatPhoneNumber(originalPhone);
-            
-            loadingMsg.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${i+1}/${absentStudents.length} - ${student.name} কে SMS পাঠানো হচ্ছে...<br><br><small>📱 ${originalPhone} → ${formattedPhone}</small>`;
+            loadingMsg.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${i+1}/${absentStudents.length} - ${student.name} কে SMS পাঠানো হচ্ছে...`;
             
             const result = await sendAbsentSMS(
                 student.guardian_phone, 
@@ -447,19 +436,16 @@ async function saveAttendance() {
             
             if(result.success) {
                 smsSentCount++;
-                smsSentList.push(`${student.name} (${formattedPhone})`);
                 console.log(`✅ SMS sent to ${student.name}`);
             } else {
                 smsFailedList.push(`${student.name} - ${result.error || 'Unknown error'}`);
                 console.log(`❌ SMS failed for ${student.name}: ${result.error}`);
             }
-            // Delay to avoid rate limiting
             await new Promise(resolve => setTimeout(resolve, 2000));
         }
         
         loadingMsg.remove();
         
-        // Show final result
         let resultMessage = `✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n`;
         resultMessage += `📊 উপস্থিত: ${presentCount} জন\n`;
         resultMessage += `📋 অনুপস্থিত: ${absentCount} জন\n\n`;
@@ -470,10 +456,7 @@ async function saveAttendance() {
         
         if(smsFailedList.length > 0) {
             resultMessage += `❌ ব্যর্থ: ${smsFailedList.length} জন\n`;
-        }
-        
-        if(smsSentCount === 0 && smsFailedList.length > 0) {
-            resultMessage += `\n⚠️ কোন SMS পাঠানো যায়নি।\n\n📱 সঠিক ফোন নম্বর ফরম্যাট: +8801XXXXXXXXX\nউদাহরণ: +8801889343480`;
+            resultMessage += `${smsFailedList.join('\n')}\n`;
         }
         
         alert(resultMessage);
@@ -481,7 +464,7 @@ async function saveAttendance() {
         if(absentCount === 0) {
             alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ০ জন\nসবাই উপস্থিত।`);
         } else {
-            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ${absentCount} জন\n⚠️ অনুপস্থিত ${absentCount} জনের ফোন নম্বর নেই।\n\n📱 সঠিক ফোন ফরম্যাট: +8801XXXXXXXXX`);
+            alert(`✅ উপস্থিতি সংরক্ষিত হয়েছে!\n\n📊 উপস্থিত: ${presentCount} জন\n📋 অনুপস্থিত: ${absentCount} জন\n⚠️ অনুপস্থিত ${absentCount} জনের ফোন নম্বর নেই।`);
         }
     }
     
@@ -520,18 +503,48 @@ async function loadClassMonthlyCalendar() {
     document.getElementById('classMonthlyCalendar').innerHTML = html;
 }
 
-// ==================== SOCIAL FEED FUNCTIONS ====================
+// ==================== SOCIAL FEED FUNCTIONS WITH FILE UPLOAD ====================
+
+// ফাইল আপলোডের জন্য
+async function uploadFile(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(e);
+        reader.readAsDataURL(file);
+    });
+}
+
 window.publishPost = async () => {
     let cap = document.getElementById('feedCaption').value.trim();
     if(!cap) { alert('ক্যাপশন লিখুন'); return; }
+    
     let author = currentUser.role === 'admin' ? '🎓 প্রশাসক' : (currentUser.role === 'teacher' ? `👨‍🏫 ${currentUser.name}` : `🧑‍🎓 ${currentUser.name}`);
-    let img = document.getElementById('feedImgUrl').value.trim();
+    
+    // ফাইল আপলোড চেক করুন
+    const fileInput = document.getElementById('feedImageInput');
+    let imgBase64 = '';
+    
+    if(fileInput && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        if(file.type.startsWith('image/')) {
+            imgBase64 = await uploadFile(file);
+        }
+    }
+    
     await db.ref('social_feed').push({
-        caption: cap, imgUrl: img, author, timestamp: Date.now(), userId: currentUser.id,
-        reactions: { '👍': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 }, userReactions: {}
+        caption: cap,
+        imgUrl: imgBase64,
+        author: author,
+        timestamp: Date.now(),
+        userId: currentUser.id,
+        reactions: { '👍': 0, '😢': 0, '😲': 0, '🥳': 0, '🔥': 0, '🤔': 0 },
+        userReactions: {}
     });
+    
     document.getElementById('feedCaption').value = '';
-    document.getElementById('feedImgUrl').value = '';
+    if(fileInput) fileInput.value = '';
+    alert('পোস্ট প্রকাশিত হয়েছে!');
 };
 
 window.addReaction = async (postId, emoji) => {
@@ -592,7 +605,24 @@ function loadSocialFeed() {
             reactionBar += `</div>`;
             let card = document.createElement('div');
             card.className = 'social-card';
-            card.innerHTML = `<div><b>${escapeHtml(post.author)}</b></div><small>${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</small><p>${escapeHtml(post.caption)}</p>${post.imgUrl ? `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px;">` : ''}${reactionBar}${repliesHtml}<div style="display:flex; gap:8px; margin-top:10px;"><input type="text" id="reply_inp_${pid}" placeholder="মন্তব্য করুন..." style="flex:1;"><button class="btn btn-blue btn-sm" onclick="addReply('${pid}')">পাঠান</button></div>`;
+            
+            let imageHtml = '';
+            if(post.imgUrl && post.imgUrl.startsWith('data:image')) {
+                imageHtml = `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px; margin-top:10px;">`;
+            } else if(post.imgUrl && post.imgUrl.length > 0) {
+                imageHtml = `<img src="${post.imgUrl}" style="max-width:100%; border-radius:16px; margin-top:10px;">`;
+            }
+            
+            card.innerHTML = `<div><b>${escapeHtml(post.author)}</b></div>
+                            <small>${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</small>
+                            <p>${escapeHtml(post.caption)}</p>
+                            ${imageHtml}
+                            ${reactionBar}
+                            ${repliesHtml}
+                            <div style="display:flex; gap:8px; margin-top:10px;">
+                                <input type="text" id="reply_inp_${pid}" placeholder="মন্তব্য করুন..." style="flex:1;">
+                                <button class="btn btn-blue btn-sm" onclick="addReply('${pid}')">পাঠান</button>
+                            </div>`;
             container.appendChild(card);
         }
     });
@@ -706,7 +736,7 @@ function renderStudentsTable() {
                     <td><button class="btn btn-red btn-sm" onclick="window.removeStudent(${i})">মুছুন</button></td>
                 </tr>`;
     });
-    html += `</tbody></table>`;
+    html += `</tbody></td>`;
     cont.innerHTML = html;
     document.querySelectorAll('.editName').forEach(inp => inp.onchange = (e) => studentsData[inp.dataset.index].name = inp.value);
     document.querySelectorAll('.editPass').forEach(inp => inp.onchange = (e) => studentsData[inp.dataset.index].password = inp.value);
