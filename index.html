@@ -172,8 +172,9 @@
                 <textarea id="feedCaption" rows="2" placeholder="আপনার মনের কথা লিখুন..." style="width:100%; border-radius:15px;"></textarea>
                 <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; align-items:center;">
                     <label style="background:#eef2f5; padding:8px 15px; border-radius:30px; cursor:pointer;">
-                        <i class="fas fa-image"></i> ছবি নির্বাচন করুন
-                        <input type="file" id="feedImageInput" accept="image/*" multiple style="display:none;">
+                        <i class="fas fa-image"></i> নির্বাচন করুন
+                        <!-- Update the file input in your social feed form -->
+                        <input type="file" id="feedImageInput" accept="image/*,video/*" multiple style="display:none;">
                     </label>
                     <div id="imagePreviewContainer" style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;"></div>
                     <button onclick="window.publishPost()" class="btn btn-orange"><i class="fas fa-paper-plane"></i> পোস্ট করুন</button>
