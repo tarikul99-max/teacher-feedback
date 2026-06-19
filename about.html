@@ -36,38 +36,43 @@
         }
         .header-top-row {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             flex-wrap: wrap;
             margin-bottom: 10px;
+            position: relative;
         }
         .bismillah {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
-            padding: 4px 25px;
-            background: rgba(255,255,255,0.15);
+            padding: 5px 30px;
+            background: rgba(255,255,255,0.12);
             border-radius: 30px;
             display: inline-block;
             font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
+            text-align: center;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255,255,255,0.08);
         }
-        .header-top-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .header-home-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
         }
         .btn-home {
             background: linear-gradient(135deg, #ff6b35, #f7931e);
             color: white;
-            padding: 10px 25px;
+            padding: 8px 20px;
             border: none;
             border-radius: 50px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
             transition: all 0.3s ease;
         }
@@ -76,7 +81,7 @@
             box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
         }
         .btn-home i {
-            font-size: 18px;
+            font-size: 16px;
         }
         .header-content {
             display: flex;
@@ -84,7 +89,7 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
-            margin-top: 5px;
+            margin-top: 8px;
         }
         .header-left {
             display: flex;
@@ -569,18 +574,21 @@
             .subject-header { min-width: 70px; }
             th, td { padding: 4px 3px; font-size: 10px; }
             .stu-name-input { min-width: 150px !important; width: 150px !important; font-size: 11px; }
-            .btn-home { padding: 8px 15px; font-size: 13px; }
-            .btn-home i { font-size: 14px; }
+            .btn-home { padding: 6px 14px; font-size: 12px; }
+            .btn-home i { font-size: 12px; }
             .main-title-box h1 { font-size: 24px; }
             .main-title-box .academy-text { font-size: 18px; }
             .header-right-address { font-size: 11px; }
+            .bismillah { font-size: 18px; padding: 4px 20px; }
+            .header-home-btn { position: static; transform: none; }
+            .header-top-row { justify-content: center; gap: 10px; }
         }
         @media (max-width: 480px) {
             .main-title-box h1 { font-size: 20px; }
             .main-title-box .academy-text { font-size: 15px; }
             .main-title-box .slogan { font-size: 12px; }
             .header-logo { height: 50px; width: 50px; }
-            .bismillah { font-size: 16px; padding: 3px 15px; }
+            .bismillah { font-size: 15px; padding: 3px 15px; }
             .header-right-address { font-size: 10px; padding: 5px 10px; }
         }
     </style>
@@ -590,7 +598,7 @@
     <div class="excel-header">
         <div class="header-top-row">
             <div class="bismillah">বিসমিল্লাহির রাহমানির রাহিম</div>
-            <div class="header-top-right">
+            <div class="header-home-btn">
                 <a href="index.html" class="btn-home">
                     <i class="fas fa-home"></i> হোম পেজ
                 </a>
