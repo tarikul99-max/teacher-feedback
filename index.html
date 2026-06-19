@@ -75,4 +75,156 @@
             </div>
             <div id="studentClassInfo" class="student-info-card" style="display: none;">
                 <h3><i class="fas fa-user-graduate"></i> আমার তথ্য</h3>
-                <p><strong>নাম:</strong> <span id="st
+                <p><strong>নাম:</strong> <span id="studentNameDisplay"></span></p>
+                <p><strong>ক্লাস:</strong> <span id="studentClassDisplay"></span></p>
+                <p><strong>আইডি:</strong> <span id="studentIdDisplay"></span></p>
+            </div>
+            <div id="todayTomorrowRoutine"></div>
+            <div id="teachersGrid" class="teacher-grid"></div>
+        </div>
+        
+        <div id="studentPanel" class="panel">
+            <h2><i class="fas fa-comment-dots"></i> শিক্ষকদের মতামত দিন</h2>
+            <div id="studentFeedbackArea"></div>
+        </div>
+        
+        <div id="teacherPanel" class="panel">
+            <h2><i class="fas fa-chalkboard"></i> শিক্ষক ড্যাশবোর্ড</h2>
+            <div id="teacherProfileArea"></div>
+            <div id="teacherAssignedClasses"></div>
+            <div id="teacherClassStudents"></div>
+        </div>
+        
+        <div id="adminTeachersPanel" class="panel">
+            <h2><i class="fas fa-user-plus"></i> শিক্ষক তৈরি করুন</h2>
+            <div style="background:#f7fafc; padding:16px; border-radius:28px; margin-bottom:20px;">
+                <div style="text-align:center;">
+                    <img id="teacherImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=শিক্ষক">
+                    <label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="teacherImageInput" accept="image/*" style="display:none;"></label>
+                </div>
+                <input type="text" id="newTeacherName" placeholder="পূর্ণ নাম">
+                <input type="text" id="newTeacherId" placeholder="শিক্ষক আইডি">
+                <input type="text" id="newTeacherPass" placeholder="পাসওয়ার্ড">
+                <div id="classCheckboxes"></div>
+                <button class="btn btn-green" id="createTeacherBtn">শিক্ষক যোগ করুন</button>
+            </div>
+            <h3>📋 শিক্ষকবৃন্দ</h3>
+            <div class="table-responsive"><div id="teachersTable"></div></div>
+        </div>
+        
+        <div id="adminClassPanel" class="panel">
+            <h2>ক্লাস ম্যানেজার</h2>
+            <div id="classButtons" class="class-buttons-container"></div>
+            <div style="background:#f9f5ed; padding:16px; border-radius:28px; margin-top:20px;">
+                <h3>➕ ছাত্র/ছাত্রী যোগ করুন - <span id="selectedClassName">ক্লাস নির্বাচন করুন</span></h3>
+                <div style="text-align:center;">
+                    <img id="studentImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=ছাত্র">
+                    <label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="studentImageInput" accept="image/*" style="display:none;"></label>
+                </div>
+                <input type="text" id="cousinName" placeholder="নাম *">
+                <input type="text" id="cousinId" placeholder="আইডি *">
+                <input type="text" id="cousinPass" placeholder="পাসওয়ার্ড *">
+                <input type="tel" id="cousinGuardianPhone" placeholder="অভিভাবকের মোবাইল (+8801XXXXXXXXX)">
+                <button class="btn btn-blue" id="addCousinBtn">যোগ করুন</button>
+            </div>
+            <button class="btn btn-green" id="saveClassBtn">সব সংরক্ষণ করুন</button>
+            <div class="table-responsive"><div id="classStudentsTable"></div></div>
+        </div>
+        
+        <div id="attendancePanel" class="panel">
+            <h2><i class="fas fa-calendar-alt"></i> অ্যাটেন্ডেন্স</h2>
+            <div id="studentHistorySection" class="attendance-card" style="display: none;">
+                <h3><i class="fas fa-user-graduate"></i> আমার উপস্থিতির ইতিহাস</h3>
+                <div class="attendance-summary" id="studentSummary"></div>
+                <div class="month-selector" id="studentMonthSelector"></div>
+                <div id="studentCalendarGrid"></div>
+            </div>
+            <div id="teacherAttendanceSection" style="display: none;">
+                <div class="attendance-card">
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                        <select id="attendanceClassSelect" style="flex:2; margin-bottom: 0;"></select>
+                        <input type="date" id="attendanceDate" style="flex:1; margin-bottom: 0;">
+                        <button class="btn btn-blue" id="loadStudentsBtn"><i class="fas fa-users"></i> ছাত্র/ছাত্র তালিকা দেখুন</button>
+                    </div>
+                </div>
+                <div id="studentAttendanceSection" class="attendance-card" style="display: none;">
+                    <h3><i class="fas fa-user-check"></i> উপস্থিতি দিন - <span id="selectedDateDisplay"></span></h3>
+                    <div id="studentAttendanceList" style="max-height: 400px; overflow-y: auto;"></div>
+                    <div style="margin-top: 16px; text-align: right;"><button class="btn btn-green" id="saveAttendanceBtn"><i class="fas fa-save"></i> উপস্থিতি সংরক্ষণ করুন</button></div>
+                </div>
+                <div class="attendance-card">
+                    <h3><i class="fas fa-chart-line"></i> ক্লাসের মাসিক উপস্থিতির সারাংশ</h3>
+                    <div class="month-selector" id="classMonthSelector"></div>
+                    <div id="classMonthlyCalendar"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="adminFeedbackPanel" class="panel">
+            <h2><i class="fas fa-archive"></i> সকল মতামত</h2>
+            <select id="feedbackClassFilter" style="margin-bottom:15px;"></select>
+            <div id="feedbackList"></div>
+        </div>
+        
+        <div id="adminRoutinePanel" class="panel">
+            <h2><i class="fas fa-calendar-edit"></i> রুটিন ম্যানেজার</h2>
+            <div id="routineEditArea"></div>
+            <button class="btn btn-green" id="saveAllRoutinesBtn"><i class="fas fa-save"></i> সব রুটিন সংরক্ষণ করুন</button>
+        </div>
+        
+        <div id="socialFeedPanel" class="panel">
+            <h2><i class="fas fa-comments"></i> সোশ্যাল কানেক্টিভিটি</h2>
+            <div style="background:#f9f5ed; padding:15px; border-radius:20px; margin-bottom:15px;">
+                <textarea id="feedCaption" rows="2" placeholder="আপনার মনের কথা লিখুন..." style="width:100%; border-radius:15px;"></textarea>
+                <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; align-items:center;">
+                    <label style="background:#eef2f5; padding:8px 15px; border-radius:30px; cursor:pointer;">
+                        <i class="fas fa-image"></i> নির্বাচন করুন
+                        <input type="file" id="feedImageInput" accept="image/*,video/*" multiple style="display:none;">
+                    </label>
+                    <div id="imagePreviewContainer" style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;"></div>
+                    <button onclick="window.publishPost()" class="btn btn-orange"><i class="fas fa-paper-plane"></i> পোস্ট করুন</button>
+                </div>
+            </div>
+            <div id="socialFeedContainer" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+    <footer style="text-align:center; padding:16px; color:#666;">© মাস্টারমাইন্ড অ্যাকাডেমি</footer>
+</div>
+
+
+<div id="resultModal" class="result-modal" onclick="closeModalOutside(event, 'resultModal')">
+    <div class="results-card" onclick="event.stopPropagation()">
+        <i class="fas fa-chart-simple" style="font-size:48px; color:#c3b043;"></i>
+        <h2 style="margin-top:15px; color:#c3b043;">📊<a href="about.html"> একাডেমিক ফলাফল</a></h2>
+        <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
+        <p style="margin-bottom:20px;">ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।</p>
+        <p style="margin-bottom:20px; font-style:italic;">"ধন্যবাদ"</p>
+        <button class="btn btn-orange" onclick="document.getElementById('resultModal').style.display='none'">বন্ধ করুন</button>
+    </div>
+</div>
+
+<div id="aboutModal" class="about-modal" onclick="closeModalOutside(event, 'aboutModal')">
+    <div class="about-card" onclick="event.stopPropagation()">
+        <i class="fas fa-school" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
+        <h2 style="text-align:center;">মাস্টারমাইন্ড অ্যাকাডেমি</h2>
+        <p style="margin:15px 0;">আধুনিক শিক্ষাপ্রতিষ্ঠান যা মানসম্মত শিক্ষা ও প্রযুক্তিনির্ভর ক্লাসরুম ব্যবস্থাপনায় অনন্য।</p>
+        <p><strong>📍 ঠিকানা:</strong> পেকুয়া, কক্সবাজার</p>
+        <p><strong>📞 যোগাযোগ:</strong> 01623209091</p>
+        <button class="btn btn-orange" onclick="document.getElementById('aboutModal').style.display='none'">বন্ধ করুন</button>
+    </div>
+</div>
+
+<div id="routineModal" class="routine-modal" onclick="closeModalOutside(event, 'routineModal')">
+    <div class="routine-card" onclick="event.stopPropagation()">
+        <i class="fas fa-calendar-week" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
+        <h2 style="text-align:center;">📅 ক্লাস রুটিন</h2>
+        <div id="routineContent"></div>
+        <button class="btn btn-orange" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script src="script.js"></script>
+</body>
+</html> 
