@@ -14,7 +14,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', 'Noto Sans Bengali', sans-serif;
+            font-family: 'Segoe UI', 'Noto Sans Bengali', 'Nikosh', 'SutonnyMJ', sans-serif;
             background: linear-gradient(135deg, #eef2ff 0%, #d9e2ff 100%);
             min-height: 100vh;
             padding: 20px;
@@ -34,50 +34,21 @@
             color: white;
             position: relative;
         }
-        .header-content {
+        .header-top-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            margin-bottom: 10px;
         }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .header-logo {
-            height: 70px;
-            width: 70px;
-            background: white;
-            border-radius: 50%;
-            border: 2px solid #ffffff;
-            object-fit: cover;
-        }
-        .main-title-box {
-            background: linear-gradient(135deg, #000033, #1e2952);
-            padding: 6px 20px;
-            border-radius: 0 30px 30px 30px;
-            border-left: 4px solid #5865f2;
-        }
-        .main-title-box h1 {
-            margin: 0;
-            font-size: 28px;
-            display: inline;
-            color: #fafafa;
-        }
-        .main-title-box span {
-            font-size: 18px;
-            margin-left: 8px;
-            color: #b9c4ff;
-        }
-        .header-right-address {
-            text-align: right;
-            font-size: 13px;
-            background: rgba(0,0,0,0.35);
-            padding: 8px 15px;
-            border-radius: 20px;
+        .bismillah {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 4px 25px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 30px;
+            display: inline-block;
+            font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
         }
         .header-top-right {
             display: flex;
@@ -107,15 +78,68 @@
         .btn-home i {
             font-size: 18px;
         }
-        .bismillah {
-            text-align: center;
-            font-size: 20px;
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .header-logo {
+            height: 70px;
+            width: 70px;
+            background: white;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            object-fit: cover;
+        }
+        .main-title-box {
+            background: linear-gradient(135deg, #000033, #1e2952);
+            padding: 6px 20px;
+            border-radius: 0 30px 30px 30px;
+            border-left: 4px solid #5865f2;
+        }
+        .main-title-box h1 {
+            margin: 0;
+            font-size: 32px;
+            display: inline;
+            color: #fafafa;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        .main-title-box .academy-text {
+            font-size: 22px;
+            margin-left: 5px;
+            color: #b9c4ff;
+            font-weight: 700;
+        }
+        .main-title-box .slogan {
             font-weight: bold;
-            margin-bottom: 10px;
-            display: inline-block;
-            padding: 4px 25px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 30px;
+            font-size: 16px;
+            margin-top: 2px;
+            color: #b9c4ff;
+            text-align: center;
+            font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
+            letter-spacing: 1px;
+        }
+        .header-right-address {
+            text-align: right;
+            font-size: 13px;
+            background: rgba(0,0,0,0.35);
+            padding: 8px 15px;
+            border-radius: 20px;
+            line-height: 1.6;
+            font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
+        }
+        .header-right-address i {
+            margin-right: 3px;
         }
         .info-bar {
             background: linear-gradient(95deg, #000033, #1e2952, #191970);
@@ -139,7 +163,7 @@
             border: 2px solid #5865f2;
             box-shadow: 0 8px 20px rgba(0,0,0,0.05);
         }
-        .student-login-section h3 { color: #000033; margin-bottom: 15px; font-size: 22px; }
+        .student-login-section h3 { color: #000033; margin-bottom: 15px; font-size: 22px; font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif; }
         .login-group {
             display: flex;
             justify-content: center;
@@ -157,6 +181,7 @@
             font-weight: bold;
             font-size: 18px;
             transition: all 0.3s ease;
+            font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
         }
         .student-login-btn:hover {
             transform: scale(1.05);
@@ -254,6 +279,7 @@
             color: #000033;
             font-size: 20px;
             margin-bottom: 15px;
+            font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
         }
         .top-list-container {
             display: flex;
@@ -367,6 +393,7 @@
             border: 1px dashed #5865f2;
             border-radius: 8px;
             text-align: center;
+            font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
         }
         
         .exam-type-selector {
@@ -442,6 +469,7 @@
             color: white;
             width: 100%;
             cursor: pointer;
+            font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
         }
         .mark-distribution {
             display: flex;
@@ -543,16 +571,25 @@
             .stu-name-input { min-width: 150px !important; width: 150px !important; font-size: 11px; }
             .btn-home { padding: 8px 15px; font-size: 13px; }
             .btn-home i { font-size: 14px; }
+            .main-title-box h1 { font-size: 24px; }
+            .main-title-box .academy-text { font-size: 18px; }
+            .header-right-address { font-size: 11px; }
+        }
+        @media (max-width: 480px) {
+            .main-title-box h1 { font-size: 20px; }
+            .main-title-box .academy-text { font-size: 15px; }
+            .main-title-box .slogan { font-size: 12px; }
+            .header-logo { height: 50px; width: 50px; }
+            .bismillah { font-size: 16px; padding: 3px 15px; }
+            .header-right-address { font-size: 10px; padding: 5px 10px; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="excel-header">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-            <div>
-                <div class="bismillah">বিসমিল্লাহির রাহমানির রাহিম</div>
-            </div>
+        <div class="header-top-row">
+            <div class="bismillah">বিসমিল্লাহির রাহমানির রাহিম</div>
             <div class="header-top-right">
                 <a href="index.html" class="btn-home">
                     <i class="fas fa-home"></i> হোম পেজ
@@ -563,8 +600,8 @@
             <div class="header-left">
                 <img src="mastermined.jpg" alt="Logo" class="header-logo">
                 <div class="main-title-box">
-                    <h1>MASTERMIND</h1><span> ACADEMY</span>
-                    <p style="font-weight:bold; font-size:15px; margin-top:2px; color: #b9c4ff; text-align:center;">সম্ভাবনার নতুন দিগন্তে আপনাকে স্বাগত!</p>    
+                    <h1>MASTERMIND</h1><span class="academy-text">ACADEMY</span>
+                    <div class="slogan">সম্ভাবনার নতুন দিগন্তে আপনাকে স্বাগত!</div>
                 </div>                
             </div>
             <div class="header-right-address">
