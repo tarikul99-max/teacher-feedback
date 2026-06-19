@@ -418,7 +418,14 @@ input, select, textarea {
     font-size: 14px;
     margin-bottom: 8px;
 }
-
+/* info data */
+.info-card {
+    background: linear-gradient(135deg, #ffffff, #fef9ef);
+    border-radius: 28px;
+    padding: 18px;
+    text-align: left;
+    border: 1px solid rgba(245, 176, 66, 0.5);
+}
 /* ==================== TEACHER GRID ==================== */
 .teacher-grid {
     display: grid;
