@@ -65,7 +65,7 @@
             <div class="dashboard-header">
                 <h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2>
                 <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
-                    <button class="btn btn-orange" id="viewResultBtn"><i class="fas fa-file-alt"></i><a herf="about.html">ফলাফল দেখুন</a> </button>
+                    <button class="btn btn-orange" id="viewResultBtn"><i class="fas fa-file-alt"></i>ফলাফল দেখুন </button>
                     <button class="btn btn-blue" id="aboutUsBtn"><i class="fas fa-info-circle"></i> সম্পর্কে</button>
                     <button class="btn btn-green" id="viewRoutineBtn"><i class="fas fa-calendar-week"></i> রুটিন দেখুন</button>
                 </div>
@@ -191,11 +191,11 @@
 <div id="resultModal" class="result-modal">
     <div class="results-card">
         <i class="fas fa-chart-simple" style="font-size:48px; color:#f5b042;"></i>
-        <h2 style="margin-top:15px;">📊 একাডেমিক ফলাফল</h2>
+        <h2 style="margin-top:15px;"><a herf="about.html">📊 একাডেমিক ফলাফল</a></h2>
         <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
         <p style="margin-bottom:20px;">ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।</p>
         <p style="margin-bottom:20px; font-style:italic;">"ধন্যবাদ"</p>
-        <button class="btn btn-orange" style="width:100%;" onclick="document.getElementById('resultModal').style.display='none'">বন্ধ করুন</button>
+        <button class="btn btn-orange" style="width:100%;position: fixed;" onclick="document.getElementById('resultModal').style.display='none'">বন্ধ করুন</button>
     </div>
 </div>
 
@@ -206,7 +206,7 @@
         <p style="margin:15px 0;">আধুনিক শিক্ষাপ্রতিষ্ঠান যা মানসম্মত শিক্ষা ও প্রযুক্তিনির্ভর ক্লাসরুম ব্যবস্থাপনায় অনন্য।</p>
         <p><strong>📍 ঠিকানা:</strong> পেকুয়া, কক্সবাজার</p>
         <p><strong>📞 যোগাযোগ:</strong> 01623209091</p>
-        <button class="btn btn-orange" style="width:100%; margin-top:15px;" onclick="document.getElementById('aboutModal').style.display='none'">বন্ধ করুন</button>
+        <button class="btn btn-orange" style="width:100%;position: fixed; margin-top:15px;" onclick="document.getElementById('aboutModal').style.display='none'">বন্ধ করুন</button>
     </div>
 </div>
 
@@ -215,7 +215,7 @@
         <i class="fas fa-calendar-week" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
         <h2 style="text-align:center;">📅 ক্লাস রুটিন</h2>
         <div id="routineContent"></div>
-        <button class="btn btn-orange" style="width:100%; margin-top:15px;" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button>
+        <button class="btn btn-orange" style="width:100%; margin-top:15px;position: fixed;" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button>
     </div>
 </div>
 
