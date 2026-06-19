@@ -1,3 +1,4 @@
+/* ==================== GLOBAL RESET & BASE ==================== */
 * {
     margin: 0;
     padding: 0;
@@ -11,6 +12,7 @@ body {
     position: relative;
 }
 
+/* ==================== BACKGROUND SLIDESHOW ==================== */
 .bg-slideshow {
     position: fixed;
     top: 0;
@@ -35,6 +37,7 @@ body {
     opacity: 1;
 }
 
+/* ==================== LOGIN SCREEN ==================== */
 .login-screen {
     position: fixed;
     top: 0;
@@ -94,6 +97,7 @@ body {
     margin-top: 15px;
 }
 
+/* ==================== APP CONTAINER ==================== */
 .app-container {
     display: none;
     animation: fadeSlideUp 0.5s ease;
@@ -102,41 +106,13 @@ body {
     background: #eef2f9;
     min-height: 100vh;
 }
-.header-top-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-.btn-home {
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
-            color: white;
-            padding: 10px 25px;
-            border: none;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-            transition: all 0.3s ease;
-        }
-.btn-home:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
-        }
-.btn-home i {
-            font-size: 18px;
-        }
-
 
 @keyframes fadeSlideUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* ==================== HEADER / NAVBAR ==================== */
 .navbar {
     background: #0c1b4b;
     color: white;
@@ -181,6 +157,7 @@ body {
     cursor: pointer;
 }
 
+/* ==================== DROPDOWN ==================== */
 .dropdown {
     position: relative;
 }
@@ -217,6 +194,7 @@ body {
     display: block;
 }
 
+/* ==================== CONTENT & PANELS ==================== */
 .content {
     max-width: 1200px;
     margin: 16px auto;
@@ -232,7 +210,8 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.panel.active-panel, .panel.active {
+.panel.active-panel,
+.panel.active {
     display: block;
     animation: fadeSlide 0.3s ease;
 }
@@ -242,7 +221,8 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.panel h2, .panel h3 {
+.panel h2,
+.panel h3 {
     color: #0a0f3b;
     margin-bottom: 16px;
     border-left: 4px solid #f5b042;
@@ -250,6 +230,7 @@ body {
     font-size: 1.2rem;
 }
 
+/* ==================== BUTTONS ==================== */
 .btn {
     padding: 10px 18px;
     border: none;
@@ -277,7 +258,70 @@ body {
 .btn-red { background: #c52828; color: white; }
 .btn-orange { background: #f5b042; color: #1e0a3b; }
 
-/* ==================== SIDE BY SIDE ROUTINE FIX ==================== */
+/* ==================== HOME PAGE BUTTONS ==================== */
+.header-top-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-home {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
+}
+
+.btn-home i {
+    font-size: 18px;
+}
+
+.btn-aca-result {
+    background: linear-gradient(135deg, #00b894, #00cec9, #0984e3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: springMove 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-aca-result:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
+}
+
+.btn-aca-result i {
+    font-size: 16px;
+}
+
+/* ==================== ROUTINE CARDS ==================== */
 .routine-side-by-side {
     display: flex !important;
     flex-direction: row !important;
@@ -286,19 +330,17 @@ body {
     flex-wrap: wrap;
 }
 
-
 .routine-subject {
     font-size: 28px;
     font-weight: bold;
     margin: 15px 0;
 }
 
-
 @media (max-width: 700px) {
     .routine-side-by-side {
         flex-direction: column !important;
     }
-
+}
 
 .tomorrow-routine-card {
     flex: 1;
@@ -307,7 +349,7 @@ body {
     border-radius: 24px;
     padding: 20px;
     text-align: left;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     background: linear-gradient(135deg, #F59E0B, #F97316, #EF4444);
     background-size: 200% 200%;
     -webkit-background-clip: text;
@@ -315,6 +357,7 @@ body {
     background-clip: text;
     animation: flashGradient 1.2s ease infinite alternate;
 }
+
 .today-routine-card {
     flex: 1;
     min-width: 280px;
@@ -322,57 +365,27 @@ body {
     border-radius: 24px;
     padding: 20px;
     text-align: left;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    background: linear-gradient(135deg, #c0eef2,#2cc6d4,#43e6a7);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #c0eef2, #2cc6d4, #43e6a7);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: flashGradient 1.2s ease infinite alternate;
 }
-@keyframes swingGradient2 {
-            0% { background-position: left center; }
-            100% { background-position: right center; }
-        }
 
+@keyframes flashGradient {
+    0% { background-position: left center; }
+    100% { background-position: right center; }
+}
 
-.btn-aca-result {
-            
-            background: linear-gradient(135deg, #00b894, #00cec9, #0984e3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: springMove 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-            color: white;
-            padding: 10px 25px;
-            border: none;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-            transition: all 0.3s ease;
-        }
-.btn-aca-result:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
-        }
-.btn-aca-result i {
-            font-size: 16px;
-        }
-@keyframes randomMove {
-            0% { background-position: 0% 0%; }
-            25% { background-position: 100% 0%; }
-            50% { background-position: 100% 100%; }
-            75% { background-position: 0% 100%; }
-            100% { background-position: 0% 0%; }
-        }
-/* ==================== END SIDE BY SIDE ROUTINE FIX ==================== */
+@keyframes springMove {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
 
+/* ==================== TABLE ==================== */
 .table-responsive {
     overflow-x: auto;
     margin: 10px 0;
@@ -396,6 +409,7 @@ th {
     background: #eef3f0;
 }
 
+/* ==================== FORM ELEMENTS ==================== */
 input, select, textarea {
     padding: 12px 14px;
     border: 1px solid #cfdfd9;
@@ -405,6 +419,7 @@ input, select, textarea {
     margin-bottom: 8px;
 }
 
+/* ==================== TEACHER GRID ==================== */
 .teacher-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -429,6 +444,7 @@ input, select, textarea {
     border: 3px solid #f5b042;
 }
 
+/* ==================== STUDENT LIST ==================== */
 .student-list-item {
     display: flex;
     align-items: center;
@@ -467,8 +483,9 @@ input, select, textarea {
     margin: 5px 0;
 }
 
+/* ==================== SOCIAL CARDS ==================== */
 .social-card {
-    background: #c8cee8,#c8dde8;
+    background: #c8cee8, #c8dde8;
     padding: 16px;
     border-radius: 24px;
     margin-bottom: 16px;
@@ -494,6 +511,7 @@ input, select, textarea {
     background: #c0392b;
 }
 
+/* ==================== ATTENDANCE ==================== */
 .attendance-card {
     background: white;
     border-radius: 24px;
@@ -585,6 +603,7 @@ input, select, textarea {
     font-weight: bold;
 }
 
+/* ==================== TOGGLE SWITCH ==================== */
 .toggle-switch {
     position: relative;
     display: inline-block;
@@ -642,6 +661,7 @@ input:checked + .slider:before {
     background: #f8fafc;
 }
 
+/* ==================== TEACHER CLASS CARD ==================== */
 .teacher-class-card {
     background: linear-gradient(135deg, #fef9ef, #ffffff);
     border-radius: 20px;
@@ -650,7 +670,7 @@ input:checked + .slider:before {
     border: 1px solid #f5b04233;
 }
 
-/* ==================== আপডেটেড ক্লাস বাটন স্টাইল ==================== */
+/* ==================== CLASS BUTTONS ==================== */
 .class-buttons-container {
     display: flex;
     flex-direction: column;
@@ -677,6 +697,7 @@ input:checked + .slider:before {
     transition: 0.2s;
     font-size: 14px;
     font-weight: 500;
+    border: none;
 }
 
 .class-btn:hover {
@@ -690,9 +711,11 @@ input:checked + .slider:before {
     color: #0a163b;
     box-shadow: 0 2px 8px rgba(245, 176, 66, 0.3);
 }
-/* ==================== ক্লাস বাটন স্টাইল শেষ ==================== */
 
-.result-modal, .about-modal, .routine-modal {
+/* ==================== MODALS ==================== */
+.result-modal,
+.about-modal,
+.routine-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -705,7 +728,9 @@ input:checked + .slider:before {
     align-items: center;
 }
 
-.results-card, .about-card, .routine-card {
+.results-card,
+.about-card,
+.routine-card {
     background: linear-gradient(135deg, #f0c3cd, #d0e7e0);
     padding: 30px;
     border-radius: 30px;
@@ -722,7 +747,8 @@ input:checked + .slider:before {
     margin-top: 15px;
 }
 
-.routine-table th, .routine-table td {
+.routine-table th,
+.routine-table td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
@@ -733,6 +759,7 @@ input:checked + .slider:before {
     color: white;
 }
 
+/* ==================== FEEDBACK ==================== */
 .feedback-item {
     background: #f9f5ed;
     border-radius: 16px;
@@ -756,6 +783,7 @@ input:checked + .slider:before {
     background: #c0392b;
 }
 
+/* ==================== REACTIONS ==================== */
 .reaction-bar {
     display: flex;
     gap: 8px;
@@ -789,6 +817,7 @@ input:checked + .slider:before {
     color: #666;
 }
 
+/* ==================== STUDENT INFO CARD ==================== */
 .student-info-card {
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
@@ -804,21 +833,31 @@ input:checked + .slider:before {
     padding-left: 0;
 }
 
+/* ==================== EMPTY STATE ==================== */
 .empty-state {
     text-align: center;
     padding: 40px;
     color: #666;
 }
 
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 700px) {
-    .calendar-grid { gap: 4px; }
-    .cal-day { padding: 6px 2px; font-size: 11px; min-height: 55px; }
-    .cal-day .date-num { font-size: 14px; }
-    
+    .calendar-grid {
+        gap: 4px;
+    }
+    .cal-day {
+        padding: 6px 2px;
+        font-size: 11px;
+        min-height: 55px;
+    }
+    .cal-day .date-num {
+        font-size: 14px;
+    }
+
     .class-buttons-container {
         padding-left: 15px;
     }
-    
+
     .class-btn {
         min-width: 180px;
         padding: 10px 15px 10px 20px;
