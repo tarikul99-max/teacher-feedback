@@ -36,6 +36,24 @@ const classes = [
 
 const days = ['শনিবার', 'রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার'];
 
+// ============ CLOSE MODAL BY CLICKING OUTSIDE ============
+function closeModalOutside(event, modalId) {
+    if (event.target === event.currentTarget) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+}
+
+// Close modal with ESC key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        document.querySelectorAll('.result-modal, .about-modal, .routine-modal').forEach(modal => {
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            }
+        });
+    }
+});
+
 function escapeHtml(str) { 
     if(!str) return ''; 
     return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); 
@@ -140,7 +158,6 @@ async function loadRoutineFromFirebase() {
     return classRoutine;
 }
 
-// FIXED: showTodayTomorrowRoutine - Now side by side for ALL users
 async function showTodayTomorrowRoutine() {
     const routine = await loadRoutineFromFirebase();
     const container = document.getElementById('todayTomorrowRoutine');
@@ -164,7 +181,6 @@ async function showTodayTomorrowRoutine() {
             </div>
         `;
     } else {
-        // For admin/teacher - also side by side
         let todayHtml = `<div class="today-routine-card"><h3>📚 আজকের ক্লাস (${todayName})</h3>`;
         let tomorrowHtml = `<div class="tomorrow-routine-card"><h3>📚 আগামীকালের ক্লাস (${tomorrowName})</h3>`;
         for(let cls of classes) {
@@ -174,7 +190,6 @@ async function showTodayTomorrowRoutine() {
         }
         todayHtml += `</div>`;
         tomorrowHtml += `</div>`;
-        // IMPORTANT: Wrap both boxes in the side-by-side container
         container.innerHTML = `<div class="routine-side-by-side">${todayHtml}${tomorrowHtml}</div>`;
     }
 }
