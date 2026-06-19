@@ -12,7 +12,9 @@
 <div class="bg-slideshow" id="bgSlideshow">
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format');"></div>
+    <div class="bg-slide" style="background-image: url('master01.jpg');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2032&auto=format');"></div>
+    <div class="bg-slide" style="background-image: url('master03.jpg');"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=2070&auto=format');"></div>
 </div>
 
@@ -189,8 +191,9 @@
     <footer style="text-align:center; padding:16px; color:#666;">© মাস্টারমাইন্ড অ্যাকাডেমি</footer>
 </div>
 
-<div id="resultModal" class="result-modal">
-    <div class="results-card">
+
+<div id="resultModal" class="result-modal" onclick="closeModalOutside(event, 'resultModal')">
+    <div class="results-card" onclick="event.stopPropagation()">
         <i class="fas fa-chart-simple" style="font-size:48px; color:#f5b042;"></i>
         <h2 style="margin-top:15px;">📊<a href="about.html"> একাডেমিক ফলাফল</a></h2>
         <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
@@ -200,8 +203,8 @@
     </div>
 </div>
 
-<div id="aboutModal" class="about-modal">
-    <div class="about-card">
+<div id="aboutModal" class="about-modal" onclick="closeModalOutside(event, 'aboutModal')">
+    <div class="about-card" onclick="event.stopPropagation()">
         <i class="fas fa-school" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
         <h2 style="text-align:center;">মাস্টারমাইন্ড অ্যাকাডেমি</h2>
         <p style="margin:15px 0;">আধুনিক শিক্ষাপ্রতিষ্ঠান যা মানসম্মত শিক্ষা ও প্রযুক্তিনির্ভর ক্লাসরুম ব্যবস্থাপনায় অনন্য।</p>
@@ -211,8 +214,8 @@
     </div>
 </div>
 
-<div id="routineModal" class="routine-modal">
-    <div class="routine-card">
+<div id="routineModal" class="routine-modal" onclick="closeModalOutside(event, 'routineModal')">
+    <div class="routine-card" onclick="event.stopPropagation()">
         <i class="fas fa-calendar-week" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
         <h2 style="text-align:center;">📅 ক্লাস রুটিন</h2>
         <div id="routineContent"></div>
