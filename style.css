@@ -311,7 +311,8 @@ body {
 .today-routine-card {
     flex: 1;
     min-width: 280px;
-    background: linear-gradient(135deg, #232526, #414345);
+    background: linear-gradient(135deg,#c0eef2,#2cc6d4,#43e6a7
+);
     color: white;
     border-radius: 24px;
     padding: 20px;
