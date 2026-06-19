@@ -287,7 +287,7 @@ body {
 .today-routine-card {
     flex: 1;
     min-width: 280px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2563EB, #4F46E5, #7C3AED);
     color: white;
     border-radius: 24px;
     padding: 20px;
@@ -298,7 +298,7 @@ body {
 .tomorrow-routine-card {
     flex: 1;
     min-width: 280px;
-    background: linear-gradient(135deg, #f5b042 0%, #e67e22 100%);
+    background: linear-gradient(135deg, #F59E0B, #F97316, #EF4444);
     color: white;
     border-radius: 24px;
     padding: 20px;
@@ -655,7 +655,7 @@ input:checked + .slider:before {
 }
 
 .results-card, .about-card, .routine-card {
-    background: white;
+    background: linear-gradient(135deg, #667EEA, #764BA2);;
     padding: 30px;
     border-radius: 30px;
     max-width: 500px;
