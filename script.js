@@ -1510,6 +1510,30 @@ async function startApp() {
     await loadRoutineFromFirebase();
     await showTodayTomorrowRoutine();
     
+    // ====== NAVBAR BUTTONS ======
+    document.getElementById('aboutUsBtnNav')?.addEventListener('click', () => {
+        document.getElementById('aboutModal').style.display = 'flex';
+    });
+
+    document.getElementById('viewRoutineBtnNav')?.addEventListener('click', () => {
+        document.getElementById('routineModal').style.display = 'flex';
+        showRoutine();
+    });
+
+    document.getElementById('viewResultBtnNav')?.addEventListener('click', () => {
+        document.getElementById('resultModal').style.display = 'flex';
+    });
+    
+    // Dashboard panel buttons (if they exist)
+    document.getElementById('aboutUsBtn')?.addEventListener('click', () => {
+        document.getElementById('aboutModal').style.display = 'flex';
+    });
+
+    document.getElementById('viewRoutineBtn')?.addEventListener('click', () => {
+        document.getElementById('routineModal').style.display = 'flex';
+        showRoutine();
+    });
+    
     if(isStudent) {
         const studentInfoDiv = document.getElementById('studentClassInfo');
         if(studentInfoDiv) {
@@ -1528,9 +1552,6 @@ async function startApp() {
         showPanel('dashboardPanel');
     }
     setupMenu();
-    document.getElementById('viewResultBtn')?.addEventListener('click', () => document.getElementById('resultModal').style.display = 'flex');
-    document.getElementById('aboutUsBtn')?.addEventListener('click', () => document.getElementById('aboutModal').style.display = 'flex');
-    document.getElementById('viewRoutineBtn')?.addEventListener('click', () => showRoutine());
 }
 
 // Session check on page load
