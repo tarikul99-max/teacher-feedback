@@ -287,10 +287,23 @@ body {
 }
 
 
+.routine-subject {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+
+@media (max-width: 700px) {
+    .routine-side-by-side {
+        flex-direction: column !important;
+    }
+
+
 .tomorrow-routine-card {
     flex: 1;
     min-width: 280px;
-    color: white;
+    color: #7e8cc4;
     border-radius: 24px;
     padding: 20px;
     text-align: left;
@@ -305,7 +318,7 @@ body {
 .today-routine-card {
     flex: 1;
     min-width: 280px;
-    color: white;
+    color: #7e8cc4;
     border-radius: 24px;
     padding: 20px;
     text-align: left;
@@ -317,39 +330,11 @@ body {
     background-clip: text;
     animation: flashGradient 1.2s ease infinite alternate;
 }
-.today-routine-card {
-           
-        }
-
-
-.routine-subject {
-    font-size: 28px;
-    font-weight: bold;
-    margin: 15px 0;
-}
 @keyframes swingGradient2 {
             0% { background-position: left center; }
             100% { background-position: right center; }
         }
 
-@media (max-width: 700px) {
-    .routine-side-by-side {
-        flex-direction: column !important;
-    }
-    .today-routine-card, .tomorrow-routine-card {
-        width: 100%;
-    }
-}
-
-
-.anim-7 {
-            background: linear-gradient(135deg, #00b894, #00cec9, #0984e3);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: springMove 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-        }
 
 .btn-aca-result {
             
@@ -357,7 +342,7 @@ body {
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: springMove 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            animation: springMove 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
             color: white;
             padding: 10px 25px;
             border: none;
@@ -483,7 +468,7 @@ input, select, textarea {
 }
 
 .social-card {
-    background: #ffffff;
+    background: #c8cee8,#c8dde8;
     padding: 16px;
     border-radius: 24px;
     margin-bottom: 16px;
@@ -721,7 +706,7 @@ input:checked + .slider:before {
 }
 
 .results-card, .about-card, .routine-card {
-    background: linear-gradient(135deg, #667EEA, #764BA2);;
+    background: linear-gradient(135deg, #f0c3cd, #d0e7e0);
     padding: 30px;
     border-radius: 30px;
     max-width: 500px;
