@@ -418,8 +418,8 @@ input, select, textarea {
     font-size: 14px;
     margin-bottom: 8px;
 }
-/* info data */
-.info-card {
+/* ==info data ==========*/
+.info-data {
     background: linear-gradient(135deg, #ffffff, #fef9ef);
     border-radius: 28px;
     padding: 18px;
