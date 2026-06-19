@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -33,6 +32,7 @@
             background: linear-gradient(123deg, #000033, #1e2952, #191970, #00008b);
             padding: 20px 25px;
             color: white;
+            position: relative;
         }
         .header-content {
             display: flex;
@@ -78,6 +78,34 @@
             background: rgba(0,0,0,0.35);
             padding: 8px 15px;
             border-radius: 20px;
+        }
+        .header-top-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .btn-home {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+            transition: all 0.3s ease;
+        }
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
+        }
+        .btn-home i {
+            font-size: 18px;
         }
         .bismillah {
             text-align: center;
@@ -130,6 +158,10 @@
             font-size: 18px;
             transition: all 0.3s ease;
         }
+        .student-login-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(88, 101, 242, 0.4);
+        }
         .student-info-card {
             background: #f8faff;
             padding: 20px;
@@ -154,6 +186,10 @@
             border-radius: 30px;
             cursor: pointer;
             font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .logout-student-btn:hover {
+            transform: scale(1.05);
         }
         .exam-card {
             background: white;
@@ -350,13 +386,34 @@
             body { background: white; padding: 0; margin: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .container { box-shadow: none; border-radius: 0; overflow: visible !important; background: white; max-width: 100%; margin: 0; padding: 0; }
             .table-wrap { overflow: visible !important; padding: 0 !important; }
-            table { min-width: 100% !important; width: 100% !important; table-layout: auto !important; }
-            .controls-panel, .student-login-section, .btn-login, .admin-only, .optional-checkbox, .btn-del, .copy-section, #loginBtn, .logout-student-btn, .show-hide-box, .mark-distribution input, .auto-save-toast, .student-info-card, .exam-type-selector {
+            table { 
+                min-width: 100% !important; 
+                width: 100% !important; 
+                table-layout: auto !important;
+                page-break-inside: auto;
+            }
+            thead { 
+                display: table-header-group; 
+                page-break-inside: avoid;
+            }
+            thead th { 
+                background: #000033 !important; 
+                color: white !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            tr { 
+                page-break-inside: avoid; 
+                page-break-after: auto;
+            }
+            .controls-panel, .student-login-section, .btn-login, .admin-only, .optional-checkbox, .btn-del, .copy-section, #loginBtn, .logout-student-btn, .show-hide-box, .mark-distribution input, .auto-save-toast, .student-info-card, .exam-type-selector, .btn-home {
                 display: none !important;
             }
             #resultTableWrap { display: block !important; overflow: visible !important; }
             #topHoldersBox { display: block !important; }
-            .cell-total, .cell-pct, .cell-gpa, .cell-res, .cell-pos { display: table-cell !important; }
+            .cell-total, .cell-pct, .cell-gpa, .cell-res, .cell-pos { 
+                display: table-cell !important; 
+            }
             th, td { padding: 4px 3px !important; font-size: 9px !important; }
             .stu-name-input { font-size: 10px !important; padding: 3px !important; min-width: 180px !important; width: 180px !important; border: 1px solid #aaa !important; }
             .excel-header, .info-bar, th, .main-title-box, .footer { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -364,8 +421,6 @@
             .written-input, .mcq-input { width: 35px !important; font-size: 9px !important; }
             .total-mark-display { font-size: 8px !important; }
             .gpa-badge, .status-badge { font-size: 8px !important; padding: 2px 4px !important; }
-            tr { page-break-inside: avoid; }
-            thead { display: table-header-group; }
         }
         
         .subject-header {
@@ -486,21 +541,33 @@
             .subject-header { min-width: 70px; }
             th, td { padding: 4px 3px; font-size: 10px; }
             .stu-name-input { min-width: 150px !important; width: 150px !important; font-size: 11px; }
+            .btn-home { padding: 8px 15px; font-size: 13px; }
+            .btn-home i { font-size: 14px; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="excel-header">
-        <div style="text-align: center;"><div class="bismillah">বিসমিল্লাহির রাহমানির রাহিম</div></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+            <div>
+                <div class="bismillah">বিসমিল্লাহির রাহমানির রাহিম</div>
+            </div>
+            <div class="header-top-right">
+                <a href="index.html" class="btn-home">
+                    <i class="fas fa-home"></i> হোম পেজ
+                </a>
+            </div>
+        </div>
         <div class="header-content">
             <div class="header-left">
-            <img src="mastermined.jpg" alt="Logo" class="header-logo">
-            <div class="main-title-box"><h1>MASTERMIND</h1><span> ACADEMY</span></div></div>
-                
+                <img src="mastermined.jpg" alt="Logo" class="header-logo">
+                <div class="main-title-box"><h1>MASTERMIND</h1><span> ACADEMY</span></div>
             </div>
-            <div><p style="margin-left: 125px; font-weight:bold; font-size:17px;"> সম্ভাবনার নতুন দিগন্তে আপনাকে স্বাগত!......</p><br>
-            <div class="header-right-address"><i class="fas fa-map-marker-alt"></i> এসটি প্লাজা-২য় তলা(গ্লোবাল ইসলামি ব্যাংকের পাশে)বারবাকিয়া বাজার,পেকুয়া,কক্সবাজার।<br>📞 01623209091 || 01623209090</div>
+            <div>
+                <p style="font-weight:bold; font-size:17px; text-align:center;">সম্ভাবনার নতুন দিগন্তে আপনাকে স্বাগত!</p>
+                <div class="header-right-address"><i class="fas fa-map-marker-alt"></i> এসটি প্লাজা-২য় তলা(গ্লোবাল ইসলামি ব্যাংকের পাশে)বারবাকিয়া বাজার,পেকুয়া,কক্সবাজার।<br>📞 01623209091 || 01623209090</div>
+            </div>
         </div>
     </div>
     <div class="info-bar">
@@ -512,12 +579,6 @@
     </div>
     
     <div id="studentLoginSection" class="student-login-section">
-
-        <button class="btn btn-orange" id="viewResultBtn" >
-                    
-                    <a href="index.html" style="font-size:25px;color:3cb043">Home Page</a>
-        </button><br>
-
         <h3><i class="fas fa-user-graduate"></i> 👨‍🎓 Student Login</h3>
         <div class="login-group">
             <input type="number" id="studentRoll" placeholder="Roll Number">
@@ -740,6 +801,7 @@
                 <span class="btn-del" onclick="delSub(${i})">✖</span>
             </div></th>`;
         }
+        // Added class names for toggling
         head += `<th class="cell-total" style="background:#000033; color:white;">মোট</th><th class="cell-pct" style="background:#000033; color:white;">%</th><th class="cell-gpa" style="background:#000033; color:white;">GPA</th><th class="cell-res" style="background:#000033; color:white;">ফলাফল</th><th class="cell-pos" style="background:#000033; color:white;">মেধা</th>`;
         document.getElementById('hRow').innerHTML = head;
         
@@ -766,20 +828,35 @@
                     <div class="total-mark-display">প্রাপ্ত: ${subTotal}/${subFull}</div>
                 </td>`;
             }
-            body += `<td class="r-total">-</td><td class="r-pct">-</td><td class="r-gpa">-</td><td class="r-res">-</td><td class="r-pos">-</td></tr>`;
+            // Added class names for toggling
+            body += `<td class="r-total cell-total">-</td><td class="r-pct cell-pct">-</td><td class="r-gpa cell-gpa">-</td><td class="r-res cell-res">-</td><td class="r-pos cell-pos">-</td></tr>`;
         }
         document.getElementById('tBody').innerHTML = body;
         calcAndRank();
         toggleCols();
     }
     
+    // Improved toggleCols function
     function toggleCols() { 
-        let t=document.getElementById('chkTotal').checked, p=document.getElementById('chkPct').checked, g=document.getElementById('chkGPA').checked, r=document.getElementById('chkRes').checked, s=document.getElementById('chkPos').checked;
-        document.querySelectorAll('.cell-total').forEach(el=>el.style.display=t?'':'none'); 
-        document.querySelectorAll('.cell-pct').forEach(el=>el.style.display=p?'':'none'); 
-        document.querySelectorAll('.cell-gpa').forEach(el=>el.style.display=g?'':'none'); 
-        document.querySelectorAll('.cell-res').forEach(el=>el.style.display=r?'':'none'); 
-        document.querySelectorAll('.cell-pos').forEach(el=>el.style.display=s?'':'none');
+        let t=document.getElementById('chkTotal').checked;
+        let p=document.getElementById('chkPct').checked;
+        let g=document.getElementById('chkGPA').checked;
+        let r=document.getElementById('chkRes').checked;
+        let s=document.getElementById('chkPos').checked;
+        
+        // Toggle header columns
+        document.querySelectorAll('#hRow th.cell-total').forEach(el => el.style.display = t ? '' : 'none');
+        document.querySelectorAll('#hRow th.cell-pct').forEach(el => el.style.display = p ? '' : 'none');
+        document.querySelectorAll('#hRow th.cell-gpa').forEach(el => el.style.display = g ? '' : 'none');
+        document.querySelectorAll('#hRow th.cell-res').forEach(el => el.style.display = r ? '' : 'none');
+        document.querySelectorAll('#hRow th.cell-pos').forEach(el => el.style.display = s ? '' : 'none');
+        
+        // Toggle data columns
+        document.querySelectorAll('#tBody td.cell-total, #tBody td.r-total').forEach(el => el.style.display = t ? '' : 'none');
+        document.querySelectorAll('#tBody td.cell-pct, #tBody td.r-pct').forEach(el => el.style.display = p ? '' : 'none');
+        document.querySelectorAll('#tBody td.cell-gpa, #tBody td.r-gpa').forEach(el => el.style.display = g ? '' : 'none');
+        document.querySelectorAll('#tBody td.cell-res, #tBody td.r-res').forEach(el => el.style.display = r ? '' : 'none');
+        document.querySelectorAll('#tBody td.cell-pos, #tBody td.r-pos').forEach(el => el.style.display = s ? '' : 'none');
     }
     
     function updateStudentRoll(i,v) { if(!isAdmin) return; rolls[i]=parseInt(v)||(i+1); render(); autoSave(); }
