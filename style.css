@@ -548,61 +548,62 @@ body {
     padding-left: 0;
 }
 
-.top-ten-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 8px;
+.top-ten-table-wrapper {
+    overflow-x: auto;
 }
 
-.rank-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 18px;
-    background: #f8fafc;
+.top-ten-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
     border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    transition: all 0.3s ease;
-}
-
-.rank-item:hover {
-    transform: translateX(5px);
+    overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.rank-item.gold {
-    background: linear-gradient(135deg, #ffd700, #ffb300);
-    border-color: #ffb300;
-    color: #0a163b;
-    box-shadow: 0 2px 15px rgba(255, 215, 0, 0.2);
-}
-
-.rank-item.silver {
-    background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
-    border-color: #a8a8a8;
-    color: #0a163b;
-}
-
-.rank-item.bronze {
-    background: linear-gradient(135deg, #cd7f32, #b87333);
-    border-color: #b87333;
+.top-ten-table thead {
+    background: linear-gradient(135deg, #0a1f4a, #1a3a6a);
     color: white;
 }
 
-.rank-num {
-    font-weight: 800;
-    font-size: 1.1rem;
-    min-width: 40px;
+.top-ten-table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
 }
 
-.rank-name {
-    font-weight: 500;
-    color: inherit;
+.top-ten-table td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.85rem;
 }
 
-.rank-item.gold .rank-name,
-.rank-item.silver .rank-name {
+.top-ten-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.top-ten-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.top-ten-table .rank-1 {
+    background: linear-gradient(135deg, #ffd700, #ffb300);
     color: #0a163b;
+    font-weight: 700;
+}
+
+.top-ten-table .rank-2 {
+    background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+    color: #0a163b;
+    font-weight: 700;
+}
+
+.top-ten-table .rank-3 {
+    background: linear-gradient(135deg, #cd7f32, #b87333);
+    color: white;
+    font-weight: 700;
 }
 
 /* ==================== BUTTONS ==================== */
@@ -1195,8 +1196,10 @@ input:checked + .slider:before {
         width: 100%;
     }
     
-    .top-ten-list {
-        grid-template-columns: 1fr;
+    .top-ten-table th,
+    .top-ten-table td {
+        padding: 8px 10px;
+        font-size: 0.75rem;
     }
     
     .calendar-grid {
@@ -1269,5 +1272,11 @@ input:checked + .slider:before {
     
     .menu-btn {
         font-size: 18px;
+    }
+    
+    .top-ten-table th,
+    .top-ten-table td {
+        padding: 6px 8px;
+        font-size: 0.7rem;
     }
 }
