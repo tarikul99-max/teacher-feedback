@@ -1,4 +1,3 @@
-/* ==================== GLOBAL RESET & BASE ==================== */
 * {
     margin: 0;
     padding: 0;
@@ -869,4 +868,4 @@ input:checked + .slider:before {
         min-width: 180px;
         padding: 10px 15px 10px 20px;
     }
-}
+} 
