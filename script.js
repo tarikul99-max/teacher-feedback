@@ -33,6 +33,15 @@ let feedImages = [];
 let selectedRoutineClass = null;
 let selectedRoutineDay = 'Sunday';
 
+// গ্রুপ লিস্ট
+const GROUP_LIST = ['Science', 'Commerce', 'Arts', 'SSC Special'];
+const GROUP_ICONS = {
+    'Science': '🔬',
+    'Commerce': '💼',
+    'Arts': '🎨',
+    'SSC Special': '🎯'
+};
+
 // গ্রুপ প্রয়োজন এমন ক্লাস
 const GROUP_REQUIRED_CLASSES = ['Nine', 'Ten', 'SSC Special'];
 
@@ -107,57 +116,36 @@ function isGroupRequired(className) {
 }
 
 // ============================================================
+// GET GROUP DISPLAY NAME
+// ============================================================
+function getGroupDisplayName(group) {
+    const icon = GROUP_ICONS[group] || '';
+    return icon ? icon + ' ' + group : group;
+}
+
+// ============================================================
 // TOGGLE GROUP FIELD VISIBILITY
 // ============================================================
 function toggleGroupField(className) {
     const groupContainer = document.getElementById('groupFieldContainer');
     const groupSelect = document.getElementById('cousinGroup');
+    const requiredMsg = document.getElementById('groupRequiredMsg');
     
     if (!groupContainer || !groupSelect) return;
     
     if (isGroupRequired(className)) {
-        groupContainer.style.display = 'block';
         groupSelect.required = true;
-        groupContainer.classList.add('group-field-visible');
-        groupContainer.classList.remove('group-field-hidden');
+        if (requiredMsg) {
+            requiredMsg.textContent = '⚠️ এই ক্লাসের জন্য গ্রুপ নির্বাচন আবশ্যক';
+            requiredMsg.style.color = '#c52828';
+        }
     } else {
-        groupContainer.style.display = 'none';
         groupSelect.required = false;
         groupSelect.value = '';
-        groupContainer.classList.add('group-field-hidden');
-        groupContainer.classList.remove('group-field-visible');
-    }
-}
-
-// ============================================================
-// TOGGLE ROUTINE GROUP FIELD
-// ============================================================
-function toggleRoutineGroupField(className) {
-    const groupSelect = document.getElementById('routineGroupSelect');
-    if (!groupSelect) return;
-    
-    if (isGroupRequired(className)) {
-        groupSelect.style.display = 'block';
-        groupSelect.required = true;
-    } else {
-        groupSelect.style.display = 'none';
-        groupSelect.required = false;
-        groupSelect.value = '';
-    }
-}
-
-// ============================================================
-// TOGGLE ATTENDANCE GROUP FIELD
-// ============================================================
-function toggleAttendanceGroupField(className) {
-    const groupSelect = document.getElementById('attendanceGroupSelect');
-    if (!groupSelect) return;
-    
-    if (isGroupRequired(className)) {
-        groupSelect.style.display = 'block';
-    } else {
-        groupSelect.style.display = 'none';
-        groupSelect.value = 'all';
+        if (requiredMsg) {
+            requiredMsg.textContent = 'গ্রুপ নির্বাচন ঐচ্ছিক';
+            requiredMsg.style.color = '#888';
+        }
     }
 }
 
@@ -360,9 +348,6 @@ function populateAttendanceClassSelect() {
     if (selectedValue && allClasses.includes(selectedValue)) {
         classSelect.value = selectedValue;
     }
-    
-    // টগল গ্রুপ ফিল্ড
-    toggleAttendanceGroupField(classSelect.value);
 }
 
 function populateRoutineClassSelect() {
@@ -382,7 +367,6 @@ function populateRoutineClassSelect() {
     }
     
     selectedRoutineClass = classSelect.value;
-    toggleRoutineGroupField(selectedRoutineClass);
 }
 
 // ============================================================
@@ -506,11 +490,10 @@ document.addEventListener('click', (e) => {
 });
 
 // ============================================================
-// ROUTINE CLASS & DAY SELECT CHANGE
+// ROUTINE SELECT CHANGE
 // ============================================================
 document.getElementById('routineClassSelect')?.addEventListener('change', function() {
     selectedRoutineClass = this.value;
-    toggleRoutineGroupField(selectedRoutineClass);
     renderRoutineEditor();
 });
 
@@ -519,8 +502,8 @@ document.getElementById('routineDaySelect')?.addEventListener('change', function
     renderRoutineEditor();
 });
 
-document.getElementById('attendanceClassSelect')?.addEventListener('change', function() {
-    toggleAttendanceGroupField(this.value);
+document.getElementById('routineGroupSelect')?.addEventListener('change', function() {
+    renderRoutineEditor();
 });
 
 // ============================================================
@@ -616,8 +599,8 @@ function renderClassStudents(className) {
         const s = students[key];
         let groupBadge = '-';
         if (s.group) {
-            const groupClass = s.group.toLowerCase().replace(' ', '');
-            groupBadge = `<span class="student-group-tag ${groupClass}">${s.group}</span>`;
+            const icon = GROUP_ICONS[s.group] || '';
+            groupBadge = `<span class="student-group-tag ${s.group.toLowerCase()}">${icon} ${s.group}</span>`;
         }
         html += `<tr>
             <td><img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"></td>
@@ -760,7 +743,7 @@ document.getElementById('teacherImageInput').addEventListener('change', function
 });
 
 // ============================================================
-// ROUTINE FUNCTIONS - SIMPLIFIED
+// ROUTINE FUNCTIONS
 // ============================================================
 function renderTodayTomorrowRoutine() {
     const container = document.getElementById('todayTomorrowRoutine');
@@ -777,11 +760,23 @@ function renderTodayTomorrowRoutine() {
     html += `<div class="today-routine-card"><h3>📅 আজকের রুটিন (${todayName})</h3>`;
     let hasToday = false;
     if (allRoutines[todayName]) {
-        for (let cls in allRoutines[todayName]) {
-            if (allRoutines[todayName][cls]) {
-                // গ্রুপ সহ দেখানোর জন্য
-                const displayName = cls;
-                html += `<p><strong>${displayName}:</strong> ${allRoutines[todayName][cls]}</p>`;
+        // সাজানো ক্রমে দেখান
+        const sortedKeys = Object.keys(allRoutines[todayName]).sort();
+        for (let key of sortedKeys) {
+            if (allRoutines[todayName][key]) {
+                // গ্রুপ সহ দেখান
+                let displayName = key;
+                let groupName = '';
+                for (let g of GROUP_LIST) {
+                    if (key.endsWith('_' + g)) {
+                        displayName = key.replace('_' + g, '');
+                        groupName = g;
+                        break;
+                    }
+                }
+                const icon = GROUP_ICONS[groupName] || '';
+                const groupDisplay = groupName ? ` <span class="student-group-tag ${groupName.toLowerCase()}">${icon} ${groupName}</span>` : '';
+                html += `<p><strong>${displayName}</strong>${groupDisplay}: ${allRoutines[todayName][key]}</p>`;
                 hasToday = true;
             }
         }
@@ -795,10 +790,21 @@ function renderTodayTomorrowRoutine() {
     html += `<div class="tomorrow-routine-card"><h3>📅 আগামীকালের রুটিন (${tomorrowName})</h3>`;
     let hasTomorrow = false;
     if (allRoutines[tomorrowName]) {
-        for (let cls in allRoutines[tomorrowName]) {
-            if (allRoutines[tomorrowName][cls]) {
-                const displayName = cls;
-                html += `<p><strong>${displayName}:</strong> ${allRoutines[tomorrowName][cls]}</p>`;
+        const sortedKeys = Object.keys(allRoutines[tomorrowName]).sort();
+        for (let key of sortedKeys) {
+            if (allRoutines[tomorrowName][key]) {
+                let displayName = key;
+                let groupName = '';
+                for (let g of GROUP_LIST) {
+                    if (key.endsWith('_' + g)) {
+                        displayName = key.replace('_' + g, '');
+                        groupName = g;
+                        break;
+                    }
+                }
+                const icon = GROUP_ICONS[groupName] || '';
+                const groupDisplay = groupName ? ` <span class="student-group-tag ${groupName.toLowerCase()}">${icon} ${groupName}</span>` : '';
+                html += `<p><strong>${displayName}</strong>${groupDisplay}: ${allRoutines[tomorrowName][key]}</p>`;
                 hasTomorrow = true;
             }
         }
@@ -827,60 +833,73 @@ function renderRoutineEditor() {
     const groupName = groupSelect ? groupSelect.value : '';
     
     let html = `<div style="background:#f9f5ed; padding:20px; border-radius:20px;">
-        <h4 style="margin-bottom:15px;">📝 ${className} - ${dayName} ${groupName ? '(' + groupName + ')' : ''}</h4>`;
+        <h4 style="margin-bottom:15px;">📝 ${className} - ${dayName} ${groupName ? '(' + getGroupDisplayName(groupName) + ')' : ''}</h4>`;
     
-    // যদি গ্রুপ প্রয়োজন হয় এবং গ্রুপ সিলেক্ট করা হয়
-    let routineKey = className;
-    if (isGroupRequired(className) && groupName) {
-        routineKey = className + '_' + groupName;
+    // গ্রুপ অনুযায়ী রুটিন দেখান
+    if (isGroupRequired(className)) {
+        // গ্রুপ সহ ক্লাস
+        const groupsToShow = groupName ? [groupName] : GROUP_LIST;
+        
+        groupsToShow.forEach(grp => {
+            const key = className + '_' + grp;
+            const currentValue = allRoutines[dayName] && allRoutines[dayName][key] ? allRoutines[dayName][key] : '';
+            const icon = GROUP_ICONS[grp] || '';
+            
+            html += `
+                <div style="display:flex; gap:10px; align-items:center; margin-top:10px; padding:8px; background:${groupName === grp ? '#fff' : 'transparent'}; border-radius:10px;">
+                    <span style="font-weight:bold; min-width:100px;">${icon} ${grp}:</span>
+                    <input type="text" class="routine-group-input" data-class="${className}" data-group="${grp}" data-day="${dayName}" value="${currentValue}" placeholder="বিষয় লিখুন..." style="flex:1; margin-bottom:0;">
+                </div>
+            `;
+        });
+    } else {
+        // গ্রুপ ছাড়া ক্লাস
+        const currentValue = allRoutines[dayName] && allRoutines[dayName][className] ? allRoutines[dayName][className] : '';
+        html += `
+            <div style="display:flex; gap:10px; align-items:center; margin-top:10px;">
+                <span style="font-weight:bold; min-width:60px;">বিষয়:</span>
+                <input type="text" id="routineSingleInput" value="${currentValue}" placeholder="বিষয় লিখুন..." style="flex:1; margin-bottom:0;">
+            </div>
+        `;
     }
     
-    const currentValue = allRoutines[dayName] && allRoutines[dayName][routineKey] ? allRoutines[dayName][routineKey] : '';
-    
     html += `
-        <div style="display:flex; gap:10px; align-items:center;">
-            <span style="font-weight:bold; min-width:60px;">বিষয়:</span>
-            <input type="text" id="routineSingleInput" value="${currentValue}" placeholder="বিষয় লিখুন (যেমন: বাংলা, ইংরেজি)" style="flex:1; margin-bottom:0;">
-        </div>
-        <p style="font-size:12px; color:#888; margin-top:8px;">
+        <p style="font-size:12px; color:#888; margin-top:12px;">
             <i class="fas fa-info-circle"></i> 
-            ${isGroupRequired(className) ? '⚠️ এই ক্লাসের জন্য গ্রুপ নির্বাচন আবশ্যক' : 'গ্রুপ প্রয়োজন নেই'}
+            ${isGroupRequired(className) ? '⚠️ প্রতিটি গ্রুপের জন্য আলাদা রুটিন দিন' : 'গ্রুপ প্রয়োজন নেই'}
         </p>
     `;
-    
     html += '</div>';
     
-    // সব রুটিন দেখানোর জন্য টেবিল
+    // সব রুটিন দেখান
     html += `<div style="margin-top:20px;">
-        <h4>📋 সব রুটিন</h4>
+        <h4>📋 সব রুটিন (${dayName})</h4>
         <div class="table-responsive">
             <table class="routine-table">
                 <thead>
                     <tr>
                         <th>ক্লাস</th>
                         <th>গ্রুপ</th>
-                        <th>${dayName}</th>
+                        <th>বিষয়</th>
                     </tr>
                 </thead>
                 <tbody>`;
     
     // সব ক্লাসের জন্য রুটিন দেখান
     allClasses.forEach(cls => {
-        const isGroupReq = isGroupRequired(cls);
-        if (isGroupReq) {
-            // গ্রুপ সহ ক্লাস
-            ['Science', 'Commerce', 'Arts', 'SSC Special'].forEach(grp => {
+        if (isGroupRequired(cls)) {
+            GROUP_LIST.forEach(grp => {
                 const key = cls + '_' + grp;
                 const val = allRoutines[dayName] && allRoutines[dayName][key] ? allRoutines[dayName][key] : '-';
+                const icon = GROUP_ICONS[grp] || '';
                 const isActive = (cls === className && grp === groupName);
                 html += `<tr style="${isActive ? 'background:#fef3c7;' : ''}">
                     <td>${cls}</td>
-                    <td><span class="student-group-tag">${grp}</span></td>
+                    <td><span class="student-group-tag ${grp.toLowerCase()}">${icon} ${grp}</span></td>
                     <td>${val}</td>
                 </tr>`;
             });
         } else {
-            // গ্রুপ ছাড়া ক্লাস
             const val = allRoutines[dayName] && allRoutines[dayName][cls] ? allRoutines[dayName][cls] : '-';
             const isActive = (cls === className && !groupName);
             html += `<tr style="${isActive ? 'background:#fef3c7;' : ''}">
@@ -894,38 +913,43 @@ function renderRoutineEditor() {
     html += `</tbody></table></div></div>`;
     container.innerHTML = html;
     
-    // Single input auto save
+    // Auto save for group inputs
+    document.querySelectorAll('.routine-group-input').forEach(input => {
+        input.addEventListener('input', function() {
+            const className = this.dataset.class;
+            const groupName = this.dataset.group;
+            const dayName = this.dataset.day;
+            const value = this.value.trim();
+            
+            const key = className + '_' + groupName;
+            const updatedRoutines = { ...allRoutines };
+            if (!updatedRoutines[dayName]) updatedRoutines[dayName] = {};
+            updatedRoutines[dayName][key] = value;
+            
+            db.ref('routines').set(updatedRoutines);
+        });
+    });
+    
+    // Auto save for single input
     const singleInput = document.getElementById('routineSingleInput');
     if (singleInput) {
         singleInput.addEventListener('input', function() {
-            saveSingleRoutine();
+            const classSelect = document.getElementById('routineClassSelect');
+            const daySelect = document.getElementById('routineDaySelect');
+            
+            if (!classSelect || !daySelect) return;
+            
+            const className = classSelect.value;
+            const dayName = daySelect.value;
+            const value = this.value.trim();
+            
+            const updatedRoutines = { ...allRoutines };
+            if (!updatedRoutines[dayName]) updatedRoutines[dayName] = {};
+            updatedRoutines[dayName][className] = value;
+            
+            db.ref('routines').set(updatedRoutines);
         });
     }
-}
-
-function saveSingleRoutine() {
-    const classSelect = document.getElementById('routineClassSelect');
-    const daySelect = document.getElementById('routineDaySelect');
-    const groupSelect = document.getElementById('routineGroupSelect');
-    const singleInput = document.getElementById('routineSingleInput');
-    
-    if (!classSelect || !daySelect || !singleInput) return;
-    
-    const className = classSelect.value;
-    const dayName = daySelect.value;
-    const groupName = groupSelect ? groupSelect.value : '';
-    const value = singleInput.value.trim();
-    
-    let routineKey = className;
-    if (isGroupRequired(className) && groupName) {
-        routineKey = className + '_' + groupName;
-    }
-    
-    const updatedRoutines = { ...allRoutines };
-    if (!updatedRoutines[dayName]) updatedRoutines[dayName] = {};
-    updatedRoutines[dayName][routineKey] = value;
-    
-    db.ref('routines').set(updatedRoutines);
 }
 
 function renderRoutineModal() {
@@ -936,18 +960,18 @@ function renderRoutineModal() {
     const today = new Date();
     const todayName = days[today.getDay()];
     
-    let html = `<table class="routine-table"><thead><tr><th>ক্লাস</th>`;
+    let html = `<table class="routine-table"><thead><tr><th>ক্লাস</th><th>গ্রুপ</th>`;
     days.forEach(day => {
         html += `<th>${day}</th>`;
     });
     html += '</tr></thead><tbody>';
     
     allClasses.forEach(cls => {
-        const isGroupReq = isGroupRequired(cls);
-        if (isGroupReq) {
-            ['Science', 'Commerce', 'Arts', 'SSC Special'].forEach(grp => {
+        if (isGroupRequired(cls)) {
+            GROUP_LIST.forEach(grp => {
                 const key = cls + '_' + grp;
-                html += `<tr><td><strong>${cls}</strong> <span class="student-group-tag">${grp}</span></td>`;
+                const icon = GROUP_ICONS[grp] || '';
+                html += `<tr><td><strong>${cls}</strong></td><td><span class="student-group-tag ${grp.toLowerCase()}">${icon} ${grp}</span></td>`;
                 days.forEach(day => {
                     const val = allRoutines[day] && allRoutines[day][key] ? allRoutines[day][key] : '-';
                     const isToday = day === todayName;
@@ -956,7 +980,7 @@ function renderRoutineModal() {
                 html += '</tr>';
             });
         } else {
-            html += `<tr><td><strong>${cls}</strong></td>`;
+            html += `<tr><td><strong>${cls}</strong></td><td>-</td>`;
             days.forEach(day => {
                 const val = allRoutines[day] && allRoutines[day][cls] ? allRoutines[day][cls] : '-';
                 const isToday = day === todayName;
@@ -971,8 +995,7 @@ function renderRoutineModal() {
 }
 
 document.getElementById('saveAllRoutinesBtn').addEventListener('click', () => {
-    saveSingleRoutine();
-    alert('✅ রুটিন সংরক্ষণ করা হয়েছে');
+    alert('✅ সব রুটিন ইতিমধ্যে অটো-সেভ হয়েছে');
 });
 
 // ============================================================
@@ -1032,7 +1055,6 @@ function loadStudentAttendance(className, groupName, date) {
     for (let key in allStudents) {
         const student = allStudents[key];
         if (student.class === className) {
-            // গ্রুপ ফিল্টার
             if (groupName !== 'all' && student.group !== groupName) {
                 continue;
             }
@@ -1051,9 +1073,10 @@ function loadStudentAttendance(className, groupName, date) {
         const student = students[key];
         const attKey = `${className}_${date}`;
         const isPresent = attendanceData[attKey] && attendanceData[attKey][key] === true;
+        const icon = GROUP_ICONS[student.group] || '';
         html += `<div class="student-att-row">
             <img src="${student.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(student.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
-            <span style="flex:1;">${student.name} ${student.group ? '<span class="student-group-tag">' + student.group + '</span>' : ''}</span>
+            <span style="flex:1;">${student.name} ${student.group ? '<span class="student-group-tag ' + student.group.toLowerCase() + '">' + icon + ' ' + student.group + '</span>' : ''}</span>
             <span style="font-size:12px; color:#888;">${student.id}</span>
             <label class="toggle-switch">
                 <input type="checkbox" class="attendance-checkbox" data-student="${key}" ${isPresent ? 'checked' : ''}>
@@ -1185,7 +1208,7 @@ function renderClassMonthlyCalendar() {
     
     monthSelector.innerHTML = `
         <button class="btn btn-sm btn-blue" onclick="changeClassMonth(-1)">◀</button>
-        <span style="font-weight:bold;">${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })} - ${className} ${groupName !== 'all' ? '(' + groupName + ')' : ''}</span>
+        <span style="font-weight:bold;">${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })} - ${className} ${groupName !== 'all' ? '(' + getGroupDisplayName(groupName) + ')' : ''}</span>
         <button class="btn btn-sm btn-blue" onclick="changeClassMonth(1)">▶</button>
     `;
     
@@ -1272,7 +1295,8 @@ function renderStudentInfo(studentData) {
     card.style.display = 'block';
     document.getElementById('studentNameDisplay').textContent = studentData.name;
     document.getElementById('studentClassDisplay').textContent = studentData.class;
-    document.getElementById('studentGroupDisplay').textContent = studentData.group || '-';
+    const icon = GROUP_ICONS[studentData.group] || '';
+    document.getElementById('studentGroupDisplay').textContent = studentData.group ? icon + ' ' + studentData.group : '-';
     document.getElementById('studentIdDisplay').textContent = studentData.id;
 }
 
@@ -1329,12 +1353,13 @@ function renderTeacherClassStudents(className) {
     let html = `<h3>${className} ক্লাসের ছাত্র/ছাত্রী</h3><div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:10px;">`;
     for (let key in students) {
         const s = students[key];
-        const groupClass = s.group ? s.group.toLowerCase().replace(' ', '') : '';
+        const icon = GROUP_ICONS[s.group] || '';
+        const groupClass = s.group ? s.group.toLowerCase() : '';
         html += `<div style="background:#fef9ef; padding:12px; border-radius:16px; text-align:center;">
             <img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #f5b042;">
             <p style="margin-top:5px;"><strong>${s.name}</strong></p>
             <p style="font-size:12px; color:#888;">${s.id}</p>
-            ${s.group ? `<p style="font-size:11px; color:#1e267b; margin-top:3px;">📚 <span class="student-group-tag ${groupClass}">${s.group}</span></p>` : ''}
+            ${s.group ? `<p style="font-size:11px; margin-top:3px;"><span class="student-group-tag ${groupClass}">${icon} ${s.group}</span></p>` : ''}
         </div>`;
     }
     html += '</div>';
@@ -1353,7 +1378,8 @@ function renderStudentFeedbackArea() {
     }
     const student = allStudents[currentUser];
     const className = student.class;
-    let html = `<p style="margin-bottom:15px;"><strong>আপনার ক্লাস:</strong> ${className} ${student.group ? '(' + student.group + ')' : ''}</p>
+    const icon = GROUP_ICONS[student.group] || '';
+    let html = `<p style="margin-bottom:15px;"><strong>আপনার ক্লাস:</strong> ${className} ${student.group ? '(' + icon + ' ' + student.group + ')' : ''}</p>
         <div style="background:#f9f5ed; padding:15px; border-radius:20px;">
             <textarea id="feedbackText" rows="3" placeholder="আপনার মতামত লিখুন..." style="width:100%; border-radius:15px;"></textarea>
             <button class="btn btn-orange" onclick="submitFeedback()" style="margin-top:10px;"><i class="fas fa-paper-plane"></i> পাঠান</button>
@@ -1375,9 +1401,10 @@ function renderMyFeedback() {
         const fb = feedbackData[key];
         if (fb.studentId === student.id) {
             hasFeedback = true;
+            const icon = GROUP_ICONS[fb.group] || '';
             html += `<div class="feedback-item">
                 <p>${fb.text}</p>
-                <p style="font-size:11px; color:#888;">${fb.date || ''}</p>
+                <p style="font-size:11px; color:#888;">${fb.date || ''} ${fb.group ? '| ' + icon + ' ' + fb.group : ''}</p>
                 <button class="delete-btn" onclick="deleteFeedback('${key}')">মুছুন</button>
             </div>`;
         }
@@ -1443,8 +1470,9 @@ function renderFeedbackList() {
         const fb = feedbackData[key];
         if (filter !== 'all' && fb.className !== filter) continue;
         count++;
+        const icon = GROUP_ICONS[fb.group] || '';
         html += `<div class="feedback-item">
-            <p><strong>${fb.studentName}</strong> (${fb.className}${fb.group ? ' - ' + fb.group : ''})</p>
+            <p><strong>${fb.studentName}</strong> (${fb.className}${fb.group ? ' - ' + icon + ' ' + fb.group : ''})</p>
             <p>${fb.text}</p>
             <p style="font-size:11px; color:#888;">${fb.date || ''}</p>
             <button class="delete-btn" onclick="deleteFeedback('${key}')">মুছুন</button>
@@ -1674,5 +1702,5 @@ document.addEventListener('DOMContentLoaded', function() {
 console.log('📚 মাস্টারমাইন্ড অ্যাকাডেমি সিস্টেম লোড হয়েছে');
 console.log('✅ Firebase Connected');
 console.log('✅ অটো-সেভ সক্রিয় আছে');
-console.log('✅ রুটিন ম্যানেজার সিম্পলিফাইড');
-console.log('✅ গ্রুপ ফিল্টার যোগ করা হয়েছে');
+console.log('✅ Science, Commerce, Arts - সব জায়গায় আলাদা');
+console.log('✅ গ্রুপ আইকন যোগ করা হয়েছে');
