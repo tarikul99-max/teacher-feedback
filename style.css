@@ -417,6 +417,7 @@ input, select, textarea {
     font-size: 14px;
     margin-bottom: 8px;
 }
+
 /* ==info data ==========*/
 .info-data {
     background: linear-gradient(135deg, #ffffff, #fef9ef);
@@ -425,6 +426,7 @@ input, select, textarea {
     text-align: left;
     border: 1px solid rgba(245, 176, 66, 0.5);
 }
+
 /* ==================== TEACHER GRID ==================== */
 .teacher-grid {
     display: grid;
@@ -868,4 +870,4 @@ input:checked + .slider:before {
         min-width: 180px;
         padding: 10px 15px 10px 20px;
     }
-} 
+}
