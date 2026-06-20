@@ -33,6 +33,9 @@ let studentMonthOffset = 0;
 let classMonthOffset = 0;
 let feedImages = [];
 
+// গ্রুপ প্রয়োজন এমন ক্লাস
+const GROUP_REQUIRED_CLASSES = ['Nine', 'Ten', 'SSC Special'];
+
 // ============================================================
 // SESSION MANAGEMENT (Auto Login)
 // ============================================================
@@ -97,6 +100,36 @@ function closeModalOutside(event, modalId) {
 }
 
 // ============================================================
+// CHECK IF GROUP IS REQUIRED
+// ============================================================
+function isGroupRequired(className) {
+    return GROUP_REQUIRED_CLASSES.includes(className);
+}
+
+// ============================================================
+// TOGGLE GROUP FIELD VISIBILITY
+// ============================================================
+function toggleGroupField(className) {
+    const groupContainer = document.getElementById('groupFieldContainer');
+    const groupSelect = document.getElementById('cousinGroup');
+    
+    if (!groupContainer || !groupSelect) return;
+    
+    if (isGroupRequired(className)) {
+        groupContainer.style.display = 'block';
+        groupSelect.required = true;
+        groupContainer.classList.add('group-field-visible');
+        groupContainer.classList.remove('group-field-hidden');
+    } else {
+        groupContainer.style.display = 'none';
+        groupSelect.required = false;
+        groupSelect.value = ''; // রিসেট করুন
+        groupContainer.classList.add('group-field-hidden');
+        groupContainer.classList.remove('group-field-visible');
+    }
+}
+
+// ============================================================
 // LOGIN SYSTEM with Auto Login
 // ============================================================
 function performLogin(id, password, role) {
@@ -106,7 +139,7 @@ function performLogin(id, password, role) {
     }
 
     if (role === 'admin') {
-        if (id === 'admin' && password === 'ami-') {
+        if (id === 'admin' && password === 'admin123') {
             currentUser = 'admin';
             currentRole = 'admin';
             saveSession('admin', 'admin');
@@ -239,7 +272,6 @@ function loadAllData() {
         if (currentRole === 'student' && currentUser) {
             renderStudentInfo(allStudents[currentUser]);
         }
-        // Update teacher's student view
         if (currentRole === 'teacher' && allTeachers[currentUser]) {
             const classes = allTeachers[currentUser].classes || [];
             if (classes.length > 0) {
@@ -290,6 +322,8 @@ function setupAdminUI() {
     populateClassCheckboxes();
     populateFeedbackClassFilter();
     setupAttendance();
+    // গ্রুপ ফিল্ড লুকান (ডিফল্ট)
+    toggleGroupField(null);
 }
 
 function setupTeacherUI(teacherData) {
@@ -457,6 +491,8 @@ function renderClassButtons() {
             renderClassButtons();
             renderClassStudents(cls);
             document.getElementById('selectedClassName').textContent = cls;
+            // গ্রুপ ফিল্ড টগল করুন
+            toggleGroupField(cls);
         };
         container.appendChild(btn);
     });
@@ -478,12 +514,18 @@ function renderClassStudents(className) {
     let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>গ্রুপ</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for (let key in students) {
         const s = students[key];
+        // গ্রুপের জন্য স্টাইল
+        let groupBadge = '-';
+        if (s.group) {
+            const groupClass = s.group.toLowerCase().replace(' ', '');
+            groupBadge = `<span class="student-group-tag ${groupClass}">${s.group}</span>`;
+        }
         html += `<tr>
             <td><img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"></td>
             <td>${s.name}</td>
             <td>${s.id}</td>
             <td>${s.class}</td>
-            <td>${s.group ? `<span class="student-group-tag">${s.group}</span>` : '-'}</td>
+            <td>${groupBadge}</td>
             <td>${s.guardianPhone || ''}</td>
             <td><button class="btn btn-red btn-sm" onclick="deleteStudent('${key}')">মুছুন</button></td>
         </tr>`;
@@ -499,7 +541,7 @@ function deleteStudent(key) {
 }
 
 // ============================================================
-// ADD STUDENT with Group
+// ADD STUDENT with Group Validation
 // ============================================================
 document.getElementById('addCousinBtn').addEventListener('click', () => {
     const name = document.getElementById('cousinName').value.trim();
@@ -517,11 +559,17 @@ document.getElementById('addCousinBtn').addEventListener('click', () => {
         return;
     }
     
-    // Check if class is Nine, Ten, or SSC Special - then group is required
-    const needsGroup = ['Nine', 'Ten', 'SSC Special'].includes(selectedClass);
-    if (needsGroup && !group) {
-        alert('এই ক্লাসের জন্য গ্রুপ নির্বাচন করা আবশ্যক');
-        return;
+    // গ্রুপ ভ্যালিডেশন - শুধুমাত্র Nine, Ten, SSC Special এর জন্য
+    if (isGroupRequired(selectedClass)) {
+        if (!group) {
+            alert('⚠️ এই ক্লাসের জন্য গ্রুপ নির্বাচন আবশ্যক!\n\nগ্রুপ: বিজ্ঞান, বাণিজ্য, মানবিক, বা এসএসসি স্পেশাল');
+            document.getElementById('cousinGroup').focus();
+            document.getElementById('cousinGroup').style.borderColor = '#e74c3c';
+            setTimeout(() => {
+                document.getElementById('cousinGroup').style.borderColor = '';
+            }, 3000);
+            return;
+        }
     }
     
     const newStudent = {
@@ -541,7 +589,7 @@ document.getElementById('addCousinBtn').addEventListener('click', () => {
         document.getElementById('cousinPass').value = '';
         document.getElementById('cousinGroup').value = '';
         document.getElementById('cousinGuardianPhone').value = '';
-        alert('ছাত্র/ছাত্রী যোগ করা হয়েছে');
+        alert('✅ ছাত্র/ছাত্রী যোগ করা হয়েছে');
     });
 });
 
@@ -553,22 +601,6 @@ document.getElementById('studentImageInput').addEventListener('change', function
             document.getElementById('studentImagePreview').src = event.target.result;
         };
         reader.readAsDataURL(file);
-    }
-});
-
-// Show/hide group field based on class selection
-document.addEventListener('change', function(e) {
-    if (e.target.id === 'cousinClass' || e.target.closest('#classButtons')) {
-        const needsGroup = ['Nine', 'Ten', 'SSC Special'].includes(selectedClass);
-        const groupSelect = document.getElementById('cousinGroup');
-        if (groupSelect) {
-            groupSelect.style.display = needsGroup ? 'block' : 'none';
-            if (needsGroup) {
-                groupSelect.required = true;
-            } else {
-                groupSelect.required = false;
-            }
-        }
     }
 });
 
@@ -794,7 +826,7 @@ function loadStudentAttendance(className, date) {
         const isPresent = attendanceData[attKey] && attendanceData[attKey][key] === true;
         html += `<div class="student-att-row">
             <img src="${student.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(student.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
-            <span style="flex:1;">${student.name} ${student.group ? '(' + student.group + ')' : ''}</span>
+            <span style="flex:1;">${student.name} ${student.group ? '<span class="student-group-tag">' + student.group + '</span>' : ''}</span>
             <span style="font-size:12px; color:#888;">${student.id}</span>
             <label class="toggle-switch">
                 <input type="checkbox" class="attendance-checkbox" data-student="${key}" ${isPresent ? 'checked' : ''}>
@@ -1029,11 +1061,12 @@ function renderTeacherClassStudents(className) {
     let html = `<h3>${className} ক্লাসের ছাত্র/ছাত্রী</h3><div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:10px;">`;
     for (let key in students) {
         const s = students[key];
+        const groupClass = s.group ? s.group.toLowerCase().replace(' ', '') : '';
         html += `<div style="background:#fef9ef; padding:12px; border-radius:16px; text-align:center;">
             <img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #f5b042;">
             <p style="margin-top:5px;"><strong>${s.name}</strong></p>
             <p style="font-size:12px; color:#888;">${s.id}</p>
-            ${s.group ? `<p style="font-size:11px; color:#1e267b;">📚 ${s.group}</p>` : ''}
+            ${s.group ? `<p style="font-size:11px; color:#1e267b; margin-top:3px;">📚 <span class="student-group-tag ${groupClass}">${s.group}</span></p>` : ''}
         </div>`;
     }
     html += '</div>';
