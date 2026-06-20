@@ -12,6 +12,7 @@ html, body {
     width: 100%;
     min-height: 100vh;
     background: #1a0802;
+    overflow-y: auto !important;
     overflow-x: hidden;
 }
 
@@ -146,6 +147,7 @@ body {
     position: relative;
     z-index: 20;
     min-height: 100vh;
+    background: transparent;
 }
 
 @keyframes fadeSlideUp {
@@ -256,9 +258,11 @@ body {
 
 /* ==================== CONTENT & PANELS ==================== */
 .content {
+    position: relative;
+    z-index: 21;
     max-width: 1200px;
     margin: 16px auto;
-    padding: 0 12px;
+    padding: 0 12px 80px;
 }
 
 .panel {
@@ -267,7 +271,7 @@ body {
     backdrop-filter: blur(10px);
     border-radius: 28px;
     padding: 18px 16px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -300,7 +304,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 28px;
     padding: 18px 16px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     color: white;
     position: relative;
     overflow: hidden;
@@ -1147,7 +1151,7 @@ input:checked + .slider:before {
     text-align: center;
     max-height: 80vh;
     overflow-y: auto;
-    color: #191970;
+    color: white;
     border: 1px solid rgba(255, 215, 0, 0.1);
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
 }
