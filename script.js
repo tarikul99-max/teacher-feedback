@@ -1,14 +1,40 @@
-/* ==================== SOCIAL CARDS ==================== */
-.social-card {
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    padding: 16px;
-    border-radius: 24px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+/* ==================== GLOBAL RESET & BASE ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
 }
 
-.social-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+body {
+    min-height: 100vh;
+    background: radial-gradient(circle at 20% 30%, #0a1f4a, #07112e);
+    position: relative;
+}
+
+/* ==================== BACKGROUND SLIDESHOW ==================== */
+.bg-slideshow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.bg-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.bg-slide.active {
+    opacity: 1;
 }
 
 /* ==================== LOGIN SCREEN ==================== */
@@ -22,180 +48,126 @@
     justify-content: center;
     align-items: center;
     z-index: 100;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(10, 30, 79, 0.17);
     backdrop-filter: blur(3px);
     padding: 16px;
 }
 
 .login-card {
-    background: linear-gradient(145deg, #1a237e, #0d1442);
+    background: rgba(22, 45, 116, 0.39);
     backdrop-filter: blur(2px);
     padding: 30px 24px;
     border-radius: 48px;
     width: 100%;
     max-width: 400px;
     text-align: center;
-    box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 176, 66, 0.4);
     border: 1px solid rgba(245, 176, 66, 0.5);
     z-index: 2;
 }
 
-/* ==================== TEACHER GRID ==================== */
-.teacher-card {
-    background: linear-gradient(145deg, #ffffff, #f0f4f8);
-    border-radius: 28px;
-    padding: 18px;
-    text-align: center;
-    border: 1px solid rgba(245, 176, 66, 0.5);
+.login-card h3 {
+    color: #ffefcf;
+    margin-bottom: 20px;
+    font-weight: 800;
+    font-size: 1.3rem;
 }
 
-/* ==================== STUDENT LIST ==================== */
-.student-list-item {
+.login-card input,
+.login-card select {
+    width: 100%;
+    padding: 14px 18px;
+    margin: 10px 0;
+    border: 1px solid #adc6ff;
+    border-radius: 60px;
+    background: rgba(255, 255, 255, 0.92);
+    font-size: 15px;
+}
+
+.login-card button {
+    width: 100%;
+    padding: 14px;
+    background: #f5b042;
+    color: #0a163b;
+    border: none;
+    border-radius: 60px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+/* ==================== APP CONTAINER ==================== */
+.app-container {
+    display: none;
+    animation: fadeSlideUp 0.5s ease;
+    position: relative;
+    z-index: 20;
+    background: #eef2f9;
+    min-height: 100vh;
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==================== HEADER / NAVBAR ==================== */
+.navbar {
+    background: #0c1b4b;
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.logo-area span {
+    font-weight: 800;
+    font-size: 0.95rem;
+    background: linear-gradient(135deg, #fff, #f5b042);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.user-area {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px;
-    background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
-    border-radius: 20px;
-    margin-bottom: 8px;
+    font-size: 0.85rem;
 }
 
-/* ==================== FEEDBACK ==================== */
-.feedback-item {
-    background: linear-gradient(135deg, #fafafa, #f5f0eb);
-    border-radius: 16px;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-left: 4px solid #f5b042;
-}
-
-/* ==================== TEACHER CLASS CARD ==================== */
-.teacher-class-card {
-    background: linear-gradient(135deg, #fff8f0, #ffffff);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(245, 176, 66, 0.2);
-}
-
-/* ==================== CLASS BUTTONS ==================== */
-.class-buttons-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 20px;
-    max-height: 400px;
-    overflow-y: auto;
-    padding: 15px 10px 15px 30px;
-    background: linear-gradient(135deg, #f5f0eb, #e8e0d8);
-    border-radius: 20px;
-}
-
-.class-btn {
-    display: block;
-    width: auto;
-    min-width: 200px;
-    text-align: left;
-    margin: 0;
-    background: linear-gradient(135deg, #e8edf2, #d5dce4);
-    padding: 12px 20px 12px 25px;
-    border-radius: 40px;
-    cursor: pointer;
-    transition: 0.2s;
-    font-size: 14px;
-    font-weight: 500;
+.menu-btn {
+    background: none;
     border: none;
-}
-
-.class-btn:hover {
-    background: linear-gradient(135deg, #f5b042, #e69b2e);
-    color: #0a163b;
-    transform: translateX(8px);
-}
-
-.class-btn.active {
-    background: linear-gradient(135deg, #f5b042, #e69b2e);
-    color: #0a163b;
-    box-shadow: 0 2px 8px rgba(245, 176, 66, 0.3);
-}
-
-/* ==================== ATTENDANCE ==================== */
-.attendance-card {
-    background: linear-gradient(135deg, #ffffff, #f8faff);
-    border-radius: 24px;
-    padding: 20px;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.cal-day {
-    background: linear-gradient(135deg, #f8fafc, #edf2f7);
-    border-radius: 12px;
-    padding: 10px 4px;
-    text-align: center;
-    border: 1px solid #e2e8f0;
-    min-height: 70px;
-    transition: all 0.2s;
-}
-
-.cal-day.present {
-    background: linear-gradient(135deg, #dcfce7, #86efac);
-    color: #15803d;
-    border-color: #86efac;
-}
-
-.cal-day.absent {
-    background: linear-gradient(135deg, #fee2e2, #fecaca);
-    color: #b91c1c;
-    border-color: #fecaca;
-}
-
-.cal-day.today {
-    border: 2px solid #f5b042;
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
-}
-
-/* ==================== MODALS ==================== */
-.results-card,
-.about-card,
-.routine-card {
-    background: linear-gradient(145deg, #f0e6d8, #e8d5c8);
-    padding: 30px;
-    border-radius: 30px;
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-/* ==================== INFO DATA ==================== */
-.info-data {
-    background: linear-gradient(145deg, #ffffff, #fef5e7);
-    border-radius: 28px;
-    padding: 18px;
-    text-align: left;
-    border: 1px solid rgba(245, 176, 66, 0.5);
-}
-
-/* ==================== STUDENT INFO CARD ==================== */
-.student-info-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 15px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    text-align: center;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 /* ==================== DROPDOWN ==================== */
+.dropdown {
+    position: relative;
+}
+
 .dropdown-content {
     display: none;
     position: absolute;
     right: 0;
     top: 45px;
-    background: linear-gradient(145deg, #1a237e, #0d1442);
+    background: #111a44;
     min-width: 240px;
     border-radius: 20px;
     overflow: hidden;
@@ -214,37 +186,687 @@
 }
 
 .dropdown-content a:hover {
-    background: linear-gradient(135deg, #f5b042, #e69b2e);
+    background: #f5b042;
     color: #0a1c3b;
 }
 
-/* ==================== BUTTONS ==================== */
-.btn-green { 
-    background: linear-gradient(135deg, #1e267b, #2a3599); 
-    color: white; 
+.show {
+    display: block;
 }
 
-.btn-blue { 
-    background: linear-gradient(135deg, #0f2c4e, #1a4a7a); 
-    color: white; 
+/* ==================== CONTENT & PANELS ==================== */
+.content {
+    max-width: 1200px;
+    margin: 16px auto;
+    padding: 0 12px;
 }
 
-.btn-red { 
-    background: linear-gradient(135deg, #c52828, #e63939); 
-    color: white; 
-}
-
-.btn-orange { 
-    background: linear-gradient(135deg, #f5b042, #e69b2e); 
-    color: #1e0a3b; 
-}
-
-/* ==================== PANELS ==================== */
 .panel {
     display: none;
-    background: linear-gradient(145deg, #ffffff, #f8faff);
+    background: rgba(255, 255, 255, 0.96);
     border-radius: 28px;
     padding: 18px 16px;
     margin-bottom: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.panel.active-panel,
+.panel.active {
+    display: block;
+    animation: fadeSlide 0.3s ease;
+}
+
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.panel h2,
+.panel h3 {
+    color: #0a0f3b;
+    margin-bottom: 16px;
+    border-left: 4px solid #f5b042;
+    padding-left: 14px;
+    font-size: 1.2rem;
+}
+
+/* ==================== BUTTONS ==================== */
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: 0.2s;
+    display: inline-block;
+    margin: 3px;
+}
+
+.btn:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 12px;
+}
+
+.btn-green { background: #1e267b; color: white; }
+.btn-blue { background: #0f2c4e; color: white; }
+.btn-red { background: #c52828; color: white; }
+.btn-orange { background: #f5b042; color: #1e0a3b; }
+
+/* ==================== HOME PAGE BUTTONS ==================== */
+.header-top-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-home {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
+}
+
+.btn-home i {
+    font-size: 18px;
+}
+
+.btn-aca-result {
+    background: linear-gradient(135deg, #00b894, #00cec9, #0984e3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: springMove 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-aca-result:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
+}
+
+.btn-aca-result i {
+    font-size: 16px;
+}
+
+/* ==================== ROUTINE CARDS ==================== */
+.routine-side-by-side {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 24px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.routine-subject {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+@media (max-width: 700px) {
+    .routine-side-by-side {
+        flex-direction: column !important;
+    }
+}
+
+.tomorrow-routine-card {
+    flex: 1;
+    min-width: 280px;
+    color: rgba(91, 79, 229, 0.72);
+    border-radius: 24px;
+    padding: 20px;
+    text-align: left;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #F59E0B, #F97316, #EF4444);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: flashGradient 1s ease infinite alternate;
+}
+
+.today-routine-card {
+    flex: 1;
+    min-width: 280px;
+    color: rgba(211, 139, 220, 0.82);
+    border-radius: 24px;
+    padding: 20px;
+    text-align: left;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #c1eef2, #2cc6d4, #43e6a7);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: flashGradient 1s ease infinite alternate;
+}
+
+@keyframes flashGradient {
+    0% { background-position: left center; }
+    100% { background-position: right center; }
+}
+
+@keyframes springMove {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ==================== TABLE ==================== */
+.table-responsive {
+    overflow-x: auto;
+    margin: 10px 0;
+    border-radius: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+th, td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+    font-size: 13px;
+}
+
+th {
+    background: #eef3f0;
+}
+
+/* ==================== FORM ELEMENTS ==================== */
+input, select, textarea {
+    padding: 12px 14px;
+    border: 1px solid #cfdfd9;
+    border-radius: 30px;
+    width: 100%;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+/* ==info data ==========*/
+.info-data {
+    background: linear-gradient(135deg, #ffffff, #fef9ef);
+    border-radius: 28px;
+    padding: 18px;
+    text-align: left;
+    border: 1px solid rgba(245, 176, 66, 0.5);
+}
+/* ==================== TEACHER GRID ==================== */
+.teacher-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.teacher-card {
+    background: linear-gradient(135deg, #ffffff, #fef9ef);
+    border-radius: 28px;
+    padding: 18px;
+    text-align: center;
+    border: 1px solid rgba(245, 176, 66, 0.5);
+}
+
+.teacher-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 3px solid #f5b042;
+}
+
+/* ==================== STUDENT LIST ==================== */
+.student-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: #fef9ef;
+    border-radius: 20px;
+    margin-bottom: 8px;
+}
+
+.student-list-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #f5b042;
+}
+
+.image-preview {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 8px auto;
+    display: block;
+    border: 2px solid #f5b042;
+}
+
+.file-input-label {
+    background: #eef2f5;
+    padding: 8px 12px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 12px;
+    display: inline-block;
+    margin: 5px 0;
+}
+
+/* ==================== SOCIAL CARDS ==================== */
+.social-card {
+    background: #c8cee8, #c8dde8;
+    padding: 16px;
+    border-radius: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.social-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.delete-post-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    float: right;
+}
+
+.delete-post-btn:hover {
+    background: #c0392b;
+}
+
+/* ==================== ATTENDANCE ==================== */
+.attendance-card {
+    background: white;
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.cal-day-header {
+    background: #0f2c4e;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.cal-day {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 10px 4px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    min-height: 70px;
+    transition: all 0.2s;
+}
+
+.cal-day.present {
+    background: #dcfce7;
+    color: #15803d;
+    border-color: #86efac;
+}
+
+.cal-day.absent {
+    background: #fee2e2;
+    color: #b91c1c;
+    border-color: #fecaca;
+}
+
+.cal-day.today {
+    border: 2px solid #f5b042;
+    background: #fef3c7;
+}
+
+.cal-day .date-num {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.cal-day .status-icon {
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.month-selector {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.attendance-summary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.summary-item {
+    text-align: center;
+}
+
+.summary-item .number {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* ==================== TOGGLE SWITCH ==================== */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e74c3c;
+    transition: 0.3s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2ecc71;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.student-att-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.student-att-row:hover {
+    background: #f8fafc;
+}
+
+/* ==================== TEACHER CLASS CARD ==================== */
+.teacher-class-card {
+    background: linear-gradient(135deg, #fef9ef, #ffffff);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #f5b04233;
+}
+
+/* ==================== CLASS BUTTONS ==================== */
+.class-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 15px 10px 15px 30px;
+    background: #f9f5ed;
+    border-radius: 20px;
+}
+
+.class-btn {
+    display: block;
+    width: auto;
+    min-width: 200px;
+    text-align: left;
+    margin: 0;
+    background: #eef2f5;
+    padding: 12px 20px 12px 25px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+}
+
+.class-btn:hover {
+    background: #f5b042;
+    color: #0a163b;
+    transform: translateX(8px);
+}
+
+.class-btn.active {
+    background: #f5b042;
+    color: #0a163b;
+    box-shadow: 0 2px 8px rgba(245, 176, 66, 0.3);
+}
+
+/* ==================== MODALS ==================== */
+.result-modal,
+.about-modal,
+.routine-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.results-card,
+.about-card,
+.routine-card {
+    background: linear-gradient(135deg, #f0c3cd, #d0e7e0);
+    padding: 30px;
+    border-radius: 30px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.routine-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.routine-table th,
+.routine-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.routine-table th {
+    background: #f5b042;
+    color: white;
+}
+
+/* ==================== FEEDBACK ==================== */
+.feedback-item {
+    background: #f9f5ed;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-left: 4px solid #f5b042;
+}
+
+.delete-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 11px;
+    margin-left: 10px;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+/* ==================== REACTIONS ==================== */
+.reaction-bar {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.reaction-btn {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 30px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.reaction-btn:hover {
+    background: #e0e0e0;
+    transform: scale(1.05);
+}
+
+.reaction-btn.active {
+    background: #f5b042;
+    color: white;
+}
+
+.reaction-count {
+    margin-left: 4px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* ==================== STUDENT INFO CARD ==================== */
+.student-info-card {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 15px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.student-info-card h3 {
+    color: white;
+    border-left: none;
+    padding-left: 0;
+}
+
+/* ==================== EMPTY STATE ==================== */
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 700px) {
+    .calendar-grid {
+        gap: 4px;
+    }
+    .cal-day {
+        padding: 6px 2px;
+        font-size: 11px;
+        min-height: 55px;
+    }
+    .cal-day .date-num {
+        font-size: 14px;
+    }
+
+    .class-buttons-container {
+        padding-left: 15px;
+    }
+
+    .class-btn {
+        min-width: 180px;
+        padding: 10px 15px 10px 20px;
+    }
 }
