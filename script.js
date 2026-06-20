@@ -306,6 +306,7 @@ function loadAllData() {
         renderTodayTomorrowRoutine();
         renderRoutineEditor();
         renderRoutineModal();
+        renderStudentOwnRoutine();
     });
 
     db.ref('feed').on('value', (snapshot) => {
@@ -328,6 +329,101 @@ function loadAllData() {
             renderClassMonthlyCalendar();
         }
     });
+}
+
+// ============================================================
+// STUDENT OWN ROUTINE DISPLAY
+// ============================================================
+function renderStudentOwnRoutine() {
+    const container = document.getElementById('studentRoutineDisplay');
+    const parentContainer = document.getElementById('studentOwnRoutine');
+    
+    if (!container || !parentContainer) return;
+    
+    if (currentRole !== 'student' || !currentUser || !allStudents[currentUser]) {
+        parentContainer.style.display = 'none';
+        return;
+    }
+    
+    const student = allStudents[currentUser];
+    const className = student.class;
+    const groupName = student.group || '';
+    
+    if (!className) {
+        parentContainer.style.display = 'none';
+        return;
+    }
+    
+    parentContainer.style.display = 'block';
+    
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const today = new Date();
+    const todayName = days[today.getDay()];
+    const banglaDays = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
+    const todayBangla = banglaDays[today.getDay()];
+    
+    const icon = GROUP_ICONS[groupName] || '';
+    
+    let html = `<div style="margin-bottom:15px; display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center;">
+        <div>
+            <p style="font-size:16px;"><strong>📚 ক্লাস:</strong> ${className} ${groupName ? '| <span class="student-group-tag ' + groupName.toLowerCase() + '">' + icon + ' ' + groupName + '</span>' : ''}</p>
+            <p style="font-size:14px; color:#666;"><strong>📅 আজ:</strong> ${todayBangla} (${todayName})</p>
+        </div>
+        <div>
+            <span style="background:#f5b042; color:#0a163b; padding:5px 15px; border-radius:20px; font-size:12px; font-weight:600;">
+                <i class="fas fa-calendar-check"></i> আমার রুটিন
+            </span>
+        </div>
+    </div>`;
+    
+    let routineKey = className;
+    if (groupName && isGroupRequired(className)) {
+        routineKey = className + '_' + groupName;
+    }
+    
+    html += `<div class="table-responsive">
+        <table class="routine-table" style="min-width:auto;">
+            <thead>
+                <tr>
+                    <th style="width:40%;">দিন</th>
+                    <th style="width:60%;">বিষয়</th>
+                </tr>
+            </thead>
+            <tbody>`;
+    
+    let hasRoutine = false;
+    days.forEach((day, index) => {
+        let subject = '-';
+        if (allRoutines[day] && allRoutines[day][routineKey]) {
+            subject = allRoutines[day][routineKey];
+            hasRoutine = true;
+        }
+        const isToday = day === todayName;
+        const banglaDay = banglaDays[index];
+        html += `<tr style="${isToday ? 'background:#fef3c7; font-weight:bold;' : ''}">
+            <td>${banglaDay} ${isToday ? ' 📌 (আজ)' : ''}</td>
+            <td>${subject}</td>
+        </tr>`;
+    });
+    
+    html += `</tbody></table></div>`;
+    
+    if (!hasRoutine) {
+        html += `<div style="text-align:center; padding:30px 0; color:#888;">
+            <i class="fas fa-calendar-times" style="font-size:40px; display:block; margin-bottom:10px; color:#ddd;"></i>
+            <p>আপনার জন্য এখনো কোনো রুটিন যোগ করা হয়নি।</p>
+            <p style="font-size:12px;">অফিসে যোগাযোগ করুন রুটিন পেতে।</p>
+        </div>`;
+    } else {
+        const todaySubject = allRoutines[todayName] && allRoutines[todayName][routineKey] ? allRoutines[todayName][routineKey] : null;
+        if (todaySubject && todaySubject !== '-') {
+            html += `<div style="margin-top:15px; padding:12px 18px; background:linear-gradient(135deg, #f5b042, #f7931e); border-radius:15px; color:white; text-align:center;">
+                <i class="fas fa-bell"></i> <strong>আজকের বিষয়:</strong> ${todaySubject}
+            </div>`;
+        }
+    }
+    
+    container.innerHTML = html;
 }
 
 // ============================================================
@@ -756,15 +852,12 @@ function renderTodayTomorrowRoutine() {
     
     let html = '<div class="routine-side-by-side">';
     
-    // Today's Routine
     html += `<div class="today-routine-card"><h3>📅 আজকের রুটিন (${todayName})</h3>`;
     let hasToday = false;
     if (allRoutines[todayName]) {
-        // সাজানো ক্রমে দেখান
         const sortedKeys = Object.keys(allRoutines[todayName]).sort();
         for (let key of sortedKeys) {
             if (allRoutines[todayName][key]) {
-                // গ্রুপ সহ দেখান
                 let displayName = key;
                 let groupName = '';
                 for (let g of GROUP_LIST) {
@@ -786,7 +879,6 @@ function renderTodayTomorrowRoutine() {
     }
     html += '</div>';
     
-    // Tomorrow's Routine
     html += `<div class="tomorrow-routine-card"><h3>📅 আগামীকালের রুটিন (${tomorrowName})</h3>`;
     let hasTomorrow = false;
     if (allRoutines[tomorrowName]) {
@@ -835,9 +927,7 @@ function renderRoutineEditor() {
     let html = `<div style="background:#f9f5ed; padding:20px; border-radius:20px;">
         <h4 style="margin-bottom:15px;">📝 ${className} - ${dayName} ${groupName ? '(' + getGroupDisplayName(groupName) + ')' : ''}</h4>`;
     
-    // গ্রুপ অনুযায়ী রুটিন দেখান
     if (isGroupRequired(className)) {
-        // গ্রুপ সহ ক্লাস
         const groupsToShow = groupName ? [groupName] : GROUP_LIST;
         
         groupsToShow.forEach(grp => {
@@ -853,7 +943,6 @@ function renderRoutineEditor() {
             `;
         });
     } else {
-        // গ্রুপ ছাড়া ক্লাস
         const currentValue = allRoutines[dayName] && allRoutines[dayName][className] ? allRoutines[dayName][className] : '';
         html += `
             <div style="display:flex; gap:10px; align-items:center; margin-top:10px;">
@@ -871,7 +960,6 @@ function renderRoutineEditor() {
     `;
     html += '</div>';
     
-    // সব রুটিন দেখান
     html += `<div style="margin-top:20px;">
         <h4>📋 সব রুটিন (${dayName})</h4>
         <div class="table-responsive">
@@ -885,7 +973,6 @@ function renderRoutineEditor() {
                 </thead>
                 <tbody>`;
     
-    // সব ক্লাসের জন্য রুটিন দেখান
     allClasses.forEach(cls => {
         if (isGroupRequired(cls)) {
             GROUP_LIST.forEach(grp => {
@@ -913,7 +1000,6 @@ function renderRoutineEditor() {
     html += `</tbody></table></div></div>`;
     container.innerHTML = html;
     
-    // Auto save for group inputs
     document.querySelectorAll('.routine-group-input').forEach(input => {
         input.addEventListener('input', function() {
             const className = this.dataset.class;
@@ -930,7 +1016,6 @@ function renderRoutineEditor() {
         });
     });
     
-    // Auto save for single input
     const singleInput = document.getElementById('routineSingleInput');
     if (singleInput) {
         singleInput.addEventListener('input', function() {
@@ -1088,7 +1173,6 @@ function loadStudentAttendance(className, groupName, date) {
     section.style.display = 'block';
 }
 
-// Auto save attendance on toggle
 document.addEventListener('change', function(e) {
     if (e.target.classList.contains('attendance-checkbox')) {
         saveAttendanceAutomatically();
@@ -1298,6 +1382,8 @@ function renderStudentInfo(studentData) {
     const icon = GROUP_ICONS[studentData.group] || '';
     document.getElementById('studentGroupDisplay').textContent = studentData.group ? icon + ' ' + studentData.group : '-';
     document.getElementById('studentIdDisplay').textContent = studentData.id;
+    
+    renderStudentOwnRoutine();
 }
 
 // ============================================================
@@ -1702,5 +1788,4 @@ document.addEventListener('DOMContentLoaded', function() {
 console.log('📚 মাস্টারমাইন্ড অ্যাকাডেমি সিস্টেম লোড হয়েছে');
 console.log('✅ Firebase Connected');
 console.log('✅ অটো-সেভ সক্রিয় আছে');
-console.log('✅ Science, Commerce, Arts - সব জায়গায় আলাদা');
-console.log('✅ গ্রুপ আইকন যোগ করা হয়েছে');
+console.log('✅ ছাত্রদের নিজস্ব রুটিন দেখাবে');
