@@ -1,3 +1,4 @@
+/* ==================== GLOBAL RESET & BASE ==================== */
 * {
     margin: 0;
     padding: 0;
@@ -96,6 +97,12 @@ body {
     margin-top: 15px;
 }
 
+.login-card button:hover {
+    background: #e6a03a;
+    transform: scale(1.02);
+    transition: 0.3s;
+}
+
 /* ==================== APP CONTAINER ==================== */
 .app-container {
     display: none;
@@ -146,6 +153,7 @@ body {
     align-items: center;
     gap: 12px;
     font-size: 0.85rem;
+    flex-wrap: wrap;
 }
 
 .menu-btn {
@@ -154,6 +162,11 @@ body {
     color: white;
     font-size: 24px;
     cursor: pointer;
+}
+
+.menu-btn:hover {
+    color: #f5b042;
+    transition: 0.3s;
 }
 
 /* ==================== DROPDOWN ==================== */
@@ -182,6 +195,7 @@ body {
     border-bottom: 1px solid rgba(245, 176, 66, 0.2);
     cursor: pointer;
     font-size: 14px;
+    transition: 0.2s;
 }
 
 .dropdown-content a:hover {
@@ -252,10 +266,41 @@ body {
     font-size: 12px;
 }
 
-.btn-green { background: #1e267b; color: white; }
-.btn-blue { background: #0f2c4e; color: white; }
-.btn-red { background: #c52828; color: white; }
-.btn-orange { background: #f5b042; color: #1e0a3b; }
+.btn-green { 
+    background: #1e267b; 
+    color: white; 
+}
+
+.btn-green:hover {
+    background: #151d5e;
+}
+
+.btn-blue { 
+    background: #0f2c4e; 
+    color: white; 
+}
+
+.btn-blue:hover {
+    background: #0a1f3a;
+}
+
+.btn-red { 
+    background: #c52828; 
+    color: white; 
+}
+
+.btn-red:hover {
+    background: #a02020;
+}
+
+.btn-orange { 
+    background: #f5b042; 
+    color: #1e0a3b; 
+}
+
+.btn-orange:hover {
+    background: #e6a03a;
+}
 
 /* ==================== HOME PAGE BUTTONS ==================== */
 .header-top-right {
@@ -406,6 +451,12 @@ th, td {
 
 th {
     background: #eef3f0;
+    color: #0a163b;
+    font-weight: 600;
+}
+
+tr:hover {
+    background: #f8fafc;
 }
 
 /* ==================== FORM ELEMENTS ==================== */
@@ -416,9 +467,16 @@ input, select, textarea {
     width: 100%;
     font-size: 14px;
     margin-bottom: 8px;
+    transition: 0.3s;
 }
 
-/* ==info data ==========*/
+input:focus, select:focus, textarea:focus {
+    border-color: #f5b042;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(245, 176, 66, 0.2);
+}
+
+/* ==================== INFO DATA ==================== */
 .info-data {
     background: linear-gradient(135deg, #ffffff, #fef9ef);
     border-radius: 28px;
@@ -441,6 +499,12 @@ input, select, textarea {
     padding: 18px;
     text-align: center;
     border: 1px solid rgba(245, 176, 66, 0.5);
+    transition: 0.3s;
+}
+
+.teacher-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .teacher-card img {
@@ -489,15 +553,43 @@ input, select, textarea {
     font-size: 12px;
     display: inline-block;
     margin: 5px 0;
+    transition: 0.3s;
+}
+
+.file-input-label:hover {
+    background: #f5b042;
+    color: white;
+}
+
+/* ==================== STUDENT GROUP TAG ==================== */
+.class-group-badge {
+    display: inline-block;
+    background: #f5b042;
+    color: #0a163b;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.student-group-tag {
+    background: #1e267b;
+    color: white;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    display: inline-block;
 }
 
 /* ==================== SOCIAL CARDS ==================== */
 .social-card {
-    background: #c8cee8, #c8dde8;
+    background: #ffffff;
     padding: 16px;
     border-radius: 24px;
     margin-bottom: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
 }
 
 .social-card:hover {
@@ -675,7 +767,7 @@ input:checked + .slider:before {
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid #f5b04233;
+    border: 1px solid rgba(245, 176, 66, 0.2);
 }
 
 /* ==================== CLASS BUTTONS ==================== */
@@ -690,6 +782,20 @@ input:checked + .slider:before {
     padding: 15px 10px 15px 30px;
     background: #f9f5ed;
     border-radius: 20px;
+}
+
+.class-buttons-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.class-buttons-container::-webkit-scrollbar-track {
+    background: #e0d6c4;
+    border-radius: 10px;
+}
+
+.class-buttons-container::-webkit-scrollbar-thumb {
+    background: #f5b042;
+    border-radius: 10px;
 }
 
 .class-btn {
@@ -734,6 +840,12 @@ input:checked + .slider:before {
     z-index: 2000;
     justify-content: center;
     align-items: center;
+    animation: modalFade 0.3s ease;
+}
+
+@keyframes modalFade {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .results-card,
@@ -747,6 +859,19 @@ input:checked + .slider:before {
     text-align: center;
     max-height: 80vh;
     overflow-y: auto;
+}
+
+.results-card::-webkit-scrollbar,
+.about-card::-webkit-scrollbar,
+.routine-card::-webkit-scrollbar {
+    width: 6px;
+}
+
+.results-card::-webkit-scrollbar-thumb,
+.about-card::-webkit-scrollbar-thumb,
+.routine-card::-webkit-scrollbar-thumb {
+    background: #f5b042;
+    border-radius: 10px;
 }
 
 .routine-table {
@@ -785,6 +910,7 @@ input:checked + .slider:before {
     cursor: pointer;
     font-size: 11px;
     margin-left: 10px;
+    transition: 0.2s;
 }
 
 .delete-btn:hover {
@@ -849,15 +975,44 @@ input:checked + .slider:before {
 }
 
 /* ==================== RESPONSIVE ==================== */
-@media (max-width: 700px) {
+@media (max-width: 1024px) {
+    .teacher-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .logo-area {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .user-area {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .panel {
+        padding: 14px 10px;
+    }
+    
     .calendar-grid {
         gap: 4px;
     }
+    
     .cal-day {
         padding: 6px 2px;
         font-size: 11px;
         min-height: 55px;
     }
+    
     .cal-day .date-num {
         font-size: 14px;
     }
@@ -870,4 +1025,170 @@ input:checked + .slider:before {
         min-width: 180px;
         padding: 10px 15px 10px 20px;
     }
+    
+    .dropdown-content {
+        right: -20px;
+        min-width: 200px;
+    }
+    
+    .teacher-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+    
+    .teacher-card img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 20px 16px;
+    }
+    
+    .login-card h3 {
+        font-size: 1rem;
+    }
+    
+    .btn {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+    
+    .teacher-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    
+    .teacher-card {
+        padding: 12px;
+    }
+    
+    .teacher-card img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .results-card,
+    .about-card,
+    .routine-card {
+        padding: 20px;
+        width: 95%;
+    }
+    
+    .student-att-row {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .student-att-row span {
+        font-size: 13px;
+    }
+}
+
+/* ==================== DASHBOARD HEADER ==================== */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.dashboard-header .btn {
+    margin: 3px 5px;
+}
+
+/* ==================== SCROLLBAR STYLING ==================== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #eef2f9;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #f5b042;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #e6a03a;
+}
+
+/* ==================== PRINT STYLES ==================== */
+@media print {
+    .navbar,
+    .btn,
+    .menu-btn,
+    .dropdown {
+        display: none !important;
+    }
+    
+    .panel {
+        box-shadow: none !important;
+        border: 1px solid #ddd;
+    }
+    
+    .bg-slideshow {
+        display: none !important;
+    }
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gap-10 {
+    gap: 10px;
+}
+
+.gap-20 {
+    gap: 20px;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.hidden {
+    display: none;
 }
