@@ -54,7 +54,7 @@ body {
 }
 
 .login-card {
-    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    background: linear-gradient(145deg, #006994 0%, #003d5c 30%, #0077b6 60%, #00b4d8 80%, #90e0ef 100%);
     backdrop-filter: blur(2px);
     padding: 30px 24px;
     border-radius: 48px;
@@ -64,13 +64,35 @@ body {
     box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 176, 66, 0.4);
     border: 1px solid rgba(245, 176, 66, 0.5);
     z-index: 2;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    animation: oceanWave 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes oceanWave {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -20px) scale(1.1); }
+    50% { transform: translate(-20px, 30px) scale(0.9); }
+    75% { transform: translate(20px, -10px) scale(1.05); }
 }
 
 .login-card h3 {
-    color: #ffefcf;
+    color: #ffffff;
     margin-bottom: 20px;
     font-weight: 800;
     font-size: 1.3rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .login-card input,
@@ -78,29 +100,48 @@ body {
     width: 100%;
     padding: 14px 18px;
     margin: 10px 0;
-    border: 1px solid #adc6ff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 60px;
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
     font-size: 15px;
+    color: white;
+}
+
+.login-card input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.login-card input:focus,
+.login-card select:focus {
+    border-color: #90e0ef;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(144, 224, 239, 0.2);
+}
+
+.login-card select option {
+    color: #0a163b;
 }
 
 .login-card button {
     width: 100%;
     padding: 14px;
-    background: #f5b042;
-    color: #0a163b;
+    background: linear-gradient(135deg, #00b4d8, #0077b6);
+    color: white;
     border: none;
     border-radius: 60px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     margin-top: 15px;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
 }
 
 .login-card button:hover {
-    background: #e6a03a;
+    background: linear-gradient(135deg, #90e0ef, #00b4d8);
     transform: scale(1.02);
-    transition: 0.3s;
+    box-shadow: 0 6px 25px rgba(0, 180, 216, 0.5);
 }
 
 /* ==================== APP CONTAINER ==================== */
@@ -120,7 +161,7 @@ body {
 
 /* ==================== HEADER / NAVBAR ==================== */
 .navbar {
-    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    background: linear-gradient(145deg, #006994 0%, #003d5c 30%, #0077b6 60%, #00b4d8 80%, #90e0ef 100%);
     color: white;
     padding: 12px 16px;
     display: flex;
@@ -130,6 +171,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 999;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .logo-area {
@@ -142,7 +184,7 @@ body {
 .logo-area span {
     font-weight: 800;
     font-size: 0.95rem;
-    background: linear-gradient(135deg, #fff, #f5b042);
+    background: linear-gradient(135deg, #fff, #90e0ef);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -165,7 +207,7 @@ body {
 }
 
 .menu-btn:hover {
-    color: #f5b042;
+    color: #90e0ef;
     transition: 0.3s;
 }
 
@@ -179,7 +221,7 @@ body {
     position: absolute;
     right: 0;
     top: 45px;
-    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    background: linear-gradient(145deg, #006994 0%, #0077b6 50%, #00b4d8 100%);
     min-width: 240px;
     border-radius: 20px;
     overflow: hidden;
@@ -190,17 +232,17 @@ body {
 .dropdown-content a {
     display: block;
     padding: 12px 18px;
-    color: #faf0e1;
+    color: #ffffff;
     text-decoration: none;
-    border-bottom: 1px solid rgba(245, 176, 66, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
     font-size: 14px;
     transition: 0.2s;
 }
 
 .dropdown-content a:hover {
-    background: #f5b042;
-    color: #0a1c3b;
+    background: rgba(255, 255, 255, 0.15);
+    color: #90e0ef;
 }
 
 .show {
@@ -238,21 +280,21 @@ body {
 .panel h3 {
     color: #0a0f3b;
     margin-bottom: 16px;
-    border-left: 4px solid #f5b042;
+    border-left: 4px solid #00b4d8;
     padding-left: 14px;
     font-size: 1.2rem;
 }
 
-/* ==================== DASHBOARD PANEL BACKGROUND ==================== */
+/* ==================== DASHBOARD PANEL - SEA WATER THEME ==================== */
 #dashboardPanel {
     background: 
-        linear-gradient(215deg, rgba(0, 229, 255, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 10% 20%, rgba(0, 255, 127, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 90% 80%, rgba(0, 100, 200, 0.15) 0%, transparent 60%),
-        radial-gradient(circle at 50% 50%, rgba(0, 200, 255, 0.05) 0%, transparent 70%),
-        linear-gradient(135deg, #00f2fe 0%, #4facfe 20%, #00ffd5 40%, #00a86b 65%, #0a1f4a 85%, #1a0a2e 100%);
+        linear-gradient(215deg, rgba(144, 224, 239, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 10% 20%, rgba(0, 180, 216, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(0, 119, 182, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(144, 224, 239, 0.05) 0%, transparent 70%),
+        linear-gradient(135deg, #006994 0%, #003d5c 20%, #0077b6 40%, #00b4d8 60%, #90e0ef 80%, #caf0f8 100%);
     background-size: 300% 300%;
-    animation: gradientAnimation 15s ease infinite;
+    animation: seaWaveAnimation 15s ease infinite;
     border-radius: 28px;
     padding: 18px 16px;
     margin-bottom: 20px;
@@ -269,15 +311,21 @@ body {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle at 30% 40%, rgba(0, 255, 200, 0.05) 0%, transparent 50%);
-    animation: glowPulse 8s ease-in-out infinite;
+    background: radial-gradient(circle at 30% 40%, rgba(144, 224, 239, 0.08) 0%, transparent 50%);
+    animation: seaGlowPulse 8s ease-in-out infinite;
     pointer-events: none;
     z-index: 0;
 }
 
-@keyframes glowPulse {
+@keyframes seaGlowPulse {
     0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
     50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+}
+
+@keyframes seaWaveAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 #dashboardPanel > * {
@@ -339,13 +387,13 @@ body {
 }
 
 #dashboardPanel .btn-green {
-    background: rgba(0, 255, 127, 0.2) !important;
+    background: rgba(0, 180, 216, 0.3) !important;
     color: white !important;
-    border: 1px solid rgba(0, 255, 127, 0.25) !important;
+    border: 1px solid rgba(0, 180, 216, 0.3) !important;
 }
 
 #dashboardPanel .btn-green:hover {
-    background: rgba(0, 255, 127, 0.3) !important;
+    background: rgba(0, 180, 216, 0.4) !important;
 }
 
 #dashboardPanel .btn-orange {
@@ -359,16 +407,16 @@ body {
 }
 
 #dashboardPanel .today-routine-card {
-    background: rgba(0, 255, 127, 0.12) !important;
+    background: rgba(0, 180, 216, 0.15) !important;
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(0, 255, 127, 0.15) !important;
+    border: 1px solid rgba(0, 180, 216, 0.2) !important;
     color: white !important;
 }
 
 #dashboardPanel .tomorrow-routine-card {
-    background: rgba(0, 150, 255, 0.12) !important;
+    background: rgba(144, 224, 239, 0.12) !important;
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(0, 150, 255, 0.15) !important;
+    border: 1px solid rgba(144, 224, 239, 0.15) !important;
     color: white !important;
 }
 
@@ -445,8 +493,8 @@ body {
 #dashboardPanel input:focus,
 #dashboardPanel select:focus,
 #dashboardPanel textarea:focus {
-    border-color: rgba(0, 255, 127, 0.4) !important;
-    box-shadow: 0 0 0 3px rgba(0, 255, 127, 0.1) !important;
+    border-color: rgba(0, 180, 216, 0.4) !important;
+    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1) !important;
 }
 
 #dashboardPanel .class-btn {
@@ -460,14 +508,8 @@ body {
 }
 
 #dashboardPanel .class-btn.active {
-    background: rgba(0, 255, 127, 0.25) !important;
-    border-color: rgba(0, 255, 127, 0.3) !important;
-}
-
-@keyframes gradientAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    background: rgba(0, 180, 216, 0.3) !important;
+    border-color: rgba(0, 180, 216, 0.3) !important;
 }
 
 /* ==================== BUTTONS ==================== */
@@ -494,21 +536,21 @@ body {
 }
 
 .btn-green { 
-    background: #1e267b; 
+    background: linear-gradient(135deg, #00b4d8, #0077b6); 
     color: white; 
 }
 
 .btn-green:hover {
-    background: #151d5e;
+    background: linear-gradient(135deg, #90e0ef, #00b4d8);
 }
 
 .btn-blue { 
-    background: #0f2c4e; 
+    background: linear-gradient(135deg, #006994, #003d5c); 
     color: white; 
 }
 
 .btn-blue:hover {
-    background: #0a1f3a;
+    background: linear-gradient(135deg, #0077b6, #006994);
 }
 
 .btn-red { 
@@ -621,7 +663,7 @@ body {
     padding: 20px;
     text-align: left;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #F59E0B, #F97316, #EF4444);
+    background: linear-gradient(135deg, #00b4d8, #0077b6, #006994);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -637,7 +679,7 @@ body {
     padding: 20px;
     text-align: left;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #c1eef2, #2cc6d4, #43e6a7);
+    background: linear-gradient(135deg, #90e0ef, #00b4d8, #0077b6);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -677,13 +719,13 @@ th, td {
 }
 
 th {
-    background: #eef3f0;
-    color: #0a163b;
+    background: linear-gradient(135deg, #006994, #0077b6);
+    color: white;
     font-weight: 600;
 }
 
 tr:hover {
-    background: #f8fafc;
+    background: #f0f8ff;
 }
 
 /* ==================== FORM ELEMENTS ==================== */
@@ -698,18 +740,18 @@ input, select, textarea {
 }
 
 input:focus, select:focus, textarea:focus {
-    border-color: #f5b042;
+    border-color: #00b4d8;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(245, 176, 66, 0.2);
+    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.2);
 }
 
 /* ==================== INFO DATA ==================== */
 .info-data {
-    background: linear-gradient(135deg, #ffffff, #fef9ef);
+    background: linear-gradient(135deg, #ffffff, #f0f8ff);
     border-radius: 28px;
     padding: 18px;
     text-align: left;
-    border: 1px solid rgba(245, 176, 66, 0.5);
+    border: 1px solid rgba(0, 180, 216, 0.3);
 }
 
 /* ==================== TEACHER GRID ==================== */
@@ -721,16 +763,16 @@ input:focus, select:focus, textarea:focus {
 }
 
 .teacher-card {
-    background: linear-gradient(135deg, #ffffff, #fef9ef);
+    background: linear-gradient(135deg, #ffffff, #f0f8ff);
     border-radius: 28px;
     padding: 18px;
     text-align: center;
-    border: 1px solid rgba(245, 176, 66, 0.5);
+    border: 1px solid rgba(0, 180, 216, 0.2);
     transition: 0.3s;
 }
 
 .teacher-card:hover {
-    background: conic-gradient(from 36deg at 20% 80%, #00d2ff 0%, #3a7bd5 25%, #00b894 50%, #00d2ff 100%);
+    background: linear-gradient(145deg, #006994, #0077b6, #00b4d8);
     color: white;
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
@@ -747,7 +789,7 @@ input:focus, select:focus, textarea:focus {
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 10px;
-    border: 3px solid #f5b042;
+    border: 3px solid #00b4d8;
 }
 
 /* ==================== STUDENT LIST ==================== */
@@ -756,7 +798,7 @@ input:focus, select:focus, textarea:focus {
     align-items: center;
     gap: 12px;
     padding: 10px;
-    background: #fef9ef;
+    background: #f0f8ff;
     border-radius: 20px;
     margin-bottom: 8px;
 }
@@ -766,7 +808,7 @@ input:focus, select:focus, textarea:focus {
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
-    border: 2px solid #f5b042;
+    border: 2px solid #00b4d8;
 }
 
 .image-preview {
@@ -776,7 +818,7 @@ input:focus, select:focus, textarea:focus {
     border-radius: 50%;
     margin: 8px auto;
     display: block;
-    border: 2px solid #f5b042;
+    border: 2px solid #00b4d8;
 }
 
 .file-input-label {
@@ -791,7 +833,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .file-input-label:hover {
-    background: #f5b042;
+    background: #00b4d8;
     color: white;
 }
 
@@ -817,7 +859,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .student-group-tag {
-    background: #1e267b;
+    background: #006994;
     color: white;
     padding: 2px 12px;
     border-radius: 20px;
@@ -853,7 +895,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .social-card:hover {
-    background: conic-gradient(from 36deg at 20% 80%, #00b894 0%, #00cec9 25%, #0984e3 50%, #6c5ce7 75%, #00b894 100%);
+    background: linear-gradient(145deg, #006994, #0077b6, #00b4d8, #90e0ef);
     color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: 0.3s;
@@ -907,7 +949,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .cal-day-header {
-    background: #0f2c4e;
+    background: linear-gradient(135deg, #006994, #0077b6);
     color: white;
     padding: 10px;
     text-align: center;
@@ -939,8 +981,8 @@ input:focus, select:focus, textarea:focus {
 }
 
 .cal-day.today {
-    border: 2px solid #f5b042;
-    background: #fef3c7;
+    border: 2px solid #00b4d8;
+    background: #f0f8ff;
 }
 
 .cal-day .date-num {
@@ -963,7 +1005,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .attendance-summary {
-    background: conic-gradient(from 36deg at 20% 80%, #667eea 0%, #764ba2 25%, #f093fb 50%, #667eea 100%);
+    background: linear-gradient(145deg, #006994, #0077b6, #00b4d8);
     color: white;
     padding: 15px;
     border-radius: 20px;
@@ -1037,16 +1079,16 @@ input:checked + .slider:before {
 }
 
 .student-att-row:hover {
-    background: #f8fafc;
+    background: #f0f8ff;
 }
 
 /* ==================== TEACHER CLASS CARD ==================== */
 .teacher-class-card {
-    background: linear-gradient(135deg, #fef9ef, #ffffff);
+    background: linear-gradient(135deg, #f0f8ff, #ffffff);
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid rgba(245, 176, 66, 0.2);
+    border: 1px solid rgba(0, 180, 216, 0.2);
 }
 
 /* ==================== CLASS BUTTONS ==================== */
@@ -1059,7 +1101,7 @@ input:checked + .slider:before {
     max-height: 400px;
     overflow-y: auto;
     padding: 15px 10px 15px 30px;
-    background: #f9f5ed;
+    background: #f0f8ff;
     border-radius: 20px;
 }
 
@@ -1068,12 +1110,12 @@ input:checked + .slider:before {
 }
 
 .class-buttons-container::-webkit-scrollbar-track {
-    background: #e0d6c4;
+    background: #caf0f8;
     border-radius: 10px;
 }
 
 .class-buttons-container::-webkit-scrollbar-thumb {
-    background: #f5b042;
+    background: #00b4d8;
     border-radius: 10px;
 }
 
@@ -1083,26 +1125,26 @@ input:checked + .slider:before {
     min-width: 200px;
     text-align: left;
     margin: 0;
-    background: #eef2f5;
+    background: #ffffff;
     padding: 12px 20px 12px 25px;
     border-radius: 40px;
     cursor: pointer;
     transition: 0.2s;
     font-size: 14px;
     font-weight: 500;
-    border: none;
+    border: 1px solid rgba(0, 180, 216, 0.2);
 }
 
 .class-btn:hover {
-    background: #f5b042;
-    color: #0a163b;
+    background: #00b4d8;
+    color: white;
     transform: translateX(8px);
 }
 
 .class-btn.active {
-    background: #f5b042;
-    color: #0a163b;
-    box-shadow: 0 2px 8px rgba(245, 176, 66, 0.3);
+    background: #00b4d8;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
 }
 
 /* ==================== MODALS ==================== */
@@ -1128,7 +1170,7 @@ input:checked + .slider:before {
 }
 
 .results-card {
-    background: conic-gradient(from 36deg at 20% 80%, #f7971e 0%, #ffd200 25%, #f7971e 50%, #ffd200 75%, #f7971e 100%);
+    background: linear-gradient(145deg, #006994, #0077b6, #00b4d8, #90e0ef);
     padding: 30px;
     border-radius: 30px;
     max-width: 500px;
@@ -1140,7 +1182,7 @@ input:checked + .slider:before {
 }
 
 .about-card {
-    background: conic-gradient(from 36deg at 20% 80%, #11998e 0%, #38ef7d 25%, #11998e 50%, #38ef7d 75%, #11998e 100%);
+    background: linear-gradient(145deg, #006994, #0077b6, #00b4d8, #90e0ef);
     padding: 30px;
     border-radius: 30px;
     max-width: 500px;
@@ -1152,7 +1194,7 @@ input:checked + .slider:before {
 }
 
 .routine-card {
-    background: conic-gradient(from 36deg at 20% 80%, #4a00e0 0%, #8B5CF6 25%, #4a00e0 50%, #8B5CF6 75%, #4a00e0 100%);
+    background: linear-gradient(145deg, #006994, #0077b6, #00b4d8, #90e0ef);
     padding: 30px;
     border-radius: 30px;
     max-width: 500px;
@@ -1224,13 +1266,17 @@ input:checked + .slider:before {
 
 .routine-table th,
 .routine-table td {
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 10px;
     text-align: left;
 }
 
 .routine-table th {
-    background: #f5b042;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.routine-table td {
     color: white;
 }
 
@@ -1240,7 +1286,7 @@ input:checked + .slider:before {
 }
 
 #studentOwnRoutine .routine-card {
-    background: conic-gradient(from 36deg at 20% 80%, #00d2ff 0%, #3a7bd5 25%, #00b894 50%, #00d2ff 100%) !important;
+    background: linear-gradient(145deg, #006994, #0077b6, #00b4d8) !important;
     border-radius: 20px !important;
     padding: 20px !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
@@ -1290,7 +1336,7 @@ input:checked + .slider:before {
 
 /* ==================== STUDENT INFO CARD ==================== */
 .student-info-card {
-    background: conic-gradient(from 36deg at 20% 80%, #667eea 0%, #764ba2 25%, #f093fb 50%, #667eea 100%);
+    background: linear-gradient(145deg, #006994, #0077b6, #00b4d8);
     color: white;
     padding: 15px;
     border-radius: 20px;
@@ -1310,11 +1356,11 @@ input:checked + .slider:before {
 
 /* ==================== FEEDBACK ==================== */
 .feedback-item {
-    background: #f9f5ed;
+    background: #f0f8ff;
     border-radius: 16px;
     padding: 12px;
     margin-bottom: 10px;
-    border-left: 4px solid #f5b042;
+    border-left: 4px solid #00b4d8;
 }
 
 .delete-btn {
@@ -1357,7 +1403,7 @@ input:checked + .slider:before {
 }
 
 .reaction-btn.active {
-    background: #f5b042;
+    background: #00b4d8;
     color: white;
 }
 
@@ -1506,17 +1552,17 @@ input:checked + .slider:before {
 }
 
 ::-webkit-scrollbar-track {
-    background: #eef2f9;
+    background: #caf0f8;
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #f5b042;
+    background: #00b4d8;
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #e6a03a;
+    background: #0077b6;
 }
 
 /* ==================== PRINT STYLES ==================== */
