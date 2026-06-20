@@ -150,13 +150,19 @@
                 <input type="text" id="cousinName" placeholder="নাম *">
                 <input type="text" id="cousinId" placeholder="আইডি *">
                 <input type="text" id="cousinPass" placeholder="পাসওয়ার্ড *">
-                <select id="cousinGroup" style="width:100%; margin-bottom:8px;">
-                    <option value="">গ্রুপ নির্বাচন করুন (ঐচ্ছিক)</option>
-                    <option value="Science">বিজ্ঞান</option>
-                    <option value="Commerce">বাণিজ্য</option>
-                    <option value="Arts">মানবিক</option>
-                    <option value="SSC Special">এসএসসি স্পেশাল</option>
-                </select>
+                
+                <!-- গ্রুপ ফিল্ড - শুধুমাত্র Nine, Ten, SSC Special এর জন্য দেখাবে -->
+                <div id="groupFieldContainer" style="display:none; margin-bottom:8px;">
+                    <select id="cousinGroup" style="width:100%;">
+                        <option value="">গ্রুপ নির্বাচন করুন *</option>
+                        <option value="Science">বিজ্ঞান</option>
+                        <option value="Commerce">বাণিজ্য</option>
+                        <option value="Arts">মানবিক</option>
+                        <option value="SSC Special">এসএসসি স্পেশাল</option>
+                    </select>
+                    <small style="color:#c52828; font-size:11px;">⚠️ এই ক্লাসের জন্য গ্রুপ নির্বাচন আবশ্যক</small>
+                </div>
+                
                 <input type="tel" id="cousinGuardianPhone" placeholder="অভিভাবকের মোবাইল (+8801XXXXXXXXX)">
                 <button class="btn btn-blue" id="addCousinBtn">যোগ করুন</button>
             </div>
