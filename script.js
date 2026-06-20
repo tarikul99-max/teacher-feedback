@@ -1,872 +1,1395 @@
-/* ==================== GLOBAL RESET & BASE ==================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+// ============================================================
+// FIREBASE CONFIGURATION
+// ============================================================
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ============================================================
+// GLOBAL STATE
+// ============================================================
+let currentUser = null;
+let currentRole = null;
+let selectedClass = null;
+let currentAttendanceDate = null;
+let attendanceData = {};
+let allStudents = {};
+let allTeachers = {};
+let allRoutines = {};
+let allClasses = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+let feedData = [];
+let feedbackData = [];
+let selectedClassForStudent = null;
+
+// ============================================================
+// DOM ELEMENTS
+// ============================================================
+const loginScreen = document.getElementById('loginScreen');
+const appContainer = document.getElementById('appContainer');
+const loginForm = document.getElementById('loginForm');
+const loginId = document.getElementById('loginId');
+const loginPassword = document.getElementById('loginPassword');
+const loginRole = document.getElementById('loginRole');
+const userNameDisplay = document.getElementById('userNameDisplay');
+const roleDisplay = document.getElementById('roleDisplay');
+const menuToggle = document.getElementById('menuToggle');
+const dropdownMenu = document.getElementById('dropdownMenu');
+
+// Panels
+const dashboardPanel = document.getElementById('dashboardPanel');
+const studentPanel = document.getElementById('studentPanel');
+const teacherPanel = document.getElementById('teacherPanel');
+const adminTeachersPanel = document.getElementById('adminTeachersPanel');
+const adminClassPanel = document.getElementById('adminClassPanel');
+const attendancePanel = document.getElementById('attendancePanel');
+const adminFeedbackPanel = document.getElementById('adminFeedbackPanel');
+const adminRoutinePanel = document.getElementById('adminRoutinePanel');
+const socialFeedPanel = document.getElementById('socialFeedPanel');
+
+// ============================================================
+// BACKGROUND SLIDESHOW
+// ============================================================
+let slideIndex = 0;
+const slides = document.querySelectorAll('.bg-slide');
+
+function startSlideshow() {
+    if (slides.length === 0) return;
+    slides.forEach(s => s.classList.remove('active'));
+    slideIndex = (slideIndex + 1) % slides.length;
+    slides[slideIndex].classList.add('active');
+    setTimeout(startSlideshow, 5000);
 }
 
-body {
-    min-height: 100vh;
-    background: radial-gradient(circle at 20% 30%, #0a1f4a, #07112e);
-    position: relative;
+if (slides.length > 0) {
+    slides[0].classList.add('active');
+    setTimeout(startSlideshow, 5000);
 }
 
-/* ==================== BACKGROUND SLIDESHOW ==================== */
-.bg-slideshow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-}
-
-.bg-slide {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1.5s ease-in-out;
-}
-
-.bg-slide.active {
-    opacity: 1;
-}
-
-/* ==================== LOGIN SCREEN ==================== */
-.login-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    background-color: rgba(10, 30, 79, 0.17);
-    backdrop-filter: blur(3px);
-    padding: 16px;
-}
-
-.login-card {
-    background: rgba(22, 45, 116, 0.39);
-    backdrop-filter: blur(2px);
-    padding: 30px 24px;
-    border-radius: 48px;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 176, 66, 0.4);
-    border: 1px solid rgba(245, 176, 66, 0.5);
-    z-index: 2;
-}
-
-.login-card h3 {
-    color: #ffefcf;
-    margin-bottom: 20px;
-    font-weight: 800;
-    font-size: 1.3rem;
-}
-
-.login-card input,
-.login-card select {
-    width: 100%;
-    padding: 14px 18px;
-    margin: 10px 0;
-    border: 1px solid #adc6ff;
-    border-radius: 60px;
-    background: rgba(255, 255, 255, 0.92);
-    font-size: 15px;
-}
-
-.login-card button {
-    width: 100%;
-    padding: 14px;
-    background: #f5b042;
-    color: #0a163b;
-    border: none;
-    border-radius: 60px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 15px;
-}
-
-/* ==================== APP CONTAINER ==================== */
-.app-container {
-    display: none;
-    animation: fadeSlideUp 0.5s ease;
-    position: relative;
-    z-index: 20;
-    background: #eef2f9;
-    min-height: 100vh;
-}
-
-@keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* ==================== HEADER / NAVBAR ==================== */
-.navbar {
-    background: #0c1b4b;
-    color: white;
-    padding: 12px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    position: sticky;
-    top: 0;
-    z-index: 999;
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-}
-
-.logo-area span {
-    font-weight: 800;
-    font-size: 0.95rem;
-    background: linear-gradient(135deg, #fff, #f5b042);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.85rem;
-}
-
-.menu-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-/* ==================== DROPDOWN ==================== */
-.dropdown {
-    position: relative;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 45px;
-    background: #111a44;
-    min-width: 240px;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 18px 32px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-}
-
-.dropdown-content a {
-    display: block;
-    padding: 12px 18px;
-    color: #faf0e1;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(245, 176, 66, 0.2);
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.dropdown-content a:hover {
-    background: #f5b042;
-    color: #0a1c3b;
-}
-
-.show {
-    display: block;
-}
-
-/* ==================== CONTENT & PANELS ==================== */
-.content {
-    max-width: 1200px;
-    margin: 16px auto;
-    padding: 0 12px;
-}
-
-.panel {
-    display: none;
-    background: rgba(255, 255, 255, 0.96);
-    border-radius: 28px;
-    padding: 18px 16px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.panel.active-panel,
-.panel.active {
-    display: block;
-    animation: fadeSlide 0.3s ease;
-}
-
-@keyframes fadeSlide {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.panel h2,
-.panel h3 {
-    color: #0a0f3b;
-    margin-bottom: 16px;
-    border-left: 4px solid #f5b042;
-    padding-left: 14px;
-    font-size: 1.2rem;
-}
-
-/* ==================== BUTTONS ==================== */
-.btn {
-    padding: 10px 18px;
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 13px;
-    transition: 0.2s;
-    display: inline-block;
-    margin: 3px;
-}
-
-.btn:hover {
-    transform: scale(1.02);
-    opacity: 0.9;
-}
-
-.btn-sm {
-    padding: 6px 14px;
-    font-size: 12px;
-}
-
-.btn-green { background: #1e267b; color: white; }
-.btn-blue { background: #0f2c4e; color: white; }
-.btn-red { background: #c52828; color: white; }
-.btn-orange { background: #f5b042; color: #1e0a3b; }
-
-/* ==================== HOME PAGE BUTTONS ==================== */
-.header-top-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.btn-home {
-    background: linear-gradient(135deg, #ff6b35, #f7931e);
-    color: white;
-    padding: 10px 25px;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-    transition: all 0.3s ease;
-}
-
-.btn-home:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
-}
-
-.btn-home i {
-    font-size: 18px;
-}
-
-.btn-aca-result {
-    background: linear-gradient(135deg, #00b894, #00cec9, #0984e3);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: springMove 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-    color: white;
-    padding: 10px 25px;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-    transition: all 0.3s ease;
-}
-
-.btn-aca-result:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
-}
-
-.btn-aca-result i {
-    font-size: 16px;
-}
-
-/* ==================== ROUTINE CARDS ==================== */
-.routine-side-by-side {
-    display: flex !important;
-    flex-direction: row !important;
-    gap: 24px;
-    margin: 20px 0;
-    flex-wrap: wrap;
-}
-
-.routine-subject {
-    font-size: 28px;
-    font-weight: bold;
-    margin: 15px 0;
-}
-
-@media (max-width: 700px) {
-    .routine-side-by-side {
-        flex-direction: column !important;
+// ============================================================
+// MODAL FUNCTIONS
+// ============================================================
+function closeModalOutside(event, modalId) {
+    const modal = document.getElementById(modalId);
+    if (event.target === modal) {
+        modal.style.display = 'none';
     }
 }
 
-.tomorrow-routine-card {
-    flex: 1;
-    min-width: 280px;
-    color: rgba(91, 79, 229, 0.72);
-    border-radius: 24px;
-    padding: 20px;
-    text-align: left;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #F59E0B, #F97316, #EF4444);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: flashGradient 1s ease infinite alternate;
-}
+// ============================================================
+// LOGIN SYSTEM
+// ============================================================
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const id = loginId.value.trim();
+    const password = loginPassword.value.trim();
+    const role = loginRole.value;
 
-.today-routine-card {
-    flex: 1;
-    min-width: 280px;
-    color: rgba(211, 139, 220, 0.82);
-    border-radius: 24px;
-    padding: 20px;
-    text-align: left;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #c1eef2, #2cc6d4, #43e6a7);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: flashGradient 1s ease infinite alternate;
-}
-
-@keyframes flashGradient {
-    0% { background-position: left center; }
-    100% { background-position: right center; }
-}
-
-@keyframes springMove {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
-    100% { transform: translateY(0px); }
-}
-
-/* ==================== TABLE ==================== */
-.table-responsive {
-    overflow-x: auto;
-    margin: 10px 0;
-    border-radius: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 500px;
-}
-
-th, td {
-    padding: 10px 8px;
-    border-bottom: 1px solid #e2e8f0;
-    text-align: left;
-    font-size: 13px;
-}
-
-th {
-    background: #eef3f0;
-}
-
-/* ==================== FORM ELEMENTS ==================== */
-input, select, textarea {
-    padding: 12px 14px;
-    border: 1px solid #cfdfd9;
-    border-radius: 30px;
-    width: 100%;
-    font-size: 14px;
-    margin-bottom: 8px;
-}
-/* ==info data ==========*/
-.info-data {
-    background: linear-gradient(135deg, #ffffff, #fef9ef);
-    border-radius: 28px;
-    padding: 18px;
-    text-align: left;
-    border: 1px solid rgba(245, 176, 66, 0.5);
-}
-/* ==================== TEACHER GRID ==================== */
-.teacher-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-    margin-top: 20px;
-}
-
-.teacher-card {
-    background: linear-gradient(135deg, #ffffff, #fef9ef);
-    border-radius: 28px;
-    padding: 18px;
-    text-align: center;
-    border: 1px solid rgba(245, 176, 66, 0.5);
-}
-
-.teacher-card img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 10px;
-    border: 3px solid #f5b042;
-}
-
-/* ==================== STUDENT LIST ==================== */
-.student-list-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    background: #fef9ef;
-    border-radius: 20px;
-    margin-bottom: 8px;
-}
-
-.student-list-item img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid #f5b042;
-}
-
-.image-preview {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin: 8px auto;
-    display: block;
-    border: 2px solid #f5b042;
-}
-
-.file-input-label {
-    background: #eef2f5;
-    padding: 8px 12px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 12px;
-    display: inline-block;
-    margin: 5px 0;
-}
-
-/* ==================== SOCIAL CARDS ==================== */
-.social-card {
-    background: #c8cee8, #c8dde8;
-    padding: 16px;
-    border-radius: 24px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.social-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.delete-post-btn {
-    background: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 4px 12px;
-    cursor: pointer;
-    font-size: 12px;
-    float: right;
-}
-
-.delete-post-btn:hover {
-    background: #c0392b;
-}
-
-/* ==================== ATTENDANCE ==================== */
-.attendance-card {
-    background: white;
-    border-radius: 24px;
-    padding: 20px;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    margin-top: 16px;
-}
-
-.cal-day-header {
-    background: #0f2c4e;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.cal-day {
-    background: #f8fafc;
-    border-radius: 12px;
-    padding: 10px 4px;
-    text-align: center;
-    border: 1px solid #e2e8f0;
-    min-height: 70px;
-    transition: all 0.2s;
-}
-
-.cal-day.present {
-    background: #dcfce7;
-    color: #15803d;
-    border-color: #86efac;
-}
-
-.cal-day.absent {
-    background: #fee2e2;
-    color: #b91c1c;
-    border-color: #fecaca;
-}
-
-.cal-day.today {
-    border: 2px solid #f5b042;
-    background: #fef3c7;
-}
-
-.cal-day .date-num {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.cal-day .status-icon {
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-.month-selector {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.attendance-summary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 15px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
-.summary-item {
-    text-align: center;
-}
-
-.summary-item .number {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-/* ==================== TOGGLE SWITCH ==================== */
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-}
-
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #e74c3c;
-    transition: 0.3s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.3s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: #2ecc71;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
-
-.student-att-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-}
-
-.student-att-row:hover {
-    background: #f8fafc;
-}
-
-/* ==================== TEACHER CLASS CARD ==================== */
-.teacher-class-card {
-    background: linear-gradient(135deg, #fef9ef, #ffffff);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #f5b04233;
-}
-
-/* ==================== CLASS BUTTONS ==================== */
-.class-buttons-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 20px;
-    max-height: 400px;
-    overflow-y: auto;
-    padding: 15px 10px 15px 30px;
-    background: #f9f5ed;
-    border-radius: 20px;
-}
-
-.class-btn {
-    display: block;
-    width: auto;
-    min-width: 200px;
-    text-align: left;
-    margin: 0;
-    background: #eef2f5;
-    padding: 12px 20px 12px 25px;
-    border-radius: 40px;
-    cursor: pointer;
-    transition: 0.2s;
-    font-size: 14px;
-    font-weight: 500;
-    border: none;
-}
-
-.class-btn:hover {
-    background: #f5b042;
-    color: #0a163b;
-    transform: translateX(8px);
-}
-
-.class-btn.active {
-    background: #f5b042;
-    color: #0a163b;
-    box-shadow: 0 2px 8px rgba(245, 176, 66, 0.3);
-}
-
-/* ==================== MODALS ==================== */
-.result-modal,
-.about-modal,
-.routine-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 2000;
-    justify-content: center;
-    align-items: center;
-}
-
-.results-card,
-.about-card,
-.routine-card {
-    background: linear-gradient(135deg, #f0c3cd, #d0e7e0);
-    padding: 30px;
-    border-radius: 30px;
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-.routine-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-.routine-table th,
-.routine-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-}
-
-.routine-table th {
-    background: #f5b042;
-    color: white;
-}
-
-/* ==================== FEEDBACK ==================== */
-.feedback-item {
-    background: #f9f5ed;
-    border-radius: 16px;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-left: 4px solid #f5b042;
-}
-
-.delete-btn {
-    background: #e74c3c;
-    color: white;
-    border: none;
-    padding: 4px 10px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 11px;
-    margin-left: 10px;
-}
-
-.delete-btn:hover {
-    background: #c0392b;
-}
-
-/* ==================== REACTIONS ==================== */
-.reaction-bar {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-}
-
-.reaction-btn {
-    background: #f0f0f0;
-    border: none;
-    border-radius: 30px;
-    padding: 5px 12px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.2s;
-}
-
-.reaction-btn:hover {
-    background: #e0e0e0;
-    transform: scale(1.05);
-}
-
-.reaction-btn.active {
-    background: #f5b042;
-    color: white;
-}
-
-.reaction-count {
-    margin-left: 4px;
-    font-size: 12px;
-    color: #666;
-}
-
-/* ==================== STUDENT INFO CARD ==================== */
-.student-info-card {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    padding: 15px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.student-info-card h3 {
-    color: white;
-    border-left: none;
-    padding-left: 0;
-}
-
-/* ==================== EMPTY STATE ==================== */
-.empty-state {
-    text-align: center;
-    padding: 40px;
-    color: #666;
-}
-
-/* ==================== RESPONSIVE ==================== */
-@media (max-width: 700px) {
-    .calendar-grid {
-        gap: 4px;
-    }
-    .cal-day {
-        padding: 6px 2px;
-        font-size: 11px;
-        min-height: 55px;
-    }
-    .cal-day .date-num {
-        font-size: 14px;
+    if (!id || !password) {
+        alert('আইডি এবং পাসওয়ার্ড দিন');
+        return;
     }
 
-    .class-buttons-container {
-        padding-left: 15px;
+    if (role === 'admin') {
+        // Admin login
+        if (id === 'admin' && password === 'admin123') {
+            currentUser = 'admin';
+            currentRole = 'admin';
+            showApp();
+            setupAdminUI();
+        } else {
+            alert('ভুল আইডি বা পাসওয়ার্ড!');
+        }
+    } else if (role === 'teacher') {
+        // Teacher login
+        const teacherRef = db.ref('teachers');
+        teacherRef.once('value', (snapshot) => {
+            const teachers = snapshot.val();
+            let found = false;
+            for (let key in teachers) {
+                if (teachers[key].id === id && teachers[key].password === password) {
+                    currentUser = key;
+                    currentRole = 'teacher';
+                    showApp();
+                    setupTeacherUI(teachers[key]);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                alert('ভুল আইডি বা পাসওয়ার্ড!');
+            }
+        });
+    } else if (role === 'student') {
+        // Student login
+        const studentRef = db.ref('students');
+        studentRef.once('value', (snapshot) => {
+            const students = snapshot.val();
+            let found = false;
+            for (let key in students) {
+                if (students[key].id === id && students[key].password === password) {
+                    currentUser = key;
+                    currentRole = 'student';
+                    showApp();
+                    setupStudentUI(students[key]);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                alert('ভুল আইডি বা পাসওয়ার্ড!');
+            }
+        });
     }
+});
 
-    .class-btn {
-        min-width: 180px;
-        padding: 10px 15px 10px 20px;
+function showApp() {
+    loginScreen.style.display = 'none';
+    appContainer.style.display = 'block';
+    userNameDisplay.textContent = currentUser;
+    roleDisplay.textContent = currentRole === 'admin' ? 'পরিচালক' : 
+                             currentRole === 'teacher' ? 'শিক্ষক' : 'ছাত্র';
+    loadAllData();
+}
+
+// ============================================================
+// LOAD ALL DATA
+// ============================================================
+function loadAllData() {
+    // Load teachers
+    db.ref('teachers').on('value', (snapshot) => {
+        allTeachers = snapshot.val() || {};
+        renderTeachers();
+        renderTeachersTable();
+        renderTeacherGrid();
+    });
+
+    // Load students
+    db.ref('students').on('value', (snapshot) => {
+        allStudents = snapshot.val() || {};
+        renderClassButtons();
+        if (selectedClass) {
+            renderClassStudents(selectedClass);
+        }
+    });
+
+    // Load routines
+    db.ref('routines').on('value', (snapshot) => {
+        allRoutines = snapshot.val() || {};
+        renderTodayTomorrowRoutine();
+        renderRoutineEditor();
+        renderRoutineModal();
+    });
+
+    // Load feed
+    db.ref('feed').on('value', (snapshot) => {
+        feedData = snapshot.val() || {};
+        renderSocialFeed();
+    });
+
+    // Load feedback
+    db.ref('feedback').on('value', (snapshot) => {
+        feedbackData = snapshot.val() || {};
+        renderFeedbackList();
+        renderStudentFeedbackArea();
+    });
+
+    // Load attendance
+    db.ref('attendance').on('value', (snapshot) => {
+        attendanceData = snapshot.val() || {};
+        if (currentRole === 'student' && currentUser) {
+            renderStudentAttendance();
+        }
+    });
+}
+
+// ============================================================
+// UI SETUP FUNCTIONS
+// ============================================================
+function setupAdminUI() {
+    document.getElementById('menuClassManager').style.display = 'block';
+    document.getElementById('menuTeachers').style.display = 'block';
+    document.getElementById('menuFeedback').style.display = 'block';
+    document.getElementById('menuRoutineManager').style.display = 'block';
+    document.getElementById('menuStudentFeedback').style.display = 'none';
+    
+    showPanel('dashboardPanel');
+    populateClassCheckboxes();
+    populateFeedbackClassFilter();
+}
+
+function setupTeacherUI(teacherData) {
+    document.getElementById('menuClassManager').style.display = 'none';
+    document.getElementById('menuTeachers').style.display = 'none';
+    document.getElementById('menuFeedback').style.display = 'none';
+    document.getElementById('menuRoutineManager').style.display = 'none';
+    document.getElementById('menuStudentFeedback').style.display = 'none';
+    
+    showPanel('dashboardPanel');
+    renderTeacherProfile(teacherData);
+    renderTeacherAssignedClasses(teacherData);
+}
+
+function setupStudentUI(studentData) {
+    document.getElementById('menuClassManager').style.display = 'none';
+    document.getElementById('menuTeachers').style.display = 'none';
+    document.getElementById('menuFeedback').style.display = 'none';
+    document.getElementById('menuRoutineManager').style.display = 'none';
+    document.getElementById('menuStudentFeedback').style.display = 'block';
+    
+    showPanel('dashboardPanel');
+    renderStudentInfo(studentData);
+}
+
+// ============================================================
+// PANEL NAVIGATION
+// ============================================================
+function showPanel(panelId) {
+    document.querySelectorAll('.panel').forEach(p => {
+        p.classList.remove('active-panel', 'active');
+    });
+    const panel = document.getElementById(panelId);
+    if (panel) {
+        panel.classList.add('active-panel');
+        panel.style.display = 'block';
     }
 }
+
+// Menu navigation
+document.getElementById('menuDashboard').addEventListener('click', () => {
+    showPanel('dashboardPanel');
+    dropdownMenu.classList.remove('show');
+});
+
+document.getElementById('menuClassManager').addEventListener('click', () => {
+    showPanel('adminClassPanel');
+    dropdownMenu.classList.remove('show');
+});
+
+document.getElementById('menuTeachers').addEventListener('click', () => {
+    showPanel('adminTeachersPanel');
+    dropdownMenu.classList.remove('show');
+});
+
+document.getElementById('menuAttendance').addEventListener('click', () => {
+    showPanel('attendancePanel');
+    dropdownMenu.classList.remove('show');
+    setupAttendance();
+});
+
+document.getElementById('menuFeedback').addEventListener('click', () => {
+    showPanel('adminFeedbackPanel');
+    dropdownMenu.classList.remove('show');
+});
+
+document.getElementById('menuRoutineManager').addEventListener('click', () => {
+    showPanel('adminRoutinePanel');
+    dropdownMenu.classList.remove('show');
+});
+
+document.getElementById('menuSocialFeed').addEventListener('click', () => {
+    showPanel('socialFeedPanel');
+    dropdownMenu.classList.remove('show');
+});
+
+document.getElementById('menuStudentFeedback').addEventListener('click', () => {
+    showPanel('studentPanel');
+    dropdownMenu.classList.remove('show');
+});
+
+document.getElementById('menuLogout').addEventListener('click', () => {
+    if (confirm('আপনি কি লগআউট করতে চান?')) {
+        location.reload();
+    }
+    dropdownMenu.classList.remove('show');
+});
+
+// Menu toggle
+menuToggle.addEventListener('click', () => {
+    dropdownMenu.classList.toggle('show');
+});
+
+// Close dropdown on outside click
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown')) {
+        dropdownMenu.classList.remove('show');
+    }
+});
+
+// ============================================================
+// TEACHER RENDERING
+// ============================================================
+function renderTeachers() {
+    const grid = document.getElementById('teachersGrid');
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    for (let key in allTeachers) {
+        const teacher = allTeachers[key];
+        const card = document.createElement('div');
+        card.className = 'teacher-card';
+        card.innerHTML = `
+            <img src="${teacher.image || 'https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=' + encodeURIComponent(teacher.name)}" alt="${teacher.name}">
+            <h4>${teacher.name}</h4>
+            <p style="font-size:13px; color:#666;">আইডি: ${teacher.id}</p>
+            <p style="font-size:12px; color:#888;">${teacher.classes ? teacher.classes.join(', ') : ''}</p>
+        `;
+        grid.appendChild(card);
+    }
+}
+
+function renderTeacherGrid() {
+    // Same as renderTeachers for dashboard
+    renderTeachers();
+}
+
+function renderTeachersTable() {
+    const container = document.getElementById('teachersTable');
+    if (!container) return;
+    
+    if (Object.keys(allTeachers).length === 0) {
+        container.innerHTML = '<p style="color:#888; text-align:center;">কোনো শিক্ষক নেই</p>';
+        return;
+    }
+    
+    let html = `<table>
+        <thead><tr>
+            <th>ছবি</th>
+            <th>নাম</th>
+            <th>আইডি</th>
+            <th>ক্লাস</th>
+            <th>অ্যাকশন</th>
+        </tr></thead><tbody>`;
+    
+    for (let key in allTeachers) {
+        const t = allTeachers[key];
+        html += `<tr>
+            <td><img src="${t.image || 'https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=' + encodeURIComponent(t.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"></td>
+            <td>${t.name}</td>
+            <td>${t.id}</td>
+            <td>${t.classes ? t.classes.join(', ') : ''}</td>
+            <td><button class="btn btn-red btn-sm" onclick="deleteTeacher('${key}')">মুছুন</button></td>
+        </tr>`;
+    }
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+
+function deleteTeacher(key) {
+    if (confirm('শিক্ষককে মুছতে চান?')) {
+        db.ref('teachers/' + key).remove();
+    }
+}
+
+// ============================================================
+// STUDENT RENDERING
+// ============================================================
+function renderClassButtons() {
+    const container = document.getElementById('classButtons');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    allClasses.forEach(cls => {
+        const btn = document.createElement('button');
+        btn.className = 'class-btn' + (selectedClass === cls ? ' active' : '');
+        btn.textContent = cls;
+        btn.onclick = () => {
+            selectedClass = cls;
+            renderClassButtons();
+            renderClassStudents(cls);
+            document.getElementById('selectedClassName').textContent = cls;
+        };
+        container.appendChild(btn);
+    });
+}
+
+function renderClassStudents(className) {
+    const container = document.getElementById('classStudentsTable');
+    if (!container) return;
+    
+    const students = {};
+    for (let key in allStudents) {
+        if (allStudents[key].class === className) {
+            students[key] = allStudents[key];
+        }
+    }
+    
+    if (Object.keys(students).length === 0) {
+        container.innerHTML = '<p style="color:#888; text-align:center;">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
+        return;
+    }
+    
+    let html = `<table>
+        <thead><tr>
+            <th>ছবি</th>
+            <th>নাম</th>
+            <th>আইডি</th>
+            <th>অভিভাবকের মোবাইল</th>
+            <th>অ্যাকশন</th>
+        </tr></thead><tbody>`;
+    
+    for (let key in students) {
+        const s = students[key];
+        html += `<tr>
+            <td><img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"></td>
+            <td>${s.name}</td>
+            <td>${s.id}</td>
+            <td>${s.guardianPhone || ''}</td>
+            <td><button class="btn btn-red btn-sm" onclick="deleteStudent('${key}')">মুছুন</button></td>
+        </tr>`;
+    }
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+
+function deleteStudent(key) {
+    if (confirm('ছাত্র/ছাত্রীকে মুছতে চান?')) {
+        db.ref('students/' + key).remove();
+    }
+}
+
+// ============================================================
+// ADD STUDENT
+// ============================================================
+document.getElementById('addCousinBtn').addEventListener('click', () => {
+    const name = document.getElementById('cousinName').value.trim();
+    const id = document.getElementById('cousinId').value.trim();
+    const password = document.getElementById('cousinPass').value.trim();
+    const guardianPhone = document.getElementById('cousinGuardianPhone').value.trim();
+    
+    if (!name || !id || !password) {
+        alert('নাম, আইডি এবং পাসওয়ার্ড দিন');
+        return;
+    }
+    
+    if (!selectedClass) {
+        alert('ক্লাস নির্বাচন করুন');
+        return;
+    }
+    
+    const newStudent = {
+        name: name,
+        id: id,
+        password: password,
+        class: selectedClass,
+        guardianPhone: guardianPhone || '',
+        image: document.getElementById('studentImagePreview').src
+    };
+    
+    const ref = db.ref('students').push();
+    ref.set(newStudent).then(() => {
+        document.getElementById('cousinName').value = '';
+        document.getElementById('cousinId').value = '';
+        document.getElementById('cousinPass').value = '';
+        document.getElementById('cousinGuardianPhone').value = '';
+        alert('ছাত্র/ছাত্রী যোগ করা হয়েছে');
+    });
+});
+
+// Student image upload
+document.getElementById('studentImageInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            document.getElementById('studentImagePreview').src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// ============================================================
+// ADD TEACHER
+// ============================================================
+function populateClassCheckboxes() {
+    const container = document.getElementById('classCheckboxes');
+    if (!container) return;
+    
+    container.innerHTML = '<p style="font-size:13px; margin-bottom:8px;"><strong>ক্লাস নির্বাচন করুন:</strong></p>';
+    allClasses.forEach(cls => {
+        const label = document.createElement('label');
+        label.style.cssText = 'display:inline-block; margin-right:12px; font-size:13px;';
+        label.innerHTML = `<input type="checkbox" class="teacher-class-checkbox" value="${cls}"> ${cls}`;
+        container.appendChild(label);
+    });
+}
+
+document.getElementById('createTeacherBtn').addEventListener('click', () => {
+    const name = document.getElementById('newTeacherName').value.trim();
+    const id = document.getElementById('newTeacherId').value.trim();
+    const password = document.getElementById('newTeacherPass').value.trim();
+    
+    const checkboxes = document.querySelectorAll('.teacher-class-checkbox:checked');
+    const classes = Array.from(checkboxes).map(cb => cb.value);
+    
+    if (!name || !id || !password) {
+        alert('নাম, আইডি এবং পাসওয়ার্ড দিন');
+        return;
+    }
+    
+    if (classes.length === 0) {
+        alert('কমপক্ষে একটি ক্লাস নির্বাচন করুন');
+        return;
+    }
+    
+    const newTeacher = {
+        name: name,
+        id: id,
+        password: password,
+        classes: classes,
+        image: document.getElementById('teacherImagePreview').src
+    };
+    
+    const ref = db.ref('teachers').push();
+    ref.set(newTeacher).then(() => {
+        document.getElementById('newTeacherName').value = '';
+        document.getElementById('newTeacherId').value = '';
+        document.getElementById('newTeacherPass').value = '';
+        document.querySelectorAll('.teacher-class-checkbox:checked').forEach(cb => cb.checked = false);
+        alert('শিক্ষক যোগ করা হয়েছে');
+    });
+});
+
+// Teacher image upload
+document.getElementById('teacherImageInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            document.getElementById('teacherImagePreview').src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// ============================================================
+// ROUTINE FUNCTIONS
+// ============================================================
+function renderTodayTomorrowRoutine() {
+    const container = document.getElementById('todayTomorrowRoutine');
+    if (!container) return;
+    
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const today = new Date();
+    const todayName = days[today.getDay()];
+    const tomorrowName = days[(today.getDay() + 1) % 7];
+    
+    let html = '<div class="routine-side-by-side">';
+    
+    // Today's routine
+    html += `<div class="today-routine-card"><h3>📅 আজকের রুটিন (${todayName})</h3>`;
+    if (allRoutines[todayName]) {
+        for (let cls in allRoutines[todayName]) {
+            html += `<p><strong>${cls}:</strong> ${allRoutines[todayName][cls]}</p>`;
+        }
+    } else {
+        html += '<p style="color:#666;">কোনো রুটিন নেই</p>';
+    }
+    html += '</div>';
+    
+    // Tomorrow's routine
+    html += `<div class="tomorrow-routine-card"><h3>📅 আগামীকালের রুটিন (${tomorrowName})</h3>`;
+    if (allRoutines[tomorrowName]) {
+        for (let cls in allRoutines[tomorrowName]) {
+            html += `<p><strong>${cls}:</strong> ${allRoutines[tomorrowName][cls]}</p>`;
+        }
+    } else {
+        html += '<p style="color:#666;">কোনো রুটিন নেই</p>';
+    }
+    html += '</div>';
+    
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function renderRoutineEditor() {
+    const container = document.getElementById('routineEditArea');
+    if (!container) return;
+    
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
+    let html = '';
+    days.forEach(day => {
+        html += `<div style="background:#f9f5ed; padding:15px; border-radius:20px; margin-bottom:15px;">
+            <h4 style="margin-bottom:10px;">${day}</h4>`;
+        
+        allClasses.forEach(cls => {
+            const value = allRoutines[day] && allRoutines[day][cls] ? allRoutines[day][cls] : '';
+            html += `
+                <div style="display:flex; gap:10px; margin-bottom:5px; align-items:center;">
+                    <span style="min-width:60px; font-weight:bold;">${cls}:</span>
+                    <input type="text" class="routine-input" data-day="${day}" data-class="${cls}" value="${value}" placeholder="বিষয় (যেমন: বাংলা, ইংরেজি)" style="flex:1; margin-bottom:0;">
+                </div>
+            `;
+        });
+        html += '</div>';
+    });
+    
+    container.innerHTML = html;
+}
+
+function renderRoutineModal() {
+    const container = document.getElementById('routineContent');
+    if (!container) return;
+    
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const today = new Date();
+    const todayName = days[today.getDay()];
+    
+    let html = `<table class="routine-table"><thead><tr><th>ক্লাস</th>`;
+    days.forEach(day => {
+        html += `<th>${day}</th>`;
+    });
+    html += '</tr></thead><tbody>';
+    
+    allClasses.forEach(cls => {
+        html += `<tr><td><strong>${cls}</strong></td>`;
+        days.forEach(day => {
+            const val = allRoutines[day] && allRoutines[day][cls] ? allRoutines[day][cls] : '-';
+            const isToday = day === todayName;
+            html += `<td style="${isToday ? 'background:#fef3c7; font-weight:bold;' : ''}">${val}</td>`;
+        });
+        html += '</tr>';
+    });
+    
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+
+document.getElementById('saveAllRoutinesBtn').addEventListener('click', () => {
+    const inputs = document.querySelectorAll('.routine-input');
+    const routineData = {};
+    
+    inputs.forEach(input => {
+        const day = input.dataset.day;
+        const cls = input.dataset.class;
+        const value = input.value.trim();
+        
+        if (!routineData[day]) routineData[day] = {};
+        routineData[day][cls] = value;
+    });
+    
+    db.ref('routines').set(routineData).then(() => {
+        alert('রুটিন সংরক্ষণ করা হয়েছে');
+    });
+});
+
+// ============================================================
+// ATTENDANCE SYSTEM
+// ============================================================
+function setupAttendance() {
+    const dateInput = document.getElementById('attendanceDate');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+    currentAttendanceDate = today;
+    
+    // Populate class select
+    const classSelect = document.getElementById('attendanceClassSelect');
+    classSelect.innerHTML = '';
+    allClasses.forEach(cls => {
+        const option = document.createElement('option');
+        option.value = cls;
+        option.textContent = cls;
+        classSelect.appendChild(option);
+    });
+    
+    // Show student or teacher attendance
+    if (currentRole === 'student') {
+        document.getElementById('studentHistorySection').style.display = 'block';
+        document.getElementById('teacherAttendanceSection').style.display = 'none';
+        renderStudentAttendance();
+    } else {
+        document.getElementById('studentHistorySection').style.display = 'none';
+        document.getElementById('teacherAttendanceSection').style.display = 'block';
+        renderClassMonthlyCalendar();
+    }
+}
+
+document.getElementById('loadStudentsBtn').addEventListener('click', () => {
+    const classSelect = document.getElementById('attendanceClassSelect');
+    const className = classSelect.value;
+    const date = document.getElementById('attendanceDate').value;
+    
+    if (!className) {
+        alert('ক্লাস নির্বাচন করুন');
+        return;
+    }
+    
+    if (!date) {
+        alert('তারিখ নির্বাচন করুন');
+        return;
+    }
+    
+    currentAttendanceDate = date;
+    document.getElementById('selectedDateDisplay').textContent = date;
+    loadStudentAttendance(className, date);
+});
+
+function loadStudentAttendance(className, date) {
+    const container = document.getElementById('studentAttendanceList');
+    const section = document.getElementById('studentAttendanceSection');
+    
+    const students = {};
+    for (let key in allStudents) {
+        if (allStudents[key].class === className) {
+            students[key] = allStudents[key];
+        }
+    }
+    
+    if (Object.keys(students).length === 0) {
+        container.innerHTML = '<p style="color:#888;">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
+        section.style.display = 'block';
+        return;
+    }
+    
+    let html = '';
+    for (let key in students) {
+        const student = students[key];
+        const attKey = `${className}_${date}`;
+        const isPresent = attendanceData[attKey] && attendanceData[attKey][key] === true;
+        
+        html += `
+            <div class="student-att-row">
+                <img src="${student.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(student.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                <span style="flex:1;">${student.name}</span>
+                <span style="font-size:12px; color:#888;">${student.id}</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" class="attendance-checkbox" data-student="${key}" ${isPresent ? 'checked' : ''}>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html;
+    section.style.display = 'block';
+}
+
+document.getElementById('saveAttendanceBtn').addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('.attendance-checkbox');
+    const className = document.getElementById('attendanceClassSelect').value;
+    const date = document.getElementById('attendanceDate').value;
+    const attKey = `${className}_${date}`;
+    
+    const attData = {};
+    checkboxes.forEach(cb => {
+        const studentKey = cb.dataset.student;
+        attData[studentKey] = cb.checked;
+    });
+    
+    db.ref('attendance/' + attKey).set(attData).then(() => {
+        alert('উপস্থিতি সংরক্ষণ করা হয়েছে');
+    });
+});
+
+function renderStudentAttendance() {
+    if (!currentUser) return;
+    
+    const student = allStudents[currentUser];
+    if (!student) return;
+    
+    const className = student.class;
+    const summaryContainer = document.getElementById('studentSummary');
+    const calendarContainer = document.getElementById('studentCalendarGrid');
+    const monthSelector = document.getElementById('studentMonthSelector');
+    
+    // Get current month
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    
+    // Month selector
+    monthSelector.innerHTML = `
+        <button class="btn btn-sm btn-blue" onclick="changeStudentMonth(-1)">◀</button>
+        <span style="font-weight:bold;">${new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
+        <button class="btn btn-sm btn-blue" onclick="changeStudentMonth(1)">▶</button>
+    `;
+    
+    // Calculate attendance
+    let totalDays = 0;
+    let presentDays = 0;
+    
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    
+    let html = '<div class="calendar-grid">';
+    ['সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি', 'রবি'].forEach(day => {
+        html += `<div class="cal-day-header">${day}</div>`;
+    });
+    
+    // Empty days
+    for (let i = 0; i < firstDay; i++) {
+        html += '<div class="cal-day"></div>';
+    }
+    
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const attKey = `${className}_${dateStr}`;
+        const isPresent = attendanceData[attKey] && attendanceData[attKey][currentUser] === true;
+        
+        const isToday = new Date().toISOString().split('T')[0] === dateStr;
+        
+        let statusClass = '';
+        let statusIcon = '';
+        if (isPresent) {
+            statusClass = 'present';
+            statusIcon = '✅';
+            presentDays++;
+        } else if (attendanceData[attKey]) {
+            statusClass = 'absent';
+            statusIcon = '❌';
+        }
+        if (isToday) statusClass += ' today';
+        
+        totalDays++;
+        
+        html += `<div class="cal-day ${statusClass}">
+            <div class="date-num">${day}</div>
+            <div class="status-icon">${statusIcon}</div>
+        </div>`;
+    }
+    
+    html += '</div>';
+    calendarContainer.innerHTML = html;
+    
+    // Summary
+    const presentPercent = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
+    summaryContainer.innerHTML = `
+        <div class="summary-item"><span class="number">${presentDays}</span><br>উপস্থিত</div>
+        <div class="summary-item"><span class="number">${totalDays - presentDays}</span><br>অনুপস্থিত</div>
+        <div class="summary-item"><span class="number">${presentPercent}%</span><br>হার</div>
+    `;
+}
+
+let studentMonthOffset = 0;
+
+function changeStudentMonth(delta) {
+    studentMonthOffset += delta;
+    renderStudentAttendance();
+}
+
+function renderClassMonthlyCalendar() {
+    const container = document.getElementById('classMonthlyCalendar');
+    const monthSelector = document.getElementById('classMonthSelector');
+    
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const className = document.getElementById('attendanceClassSelect').value || 'One';
+    
+    monthSelector.innerHTML = `
+        <button class="btn btn-sm btn-blue" onclick="changeClassMonth(-1)">◀</button>
+        <span style="font-weight:bold;">${new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' })} - ${className}</span>
+        <button class="btn btn-sm btn-blue" onclick="changeClassMonth(1)">▶</button>
+    `;
+    
+    // Get all students in this class
+    const students = {};
+    for (let key in allStudents) {
+        if (allStudents[key].class === className) {
+            students[key] = allStudents[key];
+        }
+    }
+    
+    if (Object.keys(students).length === 0) {
+        container.innerHTML = '<p style="color:#888;">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
+        return;
+    }
+    
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    
+    let html = '<div class="calendar-grid">';
+    ['সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি', 'রবি'].forEach(day => {
+        html += `<div class="cal-day-header">${day}</div>`;
+    });
+    
+    for (let i = 0; i < firstDay; i++) {
+        html += '<div class="cal-day"></div>';
+    }
+    
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const attKey = `${className}_${dateStr}`;
+        const dayData = attendanceData[attKey] || {};
+        
+        let presentCount = 0;
+        let absentCount = 0;
+        for (let key in students) {
+            if (dayData[key] === true) presentCount++;
+            else if (dayData[key] === false) absentCount++;
+        }
+        
+        const total = Object.keys(students).length;
+        const allPresent = presentCount === total && total > 0;
+        const allAbsent = absentCount === total && total > 0;
+        
+        let statusClass = '';
+        let statusText = '';
+        if (allPresent) {
+            statusClass = 'present';
+            statusText = '✅ সবাই';
+        } else if (allAbsent) {
+            statusClass = 'absent';
+            statusText = '❌ সবাই';
+        } else if (presentCount > 0 || absentCount > 0) {
+            statusText = `${presentCount}/${total}`;
+        }
+        
+        const isToday = new Date().toISOString().split('T')[0] === dateStr;
+        if (isToday) statusClass += ' today';
+        
+        html += `<div class="cal-day ${statusClass}">
+            <div class="date-num">${day}</div>
+            <div style="font-size:10px;">${statusText}</div>
+        </div>`;
+    }
+    
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+let classMonthOffset = 0;
+
+function changeClassMonth(delta) {
+    classMonthOffset += delta;
+    renderClassMonthlyCalendar();
+}
+
+// ============================================================
+// STUDENT INFO
+// ============================================================
+function renderStudentInfo(studentData) {
+    const card = document.getElementById('studentClassInfo');
+    if (!card) return;
+    
+    card.style.display = 'block';
+    document.getElementById('studentNameDisplay').textContent = studentData.name;
+    document.getElementById('studentClassDisplay').textContent = studentData.class;
+    document.getElementById('studentIdDisplay').textContent = studentData.id;
+}
+
+// ============================================================
+// TEACHER PROFILE
+// ============================================================
+function renderTeacherProfile(teacherData) {
+    const container = document.getElementById('teacherProfileArea');
+    if (!container) return;
+    
+    container.innerHTML = `
+        <div style="display:flex; align-items:center; gap:20px; background:#f9f5ed; padding:20px; border-radius:20px;">
+            <img src="${teacherData.image || 'https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=' + encodeURIComponent(teacherData.name)}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid #f5b042;">
+            <div>
+                <h3 style="border:none; padding:0;">${teacherData.name}</h3>
+                <p><strong>আইডি:</strong> ${teacherData.id}</p>
+                <p><strong>ক্লাস:</strong> ${teacherData.classes ? teacherData.classes.join(', ') : ''}</p>
+            </div>
+        </div>
+    `;
+}
+
+function renderTeacherAssignedClasses(teacherData) {
+    const container = document.getElementById('teacherAssignedClasses');
+    if (!container) return;
+    
+    const assignedClasses = teacherData.classes || [];
+    if (assignedClasses.length === 0) {
+        container.innerHTML = '<p style="color:#888;">আপনার কোনো ক্লাস নেই</p>';
+        return;
+    }
+    
+    let html = '<h3>আপনার ক্লাসসমূহ</h3><div style="display:flex; flex-wrap:wrap; gap:10px;">';
+    assignedClasses.forEach(cls => {
+        html += `<span style="background:#f5b042; color:#0a163b; padding:8px 16px; border-radius:30px; font-weight:bold;">${cls}</span>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+    
+    // Show students for first class
+    if (assignedClasses.length > 0) {
+        renderTeacherClassStudents(assignedClasses[0]);
+    }
+}
+
+function renderTeacherClassStudents(className) {
+    const container = document.getElementById('teacherClassStudents');
+    if (!container) return;
+    
+    const students = {};
+    for (let key in allStudents) {
+        if (allStudents[key].class === className) {
+            students[key] = allStudents[key];
+        }
+    }
+    
+    if (Object.keys(students).length === 0) {
+        container.innerHTML = `<p style="color:#888;">${className} ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>`;
+        return;
+    }
+    
+    let html = `<h3>${className} ক্লাসের ছাত্র/ছাত্রী</h3><div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:10px;">`;
+    for (let key in students) {
+        const s = students[key];
+        html += `
+            <div style="background:#fef9ef; padding:12px; border-radius:16px; text-align:center;">
+                <img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #f5b042;">
+                <p style="margin-top:5px;"><strong>${s.name}</strong></p>
+                <p style="font-size:12px; color:#888;">${s.id}</p>
+            </div>
+        `;
+    }
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+// ============================================================
+// FEEDBACK SYSTEM
+// ============================================================
+function renderStudentFeedbackArea() {
+    const container = document.getElementById('studentFeedbackArea');
+    if (!container) return;
+    
+    if (!currentUser || !allStudents[currentUser]) {
+        container.innerHTML = '<p style="color:#888;">আপনি লগইন করেননি</p>';
+        return;
+    }
+    
+    const student = allStudents[currentUser];
+    const className = student.class;
+    
+    let html = `<p style="margin-bottom:15px;"><strong>আপনার ক্লাস:</strong> ${className}</p>`;
+    html += `
+        <div style="background:#f9f5ed; padding:15px; border-radius:20px;">
+            <textarea id="feedbackText" rows="3" placeholder="আপনার মতামত লিখুন..." style="width:100%; border-radius:15px;"></textarea>
+            <button class="btn btn-orange" onclick="submitFeedback()" style="margin-top:10px;"><i class="fas fa-paper-plane"></i> পাঠান</button>
+        </div>
+        <div id="myFeedbackList" style="margin-top:20px;"></div>
+    `;
+    container.innerHTML = html;
+    
+    // Show user's feedback
+    renderMyFeedback();
+}
+
+function renderMyFeedback() {
+    const container = document.getElementById('myFeedbackList');
+    if (!container) return;
+    
+    const student = allStudents[currentUser];
+    if (!student) return;
+    
+    let html = '<h4>আপনার মতামতসমূহ</h4>';
+    let hasFeedback = false;
+    
+    for (let key in feedbackData) {
+        const fb = feedbackData[key];
+        if (fb.studentId === student.id) {
+            hasFeedback = true;
+            html += `
+                <div class="feedback-item">
+                    <p>${fb.text}</p>
+                    <p style="font-size:11px; color:#888;">${fb.date || ''}</p>
+                    <button class="delete-btn" onclick="deleteFeedback('${key}')">মুছুন</button>
+                </div>
+            `;
+        }
+    }
+    
+    if (!hasFeedback) {
+        html += '<p style="color:#888;">আপনার কোনো মতামত নেই</p>';
+    }
+    
+    container.innerHTML = html;
+}
+
+function submitFeedback() {
+    const text = document.getElementById('feedbackText').value.trim();
+    if (!text) {
+        alert('মতামত লিখুন');
+        return;
+    }
+    
+    const student = allStudents[currentUser];
+    if (!student) return;
+    
+    const feedback = {
+        studentId: student.id,
+        studentName: student.name,
+        className: student.class,
+        text: text,
+        date: new Date().toISOString().split('T')[0]
+    };
+    
+    db.ref('feedback').push(feedback).then(() => {
+        document.getElementById('feedbackText').value = '';
+        alert('মতামত পাঠানো হয়েছে');
+    });
+}
+
+function deleteFeedback(key) {
+    if (confirm('মতামত মুছতে চান?')) {
+        db.ref('feedback/' + key).remove();
+    }
+}
+
+function populateFeedbackClassFilter() {
+    const select = document.getElementById('feedbackClassFilter');
+    if (!select) return;
+    
+    select.innerHTML = '<option value="all">সব ক্লাস</option>';
+    allClasses.forEach(cls => {
+        const option = document.createElement('option');
+        option.value = cls;
+        option.textContent = cls;
+        select.appendChild(option);
+    });
+}
+
+document.getElementById('feedbackClassFilter')?.addEventListener('change', renderFeedbackList);
+
+function renderFeedbackList() {
+    const container = document.getElementById('feedbackList');
+    if (!container) return;
+    
+    const filter = document.getElementById('feedbackClassFilter')?.value || 'all';
+    
+    let html = '';
+    let count = 0;
+    
+    for (let key in feedbackData) {
+        const fb = feedbackData[key];
+        if (filter !== 'all' && fb.className !== filter) continue;
+        
+        count++;
+        html += `
+            <div class="feedback-item">
+                <p><strong>${fb.studentName}</strong> (${fb.className})</p>
+                <p>${fb.text}</p>
+                <p style="font-size:11px; color:#888;">${fb.date || ''}</p>
+                <button class="delete-btn" onclick="deleteFeedback('${key}')">মুছুন</button>
+            </div>
+        `;
+    }
+    
+    if (count === 0) {
+        html = '<p style="color:#888; text-align:center;">কোনো মতামত নেই</p>';
+    }
+    
+    container.innerHTML = html;
+}
+
+// ============================================================
+// SOCIAL FEED
+// ============================================================
+let feedImages = [];
+
+document.getElementById('feedImageInput').addEventListener('change', function(e) {
+    const files = e.target.files;
+    const container = document.getElementById('imagePreviewContainer');
+    container.innerHTML = '';
+    feedImages = [];
+    
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            feedImages.push(event.target.result);
+            const img = document.createElement('img');
+            img.src = event.target.result;
+            img.style.cssText = 'width:80px; height:80px; object-fit:cover; border-radius:12px; border:2px solid #f5b042;';
+            container.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+window.publishPost = function() {
+    const caption = document.getElementById('feedCaption').value.trim();
+    if (!caption && feedImages.length === 0) {
+        alert('কিছু লিখুন বা ছবি নির্বাচন করুন');
+        return;
+    }
+    
+    const post = {
+        caption: caption,
+        images: feedImages,
+        user: currentUser,
+        userName: userNameDisplay.textContent,
+        role: currentRole,
+        timestamp: Date.now(),
+        date: new Date().toISOString().split('T')[0],
+        likes: 0,
+        likedBy: {},
+        comments: {}
+    };
+    
+    const ref = db.ref('feed').push();
+    ref.set(post).then(() => {
+        document.getElementById('feedCaption').value = '';
+        document.getElementById('imagePreviewContainer').innerHTML = '';
+        feedImages = [];
+        document.getElementById('feedImageInput').value = '';
+        alert('পোস্ট প্রকাশিত হয়েছে');
+    });
+};
+
+function renderSocialFeed() {
+    const container = document.getElementById('socialFeedContainer');
+    if (!container) return;
+    
+    const posts = [];
+    for (let key in feedData) {
+        posts.push({ key, data: feedData[key] });
+    }
+    posts.sort((a, b) => b.data.timestamp - a.data.timestamp);
+    
+    if (posts.length === 0) {
+        container.innerHTML = '<p style="color:#888; text-align:center;">কোনো পোস্ট নেই</p>';
+        return;
+    }
+    
+    let html = '';
+    posts.forEach(post => {
+        const p = post.data;
+        const isOwner = p.user === currentUser || currentRole === 'admin';
+        
+        html += `
+            <div class="social-card" id="post-${post.key}">
+                ${isOwner ? `<button class="delete-post-btn" onclick="deletePost('${post.key}')">✕</button>` : ''}
+                <p><strong>${p.userName || p.user}</strong> <span style="font-size:12px; color:#888;">(${p.role || ''})</span></p>
+                <p style="font-size:12px; color:#888;">${p.date || ''}</p>
+                <p style="margin:10px 0;">${p.caption || ''}</p>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;">
+                    ${p.images ? p.images.map(img => `<img src="${img}" style="max-width:200px; max-height:200px; border-radius:12px; object-fit:cover;">`).join('') : ''}
+                </div>
+                <div class="reaction-bar">
+                    <button class="reaction-btn ${p.likedBy && p.likedBy[currentUser] ? 'active' : ''}" onclick="likePost('${post.key}')">
+                        👍 <span class="reaction-count">${p.likes || 0}</span>
+                    </button>
+                    <button class="reaction-btn" onclick="toggleComment('${post.key}')">
+                        💬 <span class="reaction-count">${p.comments ? Object.keys(p.comments).length : 0}</span>
+                    </button>
+                </div>
+                <div id="comment-section-${post.key}" style="display:none; margin-top:10px;">
+                    <div id="comments-${post.key}">
+                        ${renderComments(p.comments)}
+                    </div>
+                    <div style="display:flex; gap:8px; margin-top:8px;">
+                        <input type="text" id="comment-input-${post.key}" placeholder="মন্তব্য লিখুন..." style="flex:1; margin-bottom:0;">
+                        <button class="btn btn-sm btn-blue" onclick="addComment('${post.key}')">পাঠান</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function renderComments(comments) {
+    if (!comments || Object.keys(comments).length === 0) {
+        return '<p style="color:#888; font-size:13px;">কোনো মন্তব্য নেই</p>';
+    }
+    
+    let html = '';
+    for (let key in comments) {
+        const c = comments[key];
+        html += `
+            <div style="background:#f5f5f5; padding:8px 12px; border-radius:12px; margin-bottom:5px;">
+                <strong>${c.userName || c.user}</strong> <span style="font-size:11px; color:#888;">${c.date || ''}</span>
+                <p style="margin:2px 0;">${c.text}</p>
+            </div>
+        `;
+    }
+    return html;
+}
+
+function toggleComment(postKey) {
+    const section = document.getElementById(`comment-section-${postKey}`);
+    if (section) {
+        section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+}
+
+function addComment(postKey) {
+    const input = document.getElementById(`comment-input-${postKey}`);
+    const text = input.value.trim();
+    if (!text) {
+        alert('মন্তব্য লিখুন');
+        return;
+    }
+    
+    const comment = {
+        user: currentUser,
+        userName: userNameDisplay.textContent,
+        text: text,
+        date: new Date().toISOString().split('T')[0],
+        timestamp: Date.now()
+    };
+    
+    const ref = db.ref(`feed/${postKey}/comments`).push();
+    ref.set(comment).then(() => {
+        input.value = '';
+    });
+}
+
+function likePost(postKey) {
+    const postRef = db.ref(`feed/${postKey}`);
+    postRef.transaction((currentData) => {
+        if (currentData === null) return currentData;
+        
+        if (!currentData.likedBy) currentData.likedBy = {};
+        if (!currentData.likes) currentData.likes = 0;
+        
+        if (currentData.likedBy[currentUser]) {
+            delete currentData.likedBy[currentUser];
+            currentData.likes--;
+        } else {
+            currentData.likedBy[currentUser] = true;
+            currentData.likes++;
+        }
+        return currentData;
+    });
+}
+
+function deletePost(postKey) {
+    if (confirm('পোস্ট মুছতে চান?')) {
+        db.ref('feed/' + postKey).remove();
+    }
+}
+
+// ============================================================
+// VIEW ROUTINE BUTTON
+// ============================================================
+document.getElementById('viewRoutineBtn').addEventListener('click', () => {
+    document.getElementById('routineModal').style.display = 'flex';
+    renderRoutineModal();
+});
+
+// ============================================================
+// VIEW RESULT BUTTON
+// ============================================================
+document.getElementById('viewResultBtn').addEventListener('click', () => {
+    document.getElementById('resultModal').style.display = 'flex';
+});
+
+// ============================================================
+// ABOUT US BUTTON
+// ============================================================
+document.getElementById('aboutUsBtn').addEventListener('click', () => {
+    document.getElementById('aboutModal').style.display = 'flex';
+});
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+console.log('মাস্টারমাইন্ড অ্যাকাডেমি সিস্টেম লোড হয়েছে');
