@@ -243,6 +243,233 @@ body {
     font-size: 1.2rem;
 }
 
+/* ==================== DASHBOARD PANEL BACKGROUND ==================== */
+#dashboardPanel {
+    background: 
+        linear-gradient(215deg, rgba(0, 229, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 10% 20%, rgba(0, 255, 127, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(0, 100, 200, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(0, 200, 255, 0.05) 0%, transparent 70%),
+        linear-gradient(135deg, #00f2fe 0%, #4facfe 20%, #00ffd5 40%, #00a86b 65%, #0a1f4a 85%, #1a0a2e 100%);
+    background-size: 300% 300%;
+    animation: gradientAnimation 15s ease infinite;
+    border-radius: 28px;
+    padding: 18px 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+#dashboardPanel::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 40%, rgba(0, 255, 200, 0.05) 0%, transparent 50%);
+    animation: glowPulse 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes glowPulse {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+    50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+}
+
+#dashboardPanel > * {
+    position: relative;
+    z-index: 1;
+}
+
+#dashboardPanel h2,
+#dashboardPanel h3,
+#dashboardPanel p,
+#dashboardPanel span,
+#dashboardPanel strong,
+#dashboardPanel li,
+#dashboardPanel .info-data p,
+#dashboardPanel .info-data {
+    color: white !important;
+}
+
+#dashboardPanel .info-data {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+#dashboardPanel .teacher-card,
+#dashboardPanel .social-card,
+#dashboardPanel .attendance-card {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: white !important;
+}
+
+#dashboardPanel .teacher-card h4,
+#dashboardPanel .teacher-card p,
+#dashboardPanel .social-card p,
+#dashboardPanel .attendance-card p {
+    color: white !important;
+}
+
+#dashboardPanel .teacher-card img {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+#dashboardPanel .teacher-card:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+#dashboardPanel .btn-blue {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+#dashboardPanel .btn-blue:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+}
+
+#dashboardPanel .btn-green {
+    background: rgba(0, 255, 127, 0.2) !important;
+    color: white !important;
+    border: 1px solid rgba(0, 255, 127, 0.25) !important;
+}
+
+#dashboardPanel .btn-green:hover {
+    background: rgba(0, 255, 127, 0.3) !important;
+}
+
+#dashboardPanel .btn-orange {
+    background: rgba(245, 176, 66, 0.25) !important;
+    color: white !important;
+    border: 1px solid rgba(245, 176, 66, 0.3) !important;
+}
+
+#dashboardPanel .btn-orange:hover {
+    background: rgba(245, 176, 66, 0.35) !important;
+}
+
+#dashboardPanel .today-routine-card {
+    background: rgba(0, 255, 127, 0.12) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(0, 255, 127, 0.15) !important;
+    color: white !important;
+}
+
+#dashboardPanel .tomorrow-routine-card {
+    background: rgba(0, 150, 255, 0.12) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(0, 150, 255, 0.15) !important;
+    color: white !important;
+}
+
+#dashboardPanel .today-routine-card p,
+#dashboardPanel .tomorrow-routine-card p {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+#dashboardPanel .student-info-card {
+    background: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+#dashboardPanel .student-info-card p,
+#dashboardPanel .student-info-card h3 {
+    color: white !important;
+}
+
+#dashboardPanel #studentOwnRoutine .routine-card {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: white !important;
+}
+
+#dashboardPanel #studentOwnRoutine .routine-card p,
+#dashboardPanel #studentOwnRoutine .routine-card strong,
+#dashboardPanel #studentOwnRoutine .routine-card td,
+#dashboardPanel #studentOwnRoutine .routine-card th {
+    color: white !important;
+}
+
+#dashboardPanel #studentOwnRoutine .routine-table th {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+}
+
+#dashboardPanel #studentOwnRoutine .routine-table td {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+#dashboardPanel #studentOwnRoutine .routine-table tr:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+#dashboardPanel table th {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+}
+
+#dashboardPanel table td {
+    color: white !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+#dashboardPanel table tr:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+#dashboardPanel input,
+#dashboardPanel select,
+#dashboardPanel textarea {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+#dashboardPanel input::placeholder,
+#dashboardPanel textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+#dashboardPanel input:focus,
+#dashboardPanel select:focus,
+#dashboardPanel textarea:focus {
+    border-color: rgba(0, 255, 127, 0.4) !important;
+    box-shadow: 0 0 0 3px rgba(0, 255, 127, 0.1) !important;
+}
+
+#dashboardPanel .class-btn {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+#dashboardPanel .class-btn:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+#dashboardPanel .class-btn.active {
+    background: rgba(0, 255, 127, 0.25) !important;
+    border-color: rgba(0, 255, 127, 0.3) !important;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 /* ==================== BUTTONS ==================== */
 .btn {
     padding: 10px 18px;
@@ -503,7 +730,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .teacher-card:hover {
-    background: conic-gradient(from 36deg at 20% 80%, #ff6b6b 0%, #4a00e0 25%, #8B5CF6 50%, #ff6b6b 100%);
+    background: conic-gradient(from 36deg at 20% 80%, #00d2ff 0%, #3a7bd5 25%, #00b894 50%, #00d2ff 100%);
     color: white;
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
@@ -736,7 +963,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .attendance-summary {
-    background: conic-gradient(from 36deg at 20% 80%, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #667eea 100%);
+    background: conic-gradient(from 36deg at 20% 80%, #667eea 0%, #764ba2 25%, #f093fb 50%, #667eea 100%);
     color: white;
     padding: 15px;
     border-radius: 20px;
@@ -1013,7 +1240,7 @@ input:checked + .slider:before {
 }
 
 #studentOwnRoutine .routine-card {
-    background: conic-gradient(from 36deg at 20% 80%, #FF6B6B 0%, #4ECDC4 25%, #45B7D1 50%, #96CEB4 75%, #FF6B6B 100%) !important;
+    background: conic-gradient(from 36deg at 20% 80%, #00d2ff 0%, #3a7bd5 25%, #00b894 50%, #00d2ff 100%) !important;
     border-radius: 20px !important;
     padding: 20px !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
@@ -1063,7 +1290,7 @@ input:checked + .slider:before {
 
 /* ==================== STUDENT INFO CARD ==================== */
 .student-info-card {
-    background: conic-gradient(from 36deg at 20% 80%, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #667eea 100%);
+    background: conic-gradient(from 36deg at 20% 80%, #667eea 0%, #764ba2 25%, #f093fb 50%, #667eea 100%);
     color: white;
     padding: 15px;
     border-radius: 20px;
