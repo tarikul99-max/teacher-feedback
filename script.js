@@ -123,7 +123,7 @@ function toggleGroupField(className) {
     } else {
         groupContainer.style.display = 'none';
         groupSelect.required = false;
-        groupSelect.value = ''; // রিসেট করুন
+        groupSelect.value = '';
         groupContainer.classList.add('group-field-hidden');
         groupContainer.classList.remove('group-field-visible');
     }
@@ -253,9 +253,10 @@ function showApp() {
 }
 
 // ============================================================
-// LOAD ALL DATA
+// LOAD ALL DATA - AUTO SAVE ENABLED
 // ============================================================
 function loadAllData() {
+    // Teachers - Auto save
     db.ref('teachers').on('value', (snapshot) => {
         allTeachers = snapshot.val() || {};
         renderTeachers();
@@ -263,6 +264,7 @@ function loadAllData() {
         renderTeacherGrid();
     });
 
+    // Students - Auto save
     db.ref('students').on('value', (snapshot) => {
         allStudents = snapshot.val() || {};
         renderClassButtons();
@@ -278,8 +280,11 @@ function loadAllData() {
                 renderTeacherClassStudents(classes[0]);
             }
         }
+        // Update attendance class select
+        populateAttendanceClassSelect();
     });
 
+    // Routines - Auto save
     db.ref('routines').on('value', (snapshot) => {
         allRoutines = snapshot.val() || {};
         renderTodayTomorrowRoutine();
@@ -287,17 +292,20 @@ function loadAllData() {
         renderRoutineModal();
     });
 
+    // Feed - Auto save
     db.ref('feed').on('value', (snapshot) => {
         feedData = snapshot.val() || {};
         renderSocialFeed();
     });
 
+    // Feedback - Auto save
     db.ref('feedback').on('value', (snapshot) => {
         feedbackData = snapshot.val() || {};
         renderFeedbackList();
         renderStudentFeedbackArea();
     });
 
+    // Attendance - Auto save
     db.ref('attendance').on('value', (snapshot) => {
         attendanceData = snapshot.val() || {};
         if (currentRole === 'student' && currentUser) {
@@ -307,6 +315,27 @@ function loadAllData() {
             renderClassMonthlyCalendar();
         }
     });
+}
+
+// ============================================================
+// POPULATE ATTENDANCE CLASS SELECT
+// ============================================================
+function populateAttendanceClassSelect() {
+    const classSelect = document.getElementById('attendanceClassSelect');
+    if (!classSelect) return;
+    
+    // Preserve selected value
+    const selectedValue = classSelect.value;
+    classSelect.innerHTML = '';
+    allClasses.forEach(cls => {
+        const option = document.createElement('option');
+        option.value = cls;
+        option.textContent = cls;
+        classSelect.appendChild(option);
+    });
+    if (selectedValue && allClasses.includes(selectedValue)) {
+        classSelect.value = selectedValue;
+    }
 }
 
 // ============================================================
@@ -321,8 +350,8 @@ function setupAdminUI() {
     showPanel('dashboardPanel');
     populateClassCheckboxes();
     populateFeedbackClassFilter();
+    populateAttendanceClassSelect();
     setupAttendance();
-    // গ্রুপ ফিল্ড লুকান (ডিফল্ট)
     toggleGroupField(null);
 }
 
@@ -335,6 +364,8 @@ function setupTeacherUI(teacherData) {
     showPanel('dashboardPanel');
     renderTeacherProfile(teacherData);
     renderTeacherAssignedClasses(teacherData);
+    populateAttendanceClassSelect();
+    setupAttendance();
 }
 
 function setupStudentUI(studentData) {
@@ -345,6 +376,7 @@ function setupStudentUI(studentData) {
     document.getElementById('menuStudentFeedback').style.display = 'block';
     showPanel('dashboardPanel');
     renderStudentInfo(studentData);
+    setupAttendance();
 }
 
 // ============================================================
@@ -381,6 +413,7 @@ document.getElementById('menuTeachers').addEventListener('click', () => {
 document.getElementById('menuAttendance').addEventListener('click', () => {
     showPanel('attendancePanel');
     dropdownMenu.classList.remove('show');
+    populateAttendanceClassSelect();
     setupAttendance();
 });
 
@@ -491,7 +524,6 @@ function renderClassButtons() {
             renderClassButtons();
             renderClassStudents(cls);
             document.getElementById('selectedClassName').textContent = cls;
-            // গ্রুপ ফিল্ড টগল করুন
             toggleGroupField(cls);
         };
         container.appendChild(btn);
@@ -514,7 +546,6 @@ function renderClassStudents(className) {
     let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>গ্রুপ</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for (let key in students) {
         const s = students[key];
-        // গ্রুপের জন্য স্টাইল
         let groupBadge = '-';
         if (s.group) {
             const groupClass = s.group.toLowerCase().replace(' ', '');
@@ -541,7 +572,7 @@ function deleteStudent(key) {
 }
 
 // ============================================================
-// ADD STUDENT with Group Validation
+// ADD STUDENT with Group Validation - AUTO SAVE
 // ============================================================
 document.getElementById('addCousinBtn').addEventListener('click', () => {
     const name = document.getElementById('cousinName').value.trim();
@@ -559,7 +590,6 @@ document.getElementById('addCousinBtn').addEventListener('click', () => {
         return;
     }
     
-    // গ্রুপ ভ্যালিডেশন - শুধুমাত্র Nine, Ten, SSC Special এর জন্য
     if (isGroupRequired(selectedClass)) {
         if (!group) {
             alert('⚠️ এই ক্লাসের জন্য গ্রুপ নির্বাচন আবশ্যক!\n\nগ্রুপ: বিজ্ঞান, বাণিজ্য, মানবিক, বা এসএসসি স্পেশাল');
@@ -590,6 +620,8 @@ document.getElementById('addCousinBtn').addEventListener('click', () => {
         document.getElementById('cousinGroup').value = '';
         document.getElementById('cousinGuardianPhone').value = '';
         alert('✅ ছাত্র/ছাত্রী যোগ করা হয়েছে');
+    }).catch((error) => {
+        alert('❌ যোগ করতে সমস্যা হয়েছে: ' + error.message);
     });
 });
 
@@ -605,7 +637,7 @@ document.getElementById('studentImageInput').addEventListener('change', function
 });
 
 // ============================================================
-// ADD TEACHER
+// ADD TEACHER - AUTO SAVE
 // ============================================================
 function populateClassCheckboxes() {
     const container = document.getElementById('classCheckboxes');
@@ -646,7 +678,9 @@ document.getElementById('createTeacherBtn').addEventListener('click', () => {
         document.getElementById('newTeacherId').value = '';
         document.getElementById('newTeacherPass').value = '';
         document.querySelectorAll('.teacher-class-checkbox:checked').forEach(cb => cb.checked = false);
-        alert('শিক্ষক যোগ করা হয়েছে');
+        alert('✅ শিক্ষক যোগ করা হয়েছে');
+    }).catch((error) => {
+        alert('❌ যোগ করতে সমস্যা হয়েছে: ' + error.message);
     });
 });
 
@@ -662,34 +696,51 @@ document.getElementById('teacherImageInput').addEventListener('change', function
 });
 
 // ============================================================
-// ROUTINE FUNCTIONS
+// ROUTINE FUNCTIONS - FIXED DASHBOARD
 // ============================================================
 function renderTodayTomorrowRoutine() {
     const container = document.getElementById('todayTomorrowRoutine');
     if (!container) return;
+    
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const today = new Date();
     const todayName = days[today.getDay()];
     const tomorrowName = days[(today.getDay() + 1) % 7];
+    
     let html = '<div class="routine-side-by-side">';
+    
+    // Today's Routine
     html += `<div class="today-routine-card"><h3>📅 আজকের রুটিন (${todayName})</h3>`;
+    let hasToday = false;
     if (allRoutines[todayName]) {
         for (let cls in allRoutines[todayName]) {
-            html += `<p><strong>${cls}:</strong> ${allRoutines[todayName][cls]}</p>`;
+            if (allRoutines[todayName][cls]) {
+                html += `<p><strong>${cls}:</strong> ${allRoutines[todayName][cls]}</p>`;
+                hasToday = true;
+            }
         }
-    } else {
+    }
+    if (!hasToday) {
         html += '<p style="color:#666;">কোনো রুটিন নেই</p>';
     }
     html += '</div>';
+    
+    // Tomorrow's Routine
     html += `<div class="tomorrow-routine-card"><h3>📅 আগামীকালের রুটিন (${tomorrowName})</h3>`;
+    let hasTomorrow = false;
     if (allRoutines[tomorrowName]) {
         for (let cls in allRoutines[tomorrowName]) {
-            html += `<p><strong>${cls}:</strong> ${allRoutines[tomorrowName][cls]}</p>`;
+            if (allRoutines[tomorrowName][cls]) {
+                html += `<p><strong>${cls}:</strong> ${allRoutines[tomorrowName][cls]}</p>`;
+                hasTomorrow = true;
+            }
         }
-    } else {
+    }
+    if (!hasTomorrow) {
         html += '<p style="color:#666;">কোনো রুটিন নেই</p>';
     }
     html += '</div>';
+    
     html += '</div>';
     container.innerHTML = html;
 }
@@ -737,7 +788,14 @@ function renderRoutineModal() {
     container.innerHTML = html;
 }
 
-document.getElementById('saveAllRoutinesBtn').addEventListener('click', () => {
+// Auto save routine on input change
+document.addEventListener('input', function(e) {
+    if (e.target.classList.contains('routine-input')) {
+        saveRoutineAutomatically();
+    }
+});
+
+function saveRoutineAutomatically() {
     const inputs = document.querySelectorAll('.routine-input');
     const routineData = {};
     inputs.forEach(input => {
@@ -747,9 +805,12 @@ document.getElementById('saveAllRoutinesBtn').addEventListener('click', () => {
         if (!routineData[day]) routineData[day] = {};
         routineData[day][cls] = value;
     });
-    db.ref('routines').set(routineData).then(() => {
-        alert('রুটিন সংরক্ষণ করা হয়েছে');
-    });
+    db.ref('routines').set(routineData);
+}
+
+document.getElementById('saveAllRoutinesBtn').addEventListener('click', () => {
+    saveRoutineAutomatically();
+    alert('✅ রুটিন সংরক্ষণ করা হয়েছে');
 });
 
 // ============================================================
@@ -762,16 +823,9 @@ function setupAttendance() {
         dateInput.value = today;
         currentAttendanceDate = today;
     }
-    const classSelect = document.getElementById('attendanceClassSelect');
-    if (classSelect) {
-        classSelect.innerHTML = '';
-        allClasses.forEach(cls => {
-            const option = document.createElement('option');
-            option.value = cls;
-            option.textContent = cls;
-            classSelect.appendChild(option);
-        });
-    }
+    
+    populateAttendanceClassSelect();
+    
     if (currentRole === 'student') {
         const studentSection = document.getElementById('studentHistorySection');
         if (studentSection) studentSection.style.display = 'block';
@@ -838,19 +892,31 @@ function loadStudentAttendance(className, date) {
     section.style.display = 'block';
 }
 
-document.getElementById('saveAttendanceBtn').addEventListener('click', () => {
+// Auto save attendance on toggle
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('attendance-checkbox')) {
+        saveAttendanceAutomatically();
+    }
+});
+
+function saveAttendanceAutomatically() {
     const checkboxes = document.querySelectorAll('.attendance-checkbox');
     const className = document.getElementById('attendanceClassSelect').value;
     const date = document.getElementById('attendanceDate').value;
+    if (!className || !date) return;
+    
     const attKey = `${className}_${date}`;
     const attData = {};
     checkboxes.forEach(cb => {
         const studentKey = cb.dataset.student;
         attData[studentKey] = cb.checked;
     });
-    db.ref('attendance/' + attKey).set(attData).then(() => {
-        alert('উপস্থিতি সংরক্ষণ করা হয়েছে');
-    });
+    db.ref('attendance/' + attKey).set(attData);
+}
+
+document.getElementById('saveAttendanceBtn').addEventListener('click', () => {
+    saveAttendanceAutomatically();
+    alert('✅ উপস্থিতি সংরক্ষণ করা হয়েছে');
 });
 
 function renderStudentAttendance() {
@@ -1139,7 +1205,9 @@ function submitFeedback() {
     db.ref('feedback').push(feedback).then(() => {
         const input = document.getElementById('feedbackText');
         if (input) input.value = '';
-        alert('মতামত পাঠানো হয়েছে');
+        alert('✅ মতামত পাঠানো হয়েছে');
+    }).catch((error) => {
+        alert('❌ পাঠাতে সমস্যা হয়েছে: ' + error.message);
     });
 }
 
@@ -1187,7 +1255,7 @@ function renderFeedbackList() {
 }
 
 // ============================================================
-// SOCIAL FEED
+// SOCIAL FEED - FIXED AUTO SAVE
 // ============================================================
 document.getElementById('feedImageInput')?.addEventListener('change', function(e) {
     const files = e.target.files;
@@ -1215,18 +1283,25 @@ window.publishPost = function() {
         alert('কিছু লিখুন বা ছবি নির্বাচন করুন');
         return;
     }
+    
+    if (!currentUser) {
+        alert('আপনি লগইন করেননি');
+        return;
+    }
+    
     const post = {
         caption: caption,
         images: feedImages,
         user: currentUser,
-        userName: userNameDisplay.textContent,
-        role: currentRole,
+        userName: userNameDisplay.textContent || 'ব্যবহারকারী',
+        role: currentRole || 'ছাত্র',
         timestamp: Date.now(),
         date: new Date().toISOString().split('T')[0],
         likes: 0,
         likedBy: {},
         comments: {}
     };
+    
     const ref = db.ref('feed').push();
     ref.set(post).then(() => {
         const captionInput = document.getElementById('feedCaption');
@@ -1236,7 +1311,9 @@ window.publishPost = function() {
         feedImages = [];
         const fileInput = document.getElementById('feedImageInput');
         if (fileInput) fileInput.value = '';
-        alert('পোস্ট প্রকাশিত হয়েছে');
+        alert('✅ পোস্ট প্রকাশিত হয়েছে');
+    }).catch((error) => {
+        alert('❌ পোস্ট করতে সমস্যা হয়েছে: ' + error.message);
     });
 };
 
@@ -1247,7 +1324,7 @@ function renderSocialFeed() {
     for (let key in feedData) {
         posts.push({ key, data: feedData[key] });
     }
-    posts.sort((a, b) => b.data.timestamp - a.data.timestamp);
+    posts.sort((a, b) => (b.data.timestamp || 0) - (a.data.timestamp || 0));
     if (posts.length === 0) {
         container.innerHTML = '<p style="color:#888; text-align:center;">কোনো পোস্ট নেই</p>';
         return;
@@ -1316,9 +1393,13 @@ function addComment(postKey) {
         alert('মন্তব্য লিখুন');
         return;
     }
+    if (!currentUser) {
+        alert('আপনি লগইন করেননি');
+        return;
+    }
     const comment = {
         user: currentUser,
-        userName: userNameDisplay.textContent,
+        userName: userNameDisplay.textContent || 'ব্যবহারকারী',
         text: text,
         date: new Date().toISOString().split('T')[0],
         timestamp: Date.now()
@@ -1326,10 +1407,16 @@ function addComment(postKey) {
     const ref = db.ref(`feed/${postKey}/comments`).push();
     ref.set(comment).then(() => {
         input.value = '';
+    }).catch((error) => {
+        alert('❌ মন্তব্য করতে সমস্যা হয়েছে: ' + error.message);
     });
 }
 
 function likePost(postKey) {
+    if (!currentUser) {
+        alert('আপনি লগইন করেননি');
+        return;
+    }
     const postRef = db.ref(`feed/${postKey}`);
     postRef.transaction((currentData) => {
         if (currentData === null) return currentData;
@@ -1372,7 +1459,7 @@ document.getElementById('aboutUsBtn')?.addEventListener('click', () => {
 // SAVE CLASS BUTTON
 // ============================================================
 document.getElementById('saveClassBtn')?.addEventListener('click', () => {
-    alert('সব তথ্য ইতিমধ্যে Firebase এ সংরক্ষিত আছে।');
+    alert('✅ সব তথ্য ইতিমধ্যে Firebase এ অটো-সেভ আছে।');
 });
 
 // ============================================================
@@ -1385,4 +1472,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-console.log('মাস্টারমাইন্ড অ্যাকাডেমি সিস্টেম লোড হয়েছে');
+console.log('📚 মাস্টারমাইন্ড অ্যাকাডেমি সিস্টেম লোড হয়েছে');
+console.log('✅ অটো-সেভ সক্রিয় আছে');
+console.log('✅ ড্যাশবোর্ড রুটিন ফিক্সড');
+console.log('✅ সব জায়গায় ক্লাস সিলেক্ট উপলব্ধ');
