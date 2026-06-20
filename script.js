@@ -26,12 +26,32 @@ let attendanceData = {};
 let allStudents = {};
 let allTeachers = {};
 let allRoutines = {};
-let allClasses = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+let allClasses = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'SSC Special'];
 let feedData = {};
 let feedbackData = {};
 let studentMonthOffset = 0;
 let classMonthOffset = 0;
 let feedImages = [];
+
+// ============================================================
+// SESSION MANAGEMENT (Auto Login)
+// ============================================================
+function saveSession(user, role) {
+    localStorage.setItem('mastermind_user', JSON.stringify({ user, role }));
+}
+
+function getSession() {
+    try {
+        const data = localStorage.getItem('mastermind_user');
+        return data ? JSON.parse(data) : null;
+    } catch {
+        return null;
+    }
+}
+
+function clearSession() {
+    localStorage.removeItem('mastermind_user');
+}
 
 // ============================================================
 // DOM ELEMENTS
@@ -77,27 +97,25 @@ function closeModalOutside(event, modalId) {
 }
 
 // ============================================================
-// LOGIN SYSTEM
+// LOGIN SYSTEM with Auto Login
 // ============================================================
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const id = loginId.value.trim();
-    const password = loginPassword.value.trim();
-    const role = loginRole.value;
-
+function performLogin(id, password, role) {
     if (!id || !password) {
         alert('আইডি এবং পাসওয়ার্ড দিন');
-        return;
+        return false;
     }
 
     if (role === 'admin') {
         if (id === 'admin' && password === 'admin123') {
             currentUser = 'admin';
             currentRole = 'admin';
+            saveSession('admin', 'admin');
             showApp();
             setupAdminUI();
+            return true;
         } else {
             alert('ভুল আইডি বা পাসওয়ার্ড!');
+            return false;
         }
     } else if (role === 'teacher') {
         const teacherRef = db.ref('teachers');
@@ -108,6 +126,7 @@ loginForm.addEventListener('submit', (e) => {
                 if (teachers[key].id === id && teachers[key].password === password) {
                     currentUser = key;
                     currentRole = 'teacher';
+                    saveSession(key, 'teacher');
                     showApp();
                     setupTeacherUI(teachers[key]);
                     found = true;
@@ -118,6 +137,7 @@ loginForm.addEventListener('submit', (e) => {
                 alert('ভুল আইডি বা পাসওয়ার্ড!');
             }
         });
+        return true;
     } else if (role === 'student') {
         const studentRef = db.ref('students');
         studentRef.once('value', (snapshot) => {
@@ -127,6 +147,7 @@ loginForm.addEventListener('submit', (e) => {
                 if (students[key].id === id && students[key].password === password) {
                     currentUser = key;
                     currentRole = 'student';
+                    saveSession(key, 'student');
                     showApp();
                     setupStudentUI(students[key]);
                     found = true;
@@ -137,7 +158,56 @@ loginForm.addEventListener('submit', (e) => {
                 alert('ভুল আইডি বা পাসওয়ার্ড!');
             }
         });
+        return true;
     }
+    return false;
+}
+
+// Check for existing session on page load
+function checkSession() {
+    const session = getSession();
+    if (session) {
+        const { user, role } = session;
+        currentUser = user;
+        currentRole = role;
+        
+        if (role === 'admin') {
+            showApp();
+            setupAdminUI();
+        } else if (role === 'teacher') {
+            db.ref('teachers/' + user).once('value', (snapshot) => {
+                const teacherData = snapshot.val();
+                if (teacherData) {
+                    showApp();
+                    setupTeacherUI(teacherData);
+                } else {
+                    clearSession();
+                    loginScreen.style.display = 'flex';
+                }
+            });
+        } else if (role === 'student') {
+            db.ref('students/' + user).once('value', (snapshot) => {
+                const studentData = snapshot.val();
+                if (studentData) {
+                    showApp();
+                    setupStudentUI(studentData);
+                } else {
+                    clearSession();
+                    loginScreen.style.display = 'flex';
+                }
+            });
+        }
+        return true;
+    }
+    return false;
+}
+
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const id = loginId.value.trim();
+    const password = loginPassword.value.trim();
+    const role = loginRole.value;
+    performLogin(id, password, role);
 });
 
 function showApp() {
@@ -169,6 +239,13 @@ function loadAllData() {
         if (currentRole === 'student' && currentUser) {
             renderStudentInfo(allStudents[currentUser]);
         }
+        // Update teacher's student view
+        if (currentRole === 'teacher' && allTeachers[currentUser]) {
+            const classes = allTeachers[currentUser].classes || [];
+            if (classes.length > 0) {
+                renderTeacherClassStudents(classes[0]);
+            }
+        }
     });
 
     db.ref('routines').on('value', (snapshot) => {
@@ -193,6 +270,9 @@ function loadAllData() {
         attendanceData = snapshot.val() || {};
         if (currentRole === 'student' && currentUser) {
             renderStudentAttendance();
+        }
+        if (currentRole === 'teacher') {
+            renderClassMonthlyCalendar();
         }
     });
 }
@@ -292,6 +372,7 @@ document.getElementById('menuStudentFeedback').addEventListener('click', () => {
 
 document.getElementById('menuLogout').addEventListener('click', () => {
     if (confirm('আপনি কি লগআউট করতে চান?')) {
+        clearSession();
         location.reload();
     }
     dropdownMenu.classList.remove('show');
@@ -394,13 +475,15 @@ function renderClassStudents(className) {
         container.innerHTML = '<p style="color:#888; text-align:center;">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
         return;
     }
-    let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
+    let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>গ্রুপ</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for (let key in students) {
         const s = students[key];
         html += `<tr>
             <td><img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"></td>
             <td>${s.name}</td>
             <td>${s.id}</td>
+            <td>${s.class}</td>
+            <td>${s.group ? `<span class="student-group-tag">${s.group}</span>` : '-'}</td>
             <td>${s.guardianPhone || ''}</td>
             <td><button class="btn btn-red btn-sm" onclick="deleteStudent('${key}')">মুছুন</button></td>
         </tr>`;
@@ -416,13 +499,15 @@ function deleteStudent(key) {
 }
 
 // ============================================================
-// ADD STUDENT
+// ADD STUDENT with Group
 // ============================================================
 document.getElementById('addCousinBtn').addEventListener('click', () => {
     const name = document.getElementById('cousinName').value.trim();
     const id = document.getElementById('cousinId').value.trim();
     const password = document.getElementById('cousinPass').value.trim();
+    const group = document.getElementById('cousinGroup').value;
     const guardianPhone = document.getElementById('cousinGuardianPhone').value.trim();
+    
     if (!name || !id || !password) {
         alert('নাম, আইডি এবং পাসওয়ার্ড দিন');
         return;
@@ -431,19 +516,30 @@ document.getElementById('addCousinBtn').addEventListener('click', () => {
         alert('ক্লাস নির্বাচন করুন');
         return;
     }
+    
+    // Check if class is Nine, Ten, or SSC Special - then group is required
+    const needsGroup = ['Nine', 'Ten', 'SSC Special'].includes(selectedClass);
+    if (needsGroup && !group) {
+        alert('এই ক্লাসের জন্য গ্রুপ নির্বাচন করা আবশ্যক');
+        return;
+    }
+    
     const newStudent = {
         name: name,
         id: id,
         password: password,
         class: selectedClass,
+        group: group || '',
         guardianPhone: guardianPhone || '',
         image: document.getElementById('studentImagePreview').src
     };
+    
     const ref = db.ref('students').push();
     ref.set(newStudent).then(() => {
         document.getElementById('cousinName').value = '';
         document.getElementById('cousinId').value = '';
         document.getElementById('cousinPass').value = '';
+        document.getElementById('cousinGroup').value = '';
         document.getElementById('cousinGuardianPhone').value = '';
         alert('ছাত্র/ছাত্রী যোগ করা হয়েছে');
     });
@@ -457,6 +553,22 @@ document.getElementById('studentImageInput').addEventListener('change', function
             document.getElementById('studentImagePreview').src = event.target.result;
         };
         reader.readAsDataURL(file);
+    }
+});
+
+// Show/hide group field based on class selection
+document.addEventListener('change', function(e) {
+    if (e.target.id === 'cousinClass' || e.target.closest('#classButtons')) {
+        const needsGroup = ['Nine', 'Ten', 'SSC Special'].includes(selectedClass);
+        const groupSelect = document.getElementById('cousinGroup');
+        if (groupSelect) {
+            groupSelect.style.display = needsGroup ? 'block' : 'none';
+            if (needsGroup) {
+                groupSelect.required = true;
+            } else {
+                groupSelect.required = false;
+            }
+        }
     }
 });
 
@@ -682,7 +794,7 @@ function loadStudentAttendance(className, date) {
         const isPresent = attendanceData[attKey] && attendanceData[attKey][key] === true;
         html += `<div class="student-att-row">
             <img src="${student.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(student.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
-            <span style="flex:1;">${student.name}</span>
+            <span style="flex:1;">${student.name} ${student.group ? '(' + student.group + ')' : ''}</span>
             <span style="font-size:12px; color:#888;">${student.id}</span>
             <label class="toggle-switch">
                 <input type="checkbox" class="attendance-checkbox" data-student="${key}" ${isPresent ? 'checked' : ''}>
@@ -852,7 +964,7 @@ function changeClassMonth(delta) {
 }
 
 // ============================================================
-// STUDENT INFO
+// STUDENT INFO with Group
 // ============================================================
 function renderStudentInfo(studentData) {
     const card = document.getElementById('studentClassInfo');
@@ -860,6 +972,7 @@ function renderStudentInfo(studentData) {
     card.style.display = 'block';
     document.getElementById('studentNameDisplay').textContent = studentData.name;
     document.getElementById('studentClassDisplay').textContent = studentData.class;
+    document.getElementById('studentGroupDisplay').textContent = studentData.group || '-';
     document.getElementById('studentIdDisplay').textContent = studentData.id;
 }
 
@@ -920,6 +1033,7 @@ function renderTeacherClassStudents(className) {
             <img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #f5b042;">
             <p style="margin-top:5px;"><strong>${s.name}</strong></p>
             <p style="font-size:12px; color:#888;">${s.id}</p>
+            ${s.group ? `<p style="font-size:11px; color:#1e267b;">📚 ${s.group}</p>` : ''}
         </div>`;
     }
     html += '</div>';
@@ -938,7 +1052,7 @@ function renderStudentFeedbackArea() {
     }
     const student = allStudents[currentUser];
     const className = student.class;
-    let html = `<p style="margin-bottom:15px;"><strong>আপনার ক্লাস:</strong> ${className}</p>
+    let html = `<p style="margin-bottom:15px;"><strong>আপনার ক্লাস:</strong> ${className} ${student.group ? '(' + student.group + ')' : ''}</p>
         <div style="background:#f9f5ed; padding:15px; border-radius:20px;">
             <textarea id="feedbackText" rows="3" placeholder="আপনার মতামত লিখুন..." style="width:100%; border-radius:15px;"></textarea>
             <button class="btn btn-orange" onclick="submitFeedback()" style="margin-top:10px;"><i class="fas fa-paper-plane"></i> পাঠান</button>
@@ -985,6 +1099,7 @@ function submitFeedback() {
         studentId: student.id,
         studentName: student.name,
         className: student.class,
+        group: student.group || '',
         text: text,
         date: new Date().toISOString().split('T')[0]
     };
@@ -1026,7 +1141,7 @@ function renderFeedbackList() {
         if (filter !== 'all' && fb.className !== filter) continue;
         count++;
         html += `<div class="feedback-item">
-            <p><strong>${fb.studentName}</strong> (${fb.className})</p>
+            <p><strong>${fb.studentName}</strong> (${fb.className}${fb.group ? ' - ' + fb.group : ''})</p>
             <p>${fb.text}</p>
             <p style="font-size:11px; color:#888;">${fb.date || ''}</p>
             <button class="delete-btn" onclick="deleteFeedback('${key}')">মুছুন</button>
@@ -1228,6 +1343,13 @@ document.getElementById('saveClassBtn')?.addEventListener('click', () => {
 });
 
 // ============================================================
-// INITIALIZATION
+// AUTO LOGIN CHECK - Run on page load
 // ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    const hasSession = checkSession();
+    if (!hasSession) {
+        loginScreen.style.display = 'flex';
+    }
+});
+
 console.log('মাস্টারমাইন্ড অ্যাকাডেমি সিস্টেম লোড হয়েছে');
