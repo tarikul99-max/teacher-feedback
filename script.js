@@ -1,6 +1,6 @@
 /* ==================== SOCIAL CARDS ==================== */
 .social-card {
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef); /* হালকা গ্রে */
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     padding: 16px;
     border-radius: 24px;
     margin-bottom: 16px;
@@ -22,13 +22,13 @@
     justify-content: center;
     align-items: center;
     z-index: 100;
-    background: rgba(0, 0, 0, 0.5); /* ডার্ক ওভারলে */
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(3px);
     padding: 16px;
 }
 
 .login-card {
-    background: linear-gradient(145deg, #1a237e, #0d1442); /* নীল শেড */
+    background: linear-gradient(145deg, #1a237e, #0d1442);
     backdrop-filter: blur(2px);
     padding: 30px 24px;
     border-radius: 48px;
