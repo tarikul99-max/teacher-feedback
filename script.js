@@ -106,7 +106,7 @@ function performLogin(id, password, role) {
     }
 
     if (role === 'admin') {
-        if (id === 'admin' && password === 'admin123') {
+        if (id === 'admin' && password === 'ami-') {
             currentUser = 'admin';
             currentRole = 'admin';
             saveSession('admin', 'admin');
