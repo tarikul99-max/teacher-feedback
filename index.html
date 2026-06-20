@@ -9,17 +9,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- BG SLIDESHOW -->
-<div class="bg-slideshow" id="bgSlideshow">
-    <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format');"></div>
-    <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format');"></div>
-    <div class="bg-slide" style="background-image: url('master01.jpg');"></div>
-    <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2032&auto=format');"></div>
-    <div class="bg-slide" style="background-image: url('master03.jpg');"></div>
-    <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=2070&auto=format');"></div>
+
+<!-- ==================== WAVE BACKGROUND ==================== -->
+<div class="wave-container">
+    <div class="gradient-bg"></div>
+    <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800" preserveAspectRatio="none">
+        <defs>
+            <linearGradient id="neon-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00ffaa" stop-opacity="0.8"/>
+                <stop offset="50%" stop-color="#00b36b" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#003322" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="cyan-glow" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.9"/>
+                <stop offset="60%" stop-color="#008080" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#001a1a" stop-opacity="0"/>
+            </linearGradient>
+        </defs>
+        <path fill="url(#neon-green)" d="M0,200 C300,100 600,400 900,150 C1200,-100 1350,100 1440,50 L1440,800 L0,800 Z"></path>
+        <path fill="url(#cyan-glow)" d="M0,350 C400,200 700,550 1100,300 C1300,180 1400,320 1440,300 L1440,800 L0,800 Z"></path>
+        <path fill="rgba(0, 255, 127, 0.3)" d="M0,150 C200,80 500,300 800,200 C1100,100 1300,250 1440,180 L1440,800 L0,800 Z"></path>
+    </svg>
 </div>
 
-<!-- LOGIN SCREEN -->
+<!-- ==================== LOGIN SCREEN ==================== -->
 <div id="loginScreen" class="login-screen">
     <div class="login-card">
         <div align="center">
@@ -36,11 +49,11 @@
             <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
             <button type="submit"><i class="fas fa-arrow-right-to-bracket"></i> প্রবেশ করুন</button>
         </form>
-        <p style="margin-top:12px; font-size:11px; color:#e69b00;"><strong>If you forget your <b>Password</b> and <b>ID</b>, please contect to the office. Don't give your <b>Password</b> and <b>ID</b> to anyone else. </b></strong></p>
+        <p style="margin-top:12px; font-size:11px; color:rgba(255,255,255,0.7);"><strong>If you forget your <b>Password</b> and <b>ID</b>, please contect to the office. Don't give your <b>Password</b> and <b>ID</b> to anyone else.</strong></p>
     </div>
 </div>
 
-<!-- APP CONTAINER -->
+<!-- ==================== APP CONTAINER ==================== -->
 <div id="appContainer" class="app-container">
     <div class="navbar">
         <div class="logo-area">
@@ -68,7 +81,7 @@
     </div>
 
     <div class="content">
-        <!-- DASHBOARD PANEL -->
+        <!-- ==================== DASHBOARD PANEL ==================== -->
         <div id="dashboardPanel" class="panel active-panel">
             <div class="dashboard-header">
                 <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
@@ -84,10 +97,10 @@
                 <p><strong>আইডি:</strong> <span id="studentIdDisplay"></span></p>
             </div>
             
-            <!-- ছাত্রের নিজস্ব রুটিন দেখানোর জন্য -->
+            <!-- ছাত্রের নিজস্ব রুটিন -->
             <div id="studentOwnRoutine" style="display: none; margin: 20px 0;">
                 <h2><i class="fas fa-calendar-alt"></i> আমার রুটিন</h2>
-                <div id="studentRoutineDisplay" class="routine-card" style="background: linear-gradient(135deg, #fef9ef, #ffffff); padding:20px; border-radius:20px; border:1px solid rgba(245,176,66,0.3);"></div>
+                <div id="studentRoutineDisplay" class="routine-card" style="background: rgba(255,255,255,0.05); padding:20px; border-radius:20px; border:1px solid rgba(255,255,255,0.05);"></div>
             </div>
             
             <div id="todayTomorrowRoutine"></div>
@@ -112,13 +125,13 @@
             </div>
         </div>
         
-        <!-- STUDENT FEEDBACK PANEL -->
+        <!-- ==================== STUDENT FEEDBACK PANEL ==================== -->
         <div id="studentPanel" class="panel">
             <h2><i class="fas fa-comment-dots"></i> শিক্ষকদের মতামত দিন</h2>
             <div id="studentFeedbackArea"></div>
         </div>
         
-        <!-- TEACHER PANEL -->
+        <!-- ==================== TEACHER PANEL ==================== -->
         <div id="teacherPanel" class="panel">
             <h2><i class="fas fa-chalkboard"></i> শিক্ষক ড্যাশবোর্ড</h2>
             <div id="teacherProfileArea"></div>
@@ -126,10 +139,10 @@
             <div id="teacherClassStudents"></div>
         </div>
         
-        <!-- ADMIN TEACHERS PANEL -->
+        <!-- ==================== ADMIN TEACHERS PANEL ==================== -->
         <div id="adminTeachersPanel" class="panel">
             <h2><i class="fas fa-user-plus"></i> শিক্ষক তৈরি করুন</h2>
-            <div style="background:#f7fafc; padding:16px; border-radius:28px; margin-bottom:20px;">
+            <div style="background:rgba(255,255,255,0.03); padding:16px; border-radius:28px; margin-bottom:20px; border:1px solid rgba(255,255,255,0.05);">
                 <div style="text-align:center;">
                     <img id="teacherImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=শিক্ষক">
                     <label class="file-input-label"><i class="fas fa-camera"></i> ছবি <input type="file" id="teacherImageInput" accept="image/*" style="display:none;"></label>
@@ -144,11 +157,11 @@
             <div class="table-responsive"><div id="teachersTable"></div></div>
         </div>
         
-        <!-- ADMIN CLASS PANEL -->
+        <!-- ==================== ADMIN CLASS PANEL ==================== -->
         <div id="adminClassPanel" class="panel">
             <h2>ক্লাস ম্যানেজার</h2>
             <div id="classButtons" class="class-buttons-container"></div>
-            <div style="background:#f9f5ed; padding:16px; border-radius:28px; margin-top:20px;">
+            <div style="background:rgba(255,255,255,0.03); padding:16px; border-radius:28px; margin-top:20px; border:1px solid rgba(255,255,255,0.05);">
                 <h3>➕ ছাত্র/ছাত্রী যোগ করুন - <span id="selectedClassName">ক্লাস নির্বাচন করুন</span></h3>
                 <div style="text-align:center;">
                     <img id="studentImagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=ছাত্র">
@@ -158,16 +171,16 @@
                 <input type="text" id="cousinId" placeholder="আইডি *">
                 <input type="text" id="cousinPass" placeholder="পাসওয়ার্ড *">
                 
-                <!-- গ্রুপ ফিল্ড - সব ক্লাসের জন্য দেখাবে -->
+                <!-- গ্রুপ ফিল্ড -->
                 <div id="groupFieldContainer" style="margin-bottom:8px;">
                     <select id="cousinGroup" style="width:100%;">
                         <option value="">গ্রুপ নির্বাচন করুন</option>
                         <option value="Science">🔬 বিজ্ঞান</option>
                         <option value="Commerce">💼 বাণিজ্য</option>
-                        <option value="Arts">⚖️ মানবিক</option>
+                        <option value="Arts">🎨 মানবিক</option>
                         <option value="SSC Special">🎯 এসএসসি স্পেশাল</option>
                     </select>
-                    <small id="groupRequiredMsg" style="color:#888; font-size:11px;">গ্রুপ নির্বাচন ঐচ্ছিক (শুধু Nine, Ten, SSC Special এর জন্য আবশ্যক)</small>
+                    <small id="groupRequiredMsg" style="color:rgba(255,255,255,0.5); font-size:11px;">গ্রুপ নির্বাচন ঐচ্ছিক (শুধু Nine, Ten, SSC Special এর জন্য আবশ্যক)</small>
                 </div>
                 
                 <input type="tel" id="cousinGuardianPhone" placeholder="অভিভাবকের মোবাইল (+8801XXXXXXXXX)">
@@ -177,7 +190,7 @@
             <div class="table-responsive"><div id="classStudentsTable"></div></div>
         </div>
         
-        <!-- ATTENDANCE PANEL -->
+        <!-- ==================== ATTENDANCE PANEL ==================== -->
         <div id="attendancePanel" class="panel">
             <h2><i class="fas fa-calendar-alt"></i> অ্যাটেন্ডেন্স</h2>
             <div id="studentHistorySection" class="attendance-card" style="display: none;">
@@ -194,7 +207,7 @@
                             <option value="all">সব গ্রুপ</option>
                             <option value="Science">🔬 বিজ্ঞান</option>
                             <option value="Commerce">💼 বাণিজ্য</option>
-                            <option value="Arts">⚖️ মানবিক</option>
+                            <option value="Arts">🎨 মানবিক</option>
                             <option value="SSC Special">🎯 এসএসসি স্পেশাল</option>
                         </select>
                         <input type="date" id="attendanceDate" style="flex:1; min-width:150px; margin-bottom: 0;">
@@ -214,21 +227,19 @@
             </div>
         </div>
         
-        <!-- ADMIN FEEDBACK PANEL -->
+        <!-- ==================== ADMIN FEEDBACK PANEL ==================== -->
         <div id="adminFeedbackPanel" class="panel">
             <h2><i class="fas fa-archive"></i> সকল মতামত</h2>
             <select id="feedbackClassFilter" style="margin-bottom:15px;"></select>
             <div id="feedbackList"></div>
         </div>
         
-        <!-- ADMIN ROUTINE PANEL -->
+        <!-- ==================== ADMIN ROUTINE PANEL ==================== -->
         <div id="adminRoutinePanel" class="panel">
             <h2><i class="fas fa-calendar-edit"></i> রুটিন ম্যানেজার</h2>
-            <div style="background:#f9f5ed; padding:15px; border-radius:20px; margin-bottom:15px;">
+            <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:20px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.05);">
                 <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-                    <select id="routineClassSelect" style="flex:1; min-width:150px; margin-bottom:0;">
-                        <!-- ক্লাস অপশন JS দিয়ে যোগ হবে -->
-                    </select>
+                    <select id="routineClassSelect" style="flex:1; min-width:150px; margin-bottom:0;"></select>
                     <select id="routineDaySelect" style="flex:1; min-width:150px; margin-bottom:0;">
                         <option value="Sunday">রবিবার</option>
                         <option value="Monday">সোমবার</option>
@@ -242,7 +253,7 @@
                         <option value="">সব গ্রুপ</option>
                         <option value="Science">🔬 বিজ্ঞান</option>
                         <option value="Commerce">💼 বাণিজ্য</option>
-                        <option value="Arts">⚖️ মানবিক</option>
+                        <option value="Arts">🎨 মানবিক</option>
                         <option value="SSC Special">🎯 এসএসসি স্পেশাল</option>
                     </select>
                 </div>
@@ -251,13 +262,13 @@
             <button class="btn btn-green" id="saveAllRoutinesBtn"><i class="fas fa-save"></i> সব রুটিন সংরক্ষণ করুন</button>
         </div>
         
-        <!-- SOCIAL FEED PANEL -->
+        <!-- ==================== SOCIAL FEED PANEL ==================== -->
         <div id="socialFeedPanel" class="panel">
             <h2><i class="fas fa-comments"></i> সোশ্যাল কানেক্টিভিটি</h2>
-            <div style="background:#f9f5ed; padding:15px; border-radius:20px; margin-bottom:15px;">
+            <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:20px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.05);">
                 <textarea id="feedCaption" rows="2" placeholder="আপনার মনের কথা লিখুন..." style="width:100%; border-radius:15px;"></textarea>
                 <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; align-items:center;">
-                    <label style="background:#eef2f5; padding:8px 15px; border-radius:30px; cursor:pointer;">
+                    <label style="background:rgba(255,255,255,0.05); padding:8px 15px; border-radius:30px; cursor:pointer; color:rgba(255,255,255,0.7);">
                         <i class="fas fa-image"></i> নির্বাচন করুন
                         <input type="file" id="feedImageInput" accept="image/*,video/*" multiple style="display:none;">
                     </label>
@@ -268,15 +279,15 @@
             <div id="socialFeedContainer" style="margin-top: 20px;"></div>
         </div>
     </div>
-    <footer style="text-align:center; padding:16px; color:#666;">© মাস্টারমাইন্ড অ্যাকাডেমি</footer>
+    <footer style="text-align:center; padding:16px; color:rgba(255,255,255,0.3);">© মাস্টারমাইন্ড অ্যাকাডেমি</footer>
 </div>
 
-<!-- RESULT MODAL -->
+<!-- ==================== RESULT MODAL ==================== -->
 <div id="resultModal" class="result-modal" onclick="closeModalOutside(event, 'resultModal')">
     <div class="results-card" onclick="event.stopPropagation()">
-        <i class="fas fa-chart-simple" style="font-size:48px; color:#c3b043;"></i><br>
+        <i class="fas fa-chart-simple" style="font-size:48px; color:#00ffd5;"></i><br>
         <div class="btn-aca-result">
-            <h3>📊 <a href="about.html" target="_blank" style="text-decoration:none; color:inherit;">একাডেমিক ফলাফল</a></h3>
+            <h3>📊 <a href="result.html" target="_blank" style="text-decoration:none; color:inherit;">একাডেমিক ফলাফল</a></h3>
         </div>        
         <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
         <p style="margin-bottom:20px;">ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।</p>
@@ -285,10 +296,10 @@
     </div>
 </div>
 
-<!-- ABOUT MODAL -->
+<!-- ==================== ABOUT MODAL ==================== -->
 <div id="aboutModal" class="about-modal" onclick="closeModalOutside(event, 'aboutModal')">
     <div class="about-card" onclick="event.stopPropagation()">
-        <i class="fas fa-school" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
+        <i class="fas fa-school" style="font-size:48px; color:#00ffd5; display:block; text-align:center;"></i>
         <h2 style="text-align:center;">মাস্টারমাইন্ড অ্যাকাডেমি</h2>
         <p style="margin:15px 0;">আধুনিক শিক্ষাপ্রতিষ্ঠান যা মানসম্মত শিক্ষা ও প্রযুক্তিনির্ভর ক্লাসরুম ব্যবস্থাপনায় অনন্য।</p>
         <p><strong>📍 ঠিকানা:</strong> পেকুয়া, কক্সবাজার</p>
@@ -297,16 +308,17 @@
     </div>
 </div>
 
-<!-- ROUTINE MODAL -->
+<!-- ==================== ROUTINE MODAL ==================== -->
 <div id="routineModal" class="routine-modal" onclick="closeModalOutside(event, 'routineModal')">
     <div class="routine-card" onclick="event.stopPropagation()">
-        <i class="fas fa-calendar-week" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
+        <i class="fas fa-calendar-week" style="font-size:48px; color:#00ffd5; display:block; text-align:center;"></i>
         <h2 style="text-align:center;">📅 ক্লাস রুটিন</h2>
         <div id="routineContent"></div>
         <button class="btn btn-orange" onclick="document.getElementById('routineModal').style.display='none'">বন্ধ করুন</button>
     </div>
 </div>
 
+<!-- ==================== SCRIPTS ==================== -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script src="script.js"></script>
