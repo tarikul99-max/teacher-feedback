@@ -10,7 +10,6 @@ const firebaseConfig = {
     appId: "1:284949876238:web:d6a8cde91411a033e9f65f"
 };
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
@@ -31,12 +30,14 @@ let feedbackData = {};
 let studentMonthOffset = 0;
 let classMonthOffset = 0;
 let feedImages = [];
+let selectedRoutineClass = null;
+let selectedRoutineDay = 'Sunday';
 
 // গ্রুপ প্রয়োজন এমন ক্লাস
 const GROUP_REQUIRED_CLASSES = ['Nine', 'Ten', 'SSC Special'];
 
 // ============================================================
-// SESSION MANAGEMENT (Auto Login)
+// SESSION MANAGEMENT
 // ============================================================
 function saveSession(user, role) {
     localStorage.setItem('mastermind_user', JSON.stringify({ user, role }));
@@ -129,7 +130,39 @@ function toggleGroupField(className) {
 }
 
 // ============================================================
-// LOGIN SYSTEM with Auto Login
+// TOGGLE ROUTINE GROUP FIELD
+// ============================================================
+function toggleRoutineGroupField(className) {
+    const groupSelect = document.getElementById('routineGroupSelect');
+    if (!groupSelect) return;
+    
+    if (isGroupRequired(className)) {
+        groupSelect.style.display = 'block';
+        groupSelect.required = true;
+    } else {
+        groupSelect.style.display = 'none';
+        groupSelect.required = false;
+        groupSelect.value = '';
+    }
+}
+
+// ============================================================
+// TOGGLE ATTENDANCE GROUP FIELD
+// ============================================================
+function toggleAttendanceGroupField(className) {
+    const groupSelect = document.getElementById('attendanceGroupSelect');
+    if (!groupSelect) return;
+    
+    if (isGroupRequired(className)) {
+        groupSelect.style.display = 'block';
+    } else {
+        groupSelect.style.display = 'none';
+        groupSelect.value = 'all';
+    }
+}
+
+// ============================================================
+// LOGIN SYSTEM
 // ============================================================
 function performLogin(id, password, role) {
     if (!id || !password) {
@@ -195,7 +228,6 @@ function performLogin(id, password, role) {
     return false;
 }
 
-// Check for existing session on page load
 function checkSession() {
     const session = getSession();
     if (session) {
@@ -252,10 +284,9 @@ function showApp() {
 }
 
 // ============================================================
-// LOAD ALL DATA - AUTO SAVE ENABLED
+// LOAD ALL DATA
 // ============================================================
 function loadAllData() {
-    // Teachers - Auto save
     db.ref('teachers').on('value', (snapshot) => {
         allTeachers = snapshot.val() || {};
         renderTeachers();
@@ -263,7 +294,6 @@ function loadAllData() {
         renderTeacherGrid();
     });
 
-    // Students - Auto save
     db.ref('students').on('value', (snapshot) => {
         allStudents = snapshot.val() || {};
         renderClassButtons();
@@ -280,9 +310,9 @@ function loadAllData() {
             }
         }
         populateAttendanceClassSelect();
+        populateRoutineClassSelect();
     });
 
-    // Routines - Auto save
     db.ref('routines').on('value', (snapshot) => {
         allRoutines = snapshot.val() || {};
         renderTodayTomorrowRoutine();
@@ -290,20 +320,17 @@ function loadAllData() {
         renderRoutineModal();
     });
 
-    // Feed - Auto save
     db.ref('feed').on('value', (snapshot) => {
         feedData = snapshot.val() || {};
         renderSocialFeed();
     });
 
-    // Feedback - Auto save
     db.ref('feedback').on('value', (snapshot) => {
         feedbackData = snapshot.val() || {};
         renderFeedbackList();
         renderStudentFeedbackArea();
     });
 
-    // Attendance - Auto save
     db.ref('attendance').on('value', (snapshot) => {
         attendanceData = snapshot.val() || {};
         if (currentRole === 'student' && currentUser) {
@@ -316,7 +343,7 @@ function loadAllData() {
 }
 
 // ============================================================
-// POPULATE ATTENDANCE CLASS SELECT
+// POPULATE SELECTS
 // ============================================================
 function populateAttendanceClassSelect() {
     const classSelect = document.getElementById('attendanceClassSelect');
@@ -333,6 +360,29 @@ function populateAttendanceClassSelect() {
     if (selectedValue && allClasses.includes(selectedValue)) {
         classSelect.value = selectedValue;
     }
+    
+    // টগল গ্রুপ ফিল্ড
+    toggleAttendanceGroupField(classSelect.value);
+}
+
+function populateRoutineClassSelect() {
+    const classSelect = document.getElementById('routineClassSelect');
+    if (!classSelect) return;
+    
+    const selectedValue = classSelect.value;
+    classSelect.innerHTML = '';
+    allClasses.forEach(cls => {
+        const option = document.createElement('option');
+        option.value = cls;
+        option.textContent = cls;
+        classSelect.appendChild(option);
+    });
+    if (selectedValue && allClasses.includes(selectedValue)) {
+        classSelect.value = selectedValue;
+    }
+    
+    selectedRoutineClass = classSelect.value;
+    toggleRoutineGroupField(selectedRoutineClass);
 }
 
 // ============================================================
@@ -348,6 +398,7 @@ function setupAdminUI() {
     populateClassCheckboxes();
     populateFeedbackClassFilter();
     populateAttendanceClassSelect();
+    populateRoutineClassSelect();
     setupAttendance();
     toggleGroupField(null);
 }
@@ -422,6 +473,8 @@ document.getElementById('menuFeedback').addEventListener('click', () => {
 document.getElementById('menuRoutineManager').addEventListener('click', () => {
     showPanel('adminRoutinePanel');
     dropdownMenu.classList.remove('show');
+    populateRoutineClassSelect();
+    renderRoutineEditor();
 });
 
 document.getElementById('menuSocialFeed').addEventListener('click', () => {
@@ -450,6 +503,24 @@ document.addEventListener('click', (e) => {
     if (!e.target.closest('.dropdown')) {
         dropdownMenu.classList.remove('show');
     }
+});
+
+// ============================================================
+// ROUTINE CLASS & DAY SELECT CHANGE
+// ============================================================
+document.getElementById('routineClassSelect')?.addEventListener('change', function() {
+    selectedRoutineClass = this.value;
+    toggleRoutineGroupField(selectedRoutineClass);
+    renderRoutineEditor();
+});
+
+document.getElementById('routineDaySelect')?.addEventListener('change', function() {
+    selectedRoutineDay = this.value;
+    renderRoutineEditor();
+});
+
+document.getElementById('attendanceClassSelect')?.addEventListener('change', function() {
+    toggleAttendanceGroupField(this.value);
 });
 
 // ============================================================
@@ -569,7 +640,7 @@ function deleteStudent(key) {
 }
 
 // ============================================================
-// ADD STUDENT with Group Validation - AUTO SAVE
+// ADD STUDENT
 // ============================================================
 document.getElementById('addCousinBtn').addEventListener('click', () => {
     const name = document.getElementById('cousinName').value.trim();
@@ -589,12 +660,8 @@ document.getElementById('addCousinBtn').addEventListener('click', () => {
     
     if (isGroupRequired(selectedClass)) {
         if (!group) {
-            alert('⚠️ এই ক্লাসের জন্য গ্রুপ নির্বাচন আবশ্যক!\n\nগ্রুপ: বিজ্ঞান, বাণিজ্য, মানবিক, বা এসএসসি স্পেশাল');
+            alert('⚠️ এই ক্লাসের জন্য গ্রুপ নির্বাচন আবশ্যক!');
             document.getElementById('cousinGroup').focus();
-            document.getElementById('cousinGroup').style.borderColor = '#e74c3c';
-            setTimeout(() => {
-                document.getElementById('cousinGroup').style.borderColor = '';
-            }, 3000);
             return;
         }
     }
@@ -634,7 +701,7 @@ document.getElementById('studentImageInput').addEventListener('change', function
 });
 
 // ============================================================
-// ADD TEACHER - AUTO SAVE
+// ADD TEACHER
 // ============================================================
 function populateClassCheckboxes() {
     const container = document.getElementById('classCheckboxes');
@@ -693,7 +760,7 @@ document.getElementById('teacherImageInput').addEventListener('change', function
 });
 
 // ============================================================
-// ROUTINE FUNCTIONS - FIXED DASHBOARD
+// ROUTINE FUNCTIONS - SIMPLIFIED
 // ============================================================
 function renderTodayTomorrowRoutine() {
     const container = document.getElementById('todayTomorrowRoutine');
@@ -712,7 +779,9 @@ function renderTodayTomorrowRoutine() {
     if (allRoutines[todayName]) {
         for (let cls in allRoutines[todayName]) {
             if (allRoutines[todayName][cls]) {
-                html += `<p><strong>${cls}:</strong> ${allRoutines[todayName][cls]}</p>`;
+                // গ্রুপ সহ দেখানোর জন্য
+                const displayName = cls;
+                html += `<p><strong>${displayName}:</strong> ${allRoutines[todayName][cls]}</p>`;
                 hasToday = true;
             }
         }
@@ -728,7 +797,8 @@ function renderTodayTomorrowRoutine() {
     if (allRoutines[tomorrowName]) {
         for (let cls in allRoutines[tomorrowName]) {
             if (allRoutines[tomorrowName][cls]) {
-                html += `<p><strong>${cls}:</strong> ${allRoutines[tomorrowName][cls]}</p>`;
+                const displayName = cls;
+                html += `<p><strong>${displayName}:</strong> ${allRoutines[tomorrowName][cls]}</p>`;
                 hasTomorrow = true;
             }
         }
@@ -745,68 +815,163 @@ function renderTodayTomorrowRoutine() {
 function renderRoutineEditor() {
     const container = document.getElementById('routineEditArea');
     if (!container) return;
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    let html = '';
-    days.forEach(day => {
-        html += `<div style="background:#f9f5ed; padding:15px; border-radius:20px; margin-bottom:15px;"><h4 style="margin-bottom:10px;">${day}</h4>`;
-        allClasses.forEach(cls => {
-            const value = allRoutines[day] && allRoutines[day][cls] ? allRoutines[day][cls] : '';
-            html += `<div style="display:flex; gap:10px; margin-bottom:5px; align-items:center;">
-                <span style="min-width:60px; font-weight:bold;">${cls}:</span>
-                <input type="text" class="routine-input" data-day="${day}" data-class="${cls}" value="${value}" placeholder="বিষয় (যেমন: বাংলা, ইংরেজি)" style="flex:1; margin-bottom:0;">
-            </div>`;
-        });
-        html += '</div>';
+    
+    const classSelect = document.getElementById('routineClassSelect');
+    const daySelect = document.getElementById('routineDaySelect');
+    const groupSelect = document.getElementById('routineGroupSelect');
+    
+    if (!classSelect || !daySelect) return;
+    
+    const className = classSelect.value || 'One';
+    const dayName = daySelect.value || 'Sunday';
+    const groupName = groupSelect ? groupSelect.value : '';
+    
+    let html = `<div style="background:#f9f5ed; padding:20px; border-radius:20px;">
+        <h4 style="margin-bottom:15px;">📝 ${className} - ${dayName} ${groupName ? '(' + groupName + ')' : ''}</h4>`;
+    
+    // যদি গ্রুপ প্রয়োজন হয় এবং গ্রুপ সিলেক্ট করা হয়
+    let routineKey = className;
+    if (isGroupRequired(className) && groupName) {
+        routineKey = className + '_' + groupName;
+    }
+    
+    const currentValue = allRoutines[dayName] && allRoutines[dayName][routineKey] ? allRoutines[dayName][routineKey] : '';
+    
+    html += `
+        <div style="display:flex; gap:10px; align-items:center;">
+            <span style="font-weight:bold; min-width:60px;">বিষয়:</span>
+            <input type="text" id="routineSingleInput" value="${currentValue}" placeholder="বিষয় লিখুন (যেমন: বাংলা, ইংরেজি)" style="flex:1; margin-bottom:0;">
+        </div>
+        <p style="font-size:12px; color:#888; margin-top:8px;">
+            <i class="fas fa-info-circle"></i> 
+            ${isGroupRequired(className) ? '⚠️ এই ক্লাসের জন্য গ্রুপ নির্বাচন আবশ্যক' : 'গ্রুপ প্রয়োজন নেই'}
+        </p>
+    `;
+    
+    html += '</div>';
+    
+    // সব রুটিন দেখানোর জন্য টেবিল
+    html += `<div style="margin-top:20px;">
+        <h4>📋 সব রুটিন</h4>
+        <div class="table-responsive">
+            <table class="routine-table">
+                <thead>
+                    <tr>
+                        <th>ক্লাস</th>
+                        <th>গ্রুপ</th>
+                        <th>${dayName}</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+    
+    // সব ক্লাসের জন্য রুটিন দেখান
+    allClasses.forEach(cls => {
+        const isGroupReq = isGroupRequired(cls);
+        if (isGroupReq) {
+            // গ্রুপ সহ ক্লাস
+            ['Science', 'Commerce', 'Arts', 'SSC Special'].forEach(grp => {
+                const key = cls + '_' + grp;
+                const val = allRoutines[dayName] && allRoutines[dayName][key] ? allRoutines[dayName][key] : '-';
+                const isActive = (cls === className && grp === groupName);
+                html += `<tr style="${isActive ? 'background:#fef3c7;' : ''}">
+                    <td>${cls}</td>
+                    <td><span class="student-group-tag">${grp}</span></td>
+                    <td>${val}</td>
+                </tr>`;
+            });
+        } else {
+            // গ্রুপ ছাড়া ক্লাস
+            const val = allRoutines[dayName] && allRoutines[dayName][cls] ? allRoutines[dayName][cls] : '-';
+            const isActive = (cls === className && !groupName);
+            html += `<tr style="${isActive ? 'background:#fef3c7;' : ''}">
+                <td>${cls}</td>
+                <td>-</td>
+                <td>${val}</td>
+            </tr>`;
+        }
     });
+    
+    html += `</tbody></table></div></div>`;
     container.innerHTML = html;
+    
+    // Single input auto save
+    const singleInput = document.getElementById('routineSingleInput');
+    if (singleInput) {
+        singleInput.addEventListener('input', function() {
+            saveSingleRoutine();
+        });
+    }
+}
+
+function saveSingleRoutine() {
+    const classSelect = document.getElementById('routineClassSelect');
+    const daySelect = document.getElementById('routineDaySelect');
+    const groupSelect = document.getElementById('routineGroupSelect');
+    const singleInput = document.getElementById('routineSingleInput');
+    
+    if (!classSelect || !daySelect || !singleInput) return;
+    
+    const className = classSelect.value;
+    const dayName = daySelect.value;
+    const groupName = groupSelect ? groupSelect.value : '';
+    const value = singleInput.value.trim();
+    
+    let routineKey = className;
+    if (isGroupRequired(className) && groupName) {
+        routineKey = className + '_' + groupName;
+    }
+    
+    const updatedRoutines = { ...allRoutines };
+    if (!updatedRoutines[dayName]) updatedRoutines[dayName] = {};
+    updatedRoutines[dayName][routineKey] = value;
+    
+    db.ref('routines').set(updatedRoutines);
 }
 
 function renderRoutineModal() {
     const container = document.getElementById('routineContent');
     if (!container) return;
+    
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const today = new Date();
     const todayName = days[today.getDay()];
+    
     let html = `<table class="routine-table"><thead><tr><th>ক্লাস</th>`;
     days.forEach(day => {
         html += `<th>${day}</th>`;
     });
     html += '</tr></thead><tbody>';
+    
     allClasses.forEach(cls => {
-        html += `<tr><td><strong>${cls}</strong></td>`;
-        days.forEach(day => {
-            const val = allRoutines[day] && allRoutines[day][cls] ? allRoutines[day][cls] : '-';
-            const isToday = day === todayName;
-            html += `<td style="${isToday ? 'background:#fef3c7; font-weight:bold;' : ''}">${val}</td>`;
-        });
-        html += '</tr>';
+        const isGroupReq = isGroupRequired(cls);
+        if (isGroupReq) {
+            ['Science', 'Commerce', 'Arts', 'SSC Special'].forEach(grp => {
+                const key = cls + '_' + grp;
+                html += `<tr><td><strong>${cls}</strong> <span class="student-group-tag">${grp}</span></td>`;
+                days.forEach(day => {
+                    const val = allRoutines[day] && allRoutines[day][key] ? allRoutines[day][key] : '-';
+                    const isToday = day === todayName;
+                    html += `<td style="${isToday ? 'background:#fef3c7; font-weight:bold;' : ''}">${val}</td>`;
+                });
+                html += '</tr>';
+            });
+        } else {
+            html += `<tr><td><strong>${cls}</strong></td>`;
+            days.forEach(day => {
+                const val = allRoutines[day] && allRoutines[day][cls] ? allRoutines[day][cls] : '-';
+                const isToday = day === todayName;
+                html += `<td style="${isToday ? 'background:#fef3c7; font-weight:bold;' : ''}">${val}</td>`;
+            });
+            html += '</tr>';
+        }
     });
+    
     html += '</tbody></table>';
     container.innerHTML = html;
 }
 
-// Auto save routine on input change
-document.addEventListener('input', function(e) {
-    if (e.target.classList.contains('routine-input')) {
-        saveRoutineAutomatically();
-    }
-});
-
-function saveRoutineAutomatically() {
-    const inputs = document.querySelectorAll('.routine-input');
-    const routineData = {};
-    inputs.forEach(input => {
-        const day = input.dataset.day;
-        const cls = input.dataset.class;
-        const value = input.value.trim();
-        if (!routineData[day]) routineData[day] = {};
-        routineData[day][cls] = value;
-    });
-    db.ref('routines').set(routineData);
-}
-
 document.getElementById('saveAllRoutinesBtn').addEventListener('click', () => {
-    saveRoutineAutomatically();
+    saveSingleRoutine();
     alert('✅ রুটিন সংরক্ষণ করা হয়েছে');
 });
 
@@ -840,8 +1005,11 @@ function setupAttendance() {
 
 document.getElementById('loadStudentsBtn').addEventListener('click', () => {
     const classSelect = document.getElementById('attendanceClassSelect');
+    const groupSelect = document.getElementById('attendanceGroupSelect');
     const className = classSelect.value;
+    const groupName = groupSelect ? groupSelect.value : 'all';
     const date = document.getElementById('attendanceDate').value;
+    
     if (!className) {
         alert('ক্লাস নির্বাচন করুন');
         return;
@@ -852,24 +1020,32 @@ document.getElementById('loadStudentsBtn').addEventListener('click', () => {
     }
     currentAttendanceDate = date;
     document.getElementById('selectedDateDisplay').textContent = date;
-    loadStudentAttendance(className, date);
+    loadStudentAttendance(className, groupName, date);
 });
 
-function loadStudentAttendance(className, date) {
+function loadStudentAttendance(className, groupName, date) {
     const container = document.getElementById('studentAttendanceList');
     const section = document.getElementById('studentAttendanceSection');
     if (!container || !section) return;
+    
     const students = {};
     for (let key in allStudents) {
-        if (allStudents[key].class === className) {
-            students[key] = allStudents[key];
+        const student = allStudents[key];
+        if (student.class === className) {
+            // গ্রুপ ফিল্টার
+            if (groupName !== 'all' && student.group !== groupName) {
+                continue;
+            }
+            students[key] = student;
         }
     }
+    
     if (Object.keys(students).length === 0) {
         container.innerHTML = '<p style="color:#888;">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
         section.style.display = 'block';
         return;
     }
+    
     let html = '';
     for (let key in students) {
         const student = students[key];
@@ -924,33 +1100,40 @@ function renderStudentAttendance() {
     const calendarContainer = document.getElementById('studentCalendarGrid');
     const monthSelector = document.getElementById('studentMonthSelector');
     if (!summaryContainer || !calendarContainer || !monthSelector) return;
+    
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth() + studentMonthOffset;
     const currentDate = new Date(year, month);
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
+    
     monthSelector.innerHTML = `
         <button class="btn btn-sm btn-blue" onclick="changeStudentMonth(-1)">◀</button>
         <span style="font-weight:bold;">${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
         <button class="btn btn-sm btn-blue" onclick="changeStudentMonth(1)">▶</button>
     `;
+    
     let totalDays = 0;
     let presentDays = 0;
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    
     let html = '<div class="calendar-grid">';
     ['সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি', 'রবি'].forEach(day => {
         html += `<div class="cal-day-header">${day}</div>`;
     });
+    
     for (let i = 0; i < firstDay; i++) {
         html += '<div class="cal-day"></div>';
     }
+    
     for (let day = 1; day <= daysInMonth; day++) {
         const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const attKey = `${className}_${dateStr}`;
         const isPresent = attendanceData[attKey] && attendanceData[attKey][currentUser] === true;
         const isToday = new Date().toISOString().split('T')[0] === dateStr;
+        
         let statusClass = '';
         let statusIcon = '';
         if (isPresent) {
@@ -963,13 +1146,16 @@ function renderStudentAttendance() {
         }
         if (isToday) statusClass += ' today';
         totalDays++;
+        
         html += `<div class="cal-day ${statusClass}">
             <div class="date-num">${day}</div>
             <div class="status-icon">${statusIcon}</div>
         </div>`;
     }
+    
     html += '</div>';
     calendarContainer.innerHTML = html;
+    
     const presentPercent = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
     summaryContainer.innerHTML = `
         <div class="summary-item"><span class="number">${presentDays}</span><br>উপস্থিত</div>
@@ -987,6 +1173,7 @@ function renderClassMonthlyCalendar() {
     const container = document.getElementById('classMonthlyCalendar');
     const monthSelector = document.getElementById('classMonthSelector');
     if (!container || !monthSelector) return;
+    
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth() + classMonthOffset;
@@ -994,43 +1181,58 @@ function renderClassMonthlyCalendar() {
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
     const className = document.getElementById('attendanceClassSelect')?.value || 'One';
+    const groupName = document.getElementById('attendanceGroupSelect')?.value || 'all';
+    
     monthSelector.innerHTML = `
         <button class="btn btn-sm btn-blue" onclick="changeClassMonth(-1)">◀</button>
-        <span style="font-weight:bold;">${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })} - ${className}</span>
+        <span style="font-weight:bold;">${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })} - ${className} ${groupName !== 'all' ? '(' + groupName + ')' : ''}</span>
         <button class="btn btn-sm btn-blue" onclick="changeClassMonth(1)">▶</button>
     `;
+    
     const students = {};
     for (let key in allStudents) {
-        if (allStudents[key].class === className) {
-            students[key] = allStudents[key];
+        const student = allStudents[key];
+        if (student.class === className) {
+            if (groupName !== 'all' && student.group !== groupName) {
+                continue;
+            }
+            students[key] = student;
         }
     }
+    
     if (Object.keys(students).length === 0) {
         container.innerHTML = '<p style="color:#888;">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
         return;
     }
+    
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    
     let html = '<div class="calendar-grid">';
     ['সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি', 'রবি'].forEach(day => {
         html += `<div class="cal-day-header">${day}</div>`;
     });
+    
     for (let i = 0; i < firstDay; i++) {
         html += '<div class="cal-day"></div>';
     }
+    
     for (let day = 1; day <= daysInMonth; day++) {
         const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const attKey = `${className}_${dateStr}`;
         const dayData = attendanceData[attKey] || {};
+        
         let presentCount = 0;
         let absentCount = 0;
         for (let key in students) {
             if (dayData[key] === true) presentCount++;
             else if (dayData[key] === false) absentCount++;
         }
+        
         const total = Object.keys(students).length;
         const allPresent = presentCount === total && total > 0;
         const allAbsent = absentCount === total && total > 0;
+        
         let statusClass = '';
         let statusText = '';
         if (allPresent) {
@@ -1042,13 +1244,16 @@ function renderClassMonthlyCalendar() {
         } else if (presentCount > 0 || absentCount > 0) {
             statusText = `${presentCount}/${total}`;
         }
+        
         const isToday = new Date().toISOString().split('T')[0] === dateStr;
         if (isToday) statusClass += ' today';
+        
         html += `<div class="cal-day ${statusClass}">
             <div class="date-num">${day}</div>
             <div style="font-size:10px;">${statusText}</div>
         </div>`;
     }
+    
     html += '</div>';
     container.innerHTML = html;
 }
@@ -1252,7 +1457,7 @@ function renderFeedbackList() {
 }
 
 // ============================================================
-// SOCIAL FEED - FIXED AUTO SAVE
+// SOCIAL FEED
 // ============================================================
 document.getElementById('feedImageInput')?.addEventListener('change', function(e) {
     const files = e.target.files;
@@ -1452,15 +1657,12 @@ document.getElementById('aboutUsBtn')?.addEventListener('click', () => {
     document.getElementById('aboutModal').style.display = 'flex';
 });
 
-// ============================================================
-// SAVE CLASS BUTTON
-// ============================================================
 document.getElementById('saveClassBtn')?.addEventListener('click', () => {
     alert('✅ সব তথ্য ইতিমধ্যে Firebase এ অটো-সেভ আছে।');
 });
 
 // ============================================================
-// AUTO LOGIN CHECK - Run on page load
+// AUTO LOGIN CHECK
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     const hasSession = checkSession();
@@ -1472,5 +1674,5 @@ document.addEventListener('DOMContentLoaded', function() {
 console.log('📚 মাস্টারমাইন্ড অ্যাকাডেমি সিস্টেম লোড হয়েছে');
 console.log('✅ Firebase Connected');
 console.log('✅ অটো-সেভ সক্রিয় আছে');
-console.log('✅ ড্যাশবোর্ড রুটিন ফিক্সড');
-console.log('✅ সব জায়গায় ক্লাস সিলেক্ট উপলব্ধ');
+console.log('✅ রুটিন ম্যানেজার সিম্পলিফাইড');
+console.log('✅ গ্রুপ ফিল্টার যোগ করা হয়েছে');
