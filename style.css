@@ -138,8 +138,8 @@ body {
     font-size: 0.95rem;
     background: linear-gradient(135deg, #fff, #f5b042);
     -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     background-clip: text;
-    color: transparent;
 }
 
 .user-area {
@@ -418,7 +418,8 @@ input, select, textarea {
     font-size: 14px;
     margin-bottom: 8px;
 }
-/* ==info data ==========*/
+
+/* ==================== INFO DATA ==================== */
 .info-data {
     background: linear-gradient(135deg, #ffffff, #fef9ef);
     border-radius: 28px;
@@ -426,6 +427,7 @@ input, select, textarea {
     text-align: left;
     border: 1px solid rgba(245, 176, 66, 0.5);
 }
+
 /* ==================== TEACHER GRID ==================== */
 .teacher-grid {
     display: grid;
@@ -492,7 +494,7 @@ input, select, textarea {
 
 /* ==================== SOCIAL CARDS ==================== */
 .social-card {
-    background: #c8cee8, #c8dde8;
+    background: #c8cee8;
     padding: 16px;
     border-radius: 24px;
     margin-bottom: 16px;
@@ -674,7 +676,7 @@ input:checked + .slider:before {
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid #f5b04233;
+    border: 1px solid rgba(245, 176, 66, 0.2);
 }
 
 /* ==================== CLASS BUTTONS ==================== */
@@ -869,4 +871,4 @@ input:checked + .slider:before {
         min-width: 180px;
         padding: 10px 15px 10px 20px;
     }
-}   
+}
