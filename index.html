@@ -83,6 +83,13 @@
                 <p><strong>গ্রুপ:</strong> <span id="studentGroupDisplay"></span></p>
                 <p><strong>আইডি:</strong> <span id="studentIdDisplay"></span></p>
             </div>
+            
+            <!-- ছাত্রের নিজস্ব রুটিন দেখানোর জন্য -->
+            <div id="studentOwnRoutine" style="display: none; margin: 20px 0;">
+                <h2><i class="fas fa-calendar-alt"></i> আমার রুটিন</h2>
+                <div id="studentRoutineDisplay" class="routine-card" style="background: linear-gradient(135deg, #fef9ef, #ffffff); padding:20px; border-radius:20px; border:1px solid rgba(245,176,66,0.3);"></div>
+            </div>
+            
             <div id="todayTomorrowRoutine"></div>
             <h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2>
             <div id="teachersGrid" class="teacher-grid"></div><br><br>
@@ -269,7 +276,7 @@
     <div class="results-card" onclick="event.stopPropagation()">
         <i class="fas fa-chart-simple" style="font-size:48px; color:#c3b043;"></i><br>
         <div class="btn-aca-result">
-            <h3>📊 <a href="about.html" target="_blank" style="text-decoration:none; color:inherit;">একাডেমিক ফলাফল</a></h3>
+            <h3>📊 <a href="result.html" target="_blank" style="text-decoration:none; color:inherit;">একাডেমিক ফলাফল</a></h3>
         </div>        
         <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
         <p style="margin-bottom:20px;">ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।</p>
