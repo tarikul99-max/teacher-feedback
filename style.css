@@ -22,10 +22,11 @@
 .tomorrow-routine-card {
     flex: 1;
     min-width: 280px;
+    color: #7e8cc4;
     border-radius: 24px;
     padding: 20px;
     text-align: left;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     background: #ffffff;
     border: 1px solid rgba(245, 176, 66, 0.3);
 }
@@ -39,43 +40,14 @@
     animation: flashGradient 1.2s ease infinite alternate;
 }
 
-.tomorrow-routine-card .routine-subject.single {
-    background: linear-gradient(135deg, #F59E0B, #F97316, #EF4444);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: flashGradient 1.2s ease infinite alternate;
-}
-
-.tomorrow-routine-card .label {
-    color: #F59E0B;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    -webkit-text-fill-color: #F59E0B;
-}
-
-.tomorrow-routine-card .time {
-    color: #6B7280;
-    font-size: 14px;
-    -webkit-text-fill-color: #6B7280;
-}
-
-.tomorrow-routine-card .teacher-name {
-    color: #4B5563;
-    font-size: 14px;
-    -webkit-text-fill-color: #4B5563;
-}
-
 .today-routine-card {
     flex: 1;
     min-width: 280px;
+    color: #7e8cc4;
     border-radius: 24px;
     padding: 20px;
     text-align: left;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     background: #ffffff;
     border: 1px solid rgba(44, 198, 212, 0.3);
 }
@@ -87,27 +59,6 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: flashGradient 1.2s ease infinite alternate;
-}
-
-.today-routine-card .label {
-    color: #2cc6d4;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    -webkit-text-fill-color: #2cc6d4;
-}
-
-.today-routine-card .time {
-    color: #6B7280;
-    font-size: 14px;
-    -webkit-text-fill-color: #6B7280;
-}
-
-.today-routine-card .teacher-name {
-    color: #4B5563;
-    font-size: 14px;
-    -webkit-text-fill-color: #4B5563;
 }
 
 @keyframes flashGradient {
