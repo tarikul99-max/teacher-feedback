@@ -43,16 +43,10 @@
         <div class="logo-area">
             <img src="mastermined.jpg" alt="Logo" style="height:40px; width:40px; object-fit:contain; border-radius:12px;">
             <span>MASTERMIND ACADEMY</span>
-            
-            <div class="header-top-right">
-                        <button class="btn btn-orange" id="viewResultBtn"><i class="fas fa-file-alt"></i> 
-                            ফলাফল দেখুন 
-                        </button>
-            </div>
-            
         </div>
         <div class="user-area">
             <span id="userNameDisplay"></span> (<span id="roleDisplay"></span>)
+            <button class="btn btn-orange" id="viewResultBtn"><i class="fas fa-file-alt"></i> ফলাফল দেখুন</button>
             <div class="dropdown">
                 <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
                 <div class="dropdown-content" id="dropdownMenu">
@@ -74,9 +68,6 @@
         <div id="dashboardPanel" class="panel active-panel">
             <div class="dashboard-header">
                 <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
-
-
-                    
                     <button class="btn btn-blue" id="aboutUsBtn"><i class="fas fa-info-circle"></i> সম্পর্কে</button>
                     <button class="btn btn-green" id="viewRoutineBtn"><i class="fas fa-calendar-week"></i> রুটিন দেখুন</button>
                 </div>
@@ -88,9 +79,9 @@
                 <p><strong>আইডি:</strong> <span id="studentIdDisplay"></span></p>
             </div>
             <div id="todayTomorrowRoutine"></div>
-            <h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2><!--- change here --->
+            <h2><i class="fas fa-chalkboard-user"></i> আমাদের শিক্ষকবৃন্দ</h2>
             <div id="teachersGrid" class="teacher-grid"></div><br><br>
-            <div >
+            <div>
                 <h2>📚 শিক্ষার্থীদের ধারাবাহিক উন্নতির জন্য আমাদের বিশেষ কার্যক্রম</h2>
                 <div class="info-data">
                 <p>
@@ -136,8 +127,6 @@
             </div>
             <h3>📋 শিক্ষকবৃন্দ</h3>
             <div class="table-responsive"><div id="teachersTable"></div></div>
-
-            
         </div>
         
         <div id="adminClassPanel" class="panel">
@@ -219,12 +208,12 @@
     <footer style="text-align:center; padding:16px; color:#666;">© মাস্টারমাইন্ড অ্যাকাডেমি</footer>
 </div>
 
-
+<!-- MODALS -->
 <div id="resultModal" class="result-modal" onclick="closeModalOutside(event, 'resultModal')">
     <div class="results-card" onclick="event.stopPropagation()">
         <i class="fas fa-chart-simple" style="font-size:48px; color:#c3b043;"></i><br>
         <div class="btn-aca-result">
-            <h3 >📊<a href="about.html"> একাডেমিক ফলাফল</a></h3>
+            <h3>📊 <a href="about.html">একাডেমিক ফলাফল</a></h3>
         </div>        
         <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
         <p style="margin-bottom:20px;">ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।</p>
@@ -257,4 +246,4 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script src="script.js"></script>
 </body>
-</html> 
+</html>
