@@ -2,13 +2,12 @@
 // FIREBASE CONFIGURATION
 // ============================================================
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyD4xuqY5FDdiEwlYpkC1cfMEN1aIwPtB_A",
+    authDomain: "studentcom-3e387.firebaseapp.com",
+    projectId: "studentcom-3e387",
+    databaseURL: "https://studentcom-3e387-default-rtdb.firebaseio.com",
+    messagingSenderId: "284949876238",
+    appId: "1:284949876238:web:d6a8cde91411a033e9f65f"
 };
 
 // Initialize Firebase
@@ -280,7 +279,6 @@ function loadAllData() {
                 renderTeacherClassStudents(classes[0]);
             }
         }
-        // Update attendance class select
         populateAttendanceClassSelect();
     });
 
@@ -324,7 +322,6 @@ function populateAttendanceClassSelect() {
     const classSelect = document.getElementById('attendanceClassSelect');
     if (!classSelect) return;
     
-    // Preserve selected value
     const selectedValue = classSelect.value;
     classSelect.innerHTML = '';
     allClasses.forEach(cls => {
@@ -1473,6 +1470,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 console.log('📚 মাস্টারমাইন্ড অ্যাকাডেমি সিস্টেম লোড হয়েছে');
+console.log('✅ Firebase Connected');
 console.log('✅ অটো-সেভ সক্রিয় আছে');
 console.log('✅ ড্যাশবোর্ড রুটিন ফিক্সড');
 console.log('✅ সব জায়গায় ক্লাস সিলেক্ট উপলব্ধ');
