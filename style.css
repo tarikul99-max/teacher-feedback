@@ -54,7 +54,7 @@ body {
 }
 
 .login-card {
-    background: rgba(22, 45, 116, 0.39);
+    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
     backdrop-filter: blur(2px);
     padding: 30px 24px;
     border-radius: 48px;
@@ -120,7 +120,7 @@ body {
 
 /* ==================== HEADER / NAVBAR ==================== */
 .navbar {
-    background: #0c1b4b;
+    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
     color: white;
     padding: 12px 16px;
     display: flex;
@@ -179,7 +179,7 @@ body {
     position: absolute;
     right: 0;
     top: 45px;
-    background: #111a44;
+    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
     min-width: 240px;
     border-radius: 20px;
     overflow: hidden;
@@ -503,8 +503,15 @@ input:focus, select:focus, textarea:focus {
 }
 
 .teacher-card:hover {
+    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    color: white;
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-card:hover h4,
+.teacher-card:hover p {
+    color: white !important;
 }
 
 .teacher-card img {
@@ -619,7 +626,26 @@ input:focus, select:focus, textarea:focus {
 }
 
 .social-card:hover {
+    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+.social-card:hover p,
+.social-card:hover strong,
+.social-card:hover span {
+    color: white !important;
+}
+
+.social-card:hover .reaction-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.social-card:hover .reaction-btn.active {
+    background: #f5b042;
+    color: #0a163b;
 }
 
 .delete-post-btn {
@@ -710,7 +736,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .attendance-summary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
     color: white;
     padding: 15px;
     border-radius: 20px;
@@ -877,7 +903,7 @@ input:checked + .slider:before {
 .results-card,
 .about-card,
 .routine-card {
-    background: linear-gradient(135deg, #f0c3cd, #d0e7e0);
+    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
     padding: 30px;
     border-radius: 30px;
     max-width: 500px;
@@ -885,6 +911,47 @@ input:checked + .slider:before {
     text-align: center;
     max-height: 80vh;
     overflow-y: auto;
+    color: white;
+}
+
+.results-card p,
+.about-card p,
+.routine-card p,
+.results-card h2,
+.about-card h2,
+.routine-card h2,
+.results-card h3,
+.about-card h3,
+.routine-card h3 {
+    color: white !important;
+}
+
+.results-card .btn-aca-result h3 a,
+.about-card .btn-aca-result h3 a,
+.routine-card .btn-aca-result h3 a {
+    color: white !important;
+}
+
+.results-card .btn-aca-result,
+.about-card .btn-aca-result,
+.routine-card .btn-aca-result {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.results-card .btn,
+.about-card .btn,
+.routine-card .btn {
+    background: #f5b042;
+    color: #0a163b;
+}
+
+.results-card .btn:hover,
+.about-card .btn:hover,
+.routine-card .btn:hover {
+    background: #e6a03a;
 }
 
 .results-card::-webkit-scrollbar,
@@ -916,6 +983,80 @@ input:checked + .slider:before {
 .routine-table th {
     background: #f5b042;
     color: white;
+}
+
+/* ==================== STUDENT OWN ROUTINE ==================== */
+#studentOwnRoutine {
+    animation: fadeSlide 0.5s ease;
+}
+
+#studentOwnRoutine .routine-card {
+    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%) !important;
+    border-radius: 20px !important;
+    padding: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+}
+
+#studentOwnRoutine .routine-card p,
+#studentOwnRoutine .routine-card strong,
+#studentOwnRoutine .routine-card td,
+#studentOwnRoutine .routine-card th {
+    color: white !important;
+}
+
+#studentOwnRoutine .routine-table th {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+}
+
+#studentOwnRoutine .routine-table td {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+#studentOwnRoutine .routine-table tr:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+#studentOwnRoutine .student-group-tag {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+#studentOwnRoutine .student-group-tag.science {
+    background: #2ecc71;
+}
+
+#studentOwnRoutine .student-group-tag.commerce {
+    background: #f39c12;
+}
+
+#studentOwnRoutine .student-group-tag.arts {
+    background: #9b59b6;
+}
+
+#studentOwnRoutine .student-group-tag.sscspecial {
+    background: #e74c3c;
+}
+
+/* ==================== STUDENT INFO CARD ==================== */
+.student-info-card {
+    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    color: white;
+    padding: 15px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.student-info-card h3 {
+    color: white;
+    border-left: none;
+    padding-left: 0;
+}
+
+.student-info-card p {
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* ==================== FEEDBACK ==================== */
@@ -975,51 +1116,6 @@ input:checked + .slider:before {
     margin-left: 4px;
     font-size: 12px;
     color: #666;
-}
-
-/* ==================== STUDENT INFO CARD ==================== */
-.student-info-card {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    padding: 15px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.student-info-card h3 {
-    color: white;
-    border-left: none;
-    padding-left: 0;
-}
-
-/* ==================== STUDENT OWN ROUTINE ==================== */
-#studentOwnRoutine {
-    animation: fadeSlide 0.5s ease;
-}
-
-#studentOwnRoutine .routine-card {
-    background: linear-gradient(135deg, #fef9ef, #ffffff) !important;
-    border-radius: 20px !important;
-    padding: 20px !important;
-    border: 1px solid rgba(245, 176, 66, 0.3) !important;
-}
-
-#studentOwnRoutine .routine-table {
-    min-width: auto !important;
-}
-
-#studentOwnRoutine .routine-table th {
-    background: #0f2c4e !important;
-    color: white !important;
-}
-
-#studentOwnRoutine .routine-table td {
-    padding: 10px 15px !important;
-}
-
-#studentOwnRoutine .routine-table tr:hover {
-    background: #f8fafc !important;
 }
 
 /* ==================== EMPTY STATE ==================== */
