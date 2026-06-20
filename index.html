@@ -151,16 +151,16 @@
                 <input type="text" id="cousinId" placeholder="আইডি *">
                 <input type="text" id="cousinPass" placeholder="পাসওয়ার্ড *">
                 
-                <!-- গ্রুপ ফিল্ড - শুধুমাত্র Nine, Ten, SSC Special এর জন্য দেখাবে -->
-                <div id="groupFieldContainer" style="display:none; margin-bottom:8px;">
+                <!-- গ্রুপ ফিল্ড - সব ক্লাসের জন্য দেখাবে -->
+                <div id="groupFieldContainer" style="margin-bottom:8px;">
                     <select id="cousinGroup" style="width:100%;">
-                        <option value="">গ্রুপ নির্বাচন করুন *</option>
-                        <option value="Science">বিজ্ঞান</option>
-                        <option value="Commerce">বাণিজ্য</option>
-                        <option value="Arts">মানবিক</option>
-                        <option value="SSC Special">এসএসসি স্পেশাল</option>
+                        <option value="">গ্রুপ নির্বাচন করুন</option>
+                        <option value="Science">🔬 বিজ্ঞান</option>
+                        <option value="Commerce">💼 বাণিজ্য</option>
+                        <option value="Arts">🎨 মানবিক</option>
+                        <option value="SSC Special">🎯 এসএসসি স্পেশাল</option>
                     </select>
-                    <small style="color:#c52828; font-size:11px;">⚠️ এই ক্লাসের জন্য গ্রুপ নির্বাচন আবশ্যক</small>
+                    <small id="groupRequiredMsg" style="color:#888; font-size:11px;">গ্রুপ নির্বাচন ঐচ্ছিক (শুধু Nine, Ten, SSC Special এর জন্য আবশ্যক)</small>
                 </div>
                 
                 <input type="tel" id="cousinGuardianPhone" placeholder="অভিভাবকের মোবাইল (+8801XXXXXXXXX)">
@@ -182,9 +182,16 @@
             <div id="teacherAttendanceSection" style="display: none;">
                 <div class="attendance-card">
                     <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
-                        <select id="attendanceClassSelect" style="flex:2; margin-bottom: 0;"></select>
-                        <input type="date" id="attendanceDate" style="flex:1; margin-bottom: 0;">
-                        <button class="btn btn-blue" id="loadStudentsBtn"><i class="fas fa-users"></i> ছাত্র/ছাত্র তালিকা দেখুন</button>
+                        <select id="attendanceClassSelect" style="flex:1; min-width:120px; margin-bottom: 0;"></select>
+                        <select id="attendanceGroupSelect" style="flex:1; min-width:120px; margin-bottom: 0;">
+                            <option value="all">সব গ্রুপ</option>
+                            <option value="Science">🔬 বিজ্ঞান</option>
+                            <option value="Commerce">💼 বাণিজ্য</option>
+                            <option value="Arts">🎨 মানবিক</option>
+                            <option value="SSC Special">🎯 এসএসসি স্পেশাল</option>
+                        </select>
+                        <input type="date" id="attendanceDate" style="flex:1; min-width:150px; margin-bottom: 0;">
+                        <button class="btn btn-blue" id="loadStudentsBtn"><i class="fas fa-users"></i> দেখুন</button>
                     </div>
                 </div>
                 <div id="studentAttendanceSection" class="attendance-card" style="display: none;">
@@ -210,6 +217,29 @@
         <!-- ADMIN ROUTINE PANEL -->
         <div id="adminRoutinePanel" class="panel">
             <h2><i class="fas fa-calendar-edit"></i> রুটিন ম্যানেজার</h2>
+            <div style="background:#f9f5ed; padding:15px; border-radius:20px; margin-bottom:15px;">
+                <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+                    <select id="routineClassSelect" style="flex:1; min-width:150px; margin-bottom:0;">
+                        <!-- ক্লাস অপশন JS দিয়ে যোগ হবে -->
+                    </select>
+                    <select id="routineDaySelect" style="flex:1; min-width:150px; margin-bottom:0;">
+                        <option value="Sunday">রবিবার</option>
+                        <option value="Monday">সোমবার</option>
+                        <option value="Tuesday">মঙ্গলবার</option>
+                        <option value="Wednesday">বুধবার</option>
+                        <option value="Thursday">বৃহস্পতিবার</option>
+                        <option value="Friday">শুক্রবার</option>
+                        <option value="Saturday">শনিবার</option>
+                    </select>
+                    <select id="routineGroupSelect" style="flex:1; min-width:150px; margin-bottom:0;">
+                        <option value="">সব গ্রুপ</option>
+                        <option value="Science">🔬 বিজ্ঞান</option>
+                        <option value="Commerce">💼 বাণিজ্য</option>
+                        <option value="Arts">🎨 মানবিক</option>
+                        <option value="SSC Special">🎯 এসএসসি স্পেশাল</option>
+                    </select>
+                </div>
+            </div>
             <div id="routineEditArea"></div>
             <button class="btn btn-green" id="saveAllRoutinesBtn"><i class="fas fa-save"></i> সব রুটিন সংরক্ষণ করুন</button>
         </div>
@@ -234,12 +264,12 @@
     <footer style="text-align:center; padding:16px; color:#666;">© মাস্টারমাইন্ড অ্যাকাডেমি</footer>
 </div>
 
-<!-- MODALS -->
+<!-- RESULT MODAL -->
 <div id="resultModal" class="result-modal" onclick="closeModalOutside(event, 'resultModal')">
     <div class="results-card" onclick="event.stopPropagation()">
         <i class="fas fa-chart-simple" style="font-size:48px; color:#c3b043;"></i><br>
         <div class="btn-aca-result">
-            <h3>📊 <a href="about.html">একাডেমিক ফলাফল</a></h3>
+            <h3>📊 <a href="about.html" target="_blank" style="text-decoration:none; color:inherit;">একাডেমিক ফলাফল</a></h3>
         </div>        
         <p style="margin:15px 0; font-size:16px;">আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
         <p style="margin-bottom:20px;">ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।</p>
@@ -248,6 +278,7 @@
     </div>
 </div>
 
+<!-- ABOUT MODAL -->
 <div id="aboutModal" class="about-modal" onclick="closeModalOutside(event, 'aboutModal')">
     <div class="about-card" onclick="event.stopPropagation()">
         <i class="fas fa-school" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
@@ -259,6 +290,7 @@
     </div>
 </div>
 
+<!-- ROUTINE MODAL -->
 <div id="routineModal" class="routine-modal" onclick="closeModalOutside(event, 'routineModal')">
     <div class="routine-card" onclick="event.stopPropagation()">
         <i class="fas fa-calendar-week" style="font-size:48px; color:#f5b042; display:block; text-align:center;"></i>
