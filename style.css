@@ -157,7 +157,7 @@ body {
 }
 
 .login-card select option {
-    color: #0a163b;
+    color: #191970;
     background: #006994;
 }
 
@@ -165,7 +165,7 @@ body {
     width: 100%;
     padding: 14px;
     background: linear-gradient(135deg, #00ffd5, #00b4d8);
-    color: #030f16;
+    color: #191970;
     border: none;
     border-radius: 60px;
     font-size: 18px;
@@ -242,6 +242,11 @@ body {
     gap: 12px;
     font-size: 0.85rem;
     flex-wrap: wrap;
+    color: white;
+}
+
+.user-area span {
+    color: white;
 }
 
 .menu-btn {
@@ -330,23 +335,31 @@ body {
 
 .panel h2,
 .panel h3 {
-    color: #ffffff;
+    color: #191970;
     margin-bottom: 16px;
     border-left: 4px solid #00ffd5;
     padding-left: 14px;
     font-size: 1.2rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.panel p,
+.panel span,
+.panel label,
+.panel td,
+.panel th {
+    color: #191970;
 }
 
 /* ==================== DASHBOARD PANEL ==================== */
 #dashboardPanel {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 28px;
     padding: 18px 16px;
     margin-bottom: 20px;
-    color: white;
+    color: #191970;
     position: relative;
     overflow: hidden;
 }
@@ -382,11 +395,11 @@ body {
 #dashboardPanel li,
 #dashboardPanel .info-data p,
 #dashboardPanel .info-data {
-    color: white !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel .info-data {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
@@ -394,43 +407,48 @@ body {
 #dashboardPanel .teacher-card,
 #dashboardPanel .social-card,
 #dashboardPanel .attendance-card {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    color: white !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel .teacher-card h4,
 #dashboardPanel .teacher-card p,
 #dashboardPanel .social-card p,
 #dashboardPanel .attendance-card p {
-    color: white !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel .teacher-card img {
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(0, 105, 148, 0.3) !important;
 }
 
 #dashboardPanel .teacher-card:hover {
-    background: rgba(0, 255, 213, 0.1) !important;
+    background: rgba(0, 255, 213, 0.08) !important;
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+#dashboardPanel .teacher-card:hover h4,
+#dashboardPanel .teacher-card:hover p {
+    color: #191970 !important;
 }
 
 #dashboardPanel .btn-blue {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(0, 105, 148, 0.15) !important;
+    color: #191970 !important;
+    border: 1px solid rgba(0, 105, 148, 0.15) !important;
 }
 
 #dashboardPanel .btn-blue:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(0, 105, 148, 0.25) !important;
 }
 
 #dashboardPanel .btn-green {
     background: rgba(0, 255, 213, 0.15) !important;
-    color: white !important;
-    border: 1px solid rgba(0, 255, 213, 0.2) !important;
+    color: #191970 !important;
+    border: 1px solid rgba(0, 255, 213, 0.15) !important;
 }
 
 #dashboardPanel .btn-green:hover {
@@ -439,7 +457,7 @@ body {
 
 #dashboardPanel .btn-orange {
     background: rgba(245, 176, 66, 0.2) !important;
-    color: white !important;
+    color: #191970 !important;
     border: 1px solid rgba(245, 176, 66, 0.2) !important;
 }
 
@@ -450,54 +468,58 @@ body {
 #dashboardPanel .today-routine-card {
     background: rgba(0, 255, 213, 0.08) !important;
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(0, 255, 213, 0.1) !important;
-    color: white !important;
+    border: 1px solid rgba(0, 255, 213, 0.08) !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel .tomorrow-routine-card {
     background: rgba(0, 180, 216, 0.08) !important;
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(0, 180, 216, 0.1) !important;
-    color: white !important;
+    border: 1px solid rgba(0, 180, 216, 0.08) !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel .today-routine-card p,
-#dashboardPanel .tomorrow-routine-card p {
-    color: rgba(255, 255, 255, 0.95) !important;
+#dashboardPanel .tomorrow-routine-card p,
+#dashboardPanel .today-routine-card h3,
+#dashboardPanel .tomorrow-routine-card h3 {
+    color: #191970 !important;
 }
 
 #dashboardPanel .student-info-card {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel .student-info-card p,
 #dashboardPanel .student-info-card h3 {
-    color: white !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel #studentOwnRoutine .routine-card {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    color: white !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel #studentOwnRoutine .routine-card p,
 #dashboardPanel #studentOwnRoutine .routine-card strong,
 #dashboardPanel #studentOwnRoutine .routine-card td,
 #dashboardPanel #studentOwnRoutine .routine-card th {
-    color: white !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel #studentOwnRoutine .routine-table th {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
+    background: rgba(0, 105, 148, 0.1) !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel #studentOwnRoutine .routine-table td {
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel #studentOwnRoutine .routine-table tr:hover {
@@ -505,13 +527,13 @@ body {
 }
 
 #dashboardPanel table th {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
+    background: rgba(0, 105, 148, 0.1) !important;
+    color: #191970 !important;
 }
 
 #dashboardPanel table td {
-    color: white !important;
-    border-color: rgba(255, 255, 255, 0.05) !important;
+    color: #191970 !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
 }
 
 #dashboardPanel table tr:hover {
@@ -521,14 +543,14 @@ body {
 #dashboardPanel input,
 #dashboardPanel select,
 #dashboardPanel textarea {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: white !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #191970 !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 #dashboardPanel input::placeholder,
 #dashboardPanel textarea::placeholder {
-    color: rgba(255, 255, 255, 0.4) !important;
+    color: rgba(25, 25, 112, 0.4) !important;
 }
 
 #dashboardPanel input:focus,
@@ -539,13 +561,13 @@ body {
 }
 
 #dashboardPanel .class-btn {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: white !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #191970 !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 
 #dashboardPanel .class-btn:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(0, 255, 213, 0.1) !important;
 }
 
 #dashboardPanel .class-btn.active {
@@ -578,7 +600,7 @@ body {
 
 .btn-green { 
     background: linear-gradient(135deg, #00ffd5, #00b4d8); 
-    color: #030f16; 
+    color: #191970; 
 }
 
 .btn-green:hover {
@@ -605,7 +627,7 @@ body {
 
 .btn-orange { 
     background: #f5b042; 
-    color: #1e0a3b; 
+    color: #191970; 
 }
 
 .btn-orange:hover {
@@ -758,40 +780,40 @@ table {
 
 th, td {
     padding: 10px 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     text-align: left;
     font-size: 13px;
 }
 
 th {
-    background: linear-gradient(135deg, rgba(0, 105, 148, 0.8), rgba(0, 119, 182, 0.8));
-    color: white;
+    background: rgba(0, 105, 148, 0.1);
+    color: #191970;
     font-weight: 600;
 }
 
 td {
-    color: rgba(255, 255, 255, 0.9);
+    color: #191970;
 }
 
 tr:hover td {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 255, 213, 0.03);
 }
 
 /* ==================== FORM ELEMENTS ==================== */
 input, select, textarea {
     padding: 12px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 30px;
     width: 100%;
     font-size: 14px;
     margin-bottom: 8px;
     transition: 0.3s;
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    color: #191970;
 }
 
 input::placeholder, textarea::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(25, 25, 112, 0.4);
 }
 
 input:focus, select:focus, textarea:focus {
@@ -801,18 +823,22 @@ input:focus, select:focus, textarea:focus {
 }
 
 select option {
-    background: #006994;
-    color: white;
+    background: #ffffff;
+    color: #191970;
 }
 
 /* ==================== INFO DATA ==================== */
 .info-data {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 28px;
     padding: 18px;
     text-align: left;
     border: 1px solid rgba(0, 255, 213, 0.1);
-    color: rgba(255, 255, 255, 0.9);
+    color: #191970;
+}
+
+.info-data p {
+    color: #191970 !important;
 }
 
 /* ==================== TEACHER GRID ==================== */
@@ -824,19 +850,19 @@ select option {
 }
 
 .teacher-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 28px;
     padding: 18px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     transition: 0.3s;
-    color: white;
+    color: #191970;
 }
 
 .teacher-card:hover {
-    background: rgba(0, 255, 213, 0.08);
+    background: rgba(0, 255, 213, 0.05);
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
 
 .teacher-card img {
@@ -845,12 +871,12 @@ select option {
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 10px;
-    border: 3px solid rgba(0, 255, 213, 0.3);
+    border: 3px solid rgba(0, 255, 213, 0.2);
 }
 
 .teacher-card h4,
 .teacher-card p {
-    color: white !important;
+    color: #191970 !important;
 }
 
 /* ==================== STUDENT LIST ==================== */
@@ -859,7 +885,7 @@ select option {
     align-items: center;
     gap: 12px;
     padding: 10px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 20px;
     margin-bottom: 8px;
 }
@@ -869,7 +895,7 @@ select option {
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
-    border: 2px solid rgba(0, 255, 213, 0.3);
+    border: 2px solid rgba(0, 255, 213, 0.2);
 }
 
 .image-preview {
@@ -879,11 +905,11 @@ select option {
     border-radius: 50%;
     margin: 8px auto;
     display: block;
-    border: 2px solid rgba(0, 255, 213, 0.3);
+    border: 2px solid rgba(0, 255, 213, 0.2);
 }
 
 .file-input-label {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     padding: 8px 12px;
     border-radius: 30px;
     cursor: pointer;
@@ -891,12 +917,12 @@ select option {
     display: inline-block;
     margin: 5px 0;
     transition: 0.3s;
-    color: rgba(255, 255, 255, 0.7);
+    color: #191970;
 }
 
 .file-input-label:hover {
     background: rgba(0, 255, 213, 0.1);
-    color: white;
+    color: #191970;
 }
 
 /* ==================== GROUP FIELD STYLES ==================== */
@@ -948,39 +974,39 @@ select option {
 
 /* ==================== SOCIAL CARDS ==================== */
 .social-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     padding: 16px;
     border-radius: 24px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: 0.3s;
-    color: white;
+    color: #191970;
 }
 
 .social-card:hover {
     background: rgba(0, 255, 213, 0.05);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: 0.3s;
 }
 
 .social-card p,
 .social-card strong,
 .social-card span {
-    color: white !important;
+    color: #191970 !important;
 }
 
 .social-card .reaction-btn {
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
+    background: rgba(255, 255, 255, 0.08);
+    color: #191970;
 }
 
 .social-card .reaction-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .social-card .reaction-btn.active {
     background: #00ffd5;
-    color: #030f16;
+    color: #191970;
 }
 
 .delete-post-btn {
@@ -1000,12 +1026,16 @@ select option {
 
 /* ==================== ATTENDANCE ==================== */
 .attendance-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 24px;
     padding: 20px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    color: #191970;
+}
+
+.attendance-card h3 {
+    color: #191970 !important;
 }
 
 .calendar-grid {
@@ -1016,8 +1046,8 @@ select option {
 }
 
 .cal-day-header {
-    background: linear-gradient(135deg, rgba(0, 105, 148, 0.8), rgba(0, 119, 182, 0.8));
-    color: white;
+    background: rgba(0, 105, 148, 0.15);
+    color: #191970;
     padding: 10px;
     text-align: center;
     border-radius: 12px;
@@ -1026,26 +1056,26 @@ select option {
 }
 
 .cal-day {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     padding: 10px 4px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     min-height: 70px;
     transition: all 0.2s;
-    color: rgba(255, 255, 255, 0.8);
+    color: #191970;
 }
 
 .cal-day.present {
-    background: rgba(46, 204, 113, 0.2);
-    color: #2ecc71;
-    border-color: rgba(46, 204, 113, 0.3);
+    background: rgba(46, 204, 113, 0.15);
+    color: #191970;
+    border-color: rgba(46, 204, 113, 0.2);
 }
 
 .cal-day.absent {
-    background: rgba(231, 76, 60, 0.2);
-    color: #e74c3c;
-    border-color: rgba(231, 76, 60, 0.3);
+    background: rgba(231, 76, 60, 0.1);
+    color: #191970;
+    border-color: rgba(231, 76, 60, 0.15);
 }
 
 .cal-day.today {
@@ -1056,6 +1086,7 @@ select option {
 .cal-day .date-num {
     font-size: 18px;
     font-weight: bold;
+    color: #191970;
 }
 
 .cal-day .status-icon {
@@ -1073,9 +1104,9 @@ select option {
 }
 
 .month-selector button {
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
+    color: #191970;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .month-selector button:hover {
@@ -1083,12 +1114,12 @@ select option {
 }
 
 .month-selector span {
-    color: white;
+    color: #191970;
 }
 
 .attendance-summary {
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.5), rgba(0, 119, 182, 0.5));
-    color: white;
+    background: linear-gradient(145deg, rgba(0, 105, 148, 0.1), rgba(0, 119, 182, 0.1));
+    color: #191970;
     padding: 15px;
     border-radius: 20px;
     margin-bottom: 20px;
@@ -1104,7 +1135,7 @@ select option {
 .summary-item .number {
     font-size: 28px;
     font-weight: bold;
-    color: #00ffd5;
+    color: #191970;
 }
 
 /* ==================== TOGGLE SWITCH ==================== */
@@ -1128,7 +1159,7 @@ select option {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.15);
     transition: 0.3s;
     border-radius: 34px;
 }
@@ -1158,7 +1189,7 @@ input:checked + .slider:before {
     align-items: center;
     gap: 12px;
     padding: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .student-att-row:hover {
@@ -1167,12 +1198,12 @@ input:checked + .slider:before {
 
 /* ==================== TEACHER CLASS CARD ==================== */
 .teacher-class-card {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: #191970;
 }
 
 /* ==================== CLASS BUTTONS ==================== */
@@ -1185,7 +1216,7 @@ input:checked + .slider:before {
     max-height: 400px;
     overflow-y: auto;
     padding: 15px 10px 15px 30px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
 }
 
@@ -1209,26 +1240,26 @@ input:checked + .slider:before {
     min-width: 200px;
     text-align: left;
     margin: 0;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     padding: 12px 20px 12px 25px;
     border-radius: 40px;
     cursor: pointer;
     transition: 0.2s;
     font-size: 14px;
     font-weight: 500;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: #191970;
 }
 
 .class-btn:hover {
     background: rgba(0, 255, 213, 0.1);
-    color: white;
+    color: #191970;
     transform: translateX(8px);
 }
 
 .class-btn.active {
     background: rgba(0, 255, 213, 0.15);
-    color: white;
+    color: #191970;
     border-color: rgba(0, 255, 213, 0.2);
     box-shadow: 0 2px 20px rgba(0, 255, 213, 0.05);
 }
@@ -1257,7 +1288,7 @@ input:checked + .slider:before {
 }
 
 .results-card {
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.95), rgba(0, 119, 182, 0.95));
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
     backdrop-filter: blur(10px);
     padding: 35px 30px;
     border-radius: 30px;
@@ -1266,27 +1297,34 @@ input:checked + .slider:before {
     text-align: center;
     max-height: 80vh;
     overflow-y: auto;
-    color: white;
+    color: #191970;
     border: 1px solid rgba(0, 255, 213, 0.1);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
 }
 
 .results-card h2 {
-    color: white !important;
+    color: #191970 !important;
     font-size: 32px;
     font-weight: 900;
     margin-bottom: 8px;
     letter-spacing: 1px;
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
 }
 
 .results-card p {
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: #191970 !important;
     line-height: 1.8;
 }
 
+.results-card .result-icon {
+    font-size: 65px;
+    color: #00ffd5;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 0 40px rgba(0, 255, 213, 0.2);
+}
+
 .about-card {
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.95), rgba(0, 119, 182, 0.95));
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
     backdrop-filter: blur(10px);
     padding: 30px;
     border-radius: 30px;
@@ -1295,12 +1333,12 @@ input:checked + .slider:before {
     text-align: center;
     max-height: 80vh;
     overflow-y: auto;
-    color: white;
+    color: #191970;
     border: 1px solid rgba(0, 255, 213, 0.1);
 }
 
 .routine-card {
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.95), rgba(0, 119, 182, 0.95));
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
     backdrop-filter: blur(10px);
     padding: 30px;
     border-radius: 30px;
@@ -1309,27 +1347,29 @@ input:checked + .slider:before {
     text-align: center;
     max-height: 80vh;
     overflow-y: auto;
-    color: white;
+    color: #191970;
     border: 1px solid rgba(0, 255, 213, 0.1);
 }
 
 .about-card p,
 .routine-card p,
 .about-card h2,
-.routine-card h2 {
-    color: white !important;
+.routine-card h2,
+.about-card h3,
+.routine-card h3 {
+    color: #191970 !important;
 }
 
 .results-card .btn-aca-result h3 a,
 .about-card .btn-aca-result h3 a,
 .routine-card .btn-aca-result h3 a {
-    color: white !important;
+    color: #191970 !important;
 }
 
 .results-card .btn-aca-result,
 .about-card .btn-aca-result,
 .routine-card .btn-aca-result {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.03);
     border-radius: 50px;
     padding: 10px;
     margin: 10px 0;
@@ -1339,7 +1379,7 @@ input:checked + .slider:before {
 .about-card .btn,
 .routine-card .btn {
     background: #00ffd5;
-    color: #030f16;
+    color: #191970;
 }
 
 .results-card .btn:hover,
@@ -1369,18 +1409,18 @@ input:checked + .slider:before {
 
 .routine-table th,
 .routine-table td {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     padding: 10px;
     text-align: left;
 }
 
 .routine-table th {
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
+    background: rgba(0, 105, 148, 0.1);
+    color: #191970;
 }
 
 .routine-table td {
-    color: rgba(255, 255, 255, 0.9);
+    color: #191970;
 }
 
 /* ==================== STUDENT OWN ROUTINE ==================== */
@@ -1389,28 +1429,29 @@ input:checked + .slider:before {
 }
 
 #studentOwnRoutine .routine-card {
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.3), rgba(0, 119, 182, 0.3)) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
     backdrop-filter: blur(5px);
     border-radius: 20px !important;
     padding: 20px !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    color: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    color: #191970 !important;
 }
 
 #studentOwnRoutine .routine-card p,
 #studentOwnRoutine .routine-card strong,
 #studentOwnRoutine .routine-card td,
 #studentOwnRoutine .routine-card th {
-    color: white !important;
+    color: #191970 !important;
 }
 
 #studentOwnRoutine .routine-table th {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: white !important;
+    background: rgba(0, 105, 148, 0.1) !important;
+    color: #191970 !important;
 }
 
 #studentOwnRoutine .routine-table td {
-    border-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+    color: #191970 !important;
 }
 
 #studentOwnRoutine .routine-table tr:hover {
@@ -1418,7 +1459,7 @@ input:checked + .slider:before {
 }
 
 #studentOwnRoutine .student-group-tag {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 105, 148, 0.8);
     color: white;
 }
 
@@ -1440,34 +1481,38 @@ input:checked + .slider:before {
 
 /* ==================== STUDENT INFO CARD ==================== */
 .student-info-card {
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.3), rgba(0, 119, 182, 0.3));
+    background: linear-gradient(145deg, rgba(0, 105, 148, 0.08), rgba(0, 119, 182, 0.08));
     backdrop-filter: blur(5px);
-    color: white;
+    color: #191970;
     padding: 15px;
     border-radius: 20px;
     margin-bottom: 20px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .student-info-card h3 {
-    color: white;
+    color: #191970;
     border-left: none;
     padding-left: 0;
 }
 
 .student-info-card p {
-    color: rgba(255, 255, 255, 0.9);
+    color: #191970;
 }
 
 /* ==================== FEEDBACK ==================== */
 .feedback-item {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     padding: 12px;
     margin-bottom: 10px;
     border-left: 4px solid #00ffd5;
-    color: white;
+    color: #191970;
+}
+
+.feedback-item p {
+    color: #191970;
 }
 
 .delete-btn {
@@ -1495,37 +1540,37 @@ input:checked + .slider:before {
 }
 
 .reaction-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 30px;
     padding: 5px 12px;
     cursor: pointer;
     font-size: 14px;
     transition: 0.2s;
-    color: rgba(255, 255, 255, 0.8);
+    color: #191970;
 }
 
 .reaction-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     transform: scale(1.05);
 }
 
 .reaction-btn.active {
     background: #00ffd5;
-    color: #030f16;
+    color: #191970;
 }
 
 .reaction-count {
     margin-left: 4px;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(25, 25, 112, 0.5);
 }
 
 /* ==================== EMPTY STATE ==================== */
 .empty-state {
     text-align: center;
     padding: 40px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(25, 25, 112, 0.5);
 }
 
 /* ==================== RESPONSIVE ==================== */
