@@ -503,7 +503,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .teacher-card:hover {
-    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    background: conic-gradient(from 36deg at 20% 80%, #ff6b6b 0%, #4a00e0 25%, #8B5CF6 50%, #ff6b6b 100%);
     color: white;
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
@@ -626,7 +626,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .social-card:hover {
-    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    background: conic-gradient(from 36deg at 20% 80%, #00b894 0%, #00cec9 25%, #0984e3 50%, #6c5ce7 75%, #00b894 100%);
     color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: 0.3s;
@@ -736,7 +736,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .attendance-summary {
-    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    background: conic-gradient(from 36deg at 20% 80%, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #667eea 100%);
     color: white;
     padding: 15px;
     border-radius: 20px;
@@ -900,10 +900,32 @@ input:checked + .slider:before {
     to { opacity: 1; transform: scale(1); }
 }
 
-.results-card,
-.about-card,
+.results-card {
+    background: conic-gradient(from 36deg at 20% 80%, #f7971e 0%, #ffd200 25%, #f7971e 50%, #ffd200 75%, #f7971e 100%);
+    padding: 30px;
+    border-radius: 30px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    max-height: 80vh;
+    overflow-y: auto;
+    color: white;
+}
+
+.about-card {
+    background: conic-gradient(from 36deg at 20% 80%, #11998e 0%, #38ef7d 25%, #11998e 50%, #38ef7d 75%, #11998e 100%);
+    padding: 30px;
+    border-radius: 30px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    max-height: 80vh;
+    overflow-y: auto;
+    color: white;
+}
+
 .routine-card {
-    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    background: conic-gradient(from 36deg at 20% 80%, #4a00e0 0%, #8B5CF6 25%, #4a00e0 50%, #8B5CF6 75%, #4a00e0 100%);
     padding: 30px;
     border-radius: 30px;
     max-width: 500px;
@@ -963,7 +985,7 @@ input:checked + .slider:before {
 .results-card::-webkit-scrollbar-thumb,
 .about-card::-webkit-scrollbar-thumb,
 .routine-card::-webkit-scrollbar-thumb {
-    background: #f5b042;
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
 }
 
@@ -991,7 +1013,7 @@ input:checked + .slider:before {
 }
 
 #studentOwnRoutine .routine-card {
-    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%) !important;
+    background: conic-gradient(from 36deg at 20% 80%, #FF6B6B 0%, #4ECDC4 25%, #45B7D1 50%, #96CEB4 75%, #FF6B6B 100%) !important;
     border-radius: 20px !important;
     padding: 20px !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
@@ -1041,7 +1063,7 @@ input:checked + .slider:before {
 
 /* ==================== STUDENT INFO CARD ==================== */
 .student-info-card {
-    background: conic-gradient(from 36deg at 20% 80%, #A100FFFF 0%, #000000 25%, #119CFDFF 30%);
+    background: conic-gradient(from 36deg at 20% 80%, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #667eea 100%);
     color: white;
     padding: 15px;
     border-radius: 20px;
