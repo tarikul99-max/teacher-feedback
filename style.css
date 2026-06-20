@@ -11,62 +11,12 @@ html, body {
     padding: 0;
     width: 100%;
     min-height: 100vh;
-    background: #030f16;
+    background: #1a0802;
     overflow-x: hidden;
 }
 
 body {
     position: relative;
-}
-
-/* ==================== WAVE BACKGROUND ==================== */
-.wave-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.gradient-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 10% 10%, #00ffd5 0%, transparent 45%),
-        radial-gradient(circle at 90% 20%, #004d61 0%, transparent 50%),
-        radial-gradient(circle at 50% 80%, #006994 0%, transparent 40%),
-        linear-gradient(180deg, #022a30 0%, #031116 50%, #000a0f 100%);
-    z-index: 1;
-    animation: gradientPulse 12s ease-in-out infinite;
-}
-
-@keyframes gradientPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
-}
-
-.waves {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 90%;
-    z-index: 2;
-    filter: blur(1px) drop-shadow(0px -10px 30px rgba(0, 255, 170, 0.3));
-    animation: waveFloat 20s ease-in-out infinite;
-}
-
-@keyframes waveFloat {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-10px) scale(1.02); }
 }
 
 /* ==================== LOGIN SCREEN ==================== */
@@ -80,21 +30,21 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 100;
-    background-color: rgba(3, 15, 22, 0.6);
+    background-color: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     padding: 16px;
 }
 
 .login-card {
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.85), rgba(0, 61, 92, 0.9), rgba(0, 119, 182, 0.85));
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
     padding: 30px 24px;
     border-radius: 48px;
     width: 100%;
     max-width: 400px;
     text-align: center;
-    box-shadow: 0 35px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 180, 216, 0.3), 0 0 40px rgba(0, 255, 170, 0.1);
-    border: 1px solid rgba(0, 180, 216, 0.3);
+    box-shadow: 0 35px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 215, 0, 0.3), 0 0 40px rgba(255, 200, 100, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.2);
     z-index: 2;
     position: relative;
     overflow: hidden;
@@ -107,7 +57,7 @@ body {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle at 30% 40%, rgba(144, 224, 239, 0.1) 0%, transparent 50%);
+    background: radial-gradient(circle at 30% 40%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
     animation: oceanWave 8s ease-in-out infinite;
     pointer-events: none;
 }
@@ -151,20 +101,20 @@ body {
 
 .login-card input:focus,
 .login-card select:focus {
-    border-color: #00ffd5;
+    border-color: #ffd700;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 255, 213, 0.15), 0 0 20px rgba(0, 255, 213, 0.05);
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15), 0 0 20px rgba(255, 215, 0, 0.05);
 }
 
 .login-card select option {
     color: #191970;
-    background: #006994;
+    background: #f5e6c8;
 }
 
 .login-card button {
     width: 100%;
     padding: 14px;
-    background: linear-gradient(135deg, #00ffd5, #00b4d8);
+    background: linear-gradient(135deg, #ffd700, #f5a623);
     color: #191970;
     border: none;
     border-radius: 60px;
@@ -173,15 +123,15 @@ body {
     cursor: pointer;
     margin-top: 15px;
     transition: 0.3s;
-    box-shadow: 0 4px 30px rgba(0, 255, 213, 0.2);
+    box-shadow: 0 4px 30px rgba(255, 215, 0, 0.2);
     position: relative;
     z-index: 1;
 }
 
 .login-card button:hover {
-    background: linear-gradient(135deg, #90e0ef, #00ffd5);
+    background: linear-gradient(135deg, #ffe44d, #ffb347);
     transform: scale(1.02);
-    box-shadow: 0 6px 40px rgba(0, 255, 213, 0.4);
+    box-shadow: 0 6px 40px rgba(255, 215, 0, 0.4);
 }
 
 .login-card p {
@@ -205,7 +155,7 @@ body {
 
 /* ==================== HEADER / NAVBAR ==================== */
 .navbar {
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.95), rgba(0, 61, 92, 0.98), rgba(0, 119, 182, 0.95));
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
     color: white;
     padding: 12px 16px;
@@ -217,7 +167,7 @@ body {
     top: 0;
     z-index: 999;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid rgba(0, 255, 213, 0.1);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 .logo-area {
@@ -230,7 +180,7 @@ body {
 .logo-area span {
     font-weight: 800;
     font-size: 0.95rem;
-    background: linear-gradient(135deg, #fff, #00ffd5);
+    background: linear-gradient(135deg, #fff, #ffd700);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -259,7 +209,7 @@ body {
 }
 
 .menu-btn:hover {
-    color: #00ffd5;
+    color: #ffd700;
     transform: rotate(90deg);
 }
 
@@ -273,14 +223,14 @@ body {
     position: absolute;
     right: 0;
     top: 45px;
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.98), rgba(0, 119, 182, 0.98));
+    background: rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(10px);
     min-width: 240px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
     z-index: 1000;
-    border: 1px solid rgba(0, 255, 213, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 .dropdown-content a {
@@ -295,8 +245,8 @@ body {
 }
 
 .dropdown-content a:hover {
-    background: rgba(0, 255, 213, 0.1);
-    color: #00ffd5;
+    background: rgba(255, 215, 0, 0.1);
+    color: #ffd700;
     padding-left: 25px;
 }
 
@@ -313,7 +263,7 @@ body {
 
 .panel {
     display: none;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
     border-radius: 28px;
     padding: 18px 16px;
@@ -335,31 +285,23 @@ body {
 
 .panel h2,
 .panel h3 {
-    color: #191970;
+    color: #ffffff;
     margin-bottom: 16px;
-    border-left: 4px solid #00ffd5;
+    border-left: 4px solid #ffd700;
     padding-left: 14px;
     font-size: 1.2rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.panel p,
-.panel span,
-.panel label,
-.panel td,
-.panel th {
-    color: #191970;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* ==================== DASHBOARD PANEL ==================== */
 #dashboardPanel {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 28px;
     padding: 18px 16px;
     margin-bottom: 20px;
-    color: #191970;
+    color: white;
     position: relative;
     overflow: hidden;
 }
@@ -371,7 +313,7 @@ body {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle at 30% 40%, rgba(0, 255, 213, 0.03) 0%, transparent 50%);
+    background: radial-gradient(circle at 30% 40%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
     animation: glowPulse 8s ease-in-out infinite;
     pointer-events: none;
     z-index: 0;
@@ -395,11 +337,11 @@ body {
 #dashboardPanel li,
 #dashboardPanel .info-data p,
 #dashboardPanel .info-data {
-    color: #191970 !important;
+    color: white !important;
 }
 
 #dashboardPanel .info-data {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
@@ -407,57 +349,52 @@ body {
 #dashboardPanel .teacher-card,
 #dashboardPanel .social-card,
 #dashboardPanel .attendance-card {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    color: #191970 !important;
+    color: white !important;
 }
 
 #dashboardPanel .teacher-card h4,
 #dashboardPanel .teacher-card p,
 #dashboardPanel .social-card p,
 #dashboardPanel .attendance-card p {
-    color: #191970 !important;
+    color: white !important;
 }
 
 #dashboardPanel .teacher-card img {
-    border-color: rgba(0, 105, 148, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 #dashboardPanel .teacher-card:hover {
-    background: rgba(0, 255, 213, 0.08) !important;
+    background: rgba(255, 215, 0, 0.1) !important;
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-}
-
-#dashboardPanel .teacher-card:hover h4,
-#dashboardPanel .teacher-card:hover p {
-    color: #191970 !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 #dashboardPanel .btn-blue {
-    background: rgba(0, 105, 148, 0.15) !important;
-    color: #191970 !important;
-    border: 1px solid rgba(0, 105, 148, 0.15) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 #dashboardPanel .btn-blue:hover {
-    background: rgba(0, 105, 148, 0.25) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
 }
 
 #dashboardPanel .btn-green {
-    background: rgba(0, 255, 213, 0.15) !important;
-    color: #191970 !important;
-    border: 1px solid rgba(0, 255, 213, 0.15) !important;
+    background: rgba(255, 215, 0, 0.15) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 215, 0, 0.2) !important;
 }
 
 #dashboardPanel .btn-green:hover {
-    background: rgba(0, 255, 213, 0.25) !important;
+    background: rgba(255, 215, 0, 0.25) !important;
 }
 
 #dashboardPanel .btn-orange {
     background: rgba(245, 176, 66, 0.2) !important;
-    color: #191970 !important;
+    color: white !important;
     border: 1px solid rgba(245, 176, 66, 0.2) !important;
 }
 
@@ -466,60 +403,56 @@ body {
 }
 
 #dashboardPanel .today-routine-card {
-    background: rgba(0, 255, 213, 0.08) !important;
+    background: rgba(255, 215, 0, 0.08) !important;
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(0, 255, 213, 0.08) !important;
-    color: #191970 !important;
+    border: 1px solid rgba(255, 215, 0, 0.1) !important;
+    color: white !important;
 }
 
 #dashboardPanel .tomorrow-routine-card {
-    background: rgba(0, 180, 216, 0.08) !important;
+    background: rgba(255, 180, 50, 0.08) !important;
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(0, 180, 216, 0.08) !important;
-    color: #191970 !important;
+    border: 1px solid rgba(255, 180, 50, 0.1) !important;
+    color: white !important;
 }
 
 #dashboardPanel .today-routine-card p,
-#dashboardPanel .tomorrow-routine-card p,
-#dashboardPanel .today-routine-card h3,
-#dashboardPanel .tomorrow-routine-card h3 {
-    color: #191970 !important;
+#dashboardPanel .tomorrow-routine-card p {
+    color: rgba(255, 255, 255, 0.95) !important;
 }
 
 #dashboardPanel .student-info-card {
-    background: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #191970 !important;
 }
 
 #dashboardPanel .student-info-card p,
 #dashboardPanel .student-info-card h3 {
-    color: #191970 !important;
+    color: white !important;
 }
 
 #dashboardPanel #studentOwnRoutine .routine-card {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    color: #191970 !important;
+    color: white !important;
 }
 
 #dashboardPanel #studentOwnRoutine .routine-card p,
 #dashboardPanel #studentOwnRoutine .routine-card strong,
 #dashboardPanel #studentOwnRoutine .routine-card td,
 #dashboardPanel #studentOwnRoutine .routine-card th {
-    color: #191970 !important;
+    color: white !important;
 }
 
 #dashboardPanel #studentOwnRoutine .routine-table th {
-    background: rgba(0, 105, 148, 0.1) !important;
-    color: #191970 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
 }
 
 #dashboardPanel #studentOwnRoutine .routine-table td {
-    border-color: rgba(0, 0, 0, 0.05) !important;
-    color: #191970 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 #dashboardPanel #studentOwnRoutine .routine-table tr:hover {
@@ -527,13 +460,13 @@ body {
 }
 
 #dashboardPanel table th {
-    background: rgba(0, 105, 148, 0.1) !important;
-    color: #191970 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
 }
 
 #dashboardPanel table td {
-    color: #191970 !important;
-    border-color: rgba(0, 0, 0, 0.05) !important;
+    color: white !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
 }
 
 #dashboardPanel table tr:hover {
@@ -543,36 +476,36 @@ body {
 #dashboardPanel input,
 #dashboardPanel select,
 #dashboardPanel textarea {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: #191970 !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 #dashboardPanel input::placeholder,
 #dashboardPanel textarea::placeholder {
-    color: rgba(25, 25, 112, 0.4) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
 }
 
 #dashboardPanel input:focus,
 #dashboardPanel select:focus,
 #dashboardPanel textarea:focus {
-    border-color: rgba(0, 255, 213, 0.3) !important;
-    box-shadow: 0 0 0 3px rgba(0, 255, 213, 0.05) !important;
+    border-color: rgba(255, 215, 0, 0.3) !important;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.05) !important;
 }
 
 #dashboardPanel .class-btn {
-    background: rgba(255, 255, 255, 0.08) !important;
-    color: #191970 !important;
-    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
 }
 
 #dashboardPanel .class-btn:hover {
-    background: rgba(0, 255, 213, 0.1) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
 }
 
 #dashboardPanel .class-btn.active {
-    background: rgba(0, 255, 213, 0.15) !important;
-    border-color: rgba(0, 255, 213, 0.2) !important;
+    background: rgba(255, 215, 0, 0.15) !important;
+    border-color: rgba(255, 215, 0, 0.2) !important;
 }
 
 /* ==================== BUTTONS ==================== */
@@ -599,12 +532,12 @@ body {
 }
 
 .btn-green { 
-    background: linear-gradient(135deg, #00ffd5, #00b4d8); 
+    background: linear-gradient(135deg, #ffd700, #f5a623); 
     color: #191970; 
 }
 
 .btn-green:hover {
-    background: linear-gradient(135deg, #90e0ef, #00ffd5);
+    background: linear-gradient(135deg, #ffe44d, #ffb347);
 }
 
 .btn-blue { 
@@ -634,69 +567,6 @@ body {
     background: #e6a03a;
 }
 
-/* ==================== HOME PAGE BUTTONS ==================== */
-.header-top-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.btn-home {
-    background: linear-gradient(135deg, #ff6b35, #f7931e);
-    color: white;
-    padding: 10px 25px;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-    transition: all 0.3s ease;
-}
-
-.btn-home:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
-}
-
-.btn-home i {
-    font-size: 18px;
-}
-
-.btn-aca-result {
-    background: linear-gradient(135deg, #00b894, #00cec9, #0984e3);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: springMove 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-    color: white;
-    padding: 10px 25px;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-    transition: all 0.3s ease;
-}
-
-.btn-aca-result:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
-}
-
-.btn-aca-result i {
-    font-size: 16px;
-}
-
 /* ==================== ROUTINE CARDS ==================== */
 .routine-side-by-side {
     display: flex !important;
@@ -704,12 +574,6 @@ body {
     gap: 24px;
     margin: 20px 0;
     flex-wrap: wrap;
-}
-
-.routine-subject {
-    font-size: 28px;
-    font-weight: bold;
-    margin: 15px 0;
 }
 
 @media (max-width: 700px) {
@@ -725,7 +589,7 @@ body {
     padding: 20px;
     text-align: left;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #00b4d8, #0077b6, #006994);
+    background: linear-gradient(135deg, #f5a623, #d4891a, #b36d14);
     background-size: 200% 200%;
     animation: flashGradient 1s ease infinite alternate;
     color: white;
@@ -743,7 +607,7 @@ body {
     padding: 20px;
     text-align: left;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #00ffd5, #00b4d8, #0077b6);
+    background: linear-gradient(135deg, #ffd700, #f5a623, #ff8c00);
     background-size: 200% 200%;
     animation: flashGradient 1s ease infinite alternate;
     color: white;
@@ -757,12 +621,6 @@ body {
 @keyframes flashGradient {
     0% { background-position: left center; }
     100% { background-position: right center; }
-}
-
-@keyframes springMove {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
-    100% { transform: translateY(0px); }
 }
 
 /* ==================== TABLE ==================== */
@@ -780,65 +638,61 @@ table {
 
 th, td {
     padding: 10px 8px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     text-align: left;
     font-size: 13px;
 }
 
 th {
-    background: rgba(0, 105, 148, 0.1);
-    color: #191970;
+    background: rgba(255, 215, 0, 0.15);
+    color: white;
     font-weight: 600;
 }
 
 td {
-    color: #191970;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 tr:hover td {
-    background: rgba(0, 255, 213, 0.03);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 /* ==================== FORM ELEMENTS ==================== */
 input, select, textarea {
     padding: 12px 14px;
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 30px;
     width: 100%;
     font-size: 14px;
     margin-bottom: 8px;
     transition: 0.3s;
-    background: rgba(255, 255, 255, 0.1);
-    color: #191970;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
 }
 
 input::placeholder, textarea::placeholder {
-    color: rgba(25, 25, 112, 0.4);
+    color: rgba(255, 255, 255, 0.4);
 }
 
 input:focus, select:focus, textarea:focus {
-    border-color: #00ffd5;
+    border-color: #ffd700;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 255, 213, 0.05);
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.05);
 }
 
 select option {
-    background: #ffffff;
-    color: #191970;
+    background: #1a0802;
+    color: white;
 }
 
 /* ==================== INFO DATA ==================== */
 .info-data {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 28px;
     padding: 18px;
     text-align: left;
-    border: 1px solid rgba(0, 255, 213, 0.1);
-    color: #191970;
-}
-
-.info-data p {
-    color: #191970 !important;
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* ==================== TEACHER GRID ==================== */
@@ -850,19 +704,19 @@ select option {
 }
 
 .teacher-card {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 28px;
     padding: 18px;
     text-align: center;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     transition: 0.3s;
-    color: #191970;
+    color: white;
 }
 
 .teacher-card:hover {
-    background: rgba(0, 255, 213, 0.05);
+    background: rgba(255, 215, 0, 0.08);
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
 .teacher-card img {
@@ -871,12 +725,12 @@ select option {
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 10px;
-    border: 3px solid rgba(0, 255, 213, 0.2);
+    border: 3px solid rgba(255, 215, 0, 0.3);
 }
 
 .teacher-card h4,
 .teacher-card p {
-    color: #191970 !important;
+    color: white !important;
 }
 
 /* ==================== STUDENT LIST ==================== */
@@ -885,7 +739,7 @@ select option {
     align-items: center;
     gap: 12px;
     padding: 10px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     margin-bottom: 8px;
 }
@@ -895,7 +749,7 @@ select option {
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
-    border: 2px solid rgba(0, 255, 213, 0.2);
+    border: 2px solid rgba(255, 215, 0, 0.3);
 }
 
 .image-preview {
@@ -905,11 +759,11 @@ select option {
     border-radius: 50%;
     margin: 8px auto;
     display: block;
-    border: 2px solid rgba(0, 255, 213, 0.2);
+    border: 2px solid rgba(255, 215, 0, 0.3);
 }
 
 .file-input-label {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
     padding: 8px 12px;
     border-radius: 30px;
     cursor: pointer;
@@ -917,12 +771,12 @@ select option {
     display: inline-block;
     margin: 5px 0;
     transition: 0.3s;
-    color: #191970;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .file-input-label:hover {
-    background: rgba(0, 255, 213, 0.1);
-    color: #191970;
+    background: rgba(255, 215, 0, 0.1);
+    color: white;
 }
 
 /* ==================== GROUP FIELD STYLES ==================== */
@@ -947,7 +801,7 @@ select option {
 }
 
 .student-group-tag {
-    background: rgba(0, 105, 148, 0.8);
+    background: rgba(255, 215, 0, 0.2);
     color: white;
     padding: 2px 12px;
     border-radius: 20px;
@@ -974,38 +828,38 @@ select option {
 
 /* ==================== SOCIAL CARDS ==================== */
 .social-card {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
     padding: 16px;
     border-radius: 24px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: 0.3s;
-    color: #191970;
+    color: white;
 }
 
 .social-card:hover {
-    background: rgba(0, 255, 213, 0.05);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 215, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
 }
 
 .social-card p,
 .social-card strong,
 .social-card span {
-    color: #191970 !important;
+    color: white !important;
 }
 
 .social-card .reaction-btn {
-    background: rgba(255, 255, 255, 0.08);
-    color: #191970;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
 }
 
 .social-card .reaction-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .social-card .reaction-btn.active {
-    background: #00ffd5;
+    background: #ffd700;
     color: #191970;
 }
 
@@ -1026,16 +880,12 @@ select option {
 
 /* ==================== ATTENDANCE ==================== */
 .attendance-card {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 24px;
     padding: 20px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    color: #191970;
-}
-
-.attendance-card h3 {
-    color: #191970 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    color: white;
 }
 
 .calendar-grid {
@@ -1046,8 +896,8 @@ select option {
 }
 
 .cal-day-header {
-    background: rgba(0, 105, 148, 0.15);
-    color: #191970;
+    background: rgba(255, 215, 0, 0.15);
+    color: white;
     padding: 10px;
     text-align: center;
     border-radius: 12px;
@@ -1056,37 +906,37 @@ select option {
 }
 
 .cal-day {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 12px;
     padding: 10px 4px;
     text-align: center;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     min-height: 70px;
     transition: all 0.2s;
-    color: #191970;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .cal-day.present {
-    background: rgba(46, 204, 113, 0.15);
-    color: #191970;
-    border-color: rgba(46, 204, 113, 0.2);
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+    border-color: rgba(46, 204, 113, 0.3);
 }
 
 .cal-day.absent {
-    background: rgba(231, 76, 60, 0.1);
-    color: #191970;
-    border-color: rgba(231, 76, 60, 0.15);
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border-color: rgba(231, 76, 60, 0.3);
 }
 
 .cal-day.today {
-    border: 2px solid #00ffd5;
-    background: rgba(0, 255, 213, 0.05);
+    border: 2px solid #ffd700;
+    background: rgba(255, 215, 0, 0.05);
 }
 
 .cal-day .date-num {
     font-size: 18px;
     font-weight: bold;
-    color: #191970;
+    color: white;
 }
 
 .cal-day .status-icon {
@@ -1104,22 +954,22 @@ select option {
 }
 
 .month-selector button {
-    background: rgba(255, 255, 255, 0.08);
-    color: #191970;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .month-selector button:hover {
-    background: rgba(0, 255, 213, 0.1);
+    background: rgba(255, 215, 0, 0.1);
 }
 
 .month-selector span {
-    color: #191970;
+    color: white;
 }
 
 .attendance-summary {
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.1), rgba(0, 119, 182, 0.1));
-    color: #191970;
+    background: linear-gradient(145deg, rgba(255, 215, 0, 0.15), rgba(245, 166, 35, 0.15));
+    color: white;
     padding: 15px;
     border-radius: 20px;
     margin-bottom: 20px;
@@ -1135,7 +985,7 @@ select option {
 .summary-item .number {
     font-size: 28px;
     font-weight: bold;
-    color: #191970;
+    color: #ffd700;
 }
 
 /* ==================== TOGGLE SWITCH ==================== */
@@ -1159,7 +1009,7 @@ select option {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: rgba(255, 255, 255, 0.2);
     transition: 0.3s;
     border-radius: 34px;
 }
@@ -1177,7 +1027,7 @@ select option {
 }
 
 input:checked + .slider {
-    background-color: #00ffd5;
+    background-color: #ffd700;
 }
 
 input:checked + .slider:before {
@@ -1189,7 +1039,7 @@ input:checked + .slider:before {
     align-items: center;
     gap: 12px;
     padding: 12px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .student-att-row:hover {
@@ -1198,12 +1048,12 @@ input:checked + .slider:before {
 
 /* ==================== TEACHER CLASS CARD ==================== */
 .teacher-class-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    color: #191970;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: white;
 }
 
 /* ==================== CLASS BUTTONS ==================== */
@@ -1216,7 +1066,7 @@ input:checked + .slider:before {
     max-height: 400px;
     overflow-y: auto;
     padding: 15px 10px 15px 30px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 20px;
 }
 
@@ -1230,7 +1080,7 @@ input:checked + .slider:before {
 }
 
 .class-buttons-container::-webkit-scrollbar-thumb {
-    background: rgba(0, 255, 213, 0.3);
+    background: rgba(255, 215, 0, 0.3);
     border-radius: 10px;
 }
 
@@ -1240,28 +1090,28 @@ input:checked + .slider:before {
     min-width: 200px;
     text-align: left;
     margin: 0;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
     padding: 12px 20px 12px 25px;
     border-radius: 40px;
     cursor: pointer;
     transition: 0.2s;
     font-size: 14px;
     font-weight: 500;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    color: #191970;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .class-btn:hover {
-    background: rgba(0, 255, 213, 0.1);
-    color: #191970;
+    background: rgba(255, 215, 0, 0.1);
+    color: white;
     transform: translateX(8px);
 }
 
 .class-btn.active {
-    background: rgba(0, 255, 213, 0.15);
-    color: #191970;
-    border-color: rgba(0, 255, 213, 0.2);
-    box-shadow: 0 2px 20px rgba(0, 255, 213, 0.05);
+    background: rgba(255, 215, 0, 0.15);
+    color: white;
+    border-color: rgba(255, 215, 0, 0.2);
+    box-shadow: 0 2px 20px rgba(255, 215, 0, 0.05);
 }
 
 /* ==================== MODALS ==================== */
@@ -1288,7 +1138,7 @@ input:checked + .slider:before {
 }
 
 .results-card {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 35px 30px;
     border-radius: 30px;
@@ -1298,12 +1148,12 @@ input:checked + .slider:before {
     max-height: 80vh;
     overflow-y: auto;
     color: #191970;
-    border: 1px solid rgba(0, 255, 213, 0.1);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
 }
 
 .results-card h2 {
-    color: #191970 !important;
+    color: white !important;
     font-size: 32px;
     font-weight: 900;
     margin-bottom: 8px;
@@ -1311,20 +1161,12 @@ input:checked + .slider:before {
 }
 
 .results-card p {
-    color: #191970 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
     line-height: 1.8;
 }
 
-.results-card .result-icon {
-    font-size: 65px;
-    color: #00ffd5;
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 0 40px rgba(0, 255, 213, 0.2);
-}
-
 .about-card {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 30px;
     border-radius: 30px;
@@ -1333,12 +1175,12 @@ input:checked + .slider:before {
     text-align: center;
     max-height: 80vh;
     overflow-y: auto;
-    color: #191970;
-    border: 1px solid rgba(0, 255, 213, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 .routine-card {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 30px;
     border-radius: 30px;
@@ -1347,29 +1189,27 @@ input:checked + .slider:before {
     text-align: center;
     max-height: 80vh;
     overflow-y: auto;
-    color: #191970;
-    border: 1px solid rgba(0, 255, 213, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 .about-card p,
 .routine-card p,
 .about-card h2,
-.routine-card h2,
-.about-card h3,
-.routine-card h3 {
-    color: #191970 !important;
+.routine-card h2 {
+    color: white !important;
 }
 
 .results-card .btn-aca-result h3 a,
 .about-card .btn-aca-result h3 a,
 .routine-card .btn-aca-result h3 a {
-    color: #191970 !important;
+    color: white !important;
 }
 
 .results-card .btn-aca-result,
 .about-card .btn-aca-result,
 .routine-card .btn-aca-result {
-    background: rgba(0, 0, 0, 0.03);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 50px;
     padding: 10px;
     margin: 10px 0;
@@ -1378,14 +1218,14 @@ input:checked + .slider:before {
 .results-card .btn,
 .about-card .btn,
 .routine-card .btn {
-    background: #00ffd5;
+    background: #ffd700;
     color: #191970;
 }
 
 .results-card .btn:hover,
 .about-card .btn:hover,
 .routine-card .btn:hover {
-    background: #90e0ef;
+    background: #ffe44d;
 }
 
 .results-card::-webkit-scrollbar,
@@ -1397,7 +1237,7 @@ input:checked + .slider:before {
 .results-card::-webkit-scrollbar-thumb,
 .about-card::-webkit-scrollbar-thumb,
 .routine-card::-webkit-scrollbar-thumb {
-    background: rgba(0, 255, 213, 0.3);
+    background: rgba(255, 215, 0, 0.3);
     border-radius: 10px;
 }
 
@@ -1409,18 +1249,18 @@ input:checked + .slider:before {
 
 .routine-table th,
 .routine-table td {
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 10px;
     text-align: left;
 }
 
 .routine-table th {
-    background: rgba(0, 105, 148, 0.1);
-    color: #191970;
+    background: rgba(255, 215, 0, 0.1);
+    color: white;
 }
 
 .routine-table td {
-    color: #191970;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* ==================== STUDENT OWN ROUTINE ==================== */
@@ -1429,29 +1269,28 @@ input:checked + .slider:before {
 }
 
 #studentOwnRoutine .routine-card {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(5px);
     border-radius: 20px !important;
     padding: 20px !important;
-    border: 1px solid rgba(0, 0, 0, 0.05) !important;
-    color: #191970 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: white !important;
 }
 
 #studentOwnRoutine .routine-card p,
 #studentOwnRoutine .routine-card strong,
 #studentOwnRoutine .routine-card td,
 #studentOwnRoutine .routine-card th {
-    color: #191970 !important;
+    color: white !important;
 }
 
 #studentOwnRoutine .routine-table th {
-    background: rgba(0, 105, 148, 0.1) !important;
-    color: #191970 !important;
+    background: rgba(255, 215, 0, 0.1) !important;
+    color: white !important;
 }
 
 #studentOwnRoutine .routine-table td {
-    border-color: rgba(0, 0, 0, 0.05) !important;
-    color: #191970 !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
 }
 
 #studentOwnRoutine .routine-table tr:hover {
@@ -1459,7 +1298,7 @@ input:checked + .slider:before {
 }
 
 #studentOwnRoutine .student-group-tag {
-    background: rgba(0, 105, 148, 0.8);
+    background: rgba(255, 215, 0, 0.2);
     color: white;
 }
 
@@ -1481,38 +1320,38 @@ input:checked + .slider:before {
 
 /* ==================== STUDENT INFO CARD ==================== */
 .student-info-card {
-    background: linear-gradient(145deg, rgba(0, 105, 148, 0.08), rgba(0, 119, 182, 0.08));
+    background: rgba(255, 215, 0, 0.1);
     backdrop-filter: blur(5px);
-    color: #191970;
+    color: white;
     padding: 15px;
     border-radius: 20px;
     margin-bottom: 20px;
     text-align: center;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.05);
 }
 
 .student-info-card h3 {
-    color: #191970;
+    color: white;
     border-left: none;
     padding-left: 0;
 }
 
 .student-info-card p {
-    color: #191970;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* ==================== FEEDBACK ==================== */
 .feedback-item {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 16px;
     padding: 12px;
     margin-bottom: 10px;
-    border-left: 4px solid #00ffd5;
-    color: #191970;
+    border-left: 4px solid #ffd700;
+    color: white;
 }
 
 .feedback-item p {
-    color: #191970;
+    color: white;
 }
 
 .delete-btn {
@@ -1540,37 +1379,37 @@ input:checked + .slider:before {
 }
 
 .reaction-btn {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 30px;
     padding: 5px 12px;
     cursor: pointer;
     font-size: 14px;
     transition: 0.2s;
-    color: #191970;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .reaction-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
     transform: scale(1.05);
 }
 
 .reaction-btn.active {
-    background: #00ffd5;
+    background: #ffd700;
     color: #191970;
 }
 
 .reaction-count {
     margin-left: 4px;
     font-size: 12px;
-    color: rgba(25, 25, 112, 0.5);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 /* ==================== EMPTY STATE ==================== */
 .empty-state {
     text-align: center;
     padding: 40px;
-    color: rgba(25, 25, 112, 0.5);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 /* ==================== RESPONSIVE ==================== */
@@ -1710,12 +1549,12 @@ input:checked + .slider:before {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(0, 255, 213, 0.2);
+    background: rgba(255, 215, 0, 0.3);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 255, 213, 0.3);
+    background: rgba(255, 215, 0, 0.5);
 }
 
 /* ==================== PRINT STYLES ==================== */
@@ -1724,7 +1563,7 @@ input:checked + .slider:before {
     .btn,
     .menu-btn,
     .dropdown,
-    .wave-container {
+    #canvas-container {
         display: none !important;
     }
     
@@ -1739,10 +1578,6 @@ input:checked + .slider:before {
     .panel h3,
     .panel p {
         color: black !important;
-    }
-    
-    .bg-slideshow {
-        display: none !important;
     }
 }
 
