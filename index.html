@@ -8,17 +8,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     
-    <!-- Three.js for 3D Background -->
     <style>
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #1a0802;
-            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            min-height: 100vh;
+            background: #1a0802;
+            overflow-y: auto !important;
+            overflow-x: hidden;
         }
+        
         #canvas-container {
             position: fixed;
             top: 0;
@@ -26,8 +26,9 @@
             width: 100%;
             height: 100vh;
             z-index: 0;
+            pointer-events: none;
         }
-        /* Login Screen - 3D এর উপরে */
+        
         .login-screen {
             position: fixed;
             top: 0;
@@ -42,7 +43,7 @@
             backdrop-filter: blur(8px);
             padding: 16px;
         }
-        /* App Container - 3D এর উপরে */
+        
         .app-container {
             display: none;
             position: relative;
@@ -50,7 +51,23 @@
             min-height: 100vh;
             background: transparent;
         }
-        /* অন্যান্য সব স্টাইল style.css এ থাকবে */
+        
+        .content {
+            position: relative;
+            z-index: 21;
+            max-width: 1200px;
+            margin: 16px auto;
+            padding: 0 12px 80px;
+        }
+        
+        .panel {
+            margin-bottom: 25px;
+        }
+        
+        footer {
+            position: relative;
+            z-index: 21;
+        }
     </style>
 </head>
 <body>
@@ -107,7 +124,7 @@
     </div>
 
     <div class="content">
-        <!-- ==================== DASHBOARD PANEL ==================== -->
+        <!-- DASHBOARD PANEL -->
         <div id="dashboardPanel" class="panel active-panel">
             <div class="dashboard-header">
                 <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
@@ -151,13 +168,13 @@
             </div>
         </div>
         
-        <!-- ==================== STUDENT FEEDBACK PANEL ==================== -->
+        <!-- STUDENT FEEDBACK PANEL -->
         <div id="studentPanel" class="panel">
             <h2><i class="fas fa-comment-dots"></i> শিক্ষকদের মতামত দিন</h2>
             <div id="studentFeedbackArea"></div>
         </div>
         
-        <!-- ==================== TEACHER PANEL ==================== -->
+        <!-- TEACHER PANEL -->
         <div id="teacherPanel" class="panel">
             <h2><i class="fas fa-chalkboard"></i> শিক্ষক ড্যাশবোর্ড</h2>
             <div id="teacherProfileArea"></div>
@@ -165,7 +182,7 @@
             <div id="teacherClassStudents"></div>
         </div>
         
-        <!-- ==================== ADMIN TEACHERS PANEL ==================== -->
+        <!-- ADMIN TEACHERS PANEL -->
         <div id="adminTeachersPanel" class="panel">
             <h2><i class="fas fa-user-plus"></i> শিক্ষক তৈরি করুন</h2>
             <div style="background:rgba(255,255,255,0.05); padding:16px; border-radius:28px; margin-bottom:20px; border:1px solid rgba(255,255,255,0.05);">
@@ -183,7 +200,7 @@
             <div class="table-responsive"><div id="teachersTable"></div></div>
         </div>
         
-        <!-- ==================== ADMIN CLASS PANEL ==================== -->
+        <!-- ADMIN CLASS PANEL -->
         <div id="adminClassPanel" class="panel">
             <h2>ক্লাস ম্যানেজার</h2>
             <div id="classButtons" class="class-buttons-container"></div>
@@ -203,7 +220,7 @@
                         <option value="">গ্রুপ নির্বাচন করুন</option>
                         <option value="Science">🔬 বিজ্ঞান</option>
                         <option value="Commerce">💼 বাণিজ্য</option>
-                        <option value="Arts">🎨 মানবিক</option>
+                        <option value="Arts">⚖️ মানবিক</option>
                         <option value="SSC Special">🎯 এসএসসি স্পেশাল</option>
                     </select>
                     <small id="groupRequiredMsg" style="color:rgba(255,255,255,0.5); font-size:11px;">গ্রুপ নির্বাচন ঐচ্ছিক (শুধু Nine, Ten, SSC Special এর জন্য আবশ্যক)</small>
@@ -216,7 +233,7 @@
             <div class="table-responsive"><div id="classStudentsTable"></div></div>
         </div>
         
-        <!-- ==================== ATTENDANCE PANEL ==================== -->
+        <!-- ATTENDANCE PANEL -->
         <div id="attendancePanel" class="panel">
             <h2><i class="fas fa-calendar-alt"></i> অ্যাটেন্ডেন্স</h2>
             <div id="studentHistorySection" class="attendance-card" style="display: none;">
@@ -233,7 +250,7 @@
                             <option value="all">সব গ্রুপ</option>
                             <option value="Science">🔬 বিজ্ঞান</option>
                             <option value="Commerce">💼 বাণিজ্য</option>
-                            <option value="Arts">🎨 মানবিক</option>
+                            <option value="Arts">⚖️ মানবিক</option>
                             <option value="SSC Special">🎯 এসএসসি স্পেশাল</option>
                         </select>
                         <input type="date" id="attendanceDate" style="flex:1; min-width:150px; margin-bottom: 0;">
@@ -253,14 +270,14 @@
             </div>
         </div>
         
-        <!-- ==================== ADMIN FEEDBACK PANEL ==================== -->
+        <!-- ADMIN FEEDBACK PANEL -->
         <div id="adminFeedbackPanel" class="panel">
             <h2><i class="fas fa-archive"></i> সকল মতামত</h2>
             <select id="feedbackClassFilter" style="margin-bottom:15px;"></select>
             <div id="feedbackList"></div>
         </div>
         
-        <!-- ==================== ADMIN ROUTINE PANEL ==================== -->
+        <!-- ADMIN ROUTINE PANEL -->
         <div id="adminRoutinePanel" class="panel">
             <h2><i class="fas fa-calendar-edit"></i> রুটিন ম্যানেজার</h2>
             <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:20px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.05);">
@@ -279,7 +296,7 @@
                         <option value="">সব গ্রুপ</option>
                         <option value="Science">🔬 বিজ্ঞান</option>
                         <option value="Commerce">💼 বাণিজ্য</option>
-                        <option value="Arts">🎨 মানবিক</option>
+                        <option value="Arts">⚖️ মানবিক</option>
                         <option value="SSC Special">🎯 এসএসসি স্পেশাল</option>
                     </select>
                 </div>
@@ -288,7 +305,7 @@
             <button class="btn btn-green" id="saveAllRoutinesBtn"><i class="fas fa-save"></i> সব রুটিন সংরক্ষণ করুন</button>
         </div>
         
-        <!-- ==================== SOCIAL FEED PANEL ==================== -->
+        <!-- SOCIAL FEED PANEL -->
         <div id="socialFeedPanel" class="panel">
             <h2><i class="fas fa-comments"></i> সোশ্যাল কানেক্টিভিটি</h2>
             <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:20px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.05);">
@@ -305,27 +322,28 @@
             <div id="socialFeedContainer" style="margin-top: 20px;"></div>
         </div>
     </div>
-    <footer style="text-align:center; padding:16px; color:rgba(255,255,255,0.3);">© মাস্টারমাইন্ড অ্যাকাডেমি</footer>
+    <footer style="text-align:center; padding:16px; color:rgba(255,255,255,0.3); position:relative; z-index:21;">© মাস্টারমাইন্ড অ্যাকাডেমি</footer>
 </div>
 
-<!-- ==================== RESULT MODAL ==================== -->
+<!-- ==================== MODALS ==================== -->
+<!-- RESULT MODAL -->
 <div id="resultModal" class="result-modal" onclick="closeModalOutside(event, 'resultModal')">
     <div class="results-card" onclick="event.stopPropagation()">
         <div style="position:relative; display:inline-block; margin-bottom:15px;">
-            <div style="position:absolute; top:-10px; left:-10px; right:-10px; bottom:-10px; background:radial-gradient(circle, rgba(0,255,213,0.1), transparent 70%); border-radius:50%;"></div>
-            <i class="fas fa-chart-simple" style="font-size:65px; color:#00ffd5; position:relative; z-index:1; text-shadow:0 0 40px rgba(0,255,213,0.3);"></i>
+            <div style="position:absolute; top:-10px; left:-10px; right:-10px; bottom:-10px; background:radial-gradient(circle, rgba(255,215,0,0.1), transparent 70%); border-radius:50%;"></div>
+            <i class="fas fa-chart-simple" style="font-size:65px; color:#ffd700; position:relative; z-index:1; text-shadow:0 0 40px rgba(255,215,0,0.3);"></i>
         </div>
         
-        <h2 style="color:#191970; font-size:32px; font-weight:900; margin-bottom:8px; letter-spacing:1px;">
+        <h2 style="color:white; font-size:32px; font-weight:900; margin-bottom:8px; letter-spacing:1px;">
             📊 একাডেমিক ফলাফল
         </h2>
         
-        <div style="width:100px; height:4px; background:linear-gradient(90deg, #00ffd5, #00b4d8, #90e0ef); margin:12px auto; border-radius:5px; box-shadow:0 0 20px rgba(0,255,213,0.2);"></div>
+        <div style="width:100px; height:4px; background:linear-gradient(90deg, #ffd700, #f5a623); margin:12px auto; border-radius:5px; box-shadow:0 0 20px rgba(255,215,0,0.2);"></div>
         
         <div style="margin:25px 0;">
-            <a href="result.html" target="_blank" 
+            <a href="about.html" target="_blank" 
                style="display:inline-block; 
-                      background: linear-gradient(135deg, #00ffd5, #00b4d8);
+                      background: linear-gradient(135deg, #ffd700, #f5a623);
                       color: #191970;
                       padding: 16px 45px;
                       border-radius: 60px;
@@ -333,32 +351,32 @@
                       font-weight: 800;
                       font-size: 20px;
                       transition: all 0.3s ease;
-                      box-shadow: 0 4px 30px rgba(0, 255, 213, 0.3);
+                      box-shadow: 0 4px 30px rgba(255, 215, 0, 0.3);
                       letter-spacing: 0.5px;">
                 <i class="fas fa-external-link-alt" style="margin-right:10px;"></i> ফলাফল দেখুন
             </a>
         </div>
         
-        <div style="background:rgba(0,0,0,0.03); border-radius:16px; padding:15px; margin:15px 0; border:1px solid rgba(0,0,0,0.05);">
-            <p style="margin:5px 0; font-size:16px; color:#191970; line-height:1.8;">
-                <i class="fas fa-info-circle" style="color:#00ffd5; margin-right:8px;"></i>
+        <div style="background:rgba(255,255,255,0.05); border-radius:16px; padding:15px; margin:15px 0; border:1px solid rgba(255,255,255,0.05);">
+            <p style="margin:5px 0; font-size:16px; color:rgba(255,255,255,0.9); line-height:1.8;">
+                <i class="fas fa-info-circle" style="color:#ffd700; margin-right:8px;"></i>
                 আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।
             </p>
-            <p style="margin:5px 0; font-size:14px; color:rgba(25,25,112,0.7);">
+            <p style="margin:5px 0; font-size:14px; color:rgba(255,255,255,0.7);">
                 <i class="fas fa-exclamation-circle" style="color:#f5b042; margin-right:8px;"></i>
                 ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।
             </p>
         </div>
         
-        <p style="margin:20px 0 25px; font-style:italic; font-size:22px; color:#00ffd5; font-weight:700; letter-spacing:2px; text-shadow:0 0 30px rgba(0,255,213,0.2);">
+        <p style="margin:20px 0 25px; font-style:italic; font-size:22px; color:#ffd700; font-weight:700; letter-spacing:2px; text-shadow:0 0 30px rgba(255,215,0,0.2);">
             ❝ ধন্যবাদ ❞
         </p>
         
         <button onclick="document.getElementById('resultModal').style.display='none'" 
-                style="background:rgba(0,0,0,0.05); 
-                       color:#191970; 
+                style="background:rgba(255,255,255,0.05); 
+                       color:white; 
                        padding:12px 35px; 
-                       border:1px solid rgba(0,0,0,0.1);
+                       border:1px solid rgba(255,255,255,0.1);
                        border-radius:50px; 
                        font-weight:600; 
                        font-size:16px; 
@@ -369,23 +387,23 @@
     </div>
 </div>
 
-<!-- ==================== ABOUT MODAL ==================== -->
+<!-- ABOUT MODAL -->
 <div id="aboutModal" class="about-modal" onclick="closeModalOutside(event, 'aboutModal')">
     <div class="about-card" onclick="event.stopPropagation()">
-        <i class="fas fa-school" style="font-size:48px; color:#00ffd5; display:block; text-align:center;"></i>
-        <h2 style="text-align:center; color:#191970;">মাস্টারমাইন্ড অ্যাকাডেমি</h2>
-        <p style="margin:15px 0; color:#191970;">আধুনিক শিক্ষাপ্রতিষ্ঠান যা মানসম্মত শিক্ষা ও প্রযুক্তিনির্ভর ক্লাসরুম ব্যবস্থাপনায় অনন্য।</p>
-        <p style="color:rgba(25,25,112,0.8);"><strong>📍 ঠিকানা:</strong> পেকুয়া, কক্সবাজার</p>
-        <p style="color:rgba(25,25,112,0.8);"><strong>📞 যোগাযোগ:</strong> 01623209091</p>
+        <i class="fas fa-school" style="font-size:48px; color:#ffd700; display:block; text-align:center;"></i>
+        <h2 style="text-align:center; color:white;">মাস্টারমাইন্ড অ্যাকাডেমি</h2>
+        <p style="margin:15px 0; color:rgba(255,255,255,0.9);">আধুনিক শিক্ষাপ্রতিষ্ঠান যা মানসম্মত শিক্ষা ও প্রযুক্তিনির্ভর ক্লাসরুম ব্যবস্থাপনায় অনন্য।</p>
+        <p style="color:rgba(255,255,255,0.8);"><strong>📍 ঠিকানা:</strong> পেকুয়া, কক্সবাজার</p>
+        <p style="color:rgba(255,255,255,0.8);"><strong>📞 যোগাযোগ:</strong> 01623209091</p>
         <button class="btn btn-orange" onclick="document.getElementById('aboutModal').style.display='none'" style="margin-top:15px;">বন্ধ করুন</button>
     </div>
 </div>
 
-<!-- ==================== ROUTINE MODAL ==================== -->
+<!-- ROUTINE MODAL -->
 <div id="routineModal" class="routine-modal" onclick="closeModalOutside(event, 'routineModal')">
     <div class="routine-card" onclick="event.stopPropagation()">
-        <i class="fas fa-calendar-week" style="font-size:48px; color:#00ffd5; display:block; text-align:center;"></i>
-        <h2 style="text-align:center; color:#191970;">📅 ক্লাস রুটিন</h2>
+        <i class="fas fa-calendar-week" style="font-size:48px; color:#ffd700; display:block; text-align:center;"></i>
+        <h2 style="text-align:center; color:white;">📅 ক্লাস রুটিন</h2>
         <div id="routineContent"></div>
         <button class="btn btn-orange" onclick="document.getElementById('routineModal').style.display='none'" style="margin-top:15px;">বন্ধ করুন</button>
     </div>
@@ -401,7 +419,6 @@
 <script>
     let scene, camera, renderer, waterGeometry, waterMaterial, boat, sunGroup;
     
-    // Wave parameters — soft, realistic ocean
     const waveHeight = 4.2;      
     const waveFrequency = 0.019; 
     const waveSpeed = 1.2;       
@@ -411,7 +428,6 @@
 
         scene = new THREE.Scene();
 
-        // ---------- SKY: warm golden sunset, softer blue hints ----------
         const canvas = document.createElement('canvas');
         canvas.width = 2;
         canvas.height = 512;
@@ -427,7 +443,6 @@
         const skyTexture = new THREE.CanvasTexture(canvas);
         scene.background = skyTexture;
 
-        // Camera – cinematic low angle
         camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 1, 3000);
         camera.position.set(0, 14, 150);
 
@@ -438,7 +453,6 @@
         renderer.toneMappingExposure = 1.3; 
         container.appendChild(renderer.domElement);
 
-        // ---------- LIGHTING : soft & warm, with a kiss of blue for depth ----------
         const ambientLight = new THREE.AmbientLight(0x446688, 0.5);
         scene.add(ambientLight);
 
@@ -450,10 +464,8 @@
         fillLight.position.set(-80, 30, -200);
         scene.add(fillLight);
 
-        // ---------- THE SUN: ultra-realistic with blur (soft glow) ----------
         sunGroup = new THREE.Group();
 
-        // core sun – bright white‑gold, slightly blurred via roughness/opacity
         const sunGeometry = new THREE.SphereGeometry(18, 48, 48);
         const sunMaterial = new THREE.MeshStandardMaterial({
             color: 0xfff3d4,
@@ -465,7 +477,6 @@
         const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
         sunGroup.add(sunMesh);
 
-        // inner glow – warm orange, transparent for blur effect
         const glowMat = new THREE.MeshBasicMaterial({
             color: 0xffaa33,
             transparent: true,
@@ -475,7 +486,6 @@
         const glowMesh = new THREE.Mesh(new THREE.SphereGeometry(34, 40, 40), glowMat);
         sunGroup.add(glowMesh);
 
-        // outer glow – huge, soft, golden halo (blurred)
         const outerGlowMat = new THREE.MeshBasicMaterial({
             color: 0xff9922,
             transparent: true,
@@ -485,7 +495,6 @@
         const outerGlow = new THREE.Mesh(new THREE.SphereGeometry(65, 32, 32), outerGlowMat);
         sunGroup.add(outerGlow);
 
-        // soft spikes (blurred)
         const spikeMat = new THREE.MeshBasicMaterial({
             color: 0xffaa44,
             transparent: true,
@@ -502,7 +511,6 @@
         sunGroup.position.set(0, 110, -460);
         scene.add(sunGroup);
 
-        // ---------- SAND (wet beach, warm tone) ----------
         const sandGeometry = new THREE.PlaneGeometry(1400, 700);
         const sandMaterial = new THREE.MeshStandardMaterial({
             color: 0x8b5a3a,
@@ -514,7 +522,6 @@
         sandMesh.position.set(0, -22, 320);
         scene.add(sandMesh);
 
-        // ---------- ULTRA REALISTIC OCEAN: vertex colors – soft turquoise to deep blue ----------
         waterGeometry = new THREE.PlaneGeometry(2000, 2000, 180, 180);
         
         const colors = [];
@@ -545,7 +552,6 @@
         waterMesh.position.set(0, -1.5, -180);
         scene.add(waterMesh);
 
-        // ---------- distant resort silhouettes ----------
         const buildingData = [
             { width: 40, height: 120, depth: 35, x: -220, z: 400, color: 0x1c2a33 },
             { width: 50, height: 150, depth: 40, x: -120, z: 430, color: 0x1f2e3a },
@@ -561,10 +567,8 @@
             scene.add(building);
         });
 
-        // ---------- Fishing boat with blur (soft edges via roughness & material) ----------
         boat = new THREE.Group();
         
-        // Main body – blur via roughness and slightly transparent edges
         const bodyGeo = new THREE.CylinderGeometry(2.2, 4.2, 13, 6, 1);
         const bodyMat = new THREE.MeshStandardMaterial({ 
             color: 0x2c241e, 
@@ -578,7 +582,6 @@
         boatBody.scale.set(1, 2.4, 0.6);
         boat.add(boatBody);
 
-        // Cabin – blurred
         const cabinGeo = new THREE.BoxGeometry(3.8, 3.8, 5.5);
         const cabinMat = new THREE.MeshStandardMaterial({ 
             color: 0x1a1410, 
@@ -590,14 +593,12 @@
         cabin.position.set(0, 2.2, -0.8);
         boat.add(cabin);
 
-        // Mast – blurred
         const mastGeo = new THREE.CylinderGeometry(0.1, 0.1, 10);
         const mastMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.9 });
         const mast = new THREE.Mesh(mastGeo, mastMat);
         mast.position.set(0, 5.2, 2.8);
         boat.add(mast);
 
-        // Flag – blurred
         const flagGeo = new THREE.BoxGeometry(0.08, 1.4, 2.2);
         const flagMat = new THREE.MeshStandardMaterial({ color: 0xee9605, roughness: 0.8 });
         const flag = new THREE.Mesh(flagGeo, flagMat);
@@ -606,7 +607,6 @@
 
         scene.add(boat);
 
-        // Controls
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.maxPolarAngle = Math.PI * 0.48;
         controls.minDistance = 30;
@@ -617,7 +617,6 @@
         window.addEventListener('resize', onWindowResize);
     }
 
-    // ---------- Realistic wave function ----------
     function getRealOceanWave(x, z, time) {
         const mainWave = Math.sin(x * waveFrequency + time * waveSpeed) * waveHeight;
         const secondaryWave = Math.cos(z * (waveFrequency * 1.3) - time * (waveSpeed * 0.7)) * (waveHeight * 0.35);
@@ -638,7 +637,6 @@
 
         const time = performance.now() * 0.001;
 
-        // Update water vertices
         if (waterGeometry) {
             const positionAttribute = waterGeometry.attributes.position;
             for (let i = 0; i < positionAttribute.count; i++) {
@@ -651,7 +649,6 @@
             waterGeometry.attributes.position.needsUpdate = true;
         }
 
-        // Boat motion with blur (smooth interpolation)
         if (boat) {
             const boatX = 2.5;
             const boatZ = -75;
@@ -667,7 +664,6 @@
             boat.rotation.y = Math.sin(time * 0.035) * 0.07;
         }
 
-        // Subtle sun pulse (breathing glow) – adds to blur effect
         if (sunGroup) {
             const pulse = 1 + Math.sin(time * 0.25) * 0.006;
             if (sunGroup.children[1]) sunGroup.children[1].scale.set(pulse, pulse, pulse);
@@ -679,7 +675,6 @@
         }
     }
 
-    // Start 3D Background
     init3DBackground();
     animate3DBackground();
 </script>
