@@ -34,17 +34,16 @@ let feedImages = [];
 let selectedRoutineClass = null;
 let selectedRoutineDay = 'Sunday';
 
-// গ্রুপ লিস্ট
-const GROUP_LIST = ['Science', 'Commerce', 'Arts', 'SSC Special'];
+// গ্রুপ লিস্ট - SSC Special বাদ
+const GROUP_LIST = ['Science', 'Commerce', 'Arts'];
 const GROUP_ICONS = {
     'Science': '🔬',
     'Commerce': '💼',
-    'Arts': '🎨',
-    'SSC Special': '🎯'
+    'Arts': '🎨'
 };
 
-// গ্রুপ প্রয়োজন এমন ক্লাস
-const GROUP_REQUIRED_CLASSES = ['Nine', 'Ten', 'SSC Special'];
+// গ্রুপ প্রয়োজন এমন ক্লাস - SSC Special বাদ
+const GROUP_REQUIRED_CLASSES = ['Nine', 'Ten'];
 
 // ============================================================
 // SESSION MANAGEMENT
@@ -138,14 +137,14 @@ function toggleGroupField(className) {
         groupSelect.required = true;
         if (requiredMsg) {
             requiredMsg.textContent = '⚠️ এই ক্লাসের জন্য গ্রুপ নির্বাচন আবশ্যক';
-            requiredMsg.style.color = '#c52828';
+            requiredMsg.style.color = '#ffd700';
         }
     } else {
         groupSelect.required = false;
         groupSelect.value = '';
         if (requiredMsg) {
             requiredMsg.textContent = 'গ্রুপ নির্বাচন ঐচ্ছিক';
-            requiredMsg.style.color = 'rgba(25,25,112,0.5)';
+            requiredMsg.style.color = 'rgba(255,255,255,0.5)';
         }
     }
 }
@@ -369,15 +368,14 @@ function renderStudentOwnRoutine() {
     const banglaDays = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
     const todayBangla = banglaDays[today.getDay()];
     
-    const icon = GROUP_ICONS[groupName] || '';
-    
     let html = `<div style="margin-bottom:15px; display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center;">
         <div>
-            <p style="font-size:16px;"><strong>📚 ক্লাস:</strong> ${className} ${groupName ? '| <span class="student-group-tag ' + groupName.toLowerCase() + '">' + icon + ' ' + groupName + '</span>' : ''}</p>
-            <p style="font-size:14px; color:#191970;"><strong>📅 আজ:</strong> ${todayBangla} (${todayName})</p>
+            <p style="font-size:16px;"><strong>📚 ক্লাস:</strong> ${className === 'SSC Special' ? '<span class="ssc-special-badge">🎯 SSC Special</span>' : className} 
+            ${groupName ? '| <span class="student-group-tag ' + groupName.toLowerCase() + '">' + GROUP_ICONS[groupName] + ' ' + groupName + '</span>' : ''}</p>
+            <p style="font-size:14px; color:rgba(255,255,255,0.7);"><strong>📅 আজ:</strong> ${todayBangla} (${todayName})</p>
         </div>
         <div>
-            <span style="background:#00ffd5; color:#191970; padding:5px 15px; border-radius:20px; font-size:12px; font-weight:600;">
+            <span style="background:#ffd700; color:#191970; padding:5px 15px; border-radius:20px; font-size:12px; font-weight:600;">
                 <i class="fas fa-calendar-check"></i> আমার রুটিন
             </span>
         </div>
@@ -407,7 +405,7 @@ function renderStudentOwnRoutine() {
         }
         const isToday = day === todayName;
         const banglaDay = banglaDays[index];
-        html += `<tr style="${isToday ? 'background:rgba(0,255,213,0.1); font-weight:bold;' : ''}">
+        html += `<tr style="${isToday ? 'background:rgba(255,215,0,0.1); font-weight:bold;' : ''}">
             <td>${banglaDay} ${isToday ? ' 📌 (আজ)' : ''}</td>
             <td>${subject}</td>
         </tr>`;
@@ -416,15 +414,15 @@ function renderStudentOwnRoutine() {
     html += `</tbody></table></div>`;
     
     if (!hasRoutine) {
-        html += `<div style="text-align:center; padding:30px 0; color:rgba(25,25,112,0.5);">
-            <i class="fas fa-calendar-times" style="font-size:40px; display:block; margin-bottom:10px; color:rgba(25,25,112,0.2);"></i>
+        html += `<div style="text-align:center; padding:30px 0; color:rgba(255,255,255,0.5);">
+            <i class="fas fa-calendar-times" style="font-size:40px; display:block; margin-bottom:10px; color:rgba(255,255,255,0.2);"></i>
             <p>আপনার জন্য এখনো কোনো রুটিন যোগ করা হয়নি।</p>
             <p style="font-size:12px;">অফিসে যোগাযোগ করুন রুটিন পেতে।</p>
         </div>`;
     } else {
         const todaySubject = allRoutines[todayName] && allRoutines[todayName][routineKey] ? allRoutines[todayName][routineKey] : null;
         if (todaySubject && todaySubject !== '-') {
-            html += `<div style="margin-top:15px; padding:12px 18px; background:linear-gradient(135deg, #00ffd5, #00b4d8); border-radius:15px; color:#191970; text-align:center; font-weight:600;">
+            html += `<div style="margin-top:15px; padding:12px 18px; background:linear-gradient(135deg, #ffd700, #f5a623); border-radius:15px; color:#191970; text-align:center; font-weight:600;">
                 <i class="fas fa-bell"></i> <strong>আজকের বিষয়:</strong> ${todaySubject}
             </div>`;
         }
@@ -638,7 +636,7 @@ function renderTeachersTable() {
     const container = document.getElementById('teachersTable');
     if (!container) return;
     if (Object.keys(allTeachers).length === 0) {
-        container.innerHTML = '<p style="color:rgba(25,25,112,0.5); text-align:center;">কোনো শিক্ষক নেই</p>';
+        container.innerHTML = '<p style="color:rgba(255,255,255,0.5); text-align:center;">কোনো শিক্ষক নেই</p>';
         return;
     }
     let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>অ্যাকশন</th></tr></thead><tbody>`;
@@ -694,22 +692,27 @@ function renderClassStudents(className) {
         }
     }
     if (Object.keys(students).length === 0) {
-        container.innerHTML = '<p style="color:rgba(25,25,112,0.5); text-align:center;">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
+        container.innerHTML = '<p style="color:rgba(255,255,255,0.5); text-align:center;">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
         return;
     }
     let html = `<table><thead><tr><th>ছবি</th><th>নাম</th><th>আইডি</th><th>ক্লাস</th><th>গ্রুপ</th><th>অভিভাবকের মোবাইল</th><th>অ্যাকশন</th></tr></thead><tbody>`;
     for (let key in students) {
         const s = students[key];
         let groupBadge = '-';
-        if (s.group) {
+        
+        // SSC Special এর জন্য আলাদা ব্যাজ
+        if (s.class === 'SSC Special') {
+            groupBadge = `<span class="ssc-special-badge">🎯 এসএসসি স্পেশাল</span>`;
+        } else if (s.group) {
             const icon = GROUP_ICONS[s.group] || '';
             groupBadge = `<span class="student-group-tag ${s.group.toLowerCase()}">${icon} ${s.group}</span>`;
         }
+        
         html += `<tr>
             <td><img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"></td>
             <td>${s.name}</td>
             <td>${s.id}</td>
-            <td>${s.class}</td>
+            <td>${s.class === 'SSC Special' ? '<span class="ssc-special-badge">🎯 SSC Special</span>' : s.class}</td>
             <td>${groupBadge}</td>
             <td>${s.guardianPhone || ''}</td>
             <td><button class="btn btn-red btn-sm" onclick="deleteStudent('${key}')">মুছুন</button></td>
@@ -792,10 +795,10 @@ document.getElementById('studentImageInput').addEventListener('change', function
 function populateClassCheckboxes() {
     const container = document.getElementById('classCheckboxes');
     if (!container) return;
-    container.innerHTML = '<p style="font-size:13px; margin-bottom:8px; color:#191970;"><strong>ক্লাস নির্বাচন করুন:</strong></p>';
+    container.innerHTML = '<p style="font-size:13px; margin-bottom:8px; color:white;"><strong>ক্লাস নির্বাচন করুন:</strong></p>';
     allClasses.forEach(cls => {
         const label = document.createElement('label');
-        label.style.cssText = 'display:inline-block; margin-right:12px; font-size:13px; color:#191970;';
+        label.style.cssText = 'display:inline-block; margin-right:12px; font-size:13px; color:rgba(255,255,255,0.8);';
         label.innerHTML = `<input type="checkbox" class="teacher-class-checkbox" value="${cls}"> ${cls}`;
         container.appendChild(label);
     });
@@ -932,7 +935,7 @@ function renderRoutineEditor() {
     const groupName = groupSelect ? groupSelect.value : '';
     
     let html = `<div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:20px;">
-        <h4 style="margin-bottom:15px; color:#191970;">📝 ${className} - ${dayName} ${groupName ? '(' + getGroupDisplayName(groupName) + ')' : ''}</h4>`;
+        <h4 style="margin-bottom:15px; color:white;">📝 ${className} - ${dayName} ${groupName ? '(' + getGroupDisplayName(groupName) + ')' : ''}</h4>`;
     
     if (isGroupRequired(className)) {
         const groupsToShow = groupName ? [groupName] : GROUP_LIST;
@@ -943,9 +946,9 @@ function renderRoutineEditor() {
             const icon = GROUP_ICONS[grp] || '';
             
             html += `
-                <div style="display:flex; gap:10px; align-items:center; margin-top:10px; padding:8px; background:${groupName === grp ? 'rgba(0,255,213,0.05)' : 'transparent'}; border-radius:10px;">
-                    <span style="font-weight:bold; min-width:100px; color:#191970;">${icon} ${grp}:</span>
-                    <input type="text" class="routine-group-input" data-class="${className}" data-group="${grp}" data-day="${dayName}" value="${currentValue}" placeholder="বিষয় লিখুন..." style="flex:1; margin-bottom:0; color:#191970;">
+                <div style="display:flex; gap:10px; align-items:center; margin-top:10px; padding:8px; background:${groupName === grp ? 'rgba(255,215,0,0.05)' : 'transparent'}; border-radius:10px;">
+                    <span style="font-weight:bold; min-width:100px; color:white;">${icon} ${grp}:</span>
+                    <input type="text" class="routine-group-input" data-class="${className}" data-group="${grp}" data-day="${dayName}" value="${currentValue}" placeholder="বিষয় লিখুন..." style="flex:1; margin-bottom:0; color:white;">
                 </div>
             `;
         });
@@ -953,14 +956,14 @@ function renderRoutineEditor() {
         const currentValue = allRoutines[dayName] && allRoutines[dayName][className] ? allRoutines[dayName][className] : '';
         html += `
             <div style="display:flex; gap:10px; align-items:center; margin-top:10px;">
-                <span style="font-weight:bold; min-width:60px; color:#191970;">বিষয়:</span>
-                <input type="text" id="routineSingleInput" value="${currentValue}" placeholder="বিষয় লিখুন..." style="flex:1; margin-bottom:0; color:#191970;">
+                <span style="font-weight:bold; min-width:60px; color:white;">বিষয়:</span>
+                <input type="text" id="routineSingleInput" value="${currentValue}" placeholder="বিষয় লিখুন..." style="flex:1; margin-bottom:0; color:white;">
             </div>
         `;
     }
     
     html += `
-        <p style="font-size:12px; color:rgba(25,25,112,0.5); margin-top:12px;">
+        <p style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:12px;">
             <i class="fas fa-info-circle"></i> 
             ${isGroupRequired(className) ? '⚠️ প্রতিটি গ্রুপের জন্য আলাদা রুটিন দিন' : 'গ্রুপ প্রয়োজন নেই'}
         </p>
@@ -968,7 +971,7 @@ function renderRoutineEditor() {
     html += '</div>';
     
     html += `<div style="margin-top:20px;">
-        <h4 style="color:#191970;">📋 সব রুটিন (${dayName})</h4>
+        <h4 style="color:white;">📋 সব রুটিন (${dayName})</h4>
         <div class="table-responsive">
             <table class="routine-table">
                 <thead>
@@ -987,7 +990,7 @@ function renderRoutineEditor() {
                 const val = allRoutines[dayName] && allRoutines[dayName][key] ? allRoutines[dayName][key] : '-';
                 const icon = GROUP_ICONS[grp] || '';
                 const isActive = (cls === className && grp === groupName);
-                html += `<tr style="${isActive ? 'background:rgba(0,255,213,0.05);' : ''}">
+                html += `<tr style="${isActive ? 'background:rgba(255,215,0,0.05);' : ''}">
                     <td>${cls}</td>
                     <td><span class="student-group-tag ${grp.toLowerCase()}">${icon} ${grp}</span></td>
                     <td>${val}</td>
@@ -996,9 +999,9 @@ function renderRoutineEditor() {
         } else {
             const val = allRoutines[dayName] && allRoutines[dayName][cls] ? allRoutines[dayName][cls] : '-';
             const isActive = (cls === className && !groupName);
-            html += `<tr style="${isActive ? 'background:rgba(0,255,213,0.05);' : ''}">
+            html += `<tr style="${isActive ? 'background:rgba(255,215,0,0.05);' : ''}">
                 <td>${cls}</td>
-                <td>-</td>
+                <td>${cls === 'SSC Special' ? '<span class="ssc-special-badge">🎯 SSC</span>' : '-'}</td>
                 <td>${val}</td>
             </tr>`;
         }
@@ -1067,16 +1070,16 @@ function renderRoutineModal() {
                 days.forEach(day => {
                     const val = allRoutines[day] && allRoutines[day][key] ? allRoutines[day][key] : '-';
                     const isToday = day === todayName;
-                    html += `<td style="${isToday ? 'background:rgba(0,255,213,0.1); font-weight:bold;' : ''}">${val}</td>`;
+                    html += `<td style="${isToday ? 'background:rgba(255,215,0,0.1); font-weight:bold;' : ''}">${val}</td>`;
                 });
                 html += '</tr>';
             });
         } else {
-            html += `<tr><td><strong>${cls}</strong></td><td>-</td>`;
+            html += `<tr><td><strong>${cls}</strong></td><td>${cls === 'SSC Special' ? '<span class="ssc-special-badge">🎯 SSC</span>' : '-'}</td>`;
             days.forEach(day => {
                 const val = allRoutines[day] && allRoutines[day][cls] ? allRoutines[day][cls] : '-';
                 const isToday = day === todayName;
-                html += `<td style="${isToday ? 'background:rgba(0,255,213,0.1); font-weight:bold;' : ''}">${val}</td>`;
+                html += `<td style="${isToday ? 'background:rgba(255,215,0,0.1); font-weight:bold;' : ''}">${val}</td>`;
             });
             html += '</tr>';
         }
@@ -1155,7 +1158,7 @@ function loadStudentAttendance(className, groupName, date) {
     }
     
     if (Object.keys(students).length === 0) {
-        container.innerHTML = '<p style="color:rgba(25,25,112,0.5);">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
+        container.innerHTML = '<p style="color:rgba(255,255,255,0.5);">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
         section.style.display = 'block';
         return;
     }
@@ -1168,8 +1171,8 @@ function loadStudentAttendance(className, groupName, date) {
         const icon = GROUP_ICONS[student.group] || '';
         html += `<div class="student-att-row">
             <img src="${student.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(student.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
-            <span style="flex:1; color:#191970;">${student.name} ${student.group ? '<span class="student-group-tag ' + student.group.toLowerCase() + '">' + icon + ' ' + student.group + '</span>' : ''}</span>
-            <span style="font-size:12px; color:rgba(25,25,112,0.5);">${student.id}</span>
+            <span style="flex:1; color:white;">${student.name} ${student.group ? '<span class="student-group-tag ' + student.group.toLowerCase() + '">' + icon + ' ' + student.group + '</span>' : ''}</span>
+            <span style="font-size:12px; color:rgba(255,255,255,0.5);">${student.id}</span>
             <label class="toggle-switch">
                 <input type="checkbox" class="attendance-checkbox" data-student="${key}" ${isPresent ? 'checked' : ''}>
                 <span class="slider"></span>
@@ -1224,7 +1227,7 @@ function renderStudentAttendance() {
     
     monthSelector.innerHTML = `
         <button class="btn btn-sm btn-blue" onclick="changeStudentMonth(-1)">◀</button>
-        <span style="font-weight:bold; color:#191970;">${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
+        <span style="font-weight:bold; color:white;">${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
         <button class="btn btn-sm btn-blue" onclick="changeStudentMonth(1)">▶</button>
     `;
     
@@ -1299,7 +1302,7 @@ function renderClassMonthlyCalendar() {
     
     monthSelector.innerHTML = `
         <button class="btn btn-sm btn-blue" onclick="changeClassMonth(-1)">◀</button>
-        <span style="font-weight:bold; color:#191970;">${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })} - ${className} ${groupName !== 'all' ? '(' + getGroupDisplayName(groupName) + ')' : ''}</span>
+        <span style="font-weight:bold; color:white;">${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })} - ${className} ${groupName !== 'all' ? '(' + getGroupDisplayName(groupName) + ')' : ''}</span>
         <button class="btn btn-sm btn-blue" onclick="changeClassMonth(1)">▶</button>
     `;
     
@@ -1315,7 +1318,7 @@ function renderClassMonthlyCalendar() {
     }
     
     if (Object.keys(students).length === 0) {
-        container.innerHTML = '<p style="color:rgba(25,25,112,0.5);">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
+        container.innerHTML = '<p style="color:rgba(255,255,255,0.5);">এই ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>';
         return;
     }
     
@@ -1385,7 +1388,7 @@ function renderStudentInfo(studentData) {
     if (!card || !studentData) return;
     card.style.display = 'block';
     document.getElementById('studentNameDisplay').textContent = studentData.name;
-    document.getElementById('studentClassDisplay').textContent = studentData.class;
+    document.getElementById('studentClassDisplay').textContent = studentData.class === 'SSC Special' ? '🎯 SSC Special' : studentData.class;
     const icon = GROUP_ICONS[studentData.group] || '';
     document.getElementById('studentGroupDisplay').textContent = studentData.group ? icon + ' ' + studentData.group : '-';
     document.getElementById('studentIdDisplay').textContent = studentData.id;
@@ -1401,11 +1404,11 @@ function renderTeacherProfile(teacherData) {
     if (!container) return;
     container.innerHTML = `
         <div style="display:flex; align-items:center; gap:20px; background:rgba(255,255,255,0.05); padding:20px; border-radius:20px;">
-            <img src="${teacherData.image || 'https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=' + encodeURIComponent(teacherData.name)}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid #00ffd5;">
+            <img src="${teacherData.image || 'https://ui-avatars.com/api/?background=1e7b4a&color=fff&name=' + encodeURIComponent(teacherData.name)}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid #ffd700;">
             <div>
-                <h3 style="border:none; padding:0; color:#191970;">${teacherData.name}</h3>
-                <p style="color:#191970;"><strong>আইডি:</strong> ${teacherData.id}</p>
-                <p style="color:#191970;"><strong>ক্লাস:</strong> ${teacherData.classes ? teacherData.classes.join(', ') : ''}</p>
+                <h3 style="border:none; padding:0; color:white;">${teacherData.name}</h3>
+                <p style="color:rgba(255,255,255,0.8);"><strong>আইডি:</strong> ${teacherData.id}</p>
+                <p style="color:rgba(255,255,255,0.8);"><strong>ক্লাস:</strong> ${teacherData.classes ? teacherData.classes.join(', ') : ''}</p>
             </div>
         </div>
     `;
@@ -1416,12 +1419,13 @@ function renderTeacherAssignedClasses(teacherData) {
     if (!container) return;
     const assignedClasses = teacherData.classes || [];
     if (assignedClasses.length === 0) {
-        container.innerHTML = '<p style="color:rgba(25,25,112,0.5);">আপনার কোনো ক্লাস নেই</p>';
+        container.innerHTML = '<p style="color:rgba(255,255,255,0.5);">আপনার কোনো ক্লাস নেই</p>';
         return;
     }
-    let html = '<h3 style="color:#191970;">আপনার ক্লাসসমূহ</h3><div style="display:flex; flex-wrap:wrap; gap:10px;">';
+    let html = '<h3 style="color:white;">আপনার ক্লাসসমূহ</h3><div style="display:flex; flex-wrap:wrap; gap:10px;">';
     assignedClasses.forEach(cls => {
-        html += `<span style="background:#00ffd5; color:#191970; padding:8px 16px; border-radius:30px; font-weight:bold;">${cls}</span>`;
+        const displayClass = cls === 'SSC Special' ? '🎯 SSC Special' : cls;
+        html += `<span style="background:#ffd700; color:#191970; padding:8px 16px; border-radius:30px; font-weight:bold;">${displayClass}</span>`;
     });
     html += '</div>';
     container.innerHTML = html;
@@ -1440,19 +1444,20 @@ function renderTeacherClassStudents(className) {
         }
     }
     if (Object.keys(students).length === 0) {
-        container.innerHTML = `<p style="color:rgba(25,25,112,0.5);">${className} ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>`;
+        container.innerHTML = `<p style="color:rgba(255,255,255,0.5);">${className} ক্লাসে কোনো ছাত্র/ছাত্রী নেই</p>`;
         return;
     }
-    let html = `<h3 style="color:#191970;">${className} ক্লাসের ছাত্র/ছাত্রী</h3><div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:10px;">`;
+    let html = `<h3 style="color:white;">${className === 'SSC Special' ? '🎯 SSC Special' : className} ক্লাসের ছাত্র/ছাত্রী</h3><div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:10px;">`;
     for (let key in students) {
         const s = students[key];
         const icon = GROUP_ICONS[s.group] || '';
         const groupClass = s.group ? s.group.toLowerCase() : '';
         html += `<div style="background:rgba(255,255,255,0.05); padding:12px; border-radius:16px; text-align:center;">
-            <img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #00ffd5;">
-            <p style="margin-top:5px; color:#191970;"><strong>${s.name}</strong></p>
-            <p style="font-size:12px; color:rgba(25,25,112,0.5);">${s.id}</p>
+            <img src="${s.image || 'https://ui-avatars.com/api/?background=0a3b2e&color=fff&name=' + encodeURIComponent(s.name)}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #ffd700;">
+            <p style="margin-top:5px; color:white;"><strong>${s.name}</strong></p>
+            <p style="font-size:12px; color:rgba(255,255,255,0.5);">${s.id}</p>
             ${s.group ? `<p style="font-size:11px; margin-top:3px;"><span class="student-group-tag ${groupClass}">${icon} ${s.group}</span></p>` : ''}
+            ${s.class === 'SSC Special' ? `<p style="margin-top:3px;"><span class="ssc-special-badge">🎯 SSC Special</span></p>` : ''}
         </div>`;
     }
     html += '</div>';
@@ -1466,15 +1471,15 @@ function renderStudentFeedbackArea() {
     const container = document.getElementById('studentFeedbackArea');
     if (!container) return;
     if (!currentUserKey || !allStudents[currentUserKey]) {
-        container.innerHTML = '<p style="color:rgba(25,25,112,0.5);">আপনি লগইন করেননি</p>';
+        container.innerHTML = '<p style="color:rgba(255,255,255,0.5);">আপনি লগইন করেননি</p>';
         return;
     }
     const student = allStudents[currentUserKey];
     const className = student.class;
     const icon = GROUP_ICONS[student.group] || '';
-    let html = `<p style="margin-bottom:15px; color:#191970;"><strong>আপনার ক্লাস:</strong> ${className} ${student.group ? '(' + icon + ' ' + student.group + ')' : ''}</p>
+    let html = `<p style="margin-bottom:15px; color:white;"><strong>আপনার ক্লাস:</strong> ${className === 'SSC Special' ? '🎯 SSC Special' : className} ${student.group ? '(' + icon + ' ' + student.group + ')' : ''}</p>
         <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:20px;">
-            <textarea id="feedbackText" rows="3" placeholder="আপনার মতামত লিখুন..." style="width:100%; border-radius:15px; color:#191970;"></textarea>
+            <textarea id="feedbackText" rows="3" placeholder="আপনার মতামত লিখুন..." style="width:100%; border-radius:15px; color:white;"></textarea>
             <button class="btn btn-orange" onclick="submitFeedback()" style="margin-top:10px;"><i class="fas fa-paper-plane"></i> পাঠান</button>
         </div>
         <div id="myFeedbackList" style="margin-top:20px;"></div>
@@ -1488,7 +1493,7 @@ function renderMyFeedback() {
     if (!container) return;
     const student = allStudents[currentUserKey];
     if (!student) return;
-    let html = '<h4 style="color:#191970;">আপনার মতামতসমূহ</h4>';
+    let html = '<h4 style="color:white;">আপনার মতামতসমূহ</h4>';
     let hasFeedback = false;
     for (let key in feedbackData) {
         const fb = feedbackData[key];
@@ -1496,14 +1501,14 @@ function renderMyFeedback() {
             hasFeedback = true;
             const icon = GROUP_ICONS[fb.group] || '';
             html += `<div class="feedback-item">
-                <p style="color:#191970;">${fb.text}</p>
-                <p style="font-size:11px; color:rgba(25,25,112,0.5);">${fb.date || ''} ${fb.group ? '| ' + icon + ' ' + fb.group : ''}</p>
+                <p style="color:white;">${fb.text}</p>
+                <p style="font-size:11px; color:rgba(255,255,255,0.5);">${fb.date || ''} ${fb.group ? '| ' + icon + ' ' + fb.group : ''}</p>
                 <button class="delete-btn" onclick="deleteFeedback('${key}')">মুছুন</button>
             </div>`;
         }
     }
     if (!hasFeedback) {
-        html += '<p style="color:rgba(25,25,112,0.5);">আপনার কোনো মতামত নেই</p>';
+        html += '<p style="color:rgba(255,255,255,0.5);">আপনার কোনো মতামত নেই</p>';
     }
     container.innerHTML = html;
 }
@@ -1542,12 +1547,12 @@ function deleteFeedback(key) {
 function populateFeedbackClassFilter() {
     const select = document.getElementById('feedbackClassFilter');
     if (!select) return;
-    select.innerHTML = '<option value="all" style="color:#191970;">সব ক্লাস</option>';
+    select.innerHTML = '<option value="all" style="color:white;">সব ক্লাস</option>';
     allClasses.forEach(cls => {
         const option = document.createElement('option');
         option.value = cls;
-        option.textContent = cls;
-        option.style.color = '#191970';
+        option.textContent = cls === 'SSC Special' ? '🎯 SSC Special' : cls;
+        option.style.color = 'white';
         select.appendChild(option);
     });
 }
@@ -1566,14 +1571,14 @@ function renderFeedbackList() {
         count++;
         const icon = GROUP_ICONS[fb.group] || '';
         html += `<div class="feedback-item">
-            <p style="color:#191970;"><strong>${fb.studentName}</strong> (${fb.className}${fb.group ? ' - ' + icon + ' ' + fb.group : ''})</p>
-            <p style="color:#191970;">${fb.text}</p>
-            <p style="font-size:11px; color:rgba(25,25,112,0.5);">${fb.date || ''}</p>
+            <p style="color:white;"><strong>${fb.studentName}</strong> (${fb.className === 'SSC Special' ? '🎯 SSC Special' : fb.className}${fb.group ? ' - ' + icon + ' ' + fb.group : ''})</p>
+            <p style="color:white;">${fb.text}</p>
+            <p style="font-size:11px; color:rgba(255,255,255,0.5);">${fb.date || ''}</p>
             <button class="delete-btn" onclick="deleteFeedback('${key}')">মুছুন</button>
         </div>`;
     }
     if (count === 0) {
-        html = '<p style="color:rgba(25,25,112,0.5); text-align:center;">কোনো মতামত নেই</p>';
+        html = '<p style="color:rgba(255,255,255,0.5); text-align:center;">কোনো মতামত নেই</p>';
     }
     container.innerHTML = html;
 }
@@ -1594,7 +1599,7 @@ document.getElementById('feedImageInput')?.addEventListener('change', function(e
             feedImages.push(event.target.result);
             const img = document.createElement('img');
             img.src = event.target.result;
-            img.style.cssText = 'width:80px; height:80px; object-fit:cover; border-radius:12px; border:2px solid #00ffd5;';
+            img.style.cssText = 'width:80px; height:80px; object-fit:cover; border-radius:12px; border:2px solid #ffd700;';
             container.appendChild(img);
         };
         reader.readAsDataURL(file);
@@ -1650,7 +1655,7 @@ function renderSocialFeed() {
     }
     posts.sort((a, b) => (b.data.timestamp || 0) - (a.data.timestamp || 0));
     if (posts.length === 0) {
-        container.innerHTML = '<p style="color:rgba(25,25,112,0.5); text-align:center;">কোনো পোস্ট নেই</p>';
+        container.innerHTML = '<p style="color:rgba(255,255,255,0.5); text-align:center;">কোনো পোস্ট নেই</p>';
         return;
     }
     let html = '';
@@ -1659,9 +1664,9 @@ function renderSocialFeed() {
         const isOwner = p.user === currentUserKey || currentRole === 'admin';
         html += `<div class="social-card" id="post-${post.key}">
             ${isOwner ? `<button class="delete-post-btn" onclick="deletePost('${post.key}')">✕</button>` : ''}
-            <p style="color:#191970;"><strong>${p.userName || p.user}</strong> <span style="font-size:12px; color:rgba(25,25,112,0.5);">(${p.role || ''})</span></p>
-            <p style="font-size:12px; color:rgba(25,25,112,0.5);">${p.date || ''}</p>
-            <p style="margin:10px 0; color:#191970;">${p.caption || ''}</p>
+            <p style="color:white;"><strong>${p.userName || p.user}</strong> <span style="font-size:12px; color:rgba(255,255,255,0.5);">(${p.role || ''})</span></p>
+            <p style="font-size:12px; color:rgba(255,255,255,0.5);">${p.date || ''}</p>
+            <p style="margin:10px 0; color:white;">${p.caption || ''}</p>
             <div style="display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;">
                 ${p.images ? p.images.map(img => `<img src="${img}" style="max-width:200px; max-height:200px; border-radius:12px; object-fit:cover;">`).join('') : ''}
             </div>
@@ -1678,7 +1683,7 @@ function renderSocialFeed() {
                     ${renderComments(p.comments)}
                 </div>
                 <div style="display:flex; gap:8px; margin-top:8px;">
-                    <input type="text" id="comment-input-${post.key}" placeholder="মন্তব্য লিখুন..." style="flex:1; margin-bottom:0; color:#191970;">
+                    <input type="text" id="comment-input-${post.key}" placeholder="মন্তব্য লিখুন..." style="flex:1; margin-bottom:0; color:white;">
                     <button class="btn btn-sm btn-blue" onclick="addComment('${post.key}')">পাঠান</button>
                 </div>
             </div>
@@ -1689,14 +1694,14 @@ function renderSocialFeed() {
 
 function renderComments(comments) {
     if (!comments || Object.keys(comments).length === 0) {
-        return '<p style="color:rgba(25,25,112,0.5); font-size:13px;">কোনো মন্তব্য নেই</p>';
+        return '<p style="color:rgba(255,255,255,0.5); font-size:13px;">কোনো মন্তব্য নেই</p>';
     }
     let html = '';
     for (let key in comments) {
         const c = comments[key];
         html += `<div style="background:rgba(255,255,255,0.05); padding:8px 12px; border-radius:12px; margin-bottom:5px;">
-            <strong style="color:#191970;">${c.userName || c.user}</strong> <span style="font-size:11px; color:rgba(25,25,112,0.5);">${c.date || ''}</span>
-            <p style="margin:2px 0; color:#191970;">${c.text}</p>
+            <strong style="color:white;">${c.userName || c.user}</strong> <span style="font-size:11px; color:rgba(255,255,255,0.5);">${c.date || ''}</span>
+            <p style="margin:2px 0; color:white;">${c.text}</p>
         </div>`;
     }
     return html;
@@ -1796,5 +1801,4 @@ document.addEventListener('DOMContentLoaded', function() {
 console.log('📚 মাস্টারমাইন্ড অ্যাকাডেমি সিস্টেম লোড হয়েছে');
 console.log('✅ Firebase Connected');
 console.log('✅ অটো-সেভ সক্রিয় আছে');
-console.log('✅ ছাত্রদের নিজস্ব রুটিন দেখাবে');
-console.log('✅ নাম সঠিকভাবে দেখাবে');
+console.log('✅ SSC Special ক্লাস হিসেবে আছে (গ্রুপ নয়)');
