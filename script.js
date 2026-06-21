@@ -35,7 +35,7 @@ let selectedRoutineClass = null;
 let selectedRoutineDay = 'Sunday';
 
 // গ্রুপ লিস্ট - SSC Special বাদ
-const GROUP_LIST = ['Science', 'Commerce', 'Arts','SSC Special'];
+const GROUP_LIST = ['Science', 'Commerce', 'Arts'];
 const GROUP_ICONS = {
     'Science': '🔬',
     'Commerce': '💼',
