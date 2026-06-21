@@ -826,8 +826,23 @@ select option {
     background: #9b59b6;
 }
 
-.student-group-tag.sscspecial {
-    background: #e74c3c;
+/* ==================== SSC SPECIAL BADGE ==================== */
+.ssc-special-badge {
+    background: linear-gradient(135deg, #ffd700, #f5a623);
+    color: #191970;
+    padding: 4px 16px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-block;
+    animation: sscPulse 2s ease-in-out infinite;
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+@keyframes sscPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
 }
 
 /* ==================== SOCIAL CARDS ==================== */
@@ -1299,27 +1314,6 @@ input:checked + .slider:before {
 
 #studentOwnRoutine .routine-table tr:hover {
     background: rgba(255, 255, 255, 0.02) !important;
-}
-
-#studentOwnRoutine .student-group-tag {
-    background: rgba(255, 215, 0, 0.2);
-    color: white;
-}
-
-#studentOwnRoutine .student-group-tag.science {
-    background: #2ecc71;
-}
-
-#studentOwnRoutine .student-group-tag.commerce {
-    background: #f39c12;
-}
-
-#studentOwnRoutine .student-group-tag.arts {
-    background: #9b59b6;
-}
-
-#studentOwnRoutine .student-group-tag.sscspecial {
-    background: #e74c3c;
 }
 
 /* ==================== STUDENT INFO CARD ==================== */
