@@ -159,7 +159,7 @@ function performLogin(id, password, role) {
     }
 
     if (role === 'admin') {
-        if (id === 'admin' && password === 'admin123') {
+        if (id === 'admin' && password === 'head-office') {
             currentUserKey = 'admin';
             currentUserName = 'পরিচালক';
             currentRole = 'admin';
