@@ -35,15 +35,15 @@ let selectedRoutineClass = null;
 let selectedRoutineDay = 'Sunday';
 
 // গ্রুপ লিস্ট - SSC Special বাদ
-const GROUP_LIST = ['Science', 'Commerce', 'Arts'];
+const GROUP_LIST = ['Science', 'Commerce', 'Arts','SSC Special'];
 const GROUP_ICONS = {
     'Science': '🔬',
     'Commerce': '💼',
-    'Arts': '🎨'
+    'Arts': '⚖️'
 };
 
 // গ্রুপ প্রয়োজন এমন ক্লাস - SSC Special বাদ
-const GROUP_REQUIRED_CLASSES = ['Nine', 'Ten'];
+const GROUP_REQUIRED_CLASSES = ['Nine', 'Ten','SSC Special'];
 
 // ============================================================
 // SESSION MANAGEMENT
