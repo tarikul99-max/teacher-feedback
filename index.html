@@ -124,7 +124,7 @@
     </div>
 
     <div class="content">
-        <!-- DASHBOARD PANEL -->
+        <!-- ==================== DASHBOARD PANEL ==================== -->
         <div id="dashboardPanel" class="panel active-panel">
             <div class="dashboard-header">
                 <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
@@ -168,13 +168,13 @@
             </div>
         </div>
         
-        <!-- STUDENT FEEDBACK PANEL -->
+        <!-- ==================== STUDENT FEEDBACK PANEL ==================== -->
         <div id="studentPanel" class="panel">
             <h2><i class="fas fa-comment-dots"></i> শিক্ষকদের মতামত দিন</h2>
             <div id="studentFeedbackArea"></div>
         </div>
         
-        <!-- TEACHER PANEL -->
+        <!-- ==================== TEACHER PANEL ==================== -->
         <div id="teacherPanel" class="panel">
             <h2><i class="fas fa-chalkboard"></i> শিক্ষক ড্যাশবোর্ড</h2>
             <div id="teacherProfileArea"></div>
@@ -182,7 +182,7 @@
             <div id="teacherClassStudents"></div>
         </div>
         
-        <!-- ADMIN TEACHERS PANEL -->
+        <!-- ==================== ADMIN TEACHERS PANEL ==================== -->
         <div id="adminTeachersPanel" class="panel">
             <h2><i class="fas fa-user-plus"></i> শিক্ষক তৈরি করুন</h2>
             <div style="background:rgba(255,255,255,0.05); padding:16px; border-radius:28px; margin-bottom:20px; border:1px solid rgba(255,255,255,0.05);">
@@ -200,7 +200,7 @@
             <div class="table-responsive"><div id="teachersTable"></div></div>
         </div>
         
-        <!-- ADMIN CLASS PANEL -->
+        <!-- ==================== ADMIN CLASS PANEL ==================== -->
         <div id="adminClassPanel" class="panel">
             <h2>ক্লাস ম্যানেজার</h2>
             <div id="classButtons" class="class-buttons-container"></div>
@@ -214,16 +214,15 @@
                 <input type="text" id="cousinId" placeholder="আইডি *">
                 <input type="text" id="cousinPass" placeholder="পাসওয়ার্ড *">
                 
-                <!-- গ্রুপ ফিল্ড -->
+                <!-- গ্রুপ ফিল্ড - SSC Special বাদ -->
                 <div id="groupFieldContainer" style="margin-bottom:8px;">
                     <select id="cousinGroup" style="width:100%;">
                         <option value="">গ্রুপ নির্বাচন করুন</option>
                         <option value="Science">🔬 বিজ্ঞান</option>
                         <option value="Commerce">💼 বাণিজ্য</option>
                         <option value="Arts">⚖️ মানবিক</option>
-                        
                     </select>
-                    <small id="groupRequiredMsg" style="color:rgba(255,255,255,0.5); font-size:11px;">গ্রুপ নির্বাচন ঐচ্ছিক (শুধু Nine, Ten, SSC Special এর জন্য আবশ্যক)</small>
+                    <small id="groupRequiredMsg" style="color:rgba(255,255,255,0.5); font-size:11px;">গ্রুপ নির্বাচন ঐচ্ছিক (শুধু Nine, Ten এর জন্য আবশ্যক)</small>
                 </div>
                 
                 <input type="tel" id="cousinGuardianPhone" placeholder="অভিভাবকের মোবাইল (+8801XXXXXXXXX)">
@@ -233,7 +232,7 @@
             <div class="table-responsive"><div id="classStudentsTable"></div></div>
         </div>
         
-        <!-- ATTENDANCE PANEL -->
+        <!-- ==================== ATTENDANCE PANEL ==================== -->
         <div id="attendancePanel" class="panel">
             <h2><i class="fas fa-calendar-alt"></i> অ্যাটেন্ডেন্স</h2>
             <div id="studentHistorySection" class="attendance-card" style="display: none;">
@@ -251,7 +250,6 @@
                             <option value="Science">🔬 বিজ্ঞান</option>
                             <option value="Commerce">💼 বাণিজ্য</option>
                             <option value="Arts">⚖️ মানবিক</option>
-                            
                         </select>
                         <input type="date" id="attendanceDate" style="flex:1; min-width:150px; margin-bottom: 0;">
                         <button class="btn btn-blue" id="loadStudentsBtn"><i class="fas fa-users"></i> দেখুন</button>
@@ -270,14 +268,14 @@
             </div>
         </div>
         
-        <!-- ADMIN FEEDBACK PANEL -->
+        <!-- ==================== ADMIN FEEDBACK PANEL ==================== -->
         <div id="adminFeedbackPanel" class="panel">
             <h2><i class="fas fa-archive"></i> সকল মতামত</h2>
             <select id="feedbackClassFilter" style="margin-bottom:15px;"></select>
             <div id="feedbackList"></div>
         </div>
         
-        <!-- ADMIN ROUTINE PANEL -->
+        <!-- ==================== ADMIN ROUTINE PANEL ==================== -->
         <div id="adminRoutinePanel" class="panel">
             <h2><i class="fas fa-calendar-edit"></i> রুটিন ম্যানেজার</h2>
             <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:20px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.05);">
@@ -297,7 +295,6 @@
                         <option value="Science">🔬 বিজ্ঞান</option>
                         <option value="Commerce">💼 বাণিজ্য</option>
                         <option value="Arts">⚖️ মানবিক</option>
-                        
                     </select>
                 </div>
             </div>
@@ -305,7 +302,7 @@
             <button class="btn btn-green" id="saveAllRoutinesBtn"><i class="fas fa-save"></i> সব রুটিন সংরক্ষণ করুন</button>
         </div>
         
-        <!-- SOCIAL FEED PANEL -->
+        <!-- ==================== SOCIAL FEED PANEL ==================== -->
         <div id="socialFeedPanel" class="panel">
             <h2><i class="fas fa-comments"></i> সোশ্যাল কানেক্টিভিটি</h2>
             <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:20px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.05);">
@@ -333,57 +330,19 @@
             <div style="position:absolute; top:-10px; left:-10px; right:-10px; bottom:-10px; background:radial-gradient(circle, rgba(255,215,0,0.1), transparent 70%); border-radius:50%;"></div>
             <i class="fas fa-chart-simple" style="font-size:65px; color:#ffd700; position:relative; z-index:1; text-shadow:0 0 40px rgba(255,215,0,0.3);"></i>
         </div>
-        
-        <h2 style="color:white; font-size:32px; font-weight:900; margin-bottom:8px; letter-spacing:1px;">
-            📊 একাডেমিক ফলাফল
-        </h2>
-        
+        <h2 style="color:white; font-size:32px; font-weight:900; margin-bottom:8px; letter-spacing:1px;">📊 একাডেমিক ফলাফল</h2>
         <div style="width:100px; height:4px; background:linear-gradient(90deg, #ffd700, #f5a623); margin:12px auto; border-radius:5px; box-shadow:0 0 20px rgba(255,215,0,0.2);"></div>
-        
         <div style="margin:25px 0;">
-            <a href="about.html" target="_blank" 
-               style="display:inline-block; 
-                      background: linear-gradient(135deg, #ffd700, #f5a623);
-                      color: #191970;
-                      padding: 16px 45px;
-                      border-radius: 60px;
-                      text-decoration: none;
-                      font-weight: 800;
-                      font-size: 20px;
-                      transition: all 0.3s ease;
-                      box-shadow: 0 4px 30px rgba(255, 215, 0, 0.3);
-                      letter-spacing: 0.5px;">
+            <a href="about.html" target="_blank" style="display:inline-block; background: linear-gradient(135deg, #ffd700, #f5a623); color: #191970; padding: 16px 45px; border-radius: 60px; text-decoration: none; font-weight: 800; font-size: 20px; transition: all 0.3s ease; box-shadow: 0 4px 30px rgba(255, 215, 0, 0.3); letter-spacing: 0.5px;">
                 <i class="fas fa-external-link-alt" style="margin-right:10px;"></i> ফলাফল দেখুন
             </a>
         </div>
-        
         <div style="background:rgba(255,255,255,0.05); border-radius:16px; padding:15px; margin:15px 0; border:1px solid rgba(255,255,255,0.05);">
-            <p style="margin:5px 0; font-size:16px; color:rgba(255,255,255,0.9); line-height:1.8;">
-                <i class="fas fa-info-circle" style="color:#ffd700; margin-right:8px;"></i>
-                আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।
-            </p>
-            <p style="margin:5px 0; font-size:14px; color:rgba(255,255,255,0.7);">
-                <i class="fas fa-exclamation-circle" style="color:#f5b042; margin-right:8px;"></i>
-                ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।
-            </p>
+            <p style="margin:5px 0; font-size:16px; color:rgba(255,255,255,0.9); line-height:1.8;"><i class="fas fa-info-circle" style="color:#ffd700; margin-right:8px;"></i> আপনার পরীক্ষার ফলাফল এখানে প্রকাশিত হবে।</p>
+            <p style="margin:5px 0; font-size:14px; color:rgba(255,255,255,0.7);"><i class="fas fa-exclamation-circle" style="color:#f5b042; margin-right:8px;"></i> ফলাফল নিয়ে যেকোনো ধরনের অভিযোগ নিয়ে অফিসে যোগাযোগ করুন।</p>
         </div>
-        
-        <p style="margin:20px 0 25px; font-style:italic; font-size:22px; color:#ffd700; font-weight:700; letter-spacing:2px; text-shadow:0 0 30px rgba(255,215,0,0.2);">
-            ❝ ধন্যবাদ ❞
-        </p>
-        
-        <button onclick="document.getElementById('resultModal').style.display='none'" 
-                style="background:rgba(255,255,255,0.05); 
-                       color:white; 
-                       padding:12px 35px; 
-                       border:1px solid rgba(255,255,255,0.1);
-                       border-radius:50px; 
-                       font-weight:600; 
-                       font-size:16px; 
-                       cursor:pointer; 
-                       transition:all 0.3s ease;">
-            <i class="fas fa-times" style="margin-right:8px;"></i> বন্ধ করুন
-        </button>
+        <p style="margin:20px 0 25px; font-style:italic; font-size:22px; color:#ffd700; font-weight:700; letter-spacing:2px; text-shadow:0 0 30px rgba(255,215,0,0.2);">❝ ধন্যবাদ ❞</p>
+        <button onclick="document.getElementById('resultModal').style.display='none'" style="background:rgba(255,255,255,0.05); color:white; padding:12px 35px; border:1px solid rgba(255,255,255,0.1); border-radius:50px; font-weight:600; font-size:16px; cursor:pointer; transition:all 0.3s ease;"><i class="fas fa-times" style="margin-right:8px;"></i> বন্ধ করুন</button>
     </div>
 </div>
 
@@ -418,16 +377,13 @@
 <!-- 3D Background Script -->
 <script>
     let scene, camera, renderer, waterGeometry, waterMaterial, boat, sunGroup;
-    
     const waveHeight = 4.2;      
     const waveFrequency = 0.019; 
     const waveSpeed = 1.2;       
 
     function init3DBackground() {
         const container = document.getElementById('canvas-container');
-
         scene = new THREE.Scene();
-
         const canvas = document.createElement('canvas');
         canvas.width = 2;
         canvas.height = 512;
@@ -442,30 +398,23 @@
         context.fillRect(0, 0, 2, 512);
         const skyTexture = new THREE.CanvasTexture(canvas);
         scene.background = skyTexture;
-
         camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 1, 3000);
         camera.position.set(0, 14, 150);
-
         renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.3; 
         container.appendChild(renderer.domElement);
-
         const ambientLight = new THREE.AmbientLight(0x446688, 0.5);
         scene.add(ambientLight);
-
         const sunLight = new THREE.DirectionalLight(0xffcc55, 2.6);
         sunLight.position.set(20, 120, -400);
         scene.add(sunLight);
-
         const fillLight = new THREE.DirectionalLight(0x88aacc, 0.6);
         fillLight.position.set(-80, 30, -200);
         scene.add(fillLight);
-
         sunGroup = new THREE.Group();
-
         const sunGeometry = new THREE.SphereGeometry(18, 48, 48);
         const sunMaterial = new THREE.MeshStandardMaterial({
             color: 0xfff3d4,
@@ -476,7 +425,6 @@
         });
         const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
         sunGroup.add(sunMesh);
-
         const glowMat = new THREE.MeshBasicMaterial({
             color: 0xffaa33,
             transparent: true,
@@ -485,7 +433,6 @@
         });
         const glowMesh = new THREE.Mesh(new THREE.SphereGeometry(34, 40, 40), glowMat);
         sunGroup.add(glowMesh);
-
         const outerGlowMat = new THREE.MeshBasicMaterial({
             color: 0xff9922,
             transparent: true,
@@ -494,7 +441,6 @@
         });
         const outerGlow = new THREE.Mesh(new THREE.SphereGeometry(65, 32, 32), outerGlowMat);
         sunGroup.add(outerGlow);
-
         const spikeMat = new THREE.MeshBasicMaterial({
             color: 0xffaa44,
             transparent: true,
@@ -507,10 +453,8 @@
             spike.rotation.z = (i / 4) * Math.PI;
             sunGroup.add(spike);
         }
-
         sunGroup.position.set(0, 110, -460);
         scene.add(sunGroup);
-
         const sandGeometry = new THREE.PlaneGeometry(1400, 700);
         const sandMaterial = new THREE.MeshStandardMaterial({
             color: 0x8b5a3a,
@@ -521,14 +465,11 @@
         sandMesh.rotation.x = -Math.PI / 2;
         sandMesh.position.set(0, -22, 320);
         scene.add(sandMesh);
-
         waterGeometry = new THREE.PlaneGeometry(2000, 2000, 180, 180);
-        
         const colors = [];
         const position = waterGeometry.attributes.position;
         const shallowColor = new THREE.Color(0x3fbcb5);
         const deepColor = new THREE.Color(0x124b6e);
-
         for (let i = 0; i < position.count; i++) {
             const y = position.getY(i);
             const ratio = THREE.MathUtils.clamp((y + 700) / 1400, 0, 1);
@@ -536,7 +477,6 @@
             colors.push(mixedColor.r, mixedColor.g, mixedColor.b);
         }
         waterGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
         waterMaterial = new THREE.MeshStandardMaterial({
             vertexColors: true,
             roughness: 0.06,
@@ -546,19 +486,16 @@
             opacity: 0.92,
             envMapIntensity: 0.4,
         });
-
         const waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
         waterMesh.rotation.x = -Math.PI / 2;
         waterMesh.position.set(0, -1.5, -180);
         scene.add(waterMesh);
-
         const buildingData = [
             { width: 40, height: 120, depth: 35, x: -220, z: 400, color: 0x1c2a33 },
             { width: 50, height: 150, depth: 40, x: -120, z: 430, color: 0x1f2e3a },
             { width: 45, height: 130, depth: 38, x: 120, z: 420, color: 0x1f2e3a },
             { width: 30, height: 90, depth: 30, x: 230, z: 400, color: 0x1c2a33 }
         ];
-
         buildingData.forEach(data => {
             const buildGeo = new THREE.BoxGeometry(data.width, data.height, data.depth);
             const buildMat = new THREE.MeshStandardMaterial({ color: data.color, roughness: 0.8, metalness: 0.2 });
@@ -566,9 +503,7 @@
             building.position.set(data.x, data.height / 2 - 22, data.z);
             scene.add(building);
         });
-
         boat = new THREE.Group();
-        
         const bodyGeo = new THREE.CylinderGeometry(2.2, 4.2, 13, 6, 1);
         const bodyMat = new THREE.MeshStandardMaterial({ 
             color: 0x2c241e, 
@@ -581,7 +516,6 @@
         boatBody.rotation.x = Math.PI / 2;
         boatBody.scale.set(1, 2.4, 0.6);
         boat.add(boatBody);
-
         const cabinGeo = new THREE.BoxGeometry(3.8, 3.8, 5.5);
         const cabinMat = new THREE.MeshStandardMaterial({ 
             color: 0x1a1410, 
@@ -592,28 +526,23 @@
         const cabin = new THREE.Mesh(cabinGeo, cabinMat);
         cabin.position.set(0, 2.2, -0.8);
         boat.add(cabin);
-
         const mastGeo = new THREE.CylinderGeometry(0.1, 0.1, 10);
         const mastMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.9 });
         const mast = new THREE.Mesh(mastGeo, mastMat);
         mast.position.set(0, 5.2, 2.8);
         boat.add(mast);
-
         const flagGeo = new THREE.BoxGeometry(0.08, 1.4, 2.2);
         const flagMat = new THREE.MeshStandardMaterial({ color: 0xee9605, roughness: 0.8 });
         const flag = new THREE.Mesh(flagGeo, flagMat);
         flag.position.set(0, 9.8, 1.6);
         boat.add(flag);
-
         scene.add(boat);
-
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.maxPolarAngle = Math.PI * 0.48;
         controls.minDistance = 30;
         controls.maxDistance = 400;
         controls.target.set(0, 2, -30);
         controls.update();
-
         window.addEventListener('resize', onWindowResize);
     }
 
@@ -634,9 +563,7 @@
 
     function animate3DBackground() {
         requestAnimationFrame(animate3DBackground);
-
         const time = performance.now() * 0.001;
-
         if (waterGeometry) {
             const positionAttribute = waterGeometry.attributes.position;
             for (let i = 0; i < positionAttribute.count; i++) {
@@ -648,28 +575,22 @@
             waterGeometry.computeVertexNormals();
             waterGeometry.attributes.position.needsUpdate = true;
         }
-
         if (boat) {
             const boatX = 2.5;
             const boatZ = -75;
             const boatY = getRealOceanWave(boatX, -boatZ, time);
-            
             boat.position.set(boatX, boatY + 0.9, boatZ);
-
             const nextY = getRealOceanWave(boatX + 1.8, -boatZ, time);
             const sideY = getRealOceanWave(boatX, -(boatZ + 1.8), time);
-            
             boat.rotation.z = (boatY - nextY) * 0.2;
             boat.rotation.x = (sideY - boatY) * 0.2;
             boat.rotation.y = Math.sin(time * 0.035) * 0.07;
         }
-
         if (sunGroup) {
             const pulse = 1 + Math.sin(time * 0.25) * 0.006;
             if (sunGroup.children[1]) sunGroup.children[1].scale.set(pulse, pulse, pulse);
             if (sunGroup.children[2]) sunGroup.children[2].scale.set(pulse * 1.02, pulse * 1.02, pulse * 1.02);
         }
-
         if (renderer && scene && camera) {
             renderer.render(scene, camera);
         }
