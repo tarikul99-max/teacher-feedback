@@ -1,12 +1,12 @@
 /* ============================================================
-   MASTERMIND ACADEMY - PROFESSIONAL STYLESHEET
+   GLORIOUS EDUCATION CARE - PROFESSIONAL STYLESHEET
    ============================================================ */
 
 /* ==================== CSS VARIABLES ==================== */
 :root {
-    --primary: #12165a;
-    --primary-dark: #000b42;
-    --primary-light: #412d9b;
+    --primary: #1a7a3a;
+    --primary-dark: #004225;
+    --primary-light: #2d9b4e;
     --gold: #ffd700;
     --gold-light: #f5a623;
     --white: #ffffff;
@@ -29,7 +29,7 @@
 html, body {
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(135deg, #00422a 0%, #1a0a2e 50%, #2d1b3d 100%);
+    background: linear-gradient(135deg, #004225 0%, #1a0a2e 50%, #2d1b3d 100%);
     font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
     overflow-x: hidden;
     color: var(--white);
@@ -65,7 +65,7 @@ html, body {
 }
 
 .login-card {
-    background: linear-gradient(145deg, rgba(0, 28, 80, 0.3), rgba(255, 215, 0, 0.05));
+    background: linear-gradient(145deg, rgba(0, 80, 40, 0.3), rgba(255, 215, 0, 0.05));
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     padding: 40px 32px;
@@ -87,14 +87,14 @@ html, body {
 }
 
 /* ============================================================
-   CARTOON TYPE LETTERS - MASTERMIND (10 letters)
+   CARTOON TYPE LETTERS - GLORIOUS & EDUCATION CARE
    ============================================================ */
 
-/* Navbar এ MASTERMIND লেটারগুলোর কার্টুন স্টাইল */
+/* Navbar এ GLORIOUS লেটারগুলোর কার্টুন স্টাইল */
 .brand-text h1 .letter {
     display: inline-block;
     font-weight: 900;
-    font-size: 28px;
+    font-size: 32px;
     font-family: 'Comic Sans MS', 'Chalkboard SE', 'Bubblegum Sans', cursive;
     text-shadow: 
         3px 3px 0px rgba(0,0,0,0.3),
@@ -107,7 +107,7 @@ html, body {
     -webkit-text-stroke: 1.5px rgba(0,0,0,0.2);
 }
 
-/* MASTERMIND - 10টি লেটারের আলাদা রঙ */
+/* প্রতিটি লেটারের আলাদা রঙ - কার্টুনি */
 .brand-text h1 .letter:nth-child(1) { 
     color: #FF6B6B; 
     transform: rotate(-8deg) scale(1.1);
@@ -148,18 +148,8 @@ html, body {
     transform: rotate(4deg) scale(1.15);
     text-shadow: 3px 3px 0 #cc4444, 6px 6px 0 rgba(204,68,68,0.3);
 }
-.brand-text h1 .letter:nth-child(9) { 
-    color: #FF9F43; 
-    transform: rotate(-4deg) scale(1.08);
-    text-shadow: 3px 3px 0 #cc7a2e, 6px 6px 0 rgba(204,122,46,0.3);
-}
-.brand-text h1 .letter:nth-child(10) { 
-    color: #48DBFB; 
-    transform: rotate(6deg) scale(1.1);
-    text-shadow: 3px 3px 0 #2eb3d4, 6px 6px 0 rgba(46,179,212,0.3);
-}
 
-/* হোভার ইফেক্ট */
+/* হোভার ইফেক্ট - আরও কার্টুনি */
 .brand-text h1 .letter:hover {
     transform: rotate(0deg) scale(1.4) translateY(-8px) !important;
     color: #ffd700 !important;
@@ -172,7 +162,7 @@ html, body {
 }
 
 /* ============================================================
-   ACADEMY - স্টাইল
+   EDUCATION CARE - কার্টুন স্টাইল
    ============================================================ */
 .brand-text .edu-text {
     font-size: 20px;
@@ -184,26 +174,30 @@ html, body {
         2px 2px 0 rgba(0,0,0,0.2),
         4px 4px 0 rgba(0,0,0,0.1);
     -webkit-text-stroke: 1px rgba(0,0,0,0.1);
-    background: linear-gradient(90deg, #FECA57, #FF9F43, #FF6B6B, #48DBFB, #0ABDE3, #10AC84);
-    background-size: 300% 100%;
+}
+
+.brand-text .edu-text .care {
+    font-size: 22px;
+    font-weight: 900;
+    display: inline-block;
+    background: linear-gradient(135deg, #FF6B6B, #FF9F43, #FECA57, #48DBFB, #0ABDE3, #10AC84);
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: rainbowMove 3s ease-in-out infinite;
-}
-
-@keyframes rainbowMove {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 300% 50%; }
+    text-shadow: none;
+    transform: rotate(-3deg) scale(1.05);
+    display: inline-block;
 }
 
 /* ============================================================
-   LOGIN PAGE - CARTOON STYLE (MASTERMIND ACADEMY)
+   LOGIN PAGE - CARTOON STYLE
    ============================================================ */
 .brand-text-login .letter {
     display: inline-block;
     font-weight: 900;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-family: 'Comic Sans MS', 'Chalkboard SE', 'Bubblegum Sans', cursive;
     text-shadow: 
         2px 2px 0 rgba(0,0,0,0.2),
@@ -213,29 +207,36 @@ html, body {
     margin: 0 1px;
 }
 
-/* MASTERMIND ACADEMY - লগিন লেটারের রঙ */
-.brand-text-login .letter:nth-child(1) { color: #FF6B6B; transform: rotate(-8deg) scale(1.1); text-shadow: 3px 3px 0 #cc4444; }
-.brand-text-login .letter:nth-child(2) { color: #FF9F43; transform: rotate(5deg) scale(1.05); text-shadow: 3px 3px 0 #cc7a2e; }
-.brand-text-login .letter:nth-child(3) { color: #FECA57; transform: rotate(-6deg) scale(1.15); text-shadow: 3px 3px 0 #caa344; }
-.brand-text-login .letter:nth-child(4) { color: #48DBFB; transform: rotate(7deg) scale(1.08); text-shadow: 3px 3px 0 #2eb3d4; }
-.brand-text-login .letter:nth-child(5) { color: #0ABDE3; transform: rotate(-5deg) scale(1.12); text-shadow: 3px 3px 0 #0894b3; }
-.brand-text-login .letter:nth-child(6) { color: #10AC84; transform: rotate(8deg) scale(1.06); text-shadow: 3px 3px 0 #0c8466; }
-.brand-text-login .letter:nth-child(7) { color: #EE5A24; transform: rotate(-7deg) scale(1.1); text-shadow: 3px 3px 0 #c4471a; }
-.brand-text-login .letter:nth-child(8) { color: #FF6B6B; transform: rotate(4deg) scale(1.15); text-shadow: 3px 3px 0 #cc4444; }
-.brand-text-login .letter:nth-child(9) { color: #FF9F43; transform: rotate(-4deg) scale(1.08); text-shadow: 3px 3px 0 #cc7a2e; }
-.brand-text-login .letter:nth-child(10) { color: #48DBFB; transform: rotate(6deg) scale(1.1); text-shadow: 3px 3px 0 #2eb3d4; }
-.brand-text-login .letter:nth-child(12) { color: #FECA57; transform: rotate(-5deg) scale(1.12); text-shadow: 3px 3px 0 #caa344; }
-.brand-text-login .letter:nth-child(13) { color: #0ABDE3; transform: rotate(7deg) scale(1.08); text-shadow: 3px 3px 0 #0894b3; }
-.brand-text-login .letter:nth-child(14) { color: #FF6B6B; transform: rotate(-6deg) scale(1.1); text-shadow: 3px 3px 0 #cc4444; }
-.brand-text-login .letter:nth-child(15) { color: #10AC84; transform: rotate(5deg) scale(1.05); text-shadow: 3px 3px 0 #0c8466; }
-.brand-text-login .letter:nth-child(16) { color: #EE5A24; transform: rotate(-7deg) scale(1.15); text-shadow: 3px 3px 0 #c4471a; }
-.brand-text-login .letter:nth-child(17) { color: #48DBFB; transform: rotate(8deg) scale(1.08); text-shadow: 3px 3px 0 #2eb3d4; }
-.brand-text-login .letter:nth-child(18) { color: #FF9F43; transform: rotate(-4deg) scale(1.1); text-shadow: 3px 3px 0 #cc7a2e; }
+/* প্রতিটি লেটারের আলাদা রঙ এবং কার্টুনি ঘূর্ণন */
+.brand-text-login .letter:nth-child(1) { color: #FF6B6B; transform: rotate(-10deg) scale(1.1); text-shadow: 3px 3px 0 #cc4444; }
+.brand-text-login .letter:nth-child(2) { color: #FF9F43; transform: rotate(8deg) scale(1.05); text-shadow: 3px 3px 0 #cc7a2e; }
+.brand-text-login .letter:nth-child(3) { color: #FECA57; transform: rotate(-7deg) scale(1.15); text-shadow: 3px 3px 0 #caa344; }
+.brand-text-login .letter:nth-child(4) { color: #48DBFB; transform: rotate(9deg) scale(1.08); text-shadow: 3px 3px 0 #2eb3d4; }
+.brand-text-login .letter:nth-child(5) { color: #0ABDE3; transform: rotate(-6deg) scale(1.12); text-shadow: 3px 3px 0 #0894b3; }
+.brand-text-login .letter:nth-child(6) { color: #10AC84; transform: rotate(10deg) scale(1.06); text-shadow: 3px 3px 0 #0c8466; }
+.brand-text-login .letter:nth-child(7) { color: #EE5A24; transform: rotate(-8deg) scale(1.1); text-shadow: 3px 3px 0 #c4471a; }
+.brand-text-login .letter:nth-child(8) { color: #FF6B6B; transform: rotate(6deg) scale(1.15); text-shadow: 3px 3px 0 #cc4444; }
+.brand-text-login .letter:nth-child(10) { color: #FF6B6B; transform: rotate(-5deg) scale(1.08); text-shadow: 3px 3px 0 #cc4444; }
+.brand-text-login .letter:nth-child(11) { color: #FF9F43; transform: rotate(7deg) scale(1.05); text-shadow: 3px 3px 0 #cc7a2e; }
+.brand-text-login .letter:nth-child(12) { color: #FECA57; transform: rotate(-6deg) scale(1.12); text-shadow: 3px 3px 0 #caa344; }
+.brand-text-login .letter:nth-child(13) { color: #48DBFB; transform: rotate(8deg) scale(1.08); text-shadow: 3px 3px 0 #2eb3d4; }
+.brand-text-login .letter:nth-child(14) { color: #0ABDE3; transform: rotate(-7deg) scale(1.1); text-shadow: 3px 3px 0 #0894b3; }
+.brand-text-login .letter:nth-child(15) { color: #10AC84; transform: rotate(9deg) scale(1.06); text-shadow: 3px 3px 0 #0c8466; }
+.brand-text-login .letter:nth-child(16) { color: #EE5A24; transform: rotate(-8deg) scale(1.12); text-shadow: 3px 3px 0 #c4471a; }
+.brand-text-login .letter:nth-child(17) { color: #FF6B6B; transform: rotate(5deg) scale(1.08); text-shadow: 3px 3px 0 #cc4444; }
+.brand-text-login .letter:nth-child(19) { color: #FF6B6B; transform: rotate(-9deg) scale(1.1); text-shadow: 3px 3px 0 #cc4444; }
+.brand-text-login .letter:nth-child(20) { color: #FF9F43; transform: rotate(6deg) scale(1.05); text-shadow: 3px 3px 0 #cc7a2e; }
+.brand-text-login .letter:nth-child(21) { color: #FECA57; transform: rotate(-7deg) scale(1.15); text-shadow: 3px 3px 0 #caa344; }
+.brand-text-login .letter:nth-child(22) { color: #48DBFB; transform: rotate(8deg) scale(1.08); text-shadow: 3px 3px 0 #2eb3d4; }
 
+/* হোভার ইফেক্ট */
 .brand-text-login .letter:hover {
     transform: rotate(0deg) scale(1.6) translateY(-10px) !important;
     color: #ffd700 !important;
-    text-shadow: 4px 4px 0 #b8960f, 8px 8px 0 rgba(184,150,15,0.3), 0 0 40px rgba(255,215,0,0.6) !important;
+    text-shadow: 
+        4px 4px 0 #b8960f,
+        8px 8px 0 rgba(184,150,15,0.3),
+        0 0 40px rgba(255,215,0,0.6) !important;
     z-index: 10;
 }
 
@@ -326,7 +327,7 @@ html, body {
 
 /* ==================== NAVBAR ==================== */
 .navbar {
-    background: linear-gradient(135deg, #0c003d 0%, #290a5c 30%, #1a327a 60%, #130b37 100%);
+    background: linear-gradient(135deg, #003d1f 0%, #0a5c2a 30%, #1a7a3a 60%, #2d8f4e 100%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     position: fixed;
@@ -350,7 +351,7 @@ html, body {
 }
 
 .navbar.scrolled {
-    background: linear-gradient(135deg, #09002a 0%, #0e0042 30%, #0a0a5c 60%, #07011f 100%);
+    background: linear-gradient(135deg, #002a15 0%, #004225 30%, #0a5c2a 60%, #011f0b 100%);
     padding: 6px 0;
     box-shadow: 0 8px 50px rgba(0, 0, 0, 0.6);
     border-bottom-width: 2px;
@@ -420,7 +421,7 @@ html, body {
     flex-wrap: wrap;
     margin: 0;
     padding: 0;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 900;
 }
 
@@ -428,6 +429,41 @@ html, body {
     font-size: 18px;
     font-weight: 700;
     letter-spacing: 1.5px;
+    background: linear-gradient(90deg, #FECA57, #FF9F43, #FF6B6B, #FF9F43, #FECA57);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbowMove 3s ease-in-out infinite;
+}
+
+@keyframes rainbowMove {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 300% 50%; }
+}
+
+.brand-text .edu-text .care {
+    background: linear-gradient(90deg, #48DBFB, #0ABDE3, #10AC84, #48DBFB);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbowMove 3.5s ease-in-out infinite;
+}
+
+@supports not (background-clip: text) {
+    .brand-text .edu-text {
+        color: #FECA57;
+        background: none;
+        -webkit-text-fill-color: #FECA57;
+        animation: none;
+    }
+    .brand-text .edu-text .care {
+        color: #48DBFB;
+        background: none;
+        -webkit-text-fill-color: #48DBFB;
+        animation: none;
+    }
 }
 
 .slogan {
@@ -447,6 +483,7 @@ html, body {
     justify-content: flex-end;
 }
 
+/* Address & Phone - First Row */
 .nav-contact-row {
     display: flex;
     align-items: center;
@@ -488,6 +525,7 @@ html, body {
     font-size: 14px;
 }
 
+/* User Info - Second Row */
 .nav-user-row {
     display: flex;
     align-items: center;
@@ -543,8 +581,8 @@ html, body {
 .btn-green { background: linear-gradient(135deg, #006400, #228B22, var(--gold)); color: white; }
 .btn-green:hover { background: linear-gradient(135deg, var(--gold), #228B22, #006400); }
 
-.btn-blue { background: linear-gradient(135deg, #006994, #003d5c, #b6ffff); color: white; }
-.btn-blue:hover { background: linear-gradient(135deg, #329ac6, #003d5c, #006994); }
+.btn-blue { background: linear-gradient(135deg, #006994, #003d5c, #FFB6C1); color: white; }
+.btn-blue:hover { background: linear-gradient(135deg, #FFB6C1, #003d5c, #006994); }
 
 .btn-red { background: linear-gradient(135deg, #c52828, #FFB6C1); color: white; }
 .btn-red:hover { background: linear-gradient(135deg, #FFB6C1, #c52828); }
@@ -757,7 +795,7 @@ html, body {
 }
 
 .today-routine-card {
-    background: linear-gradient(145deg, #081f2a, #13375b, #064968, #49a386);
+    background: linear-gradient(145deg, #123c4e, #094e4a, #095959, #349e70);
     background-size: 300% 300%;
     animation: flashGradient 4s ease infinite alternate;
 }
@@ -944,7 +982,7 @@ html, body {
 }
 
 .teacher-card {
-    background: linear-gradient(145deg, rgba(13, 0, 100, 0.06), rgba(0, 166, 255, 0.03));
+    background: linear-gradient(145deg, rgba(0, 100, 0, 0.06), rgba(255, 215, 0, 0.03));
     border-radius: 24px;
     padding: 24px 16px;
     text-align: center;
@@ -1357,7 +1395,7 @@ tr:hover td {
 }
 
 input:checked + .slider {
-    background: linear-gradient(90deg, #226f8b, var(--gold));
+    background: linear-gradient(90deg, #228B22, var(--gold));
 }
 
 input:checked + .slider:before {
@@ -1389,7 +1427,7 @@ input:checked + .slider:before {
 }
 
 .ssc-special-badge {
-    background: linear-gradient(135deg, #2f6400, #172808, var(--gold));
+    background: linear-gradient(135deg, #006400, #228B22, var(--gold));
     color: white;
     padding: 3px 14px;
     border-radius: 30px;
@@ -1408,7 +1446,7 @@ input:checked + .slider:before {
     font-weight: 600;
 }
 
-.student-group-tag.science { background: linear-gradient(135deg, #340064, #45228b); color: #fff; }
+.student-group-tag.science { background: linear-gradient(135deg, #006400, #228B22); color: #fff; }
 .student-group-tag.commerce { background: linear-gradient(135deg, #f39c12, #e67e22); color: #fff; }
 .student-group-tag.arts { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: #fff; }
 
@@ -1674,11 +1712,20 @@ input:checked + .slider:before {
     z-index: 21;
 }
 
-/* ==================== RESPONSIVE ==================== */
+/* ==================== RESPONSIVE - CARTOON FONT SIZE ==================== */
 @media (max-width: 1024px) {
-    .brand-text h1 .letter { font-size: 22px; }
-    .brand-text .edu-text { font-size: 14px; }
-    .brand-text-login .letter { font-size: 1.1rem; }
+    .brand-text h1 .letter {
+        font-size: 24px;
+    }
+    .brand-text .edu-text {
+        font-size: 14px;
+    }
+    .brand-text .edu-text .care {
+        font-size: 16px;
+    }
+    .brand-text-login .letter {
+        font-size: 1.2rem;
+    }
     .nav-left img { height: 46px; width: 46px; }
     .nav-contact { font-size: 12px; }
     .nav-phone { font-size: 12px; padding: 3px 12px; }
@@ -1687,9 +1734,18 @@ input:checked + .slider:before {
 
 @media (max-width: 768px) {
     .bismillah { font-size: 12px; }
-    .brand-text h1 .letter { font-size: 18px; }
-    .brand-text .edu-text { font-size: 12px; }
-    .brand-text-login .letter { font-size: 0.9rem; }
+    .brand-text h1 .letter {
+        font-size: 20px;
+    }
+    .brand-text .edu-text {
+        font-size: 12px;
+    }
+    .brand-text .edu-text .care {
+        font-size: 14px;
+    }
+    .brand-text-login .letter {
+        font-size: 1rem;
+    }
     .nav-main { flex-direction: column; gap: 6px; }
     .nav-left { width: 100%; justify-content: center; flex-wrap: wrap; }
     .nav-left img { height: 38px; width: 38px; }
@@ -1710,9 +1766,18 @@ input:checked + .slider:before {
 
 @media (max-width: 480px) {
     .bismillah { font-size: 10px; }
-    .brand-text h1 .letter { font-size: 14px; }
-    .brand-text .edu-text { font-size: 10px; }
-    .brand-text-login .letter { font-size: 0.7rem; }
+    .brand-text h1 .letter {
+        font-size: 16px;
+    }
+    .brand-text .edu-text {
+        font-size: 10px;
+    }
+    .brand-text .edu-text .care {
+        font-size: 12px;
+    }
+    .brand-text-login .letter {
+        font-size: 0.8rem;
+    }
     .nav-left img { height: 30px; width: 30px; border-radius: 10px; }
     .slogan { font-size: 8px; }
     .nav-contact-row { flex-direction: column; align-items: center; gap: 4px; }
