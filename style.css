@@ -5,9 +5,9 @@
 
 /* ==================== CSS VARIABLES ==================== */
 :root {
-    --primary: #1a7a3a;
-    --primary-dark: #004225;
-    --primary-light: #2d9b4e;
+    --primary: #281a7a;
+    --primary-dark: #000742;
+    --primary-light: #2d2f9b;
     --gold: #ffd700;
     --gold-light: #f5a623;
     --white: #ffffff;
@@ -142,12 +142,22 @@ html, body {
 .brand-text h1 .letter:nth-child(7) { 
     color: #EE5A24; 
     transform: rotate(-7deg) scale(1.1);
-    text-shadow: 3px 3px 0 #c4471a, 6px 6px 0 rgba(196,71,26,0.3);
+    text-shadow: 3px 3px 0 #df6234, 6px 6px 0 rgba(216, 159, 45, 0.3);
 }
 .brand-text h1 .letter:nth-child(8) { 
-    color: #FF6B6B; 
+    color: #e16a24; 
     transform: rotate(4deg) scale(1.15);
     text-shadow: 3px 3px 0 #cc4444, 6px 6px 0 rgba(204,68,68,0.3);
+}
+.brand-text h1 .letter:nth-child(9) { 
+    color: #901f64; 
+    transform: rotate(4deg) scale(1.15);
+    text-shadow: 3px 3px 0 #b844cc, 6px 6px 0 rgba(204, 68, 161, 0.3);
+}
+.brand-text h1 .letter:nth-child(10) { 
+    color: #350e89; 
+    transform: rotate(4deg) scale(1.15);
+    text-shadow: 3px 3px 0 #722fac, 6px 6px 0 rgba(154, 68, 204, 0.3);
 }
 
 /* হোভার ইফেক্ট - আরও কার্টুনি */
@@ -328,7 +338,7 @@ html, body {
 
 /* ==================== NAVBAR ==================== */
 .navbar {
-    background: linear-gradient(135deg, #003d1f 0%, #0a5c2a 30%, #1a7a3a 60%, #2d8f4e 100%);
+    background: linear-gradient(135deg, #03003d 0%, #0b0a54 30%, #251a7a 60%, #10063b 100%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     position: fixed;
@@ -352,7 +362,7 @@ html, body {
 }
 
 .navbar.scrolled {
-    background: linear-gradient(135deg, #002a15 0%, #004225 30%, #0a5c2a 60%, #011f0b 100%);
+    background: linear-gradient(135deg, #15002a 0%, #080042 30%, #410a5c 60%, #17011f 100%);
     padding: 6px 0;
     box-shadow: 0 8px 50px rgba(0, 0, 0, 0.6);
     border-bottom-width: 2px;
@@ -468,7 +478,7 @@ html, body {
 }
 
 .slogan {
-    font-size: 14px;
+    font-size: 15px;
     color: rgba(255, 255, 255, 0.816);
     letter-spacing: 2.5px;
     margin-top: 2px;
@@ -582,8 +592,8 @@ html, body {
 .btn-green { background: linear-gradient(135deg, #006400, #228B22, var(--gold)); color: white; }
 .btn-green:hover { background: linear-gradient(135deg, var(--gold), #228B22, #006400); }
 
-.btn-blue { background: linear-gradient(135deg, #006994, #003d5c, #FFB6C1); color: white; }
-.btn-blue:hover { background: linear-gradient(135deg, #FFB6C1, #003d5c, #006994); }
+.btn-blue { background: linear-gradient(135deg, #006994, #003d5c, #b6d3ff); color: white; }
+.btn-blue:hover { background: linear-gradient(135deg, #b6d7ff, #003d5c, #006994); }
 
 .btn-red { background: linear-gradient(135deg, #c52828, #FFB6C1); color: white; }
 .btn-red:hover { background: linear-gradient(135deg, #FFB6C1, #c52828); }
@@ -796,7 +806,7 @@ html, body {
 }
 
 .today-routine-card {
-    background: linear-gradient(145deg, #123c4e, #094e4a, #095959, #349e70);
+    background: linear-gradient(145deg, #0c252f, #0c3e3c, #095959, #349e70);
     background-size: 300% 300%;
     animation: flashGradient 4s ease infinite alternate;
 }
@@ -1428,7 +1438,7 @@ input:checked + .slider:before {
 }
 
 .ssc-special-badge {
-    background: linear-gradient(135deg, #006400, #228B22, var(--gold));
+    background: linear-gradient(135deg, #003464, #22438b, var(--gold));
     color: white;
     padding: 3px 14px;
     border-radius: 30px;
@@ -1447,7 +1457,7 @@ input:checked + .slider:before {
     font-weight: 600;
 }
 
-.student-group-tag.science { background: linear-gradient(135deg, #006400, #228B22); color: #fff; }
+.student-group-tag.science { background: linear-gradient(135deg, #055570, #22638b); color: #fff; }
 .student-group-tag.commerce { background: linear-gradient(135deg, #f39c12, #e67e22); color: #fff; }
 .student-group-tag.arts { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: #fff; }
 
