@@ -1,0 +1,857 @@
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
+body {
+    font-family: 'Segoe UI', 'Noto Sans Bengali', 'Nikosh', 'SutonnyMJ', sans-serif;
+    background: linear-gradient(135deg,  #23013d 0%, #1a0a2e 50%, #2d1b3d 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 100%;
+    width: 100%;
+    margin: auto;
+    background: #fafffe;
+    border-radius: 28px;
+    overflow-x: auto;
+    box-shadow: 0 20px 40px rgba(6, 0, 40, 0.12);
+}
+
+/* ==================== HEADER ==================== */
+.excel-header {
+    background: linear-gradient(123deg, #1d0e52, #2b2a5a, #120440, #0b042d);
+    padding: 20px 25px;
+    color: white;
+    position: relative;
+}
+
+.header-top-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.bismillah {
+    font-size: 22px;
+    font-weight: bold;
+    padding: 5px 30px;
+    background: rgba(255,255,255,0.10);
+    border-radius: 30px;
+    display: inline-block;
+    font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
+    text-align: center;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.header-home-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.btn-home {
+    background: linear-gradient(135deg, #3c125e, #6d2079);
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(84, 46, 125, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(92, 46, 125, 0.6);
+}
+
+.btn-home i { 
+    font-size: 16px; 
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 8px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.header-logo {
+    height: 70px;
+    width: 70px;
+    background: white;
+    border-radius: 50%;
+    border: 2px solid #aea5d6;
+    object-fit: cover;
+}
+
+/* ==================== GLORIOUS TEXT - WAVE ROTATE FROM POSITION ==================== */
+.main-title-box {
+    background: linear-gradient(135deg, #1b1b3b, #312a5a);
+    padding: 6px 20px;
+    border-radius: 0 30px 30px 30px;
+    border-left: 4px solid #6666bb;
+    display: inline-block;
+}
+
+.glorious-text {
+    display: inline-flex;
+    gap: 2px;
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.glorious-text .letter {
+    display: inline-block;
+    font-weight: 900;
+    font-size: inherit;
+    transform-origin: center center;
+    transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+    position: relative;
+}
+
+/* প্রতিটি অক্ষরের জন্য আলাদা রোটেশন + রঙ + পজিশন অফসেট */
+.glorious-text .letter:nth-child(1) { 
+    color: #FF6B6B;
+    transform: rotate(20deg) translateY(-3px);
+    text-shadow: 0 0 20px rgba(255,107,107,0.4);
+}
+.glorious-text .letter:nth-child(2) { 
+    color: #FF9F43;
+    transform: rotate(-14deg) translateY(2px);
+    text-shadow: 0 0 20px rgba(255,159,67,0.4);
+}
+.glorious-text .letter:nth-child(3) { 
+    color: #FECA57;
+    transform: rotate(8deg) translateY(-4px);
+    text-shadow: 0 0 20px rgba(254,202,87,0.4);
+}
+.glorious-text .letter:nth-child(4) { 
+    color: #48DBFB;
+    transform: rotate(-12deg) translateY(1px);
+    text-shadow: 0 0 20px rgba(72,219,251,0.4);
+}
+.glorious-text .letter:nth-child(5) { 
+    color: #0ABDE3;
+    transform: rotate(14deg) translateY(-2px);
+    text-shadow: 0 0 20px rgba(10,189,227,0.4);
+}
+.glorious-text .letter:nth-child(6) { 
+    color: #10AC84;
+    transform: rotate(-15deg) translateY(3px);
+    text-shadow: 0 0 20px rgba(16,172,132,0.4);
+}
+.glorious-text .letter:nth-child(7) { 
+    color: #EE5A24;
+    transform: rotate(16deg) translateY(-1px);
+    text-shadow: 0 0 20px rgba(238,90,36,0.4);
+}
+.glorious-text .letter:nth-child(8) { 
+    color: #FF6B6B;
+    transform: rotate(-20deg) translateY(2px);
+    text-shadow: 0 0 20px rgba(255,107,107,0.4);
+}
+.brand-text h1 .letter:nth-child(9) { 
+    color: #ee24c9; 
+    transform: rotate(4deg) scale(1.15);
+    text-shadow: 3px 3px 0 #b844cc, 6px 6px 0 rgba(204, 68, 161, 0.3);
+}
+.brand-text h1 .letter:nth-child(10) { 
+    color:#936bff; 
+    transform: rotate(4deg) scale(1.15);
+    text-shadow: 3px 3px 0 #722fac, 6px 6px 0 rgba(154, 68, 204, 0.3);
+}
+
+/* প্রতিটি অক্ষরের জন্য আলাদা ট্রান্সফর্ম অরিজিন - ওয়েভ ইফেক্টের জন্য */
+.glorious-text .letter:nth-child(odd) {
+    transform-origin: center bottom;
+}
+
+.glorious-text .letter:nth-child(even) {
+    transform-origin: center top;
+}
+
+/* হভার ইফেক্ট - অক্ষরটি সোজা হয়ে বড় হয় */
+.glorious-text .letter:hover {
+    transform: rotate(0deg) scale(1.4) translateY(-5px) !important;
+    color: #FFD700 !important;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.7) !important;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.education-text {
+    font-size: 22px;
+    margin-left: 5px;
+    color: #b9bfe6;
+    font-weight: 700;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.slogan {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 2px;
+    color: #c8c9e6;
+    text-align: center;
+    font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
+    letter-spacing: 1px;
+}
+
+.header-right-address {
+    text-align: right;
+    font-size: 13px;
+    background: rgba(0,30,0,0.35);
+    padding: 8px 15px;
+    border-radius: 20px;
+    line-height: 1.6;
+    font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
+}
+
+.header-right-address i { 
+    margin-right: 3px; 
+}
+
+/* ==================== INFO BAR ==================== */
+.info-bar {
+    background: linear-gradient(95deg, #201b3b, #302a5a, #221f4f);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    flex-wrap: wrap;
+    font-weight: bold;
+    color: white;
+    border-bottom: 2px solid #6766bb;
+    font-size: 16px;
+}
+
+.info-bar i { 
+    color: #aba5d6; 
+}
+
+/* ==================== STUDENT LOGIN ==================== */
+.student-login-section {
+    background: linear-gradient(135deg, #f1f2f8, #e2e0f2);
+    padding: 25px;
+    margin: 20px;
+    border-radius: 24px;
+    text-align: center;
+    border: 2px solid #6149b6;
+    box-shadow: 0 8px 20px rgba(0, 1, 40, 0.05);
+}
+
+.student-login-section h3 { 
+    color: #1f1b3b; 
+    margin-bottom: 15px; 
+    font-size: 22px; 
+    font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif; 
+}
+
+.login-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.student-login-btn {
+    background: #362e7d;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
+}
+
+.student-login-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(57, 46, 125, 0.4);
+}
+
+/* ==================== STUDENT INFO CARD ==================== */
+.student-info-card {
+    background: #f4f0fa;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 24px;
+    display: none;
+    border-left: 8px solid #2e447d;
+    box-shadow: 0 8px 20px rgba(3, 0, 40, 0.05);
+}
+
+.student-result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.logout-student-btn {
+    background: #f57c00;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.logout-student-btn:hover { 
+    transform: scale(1.05); 
+}
+
+/* ==================== EXAM CARD ==================== */
+.exam-card {
+    background: white;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    overflow-x: auto;
+    box-shadow: 0 4px 12px rgba(1, 0, 30, 0.08);
+    border: 1px solid #aaa5d6;
+}
+
+.exam-title {
+    background: linear-gradient(95deg, #1f1b3b, #2d2a5a);
+    color: white;
+    padding: 12px 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.subject-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.subject-table th, .subject-table td {
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid #c8dbed;
+}
+
+.exam-summary {
+    background: #eae8f5;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    border-top: 2px solid #b1a5d6;
+    font-weight: bold;
+}
+
+.gpa-badge-sm {
+    background: #b0a5d6;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    color: #201b3b;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.pass { background: #c8e6c9; color: #356e3b; }
+.fail { background: #ffcdd2; color: #b71c1c; }
+
+/* ==================== TOP HOLDERS ==================== */
+#topHoldersBox {
+    display: none;
+    margin: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f3f1fa, #e1e0f2);
+    border-radius: 24px;
+    border-left: 8px solid #3a2e7d;
+}
+
+.top-title {
+    font-weight: bold;
+    color: #2c1686;
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
+}
+
+.top-list-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.merit-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rank-item {
+    background: white;
+    padding: 10px 18px;
+    border-radius: 40px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(9, 0, 30, 0.05);
+    border: 1px solid #aca5d6;
+    font-size: 14px;
+}
+
+/* ==================== CONTROLS PANEL ==================== */
+.controls-panel {
+    background: #f4f4fc;
+    padding: 15px 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #aaa5d6;
+}
+
+.show-hide-box {
+    background: #eae8f5;
+    border: 1px solid #a5a8d6;
+    padding: 5px 12px;
+    border-radius: 30px;
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+select, input {
+    padding: 8px 14px;
+    border: 1px solid #a8a5d6;
+    border-radius: 30px;
+    font-weight: 500;
+    background: white;
+    font-size: 14px;
+}
+
+button {
+    padding: 8px 18px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+button:active { 
+    transform: scale(0.97); 
+}
+
+.btn-add { background: #422e7d; color: white; }
+.btn-print { background: #251b3b; color: white; }
+.btn-login { background: #37474f; color: white; }
+.btn-copy { background: #00695c; color: white; }
+.btn-reset { background: #c62828; color: white; }
+
+.admin-only { display: none; }
+.is-admin .admin-only { display: inline-flex; }
+
+/* ==================== TABLE ==================== */
+.table-wrap {
+    padding: 20px;
+    overflow-x: auto !important;
+    background: #ffffff;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    border-radius: 16px;
+    overflow: hidden;
+    min-width: 600px;
+}
+
+th, td {
+    border: 1px solid #b4a5d6;
+    padding: 8px 6px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+th {
+    background: linear-gradient(95deg, #1b1b3b, #2b1a52);
+    color: white;
+    font-weight: 700;
+    padding: 10px 6px;
+    font-size: 12px;
+}
+
+/* ==================== PRINT COLUMN HIDE/SHOW - CRITICAL FOR PRINT ==================== */
+/* These classes control visibility in both screen and print */
+.cell-total, .cell-pct, .cell-gpa, .cell-res, .cell-pos {
+    white-space: nowrap;
+}
+
+/* When checkbox is unchecked, hide the column */
+.col-hidden-total .cell-total,
+.col-hidden-total th.cell-total {
+    display: none !important;
+}
+
+.col-hidden-pct .cell-pct,
+.col-hidden-pct th.cell-pct {
+    display: none !important;
+}
+
+.col-hidden-gpa .cell-gpa,
+.col-hidden-gpa th.cell-gpa {
+    display: none !important;
+}
+
+.col-hidden-res .cell-res,
+.col-hidden-res th.cell-res {
+    display: none !important;
+}
+
+.col-hidden-pos .cell-pos,
+.col-hidden-pos th.cell-pos {
+    display: none !important;
+}
+
+/* ==================== TABLE CELLS ==================== */
+.stu-name-input {
+    width: 100%;
+    background: transparent;
+    font-weight: 600;
+    padding: 6px 8px;
+    outline: none;
+    max-width: 260px !important;
+    min-width: 200px !important;
+    width: 220px !important;
+    font-size: 12px;
+    border: 1px dashed #322e7d;
+    border-radius: 8px;
+    text-align: center;
+    font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
+}
+
+.exam-type-selector {
+    font-size: 10px;
+    padding: 3px 6px;
+    margin-top: 4px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.9);
+    color: #1b223b;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.subject-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    min-width: 90px;
+    word-break: break-word;
+}
+
+.subject-name-input {
+    font-weight: bold;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 6px;
+    border-radius: 20px;
+    font-size: 11px;
+    text-align: center;
+    border: none;
+    color: white;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'Nikosh', 'SutonnyMJ', 'Noto Sans Bengali', sans-serif;
+}
+
+.mark-distribution {
+    display: flex;
+    gap: 5px;
+    font-size: 9px;
+    background: rgba(3, 0, 30, 0.3);
+    padding: 2px 6px;
+    border-radius: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mark-distribution input {
+    width: 35px;
+    padding: 2px;
+    font-size: 9px;
+    text-align: center;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 8px;
+}
+
+.written-input, .mcq-input {
+    width: 45px;
+    text-align: center;
+    border: 1px solid #ada5d6;
+    border-radius: 6px;
+    padding: 4px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.total-mark-display {
+    font-size: 9px;
+    font-weight: bold;
+    background: #e9e8f5;
+    display: inline-block;
+    padding: 2px 5px;
+    border-radius: 10px;
+    margin-top: 3px;
+}
+
+.subject-total-badge {
+    font-size: 9px;
+    font-weight: bold;
+    background: #cbc8e6;
+    display: inline-block;
+    padding: 2px 5px;
+    border-radius: 12px;
+    margin-top: 4px;
+    color: #261b5e;
+}
+
+.roll-input {
+    width: 55px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #a8a5d6;
+    border-radius: 6px;
+    padding: 5px 3px;
+    background: #f5faf5;
+    font-size: 12px;
+}
+
+.gpa-badge { 
+    padding: 2px 5px; 
+    border-radius: 12px; 
+    font-size: 10px; 
+    font-weight: bold; 
+    display: inline-block; 
+    background: #e8e9f5; 
+    color: #1e1b3b; 
+    border: 1px solid #3c2e7d; 
+}
+
+.btn-del { 
+    color: #c62828; 
+    cursor: pointer; 
+    font-weight: bold; 
+    display: none; 
+    margin-left: 4px; 
+    font-size: 11px; 
+    background: transparent; 
+    padding: 0 3px; 
+}
+
+.is-admin .btn-del { 
+    display: inline-block; 
+}
+
+/* ==================== FOOTER ==================== */
+.footer { 
+    background: linear-gradient(95deg, #1b1c3b, #2a2c5a); 
+    color: white; 
+    padding: 15px; 
+    text-align: center; 
+    font-size: 12px; 
+}
+
+.footer-glorious {
+    font-weight: 900;
+    font-size: 14px;
+    color: #FFD700;
+}
+
+/* ==================== OPTIONAL CHECKBOX ==================== */
+.optional-checkbox {
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 8px;
+    background: #c8cce6;
+    padding: 2px 5px;
+    border-radius: 15px;
+    cursor: pointer;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.optional-checkbox.selected {
+    background: #ada5d6;
+    border: 1px solid #1b1c5e;
+}
+
+/* ==================== AUTO SAVE TOAST ==================== */
+.auto-save-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2f2e7d;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 12px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+/* ==================== PRINT STYLES ==================== */
+@media print {
+    @page { size: A4 landscape; margin: 5mm 4mm; }
+    body { background: white; padding: 0; margin: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .container { box-shadow: none; border-radius: 0; overflow: visible !important; background: white; max-width: 100%; margin: 0; padding: 0; }
+    .table-wrap { overflow: visible !important; padding: 0 !important; }
+    table { min-width: 100% !important; width: 100% !important; table-layout: auto !important; page-break-inside: auto; }
+    thead { display: table-header-group; page-break-inside: avoid; }
+    thead th { background: #1b1b3b !important; color: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    tr { page-break-inside: avoid; page-break-after: auto; }
+    
+    /* Hide controls in print */
+    .controls-panel, .student-login-section, .btn-login, .admin-only, .optional-checkbox, .btn-del, .copy-section, #loginBtn, .logout-student-btn, .show-hide-box, .mark-distribution input, .auto-save-toast, .student-info-card, .exam-type-selector, .btn-home {
+        display: none !important;
+    }
+    #resultTableWrap { display: block !important; overflow: visible !important; }
+    #topHoldersBox { display: block !important; }
+    
+    /* Print column visibility - respects checkbox state via col-hidden classes */
+    /* These override any other display rules in print */
+    .col-hidden-total .cell-total,
+    .col-hidden-total th.cell-total {
+        display: none !important;
+    }
+    .col-hidden-pct .cell-pct,
+    .col-hidden-pct th.cell-pct {
+        display: none !important;
+    }
+    .col-hidden-gpa .cell-gpa,
+    .col-hidden-gpa th.cell-gpa {
+        display: none !important;
+    }
+    .col-hidden-res .cell-res,
+    .col-hidden-res th.cell-res {
+        display: none !important;
+    }
+    .col-hidden-pos .cell-pos,
+    .col-hidden-pos th.cell-pos {
+        display: none !important;
+    }
+    
+    /* When NOT hidden, ensure they are visible in print */
+    .cell-total, .cell-pct, .cell-gpa, .cell-res, .cell-pos {
+        display: table-cell !important;
+    }
+    
+    th, td { padding: 4px 3px !important; font-size: 9px !important; }
+    .stu-name-input { font-size: 10px !important; padding: 3px !important; min-width: 180px !important; width: 180px !important; border: 1px solid #aaa !important; }
+    .excel-header, .info-bar, th, .main-title-box, .footer { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .subject-name-input { font-size: 9px !important; padding: 2px !important; }
+    .written-input, .mcq-input { width: 35px !important; font-size: 9px !important; }
+    .total-mark-display { font-size: 8px !important; }
+    .gpa-badge, .status-badge { font-size: 8px !important; padding: 2px 4px !important; }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    body { padding: 10px; }
+    .glorious-text { font-size: 24px; gap: 1px; }
+    .glorious-text .letter:nth-child(1) { transform: rotate(10deg) translateY(-2px); }
+    .glorious-text .letter:nth-child(2) { transform: rotate(-7deg) translateY(1px); }
+    .glorious-text .letter:nth-child(3) { transform: rotate(5deg) translateY(-2px); }
+    .glorious-text .letter:nth-child(4) { transform: rotate(-6deg) translateY(1px); }
+    .glorious-text .letter:nth-child(5) { transform: rotate(7deg) translateY(-1px); }
+    .glorious-text .letter:nth-child(6) { transform: rotate(-8deg) translateY(2px); }
+    .glorious-text .letter:nth-child(7) { transform: rotate(8deg) translateY(-1px); }
+    .glorious-text .letter:nth-child(8) { transform: rotate(-10deg) translateY(1px); }
+    .glorious-text .letter:nth-child(9) { transform: rotate(9deg) translateY(-1px); }
+    .glorious-text .letter:nth-child(10) { transform: rotate(-12deg) translateY(1px); }
+    .education-text { font-size: 16px; }
+    .slogan { font-size: 12px; }
+    .main-title-box { padding: 5px 15px; }
+    .written-input, .mcq-input { width: 38px; font-size: 10px; }
+    .subject-header { min-width: 70px; }
+    th, td { padding: 4px 3px; font-size: 10px; }
+    .stu-name-input { min-width: 150px !important; width: 150px !important; font-size: 11px; }
+    .btn-home { padding: 6px 14px; font-size: 12px; }
+    .btn-home i { font-size: 12px; }
+    .header-right-address { font-size: 11px; }
+    .bismillah { font-size: 18px; padding: 4px 20px; }
+    .header-home-btn { position: static; transform: none; }
+    .header-top-row { justify-content: center; gap: 10px; }
+}
+
+@media (max-width: 480px) {
+    .glorious-text { font-size: 18px; gap: 1px; }
+    .glorious-text .letter:nth-child(1) { transform: rotate(5deg) translateY(-1px); }
+    .glorious-text .letter:nth-child(2) { transform: rotate(-4deg) translateY(1px); }
+    .glorious-text .letter:nth-child(3) { transform: rotate(3deg) translateY(-1px); }
+    .glorious-text .letter:nth-child(4) { transform: rotate(-3deg) translateY(0px); }
+    .glorious-text .letter:nth-child(5) { transform: rotate(4deg) translateY(-1px); }
+    .glorious-text .letter:nth-child(6) { transform: rotate(-5deg) translateY(1px); }
+    .glorious-text .letter:nth-child(7) { transform: rotate(5deg) translateY(0px); }
+    .glorious-text .letter:nth-child(8) { transform: rotate(-6deg) translateY(1px); }
+    .glorious-text .letter:nth-child(9) { transform: rotate(7deg) translateY(-1px); }
+    .glorious-text .letter:nth-child(10) { transform: rotate(-5deg) translateY(1px); }
+    .education-text { font-size: 13px; }
+    .slogan { font-size: 10px; }
+    .main-title-box { padding: 4px 10px; }
+    .header-logo { height: 50px; width: 50px; }
+    .bismillah { font-size: 15px; padding: 3px 15px; }
+    .header-right-address { font-size: 10px; padding: 5px 10px; }
+}
